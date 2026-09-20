@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:MatchIn/core/services/speech_to_text_service.dart';
+import 'package:MatchIn/features/chatbot/presentation/widgets/voice_input_button.dart';
 import 'package:MatchIn/generated/l10n.dart';
-
-import 'voice_input_button.dart';
 
 class ChatComposer extends StatefulWidget {
   const ChatComposer({
@@ -66,18 +65,20 @@ class _ChatComposerState extends State<ChatComposer> {
   Widget build(BuildContext context) {
     final s = S.of(context);
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final colorScheme = theme.colorScheme;
     final isListening = _speechState == SpeechState.listening;
+    final composerFillColor = colorScheme.surfaceContainerHighest.withValues(
+      alpha: 0.5,
+    );
+    final statusColor = colorScheme.error;
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
       decoration: BoxDecoration(
-        color: isDark ? Colors.grey[900] : theme.colorScheme.surface,
+        color: colorScheme.surface,
         border: Border(
           top: BorderSide(
-            color: isDark
-                ? Colors.grey[800]!
-                : theme.colorScheme.outlineVariant.withValues(alpha: 0.3),
+            color: colorScheme.outline.withValues(alpha: 0.25),
             width: 1,
           ),
         ),
@@ -96,8 +97,8 @@ class _ChatComposerState extends State<ChatComposer> {
                     Container(
                       width: 8.r,
                       height: 8.r,
-                      decoration: const BoxDecoration(
-                        color: Colors.red,
+                      decoration: BoxDecoration(
+                        color: statusColor,
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -107,7 +108,7 @@ class _ChatComposerState extends State<ChatComposer> {
                       style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w600,
-                        color: Colors.red,
+                        color: statusColor,
                       ),
                     ),
                   ],
@@ -115,39 +116,20 @@ class _ChatComposerState extends State<ChatComposer> {
               ),
             ],
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+              padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
               decoration: BoxDecoration(
-                color: isDark
-                    ? Colors.grey[850]
-                    : theme.colorScheme.surfaceContainerHighest.withValues(
-                        alpha: 0.45,
-                      ),
-                borderRadius: BorderRadius.circular(26.r),
+                color: composerFillColor,
+                borderRadius: BorderRadius.circular(28.r),
                 border: Border.all(
                   color: isListening
-                      ? Colors.red.withValues(alpha: 0.5)
-                      : (isDark
-                            ? Colors.grey[750]!
-                            : theme.colorScheme.outline.withValues(alpha: 0.2)),
+                      ? statusColor.withValues(alpha: 0.55)
+                      : colorScheme.outline.withValues(alpha: 0.16),
                   width: isListening ? 1.5 : 1.0,
                 ),
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Attachment / Action button
-                  IconButton(
-                    icon: Icon(
-                      Icons.add_circle_outline_rounded,
-                      size: 22.r,
-                      color: theme.hintColor,
-                    ),
-                    onPressed: () {},
-                    padding: EdgeInsets.all(6.r),
-                    constraints: const BoxConstraints(),
-                    tooltip: s.askAnything,
-                  ),
-                  SizedBox(width: 6.w),
                   // Multiline Text Input
                   Expanded(
                     child: TextField(
@@ -161,12 +143,21 @@ class _ChatComposerState extends State<ChatComposer> {
                       decoration: InputDecoration(
                         hintText: s.askAnything,
                         hintStyle: TextStyle(
-                          color: theme.hintColor.withValues(alpha: 0.7),
+                          color: colorScheme.onSurfaceVariant.withValues(
+                            alpha: 0.68,
+                          ),
                           fontSize: 15.sp,
                         ),
                         border: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        focusedErrorBorder: InputBorder.none,
+                        filled: true,
+                        fillColor: composerFillColor,
                         isDense: true,
-                        contentPadding: EdgeInsets.symmetric(vertical: 10.h),
+                        contentPadding: EdgeInsets.symmetric(vertical: 11.h),
                       ),
                       onSubmitted: (_) => _handleSend(),
                     ),
@@ -185,10 +176,12 @@ class _ChatComposerState extends State<ChatComposer> {
                   // Send Button inside the composer shell
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
+                    width: 38.r,
+                    height: 38.r,
                     decoration: BoxDecoration(
                       color: (_canSend && !widget.isGenerating)
-                          ? theme.primaryColor
-                          : theme.disabledColor.withValues(alpha: 0.25),
+                          ? colorScheme.primary
+                          : colorScheme.onSurface.withValues(alpha: 0.12),
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
@@ -204,15 +197,17 @@ class _ChatComposerState extends State<ChatComposer> {
                               height: 16.r,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2.r,
-                                color: Colors.white,
+                                color: colorScheme.onPrimary,
                               ),
                             )
                           : Icon(
                               Icons.arrow_upward_rounded,
                               size: 18.r,
                               color: (_canSend && !widget.isGenerating)
-                                  ? Colors.white
-                                  : theme.hintColor.withValues(alpha: 0.5),
+                                  ? colorScheme.onPrimary
+                                  : colorScheme.onSurfaceVariant.withValues(
+                                      alpha: 0.65,
+                                    ),
                             ),
                     ),
                   ),

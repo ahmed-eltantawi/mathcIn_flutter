@@ -1,8 +1,10 @@
+import 'package:MatchIn/core/routing/app_routes.dart';
 import 'package:MatchIn/core/widgets/custom_button.dart';
 import 'package:MatchIn/core/widgets/custom_text_field.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class RegisterForm extends StatelessWidget {
   RegisterForm({super.key});
@@ -59,7 +61,8 @@ class RegisterForm extends StatelessWidget {
             textInputAction: TextInputAction.done,
             validator: (value) {
               if (value == null || value.isEmpty) return locale.confirmPassword;
-              if (value != _passwordController.text) return locale.confirmPassword;
+              if (value != _passwordController.text)
+                return locale.confirmPassword;
               return null;
             },
           ),
@@ -72,7 +75,8 @@ class RegisterForm extends StatelessWidget {
                   return Checkbox(
                     value: value,
                     activeColor: theme.colorScheme.primary,
-                    onChanged: (newValue) => _isTermsAccepted.value = newValue ?? false,
+                    onChanged: (newValue) =>
+                        _isTermsAccepted.value = newValue ?? false,
                   );
                 },
               ),
@@ -88,7 +92,9 @@ class RegisterForm extends StatelessWidget {
           CustomButton(
             text: locale.completeRegistration,
             onPressed: () {
-              if (_formKey.currentState!.validate() && _isTermsAccepted.value) {}
+              context.go(AppRoutes.kHomeView);
+              //TODO:UNCOMMENT THIS
+              // if (_formKey.currentState!.validate() && _isTermsAccepted.value) {}
             },
           ),
         ],

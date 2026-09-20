@@ -1,7 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -2320,6 +2319,96 @@ class S {
     );
   }
 
+  /// `Listening...`
+  String get listening {
+    return Intl.message('Listening...', name: 'listening', desc: '', args: []);
+  }
+
+  /// `Speech recognition unavailable`
+  String get speechUnavailable {
+    return Intl.message(
+      'Speech recognition unavailable',
+      name: 'speechUnavailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Microphone permission denied`
+  String get micPermissionDenied {
+    return Intl.message(
+      'Microphone permission denied',
+      name: 'micPermissionDenied',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Speech recognition error`
+  String get speechError {
+    return Intl.message(
+      'Speech recognition error',
+      name: 'speechError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Copy`
+  String get copy {
+    return Intl.message('Copy', name: 'copy', desc: '', args: []);
+  }
+
+  /// `Regenerate`
+  String get regenerate {
+    return Intl.message('Regenerate', name: 'regenerate', desc: '', args: []);
+  }
+
+  /// `New messages`
+  String get newMessages {
+    return Intl.message(
+      'New messages',
+      name: 'newMessages',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete all conversations?`
+  String get deleteAllConversations {
+    return Intl.message(
+      'Delete all conversations?',
+      name: 'deleteAllConversations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This action can't be undone.`
+  String get undoWarning {
+    return Intl.message(
+      'This action can\'t be undone.',
+      name: 'undoWarning',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ask me anything about your career, jobs, interviews, or professional growth.`
+  String get chatEmptySubtitle {
+    return Intl.message(
+      'Ask me anything about your career, jobs, interviews, or professional growth.',
+      name: 'chatEmptySubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Done`
+  String get listeningDone {
+    return Intl.message('Done', name: 'listeningDone', desc: '', args: []);
+  }
+
   /// `Verifying…`
   String get otpVerifying {
     return Intl.message('Verifying…', name: 'otpVerifying', desc: '', args: []);
@@ -2508,96 +2597,6 @@ class S {
       desc: '',
       args: [],
     );
-  }
-
-  /// `Listening...`
-  String get listening {
-    return Intl.message('Listening...', name: 'listening', desc: '', args: []);
-  }
-
-  /// `Speech recognition unavailable`
-  String get speechUnavailable {
-    return Intl.message(
-      'Speech recognition unavailable',
-      name: 'speechUnavailable',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Microphone permission denied`
-  String get micPermissionDenied {
-    return Intl.message(
-      'Microphone permission denied',
-      name: 'micPermissionDenied',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Speech recognition error`
-  String get speechError {
-    return Intl.message(
-      'Speech recognition error',
-      name: 'speechError',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Copy`
-  String get copy {
-    return Intl.message('Copy', name: 'copy', desc: '', args: []);
-  }
-
-  /// `Regenerate`
-  String get regenerate {
-    return Intl.message('Regenerate', name: 'regenerate', desc: '', args: []);
-  }
-
-  /// `New messages`
-  String get newMessages {
-    return Intl.message(
-      'New messages',
-      name: 'newMessages',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Delete all conversations?`
-  String get deleteAllConversations {
-    return Intl.message(
-      'Delete all conversations?',
-      name: 'deleteAllConversations',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `This action can't be undone.`
-  String get undoWarning {
-    return Intl.message(
-      'This action can\'t be undone.',
-      name: 'undoWarning',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Ask me anything about your career, jobs, interviews, or professional growth.`
-  String get chatEmptySubtitle {
-    return Intl.message(
-      'Ask me anything about your career, jobs, interviews, or professional growth.',
-      name: 'chatEmptySubtitle',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Done`
-  String get listeningDone {
-    return Intl.message('Done', name: 'listeningDone', desc: '', args: []);
   }
 }
 
