@@ -1,117 +1,223 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../../generated/l10n.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:MatchIn/generated/l10n.dart';
+
 import '../../domain/entities/chat_message_entity.dart';
+import '../cubit/chatbot_cubit.dart';
 
 class ChatMessageBubble extends StatelessWidget {
   const ChatMessageBubble({
     super.key,
     required this.message,
+    this.isLastAiMessage = false,
   });
 
   final ChatMessageEntity message;
+  final bool isLastAiMessage;
 
   bool get _isUser => message.sender == MessageSender.user;
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
     final userBgColor = theme.primaryColor;
     final aiBgColor = isDark
         ? Colors.grey[850]!
-        : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5);
+        : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.45);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
       child: Row(
-        mainAxisAlignment:
-            _isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment: _isUser
+            ? MainAxisAlignment.end
+            : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!_isUser) ...[
             Container(
-              padding: const EdgeInsets.all(8),
+              padding: EdgeInsets.all(7.r),
               decoration: BoxDecoration(
-                color: theme.primaryColor.withValues(alpha: 0.15),
+                color: theme.primaryColor.withValues(alpha: 0.12),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.auto_awesome,
-                size: 18,
+                size: 16.r,
                 color: theme.primaryColor,
               ),
             ),
-            const SizedBox(width: 8),
+            SizedBox(width: 8.w),
           ],
-          Flexible(
+          ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 0.78.sw),
             child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 12.0,
-              ),
+              padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
               decoration: BoxDecoration(
                 color: message.isError
                     ? Colors.red.withValues(alpha: 0.1)
                     : (_isUser ? userBgColor : aiBgColor),
                 borderRadius: BorderRadius.only(
-                  topLeft: const Radius.circular(18),
-                  topRight: const Radius.circular(18),
-                  bottomLeft: Radius.circular(_isUser ? 18 : 4),
-                  bottomRight: Radius.circular(_isUser ? 4 : 18),
+                  topLeft: Radius.circular(16.r),
+                  topRight: Radius.circular(16.r),
+                  bottomLeft: Radius.circular(_isUser ? 16.r : 4.r),
+                  bottomRight: Radius.circular(_isUser ? 4.r : 16.r),
                 ),
                 border: message.isError
-                    ? Border.all(color: Colors.red.shade300)
-                    : null,
+                    ? Border.all(color: Colors.red.shade300, width: 1)
+                    : (isDark && !_isUser
+                          ? Border.all(color: Colors.grey[750]!, width: 1)
+                          : null),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SelectableText(
-                    message.content,
-                    style: TextStyle(
-                      color: message.isError
-                          ? Colors.red
-                          : (_isUser ? Colors.white : theme.textTheme.bodyLarge?.color),
-                      fontSize: 15,
-                      height: 1.4,
+                  if (_isUser)
+                    SelectableText(
+                      message.content,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14.5.sp,
+                        height: 1.4,
+                      ),
+                    )
+                  else if (message.isError)
+                    SelectableText(
+                      message.content,
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 14.sp,
+                        height: 1.4,
+                      ),
+                    )
+                  else
+                    MarkdownBody(
+                      data: message.content,
+                      selectable: true,
+                      styleSheet: MarkdownStyleSheet.fromTheme(theme).copyWith(
+                        p: theme.textTheme.bodyMedium?.copyWith(
+                          fontSize: 14.5.sp,
+                          height: 1.45,
+                          color: isDark
+                              ? Colors.grey[200]
+                              : theme.textTheme.bodyLarge?.color,
+                        ),
+                        h1: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                          color: theme.primaryColor,
+                        ),
+                        h2: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        h3: TextStyle(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        code: TextStyle(
+                          fontSize: 13.sp,
+                          fontFamily: 'monospace',
+                          backgroundColor: isDark
+                              ? Colors.black26
+                              : Colors.black.withValues(alpha: 0.05),
+                        ),
+                        codeblockDecoration: BoxDecoration(
+                          color: isDark ? Colors.grey[900] : Colors.grey[100],
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        listBullet: TextStyle(
+                          fontSize: 14.5.sp,
+                          color: theme.primaryColor,
+                        ),
+                      ),
                     ),
-                  ),
                   if (!_isUser && !message.isError) ...[
-                    const SizedBox(height: 6),
+                    SizedBox(height: 8.h),
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        // Copy Action
                         InkWell(
                           onTap: () {
-                            Clipboard.setData(ClipboardData(text: message.content));
+                            Clipboard.setData(
+                              ClipboardData(text: message.content),
+                            );
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(S.of(context).copiedToClipboard),
+                                content: Text(s.copiedToClipboard),
                                 duration: const Duration(seconds: 2),
                                 behavior: SnackBarBehavior.floating,
                               ),
                             );
                           },
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.copy_rounded,
-                                size: 14,
-                                color: Colors.grey[600],
-                              ),
-                              const SizedBox(width: 4),
-                              Text(
-                                'Copy',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey[600],
+                          borderRadius: BorderRadius.circular(6.r),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 6.w,
+                              vertical: 2.h,
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.copy_rounded,
+                                  size: 13.r,
+                                  color: theme.hintColor,
                                 ),
-                              ),
-                            ],
+                                SizedBox(width: 4.w),
+                                Text(
+                                  s.copy,
+                                  style: TextStyle(
+                                    fontSize: 11.5.sp,
+                                    color: theme.hintColor,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
+                        if (isLastAiMessage) ...[
+                          SizedBox(width: 12.w),
+                          // Regenerate Action
+                          InkWell(
+                            onTap: () {
+                              context
+                                  .read<ChatbotCubit>()
+                                  .regenerateLastMessage();
+                            },
+                            borderRadius: BorderRadius.circular(6.r),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 6.w,
+                                vertical: 2.h,
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.refresh_rounded,
+                                    size: 13.r,
+                                    color: theme.hintColor,
+                                  ),
+                                  SizedBox(width: 4.w),
+                                  Text(
+                                    s.regenerate,
+                                    style: TextStyle(
+                                      fontSize: 11.5.sp,
+                                      color: theme.hintColor,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ],
                     ),
                   ],
@@ -120,16 +226,16 @@ class ChatMessageBubble extends StatelessWidget {
             ),
           ),
           if (_isUser) ...[
-            const SizedBox(width: 8),
+            SizedBox(width: 8.w),
             Container(
-              padding: const EdgeInsets.all(8),
+              padding: EdgeInsets.all(7.r),
               decoration: BoxDecoration(
-                color: theme.colorScheme.secondary.withValues(alpha: 0.2),
+                color: theme.colorScheme.secondary.withValues(alpha: 0.15),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.person,
-                size: 18,
+                size: 16.r,
                 color: theme.colorScheme.secondary,
               ),
             ),

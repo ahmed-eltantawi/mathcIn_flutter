@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../domain/entities/chat_entity.dart';
 import '../../domain/entities/chat_message_entity.dart';
 import '../../domain/use_cases/clear_all_chats_use_case.dart';
@@ -25,12 +26,14 @@ class ChatbotCubit extends Cubit<ChatbotState> {
 
   void initializeChat() {
     final newChatId = 'chat_${DateTime.now().millisecondsSinceEpoch}';
-    emit(state.copyWith(
-      activeChatId: newChatId,
-      messages: const [],
-      isGenerating: false,
-      status: ChatbotStatus.success,
-    ));
+    emit(
+      state.copyWith(
+        activeChatId: newChatId,
+        messages: const [],
+        isGenerating: false,
+        status: ChatbotStatus.success,
+      ),
+    );
     loadHistory();
   }
 
@@ -43,15 +46,19 @@ class ChatbotCubit extends Cubit<ChatbotState> {
   }
 
   Future<void> selectChat(String chatId) async {
-    final existingChatIndex = state.chatHistory.indexWhere((c) => c.id == chatId);
+    final existingChatIndex = state.chatHistory.indexWhere(
+      (c) => c.id == chatId,
+    );
     if (existingChatIndex >= 0) {
       final selectedChat = state.chatHistory[existingChatIndex];
-      emit(state.copyWith(
-        activeChatId: selectedChat.id,
-        messages: selectedChat.messages,
-        isGenerating: false,
-        status: ChatbotStatus.success,
-      ));
+      emit(
+        state.copyWith(
+          activeChatId: selectedChat.id,
+          messages: selectedChat.messages,
+          isGenerating: false,
+          status: ChatbotStatus.success,
+        ),
+      );
     }
   }
 
@@ -67,13 +74,16 @@ class ChatbotCubit extends Cubit<ChatbotState> {
       timestamp: DateTime.now(),
     );
 
-    final updatedMessages = List<ChatMessageEntity>.from(state.messages)..add(userMessage);
+    final updatedMessages = List<ChatMessageEntity>.from(state.messages)
+      ..add(userMessage);
 
-    emit(state.copyWith(
-      messages: updatedMessages,
-      isGenerating: true,
-      status: ChatbotStatus.loading,
-    ));
+    emit(
+      state.copyWith(
+        messages: updatedMessages,
+        isGenerating: true,
+        status: ChatbotStatus.loading,
+      ),
+    );
 
     final result = await sendMessageUseCase(
       chatId: state.activeChatId,
@@ -91,16 +101,20 @@ class ChatbotCubit extends Cubit<ChatbotState> {
           isError: true,
         );
 
-        final finalMessages = List<ChatMessageEntity>.from(state.messages)..add(errorMsg);
-        emit(state.copyWith(
-          messages: finalMessages,
-          isGenerating: false,
-          status: ChatbotStatus.failure,
-          errorMessage: failure.message,
-        ));
+        final finalMessages = List<ChatMessageEntity>.from(state.messages)
+          ..add(errorMsg);
+        emit(
+          state.copyWith(
+            messages: finalMessages,
+            isGenerating: false,
+            status: ChatbotStatus.failure,
+            errorMessage: failure.message,
+          ),
+        );
       },
       (aiResponse) async {
-        final finalMessages = List<ChatMessageEntity>.from(state.messages)..add(aiResponse);
+        final finalMessages = List<ChatMessageEntity>.from(state.messages)
+          ..add(aiResponse);
 
         String title = 'Chat';
         if (finalMessages.isNotEmpty) {
@@ -123,11 +137,98 @@ class ChatbotCubit extends Cubit<ChatbotState> {
 
         await saveChatUseCase(currentChat);
 
-        emit(state.copyWith(
+        emit(
+          state.copyWith(
+            messages: finalMessages,
+            isGenerating: false,
+            status: ChatbotStatus.success,
+          ),
+        );
+
+        await loadHistory();
+      },
+    );
+  }
+
+  Future<void> regenerateLastMessage() async {
+    if (state.isGenerating || state.messages.isEmpty) return;
+
+    final messages = List<ChatMessageEntity>.from(state.messages);
+    final lastUserIndex = messages.lastIndexWhere(
+      (m) => m.sender == MessageSender.user,
+    );
+    if (lastUserIndex == -1) return;
+
+    final lastUserMsg = messages[lastUserIndex];
+    final trimmedMessages = messages.sublist(0, lastUserIndex + 1);
+
+    emit(
+      state.copyWith(
+        messages: trimmedMessages,
+        isGenerating: true,
+        status: ChatbotStatus.loading,
+      ),
+    );
+
+    final result = await sendMessageUseCase(
+      chatId: state.activeChatId,
+      messageContent: lastUserMsg.content,
+      currentMessages: trimmedMessages,
+    );
+
+    result.fold(
+      (failure) async {
+        final errorMsg = ChatMessageEntity(
+          id: 'err_${DateTime.now().millisecondsSinceEpoch}',
+          content: failure.message,
+          sender: MessageSender.ai,
+          timestamp: DateTime.now(),
+          isError: true,
+        );
+
+        final finalMessages = List<ChatMessageEntity>.from(state.messages)
+          ..add(errorMsg);
+        emit(
+          state.copyWith(
+            messages: finalMessages,
+            isGenerating: false,
+            status: ChatbotStatus.failure,
+            errorMessage: failure.message,
+          ),
+        );
+      },
+      (aiResponse) async {
+        final finalMessages = List<ChatMessageEntity>.from(state.messages)
+          ..add(aiResponse);
+
+        String title = 'Chat';
+        if (finalMessages.isNotEmpty) {
+          final firstUserMsg = finalMessages.firstWhere(
+            (m) => m.sender == MessageSender.user,
+            orElse: () => lastUserMsg,
+          );
+          title = firstUserMsg.content.length > 30
+              ? '${firstUserMsg.content.substring(0, 30)}...'
+              : firstUserMsg.content;
+        }
+
+        final currentChat = ChatEntity(
+          id: state.activeChatId,
+          title: title,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
           messages: finalMessages,
-          isGenerating: false,
-          status: ChatbotStatus.success,
-        ));
+        );
+
+        await saveChatUseCase(currentChat);
+
+        emit(
+          state.copyWith(
+            messages: finalMessages,
+            isGenerating: false,
+            status: ChatbotStatus.success,
+          ),
+        );
 
         await loadHistory();
       },

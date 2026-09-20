@@ -39,53 +39,68 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     final colors = context.colors;
     final textTheme = context.textTheme;
     final l10n = context.l10n;
+    final isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
 
     return Scaffold(
       body: IndexedStack(index: currentIndex, children: pages),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: colors.surface,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 10.r,
-              offset: const Offset(0, -2),
-            ),
-          ],
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-            child: GNav(
-              selectedIndex: currentIndex,
-              onTabChange: (index) {
-                setState(() {
-                  currentIndex = index;
-                });
-              },
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              gap: 6.w,
-              iconSize: 24.r,
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
-              color: colors.onSurface.withValues(alpha: 0.6),
-              activeColor: colors.primary,
-              tabBackgroundColor: colors.primary.withValues(alpha: 0.12),
-              textStyle: textTheme.labelMedium?.copyWith(
-                fontSize: 13.sp,
-                fontWeight: FontWeight.w600,
-                color: colors.primary,
+      bottomNavigationBar: isKeyboardVisible
+          ? null
+          : Container(
+              decoration: BoxDecoration(
+                color: colors.surface,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.05),
+                    blurRadius: 10.r,
+                    offset: const Offset(0, -2),
+                  ),
+                ],
               ),
-              tabs: [
-                GButton(icon: Icons.smart_toy_outlined, text: l10n.chatBot),
-                GButton(icon: Icons.bookmark_outline, text: l10n.savedJobs),
-                GButton(icon: Icons.home_outlined, text: l10n.home),
-                GButton(icon: Icons.route_outlined, text: l10n.roadMap),
-                GButton(icon: Icons.person_outline, text: l10n.profile),
-              ],
+              child: SafeArea(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12.w,
+                    vertical: 8.h,
+                  ),
+                  child: GNav(
+                    selectedIndex: currentIndex,
+                    onTabChange: (index) {
+                      setState(() {
+                        currentIndex = index;
+                      });
+                    },
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    gap: 6.w,
+                    iconSize: 24.r,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.w,
+                      vertical: 10.h,
+                    ),
+                    color: colors.onSurface.withValues(alpha: 0.6),
+                    activeColor: colors.primary,
+                    tabBackgroundColor: colors.primary.withValues(alpha: 0.12),
+                    textStyle: textTheme.labelMedium?.copyWith(
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w600,
+                      color: colors.primary,
+                    ),
+                    tabs: [
+                      GButton(
+                        icon: Icons.smart_toy_outlined,
+                        text: l10n.chatBot,
+                      ),
+                      GButton(
+                        icon: Icons.bookmark_outline,
+                        text: l10n.savedJobs,
+                      ),
+                      GButton(icon: Icons.home_outlined, text: l10n.home),
+                      GButton(icon: Icons.route_outlined, text: l10n.roadMap),
+                      GButton(icon: Icons.person_outline, text: l10n.profile),
+                    ],
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 }

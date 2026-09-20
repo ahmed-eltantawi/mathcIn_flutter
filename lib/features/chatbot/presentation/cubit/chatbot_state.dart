@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+
 import '../../domain/entities/chat_entity.dart';
 import '../../domain/entities/chat_message_entity.dart';
 
@@ -41,11 +42,11 @@ class ChatbotState extends Equatable {
 
   @override
   List<Object?> get props => [
-        status,
-        activeChatId,
-        messages,
-        chatHistory,
-        isGenerating,
-        errorMessage,
-      ];
+    status,
+    activeChatId,
+    messages,
+    chatHistory,
+    isGenerating,
+    errorMessage,
+  ];
 }

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:MatchIn/core/services/services_locator.dart';
 import 'package:MatchIn/generated/l10n.dart';
+
 import '../cubit/chatbot_cubit.dart';
 import '../cubit/chatbot_state.dart';
+import 'package:MatchIn/features/chatbot/domain/entities/chat_message_entity.dart';
+import '../widgets/chat_composer.dart';
 import '../widgets/chat_history_drawer.dart';
-import '../widgets/chat_input_bar.dart';
 import '../widgets/chat_message_bubble.dart';
+import '../widgets/scroll_to_bottom_button.dart';
 import '../widgets/suggested_questions_grid.dart';
 import '../widgets/typing_indicator.dart';
 
@@ -31,6 +35,26 @@ class _AiChatViewBody extends StatefulWidget {
 
 class _AiChatViewBodyState extends State<_AiChatViewBody> {
   final ScrollController _scrollController = ScrollController();
+  bool _showScrollToBottom = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (!_scrollController.hasClients) return;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    final isFarFromBottom = (maxScroll - currentScroll) > 120;
+
+    if (isFarFromBottom != _showScrollToBottom) {
+      setState(() {
+        _showScrollToBottom = isFarFromBottom;
+      });
+    }
+  }
 
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -38,7 +62,7 @@ class _AiChatViewBodyState extends State<_AiChatViewBody> {
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
           duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
+          curve: Curves.easeOutCubic,
         );
       }
     });
@@ -46,6 +70,7 @@ class _AiChatViewBodyState extends State<_AiChatViewBody> {
 
   @override
   void dispose() {
+    _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
     super.dispose();
   }
@@ -54,35 +79,37 @@ class _AiChatViewBodyState extends State<_AiChatViewBody> {
   Widget build(BuildContext context) {
     final s = S.of(context);
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
       drawer: const ChatHistoryDrawer(),
       appBar: AppBar(
         title: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              padding: const EdgeInsets.all(6),
+              padding: EdgeInsets.all(6.r),
               decoration: BoxDecoration(
-                color: theme.primaryColor.withValues(alpha: 0.15),
+                color: theme.primaryColor.withValues(alpha: 0.12),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.auto_awesome,
-                size: 20,
+                size: 18.r,
                 color: theme.primaryColor,
               ),
             ),
-            const SizedBox(width: 8),
+            SizedBox(width: 8.w),
             Text(
               s.aiAssistant,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.sp),
             ),
           ],
         ),
         actions: [
           IconButton(
             tooltip: s.newChat,
-            icon: const Icon(Icons.add_comment_outlined),
+            icon: Icon(Icons.add_comment_outlined, size: 22.r),
             onPressed: () {
               context.read<ChatbotCubit>().initializeChat();
             },
@@ -91,105 +118,195 @@ class _AiChatViewBodyState extends State<_AiChatViewBody> {
       ),
       body: BlocConsumer<ChatbotCubit, ChatbotState>(
         listener: (context, state) {
-          if (state.messages.isNotEmpty) {
+          if (state.messages.isNotEmpty && !_showScrollToBottom) {
             _scrollToBottom();
           }
         },
         builder: (context, state) {
           final cubit = context.read<ChatbotCubit>();
 
-          return Column(
+          return Stack(
             children: [
-              Expanded(
-                child: state.messages.isEmpty
-                    ? SingleChildScrollView(
-                        padding: const EdgeInsets.symmetric(vertical: 24.0),
-                        child: Column(
-                          children: [
-                            const SizedBox(height: 20),
-                            Container(
-                              padding: const EdgeInsets.all(20),
-                              decoration: BoxDecoration(
-                                color: theme.primaryColor.withValues(alpha: 0.1),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                Icons.auto_awesome,
-                                size: 56,
-                                color: theme.primaryColor,
-                              ),
+              Column(
+                children: [
+                  Expanded(
+                    child: state.messages.isEmpty
+                        ? SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            padding: EdgeInsets.symmetric(
+                              vertical: 20.h,
+                              horizontal: 16.w,
                             ),
-                            const SizedBox(height: 16),
-                            Text(
-                              s.howCanIHelpYouToday,
-                              textAlign: TextAlign.center,
-                              style: theme.textTheme.headlineSmall?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 24),
-                            SuggestedQuestionsGrid(
-                              onSelectQuestion: (prompt) {
-                                cubit.sendMessage(prompt);
-                              },
-                            ),
-                          ],
-                        ),
-                      )
-                    : ListView.builder(
-                        controller: _scrollController,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        itemCount:
-                            state.messages.length + (state.isGenerating ? 1 : 0),
-                        itemBuilder: (context, index) {
-                          if (index < state.messages.length) {
-                            final message = state.messages[index];
-                            return ChatMessageBubble(message: message);
-                          } else {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 24.0,
-                                vertical: 8.0,
-                              ),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      color: theme.primaryColor.withValues(alpha: 0.15),
-                                      shape: BoxShape.circle,
+                            child: Column(
+                              children: [
+                                SizedBox(height: 16.h),
+                                // AI Illustration / Glowing Icon
+                                Container(
+                                  padding: EdgeInsets.all(22.r),
+                                  decoration: BoxDecoration(
+                                    color: theme.primaryColor.withValues(
+                                      alpha: 0.1,
                                     ),
-                                    child: Icon(
-                                      Icons.auto_awesome,
-                                      size: 18,
-                                      color: theme.primaryColor,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: theme.primaryColor.withValues(
+                                        alpha: 0.2,
+                                      ),
+                                      width: 2.w,
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: theme.primaryColor.withValues(
+                                          alpha: 0.15,
+                                        ),
+                                        blurRadius: 20.r,
+                                        spreadRadius: 2.r,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Icon(
+                                    Icons.auto_awesome,
+                                    size: 48.r,
+                                    color: theme.primaryColor,
+                                  ),
+                                ),
+                                SizedBox(height: 16.h),
+                                Text(
+                                  s.howCanIHelpYouToday,
+                                  textAlign: TextAlign.center,
+                                  style: theme.textTheme.headlineSmall
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20.sp,
+                                      ),
+                                ),
+                                SizedBox(height: 8.h),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 24.w,
+                                  ),
+                                  child: Text(
+                                    s.chatEmptySubtitle,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: theme.hintColor,
+                                      fontSize: 13.5.sp,
+                                      height: 1.4,
                                     ),
                                   ),
-                                  const SizedBox(width: 8),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                      vertical: 12,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: theme.colorScheme.surfaceContainerHighest
-                                          .withValues(alpha: 0.5),
-                                      borderRadius: BorderRadius.circular(18),
-                                    ),
-                                    child: const TypingIndicator(),
+                                ),
+                                SizedBox(height: 24.h),
+                                SuggestedQuestionsGrid(
+                                  onSelectQuestion: (prompt) {
+                                    cubit.sendMessage(prompt);
+                                  },
+                                ),
+                              ],
+                            ),
+                          )
+                        : ListView.builder(
+                            controller: _scrollController,
+                            padding: EdgeInsets.symmetric(vertical: 12.h),
+                            physics: const AlwaysScrollableScrollPhysics(
+                              parent: BouncingScrollPhysics(),
+                            ),
+                            itemCount:
+                                state.messages.length +
+                                (state.isGenerating ? 1 : 0),
+                            itemBuilder: (context, index) {
+                              if (index < state.messages.length) {
+                                final message = state.messages[index];
+                                final isLastAi =
+                                    (index == state.messages.length - 1) &&
+                                    (message.sender == MessageSender.ai);
+                                return ChatMessageBubble(
+                                  message: message,
+                                  isLastAiMessage: isLastAi,
+                                );
+                              } else {
+                                // Polished Typing Loading State
+                                return Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 16.w,
+                                    vertical: 8.h,
                                   ),
-                                ],
-                              ),
-                            );
-                          }
-                        },
-                      ),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.all(7.r),
+                                        decoration: BoxDecoration(
+                                          color: theme.primaryColor.withValues(
+                                            alpha: 0.12,
+                                          ),
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Icon(
+                                          Icons.auto_awesome,
+                                          size: 16.r,
+                                          color: theme.primaryColor,
+                                        ),
+                                      ),
+                                      SizedBox(width: 8.w),
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 14.w,
+                                          vertical: 10.h,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: isDark
+                                              ? Colors.grey[850]
+                                              : theme
+                                                    .colorScheme
+                                                    .surfaceContainerHighest
+                                                    .withValues(alpha: 0.45),
+                                          borderRadius: BorderRadius.circular(
+                                            16.r,
+                                          ),
+                                        ),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                              '✨',
+                                              style: TextStyle(fontSize: 12.sp),
+                                            ),
+                                            SizedBox(width: 6.w),
+                                            const TypingIndicator(),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }
+                            },
+                          ),
+                  ),
+                  ChatComposer(
+                    isGenerating: state.isGenerating,
+                    onSendMessage: (prompt) {
+                      cubit.sendMessage(prompt);
+                    },
+                  ),
+                ],
               ),
-              ChatInputBar(
-                isGenerating: state.isGenerating,
-                onSendMessage: (prompt) {
-                  cubit.sendMessage(prompt);
-                },
+
+              // Floating Scroll-to-bottom button
+              Positioned(
+                bottom: 75.h,
+                right: 16.w,
+                child: ScrollToBottomButton(
+                  isVisible: _showScrollToBottom && state.messages.isNotEmpty,
+                  hasNewMessages: state.isGenerating,
+                  onPressed: () {
+                    _scrollToBottom();
+                    setState(() {
+                      _showScrollToBottom = false;
+                    });
+                  },
+                ),
               ),
             ],
           );

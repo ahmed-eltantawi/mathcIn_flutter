@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../generated/l10n.dart';
 import '../../domain/entities/chat_entity.dart';
@@ -56,7 +57,10 @@ class ChatHistoryDrawer extends StatelessWidget {
             child: Text(s.cancel),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              elevation: 0,
+            ),
             onPressed: () {
               Navigator.pop(ctx);
               context.read<ChatbotCubit>().deleteChat(chat.id);
@@ -73,20 +77,23 @@ class ChatHistoryDrawer extends StatelessWidget {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text(s.clearAllChats),
-        content: Text(s.confirmClearAllChats),
+        title: Text(s.deleteAllConversations),
+        content: Text(s.undoWarning),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
             child: Text(s.cancel),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              elevation: 0,
+            ),
             onPressed: () {
               Navigator.pop(ctx);
               context.read<ChatbotCubit>().clearAllChats();
             },
-            child: Text(s.clear, style: const TextStyle(color: Colors.white)),
+            child: Text(s.delete, style: const TextStyle(color: Colors.white)),
           ),
         ],
       ),
@@ -100,32 +107,40 @@ class ChatHistoryDrawer extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     return Drawer(
-      backgroundColor: isDark ? Colors.grey[900] : Colors.white,
+      backgroundColor: isDark ? Colors.grey[900] : theme.colorScheme.surface,
       child: SafeArea(
         child: Column(
           children: [
-            // Drawer Header with New Chat
+            // Drawer Header with New Chat Button
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(16.r),
               child: Column(
                 children: [
                   Row(
                     children: [
-                      Icon(
-                        Icons.auto_awesome,
-                        color: theme.primaryColor,
-                        size: 24,
+                      Container(
+                        padding: EdgeInsets.all(6.r),
+                        decoration: BoxDecoration(
+                          color: theme.primaryColor.withValues(alpha: 0.12),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.auto_awesome,
+                          color: theme.primaryColor,
+                          size: 20.r,
+                        ),
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 10.w),
                       Text(
                         s.chatHistory,
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
+                          fontSize: 16.sp,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16.h),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton.icon(
@@ -135,17 +150,23 @@ class ChatHistoryDrawer extends StatelessWidget {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: theme.primaryColor,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        padding: EdgeInsets.symmetric(vertical: 12.h),
+                        elevation: 0,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(12.r),
                         ),
                       ),
-                      icon: const Icon(Icons.add, color: Colors.white),
+                      icon: Icon(
+                        Icons.add_rounded,
+                        color: Colors.white,
+                        size: 20.r,
+                      ),
                       label: Text(
                         s.newChat,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
+                          fontSize: 14.sp,
                         ),
                       ),
                     ),
@@ -153,7 +174,7 @@ class ChatHistoryDrawer extends StatelessWidget {
                 ],
               ),
             ),
-            const Divider(height: 1),
+            Divider(height: 1.h),
 
             // History List
             Expanded(
@@ -163,15 +184,33 @@ class ChatHistoryDrawer extends StatelessWidget {
 
                   if (state.chatHistory.isEmpty) {
                     return Center(
-                      child: Text(
-                        'No history yet',
-                        style: TextStyle(color: Colors.grey[600]),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.chat_bubble_outline_rounded,
+                            size: 48.r,
+                            color: theme.hintColor.withValues(alpha: 0.4),
+                          ),
+                          SizedBox(height: 12.h),
+                          Text(
+                            s.noConversationsYet,
+                            style: TextStyle(
+                              color: theme.hintColor,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
                     );
                   }
 
                   return ListView.builder(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    padding: EdgeInsets.symmetric(
+                      vertical: 8.h,
+                      horizontal: 8.w,
+                    ),
                     itemCount: grouped.length,
                     itemBuilder: (context, index) {
                       final groupTitle = grouped.keys.elementAt(index);
@@ -181,15 +220,16 @@ class ChatHistoryDrawer extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0,
-                              vertical: 8.0,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 12.w,
+                              vertical: 8.h,
                             ),
                             child: Text(
                               groupTitle,
                               style: theme.textTheme.labelMedium?.copyWith(
-                                color: Colors.grey[600],
+                                color: theme.hintColor,
                                 fontWeight: FontWeight.bold,
+                                fontSize: 11.5.sp,
                               ),
                             ),
                           ),
@@ -202,24 +242,25 @@ class ChatHistoryDrawer extends StatelessWidget {
                                 alpha: 0.1,
                               ),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(10.r),
                               ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 16.0,
-                                vertical: 2.0,
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 12.w,
+                                vertical: 0,
                               ),
                               leading: Icon(
                                 Icons.chat_bubble_outline_rounded,
-                                size: 18,
+                                size: 18.r,
                                 color: isSelected
                                     ? theme.primaryColor
-                                    : Colors.grey[600],
+                                    : theme.hintColor,
                               ),
                               title: Text(
                                 chat.title,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
+                                  fontSize: 13.5.sp,
                                   fontWeight: isSelected
                                       ? FontWeight.bold
                                       : FontWeight.normal,
@@ -227,10 +268,10 @@ class ChatHistoryDrawer extends StatelessWidget {
                                 ),
                               ),
                               trailing: IconButton(
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.delete_outline_rounded,
-                                  size: 18,
-                                  color: Colors.grey,
+                                  size: 18.r,
+                                  color: theme.hintColor.withValues(alpha: 0.7),
                                 ),
                                 onPressed: () =>
                                     _showDeleteConfirmDialog(context, chat),
@@ -251,23 +292,27 @@ class ChatHistoryDrawer extends StatelessWidget {
               ),
             ),
 
-            const Divider(height: 1),
+            Divider(height: 1.h),
             // Clear All Button
             BlocBuilder<ChatbotCubit, ChatbotState>(
               builder: (context, state) {
                 if (state.chatHistory.isEmpty) return const SizedBox.shrink();
                 return Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(12.r),
                   child: TextButton.icon(
                     onPressed: () => _showClearAllConfirmDialog(context),
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.delete_sweep_rounded,
                       color: Colors.red,
-                      size: 20,
+                      size: 20.r,
                     ),
                     label: Text(
                       s.clearAllChats,
-                      style: const TextStyle(color: Colors.red),
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 13.5.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 );

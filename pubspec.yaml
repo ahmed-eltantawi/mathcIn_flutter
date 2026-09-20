@@ -70,6 +70,12 @@ dependencies:
   #--> OTP animation fields
   otp_animated_fields: ^0.1.1
 
+  #--> Speech to text
+  speech_to_text: ^7.3.0
+
+  #--> Markdown rendering
+  flutter_markdown: ^0.7.7
+
 dev_dependencies:
   flutter_lints: ^6.0.0
   flutter_native_splash: ^2.4.8

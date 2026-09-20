@@ -282,7 +282,18 @@
 "delete":"حذف",
 "confirmDeleteChat": "هل أنت متأكد أنك تريد حذف هذه المحادثة؟ لا يمكن التراجع عن هذا الإجراء.",
 "deleteChat": "حذف المحادثة"
-,"previous7Days": "السابق 7 يوما",
+,"previous7Days": "السابق 7 أيام"
+,"listening": "جارٍ الاستماع..."
+,"speechUnavailable": "خدمة التعرف على الصوت غير متاحة"
+,"micPermissionDenied": "تم رفض إذن الميكروفون"
+,"speechError": "حدث خطأ في التعرف على الصوت"
+,"copy": "نسخ"
+,"regenerate": "إعادة إنشاء"
+,"newMessages": "رسائل جديدة"
+,"deleteAllConversations": "حذف جميع المحادثات؟"
+,"undoWarning": "لا يمكن التراجع عن هذا الإجراء."
+,"chatEmptySubtitle": "اسألني أي شيء عن مسارك المهني، الوظائف، المقابلات، أو التطوير الوظيفي."
+,"listeningDone": "تم",
 "otpVerifying": "جاري التحقق…",
 "otpCodeDidNotMatch": "لم يتطابق الرمز. تحقق من الرسالة وحاول مرة أخرى.",
   "login": "تسجيل الدخول",
