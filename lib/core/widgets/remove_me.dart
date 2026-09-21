@@ -27,21 +27,3 @@ class SavedJobsView extends StatelessWidget {
     return const Text('SavedJobsView');
   }
 }
-
-class RoadmapView extends StatelessWidget {
-  const RoadmapView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Text('RoadmapView');
-  }
-}
-
-class ProfileView extends StatelessWidget {
-  const ProfileView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Text('ProfileView');
-  }
-}

@@ -6,6 +6,13 @@ import 'package:MatchIn/core/networking/network_info.dart';
 import 'package:MatchIn/core/services/file_picker_service.dart';
 import 'package:MatchIn/core/services/secure_storage_service.dart';
 import 'package:MatchIn/core/services/shared_preferences_service.dart';
+import 'package:MatchIn/features/jobsAndApplications/data/data_sources/jobs_mock_remote_data_source_impl.dart';
+import 'package:MatchIn/features/jobsAndApplications/data/data_sources/jobs_remote_data_source.dart';
+import 'package:MatchIn/features/jobsAndApplications/data/repositories/jobs_repository_impl.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/repositories/jobs_repository.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/use_case/apply_for_job_use_case.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_jobs_use_case.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/use_case/toggle_save_job_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/cv_cubit.dart';
 import 'package:MatchIn/features/auth/data/data_sources/auth_mock_remote_data_source_impl.dart';
 import 'package:MatchIn/features/auth/data/data_sources/auth_remote_data_source.dart';
@@ -30,6 +37,7 @@ import 'package:MatchIn/features/chatbot/domain/use_cases/get_chat_history_use_c
 import 'package:MatchIn/features/chatbot/domain/use_cases/save_chat_use_case.dart';
 import 'package:MatchIn/features/chatbot/domain/use_cases/send_message_use_case.dart';
 import 'package:MatchIn/features/chatbot/presentation/cubit/chatbot_cubit.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/roadmap_cubit/roadmap_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/skill_task_cubit/skill_task_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/treasure_cubit/treasure_cubit.dart';
@@ -144,6 +152,39 @@ Future<void> setupServiceLocator() async {
       saveChatUseCase: getIt(),
       deleteChatUseCase: getIt(),
       clearAllChatsUseCase: getIt(),
+    ),
+  );
+
+  // =========================================================
+  // Jobs Feature
+  // =========================================================
+
+  getIt.registerLazySingleton<JobsRemoteDataSource>(
+    () => JobsMockRemoteDataSourceImpl(),
+    // () => JobsRemoteDataSourceImpl(apiConsumer: getIt()),
+  );
+
+  getIt.registerLazySingleton<JobsRepository>(
+    () => JobsRepositoryImpl(remoteDataSource: getIt()),
+  );
+
+  getIt.registerLazySingleton<GetJobsUseCase>(
+    () => GetJobsUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<ToggleSaveJobUseCase>(
+    () => ToggleSaveJobUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<ApplyForJobUseCase>(
+    () => ApplyForJobUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<JobsCubit>(
+    () => JobsCubit(
+      getJobsUseCase: getIt(),
+      toggleSaveJobUseCase: getIt(),
+      applyForJobUseCase: getIt(),
     ),
   );
 

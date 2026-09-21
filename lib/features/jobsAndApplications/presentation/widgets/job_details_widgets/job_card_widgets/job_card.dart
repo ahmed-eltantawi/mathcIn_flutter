@@ -97,10 +97,10 @@ class JobCard extends StatelessWidget {
                   ElevatedButton(
                     onPressed: _isApplied
                         ? null
-                        : (onApply ??
-                              () => context.push(
-                                AppRoutes.kapplyForRole,
-                              )),
+                        : () => context.push(
+                            AppRoutes.kapplyForRole,
+                            extra: job,
+                          ),
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(110.w, 42.h),
                       padding: EdgeInsets.symmetric(

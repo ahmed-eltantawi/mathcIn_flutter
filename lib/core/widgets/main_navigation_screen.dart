@@ -1,9 +1,9 @@
 import 'package:MatchIn/features/chatbot/presentation/views/ai_chat_view.dart';
+import 'package:MatchIn/features/profile/presentation/pages/profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:MatchIn/core/extensions/context_extensions.dart';
-import 'package:MatchIn/core/widgets/views/profile_view.dart';
 import 'package:MatchIn/core/widgets/views/saved_jobs_view.dart';
 import 'package:MatchIn/features/home/presentation/views/home_view.dart';
 import 'package:MatchIn/features/roadmap/presentation/views/roadmap_view.dart';
