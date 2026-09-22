@@ -1,6 +1,6 @@
 import 'package:MatchIn/features/auth/presentation/pages/login_view.dart';
+import 'package:MatchIn/features/splash/presentation/widgets/animated_logo_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -17,7 +17,8 @@ class _SplashViewState extends State<SplashView> {
   }
 
   void _startDelay() async {
-    await Future.delayed(const Duration(seconds: 2));
+    // زودنا الوقت ل 4 ثواني عشان الانيميشن ياخد وقته
+    await Future.delayed(const Duration(seconds: 4));
     if (!mounted) return;
     Navigator.pushReplacement(
       context,
@@ -28,14 +29,8 @@ class _SplashViewState extends State<SplashView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: Center(
-        child: Image.asset(
-          'assets/images/app_icon.jpg',
-          width: 150.w,
-          height: 150.h,
-        ),
-      ),
+      backgroundColor: const Color(0xFFFAF8F4),
+      body: const AnimatedLogoWidget(),
     );
   }
 }

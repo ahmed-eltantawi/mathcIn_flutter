@@ -62,7 +62,7 @@ dependencies:
   google_nav_bar: ^5.0.7
 
   #--> Lottie animations
-  lottie: ^3.5.1
+  lottie: ^3.6.1
 
   #--> web view
   flutter_inappwebview: ^6.1.5
@@ -85,6 +85,7 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/lottie/
+    - assets/animations/
 
   #! =============== Fonts ===============
   fonts:
