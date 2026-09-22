@@ -2,7 +2,8 @@ import 'package:MatchIn/core/routing/app_router.dart';
 import 'package:MatchIn/core/services/services_locator.dart';
 import 'package:MatchIn/core/theme/dark_theme.dart';
 import 'package:MatchIn/core/theme/light_theme.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_cubit.dart';
+import 'package:MatchIn/features/home/presentation/cubit/home_cubit.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_cubit.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +21,10 @@ class MatchIn extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(
-          value: getIt<JobsCubit>()..getJobs(),
+          value: getIt<JobsFeedCubit>()..getJobs(),
+        ),
+        BlocProvider.value(
+          value: getIt<HomeCubit>()..getHomeDashboard(),
         ),
         // أي Cubit مشترك تاني هيتضاف هنا مستقبلاً
       ],

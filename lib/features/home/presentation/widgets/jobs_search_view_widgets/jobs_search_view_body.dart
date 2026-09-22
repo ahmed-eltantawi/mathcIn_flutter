@@ -5,8 +5,8 @@ import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:MatchIn/core/widgets/loading/app_loading.dart';
 import 'package:MatchIn/core/widgets/empty/app_empty.dart';
 import 'package:MatchIn/core/widgets/error/app_error.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_cubit.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_state.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_cubit.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_state.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/job_details_widgets/job_card_widgets/job_card.dart';
 import 'package:MatchIn/features/home/presentation/widgets/jobs_search_view_widgets/job_filter_chip.dart';
 import 'package:MatchIn/features/home/presentation/widgets/jobs_search_view_widgets/jobs_search_field.dart';
@@ -29,9 +29,9 @@ class JobsSearchViewBody extends StatelessWidget {
           SizedBox(height: 16.h),
           const _FiltersList(),
           SizedBox(height: 16.h),
-          BlocBuilder<JobsCubit, JobsState>(
+          BlocBuilder<JobsFeedCubit, JobsFeedState>(
             builder: (context, state) {
-              final count = state is JobsLoaded
+              final count = state is JobsFeedLoaded
                   ? state.jobs.length
                   : 0;
               return SearchResultsHeader(
@@ -44,36 +44,39 @@ class JobsSearchViewBody extends StatelessWidget {
             padding: EdgeInsetsDirectional.symmetric(
               horizontal: 16.w,
             ),
-            child: BlocBuilder<JobsCubit, JobsState>(
-              builder: (context, state) {
-                return switch (state) {
-                  JobsInitial() ||
-                  JobsLoading() => const AppLoadingWidget(),
-                  JobsError(:final message) =>
-                    AppErrorWidget(message: message),
-                  JobsEmpty() => const AppEmptyWidget(
-                    message: 'loading',
-                  ),
-                  JobsLoaded(:final jobs) => Column(
-                    children: [
-                      for (final job in jobs) ...[
-                        JobCard(
-                          job: job,
-                          showShareButton: true,
-                          onSave: () => context
-                              .read<JobsCubit>()
-                              .toggleSaveJob(job.id),
-                          onApply: () => context
-                              .read<JobsCubit>()
-                              .applyForJob(job.id),
+            child:
+                BlocBuilder<JobsFeedCubit, JobsFeedState>(
+                  builder: (context, state) {
+                    return switch (state) {
+                      JobsFeedInitial() ||
+                      JobsFeedLoading() =>
+                        const AppLoadingWidget(),
+                      JobsFeedError(:final message) =>
+                        AppErrorWidget(message: message),
+                      JobsFeedEmpty() =>
+                        const AppEmptyWidget(
+                          message: 'loading',
                         ),
-                        SizedBox(height: 12.h),
-                      ],
-                    ],
-                  ),
-                };
-              },
-            ),
+                      JobsFeedLoaded(:final jobs) => Column(
+                        children: [
+                          for (final job in jobs) ...[
+                            JobCard(
+                              job: job,
+                              showShareButton: true,
+                              onSave: () => context
+                                  .read<JobsFeedCubit>()
+                                  .toggleSaveJob(job.id),
+                              onApply: () => context
+                                  .read<JobsFeedCubit>()
+                                  .applyForJob(job.id),
+                            ),
+                            SizedBox(height: 12.h),
+                          ],
+                        ],
+                      ),
+                    };
+                  },
+                ),
           ),
           SizedBox(height: 32.h),
         ],

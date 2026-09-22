@@ -6,6 +6,12 @@ import 'package:MatchIn/core/networking/network_info.dart';
 import 'package:MatchIn/core/services/file_picker_service.dart';
 import 'package:MatchIn/core/services/secure_storage_service.dart';
 import 'package:MatchIn/core/services/shared_preferences_service.dart';
+import 'package:MatchIn/features/home/data/data_sources/home_mock_remote_data_source_impl.dart';
+import 'package:MatchIn/features/home/data/data_sources/home_remote_data_source.dart';
+import 'package:MatchIn/features/home/data/data_sources/repositories/home_repository_impl.dart';
+import 'package:MatchIn/features/home/domain/repositories/home_repository.dart';
+import 'package:MatchIn/features/home/domain/use_cases/get_home_dashboard_use_case.dart';
+import 'package:MatchIn/features/home/presentation/cubit/home_cubit.dart';
 import 'package:MatchIn/features/jobsAndApplications/data/data_sources/jobs_mock_remote_data_source_impl.dart';
 import 'package:MatchIn/features/jobsAndApplications/data/data_sources/jobs_remote_data_source.dart';
 import 'package:MatchIn/features/jobsAndApplications/data/data_sources/repositories/jobs_repository_impl.dart';
@@ -37,7 +43,7 @@ import 'package:MatchIn/features/chatbot/domain/use_cases/get_chat_history_use_c
 import 'package:MatchIn/features/chatbot/domain/use_cases/save_chat_use_case.dart';
 import 'package:MatchIn/features/chatbot/domain/use_cases/send_message_use_case.dart';
 import 'package:MatchIn/features/chatbot/presentation/cubit/chatbot_cubit.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_cubit.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/roadmap_cubit/roadmap_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/skill_task_cubit/skill_task_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/treasure_cubit/treasure_cubit.dart';
@@ -180,12 +186,33 @@ Future<void> setupServiceLocator() async {
     () => ApplyForJobUseCase(repository: getIt()),
   );
 
-  getIt.registerLazySingleton<JobsCubit>(
-    () => JobsCubit(
+  getIt.registerLazySingleton<JobsFeedCubit>(
+    () => JobsFeedCubit(
       getJobsUseCase: getIt(),
       toggleSaveJobUseCase: getIt(),
       applyForJobUseCase: getIt(),
     ),
+  );
+
+  // =========================================================
+  // Home Feature
+  // =========================================================
+
+  getIt.registerLazySingleton<HomeRemoteDataSource>(
+    () => HomeMockRemoteDataSourceImpl(),
+    // () => HomeRemoteDataSourceImpl(apiConsumer: getIt()),
+  );
+
+  getIt.registerLazySingleton<HomeRepository>(
+    () => HomeRepositoryImpl(remoteDataSource: getIt()),
+  );
+
+  getIt.registerLazySingleton<GetHomeDashboardUseCase>(
+    () => GetHomeDashboardUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<HomeCubit>(
+    () => HomeCubit(getHomeDashboardUseCase: getIt()),
   );
 
   // =========================================================

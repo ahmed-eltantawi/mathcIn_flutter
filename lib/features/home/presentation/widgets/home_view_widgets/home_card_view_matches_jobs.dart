@@ -31,7 +31,7 @@ class HomeCardViewMatchesJobs extends StatelessWidget {
             // Top midnightBlue line
             Container(
               height: 4.h,
-              width: 350.w,
+              width: double.infinity,
               decoration: BoxDecoration(
                 color: context.colors.primary,
                 borderRadius: BorderRadiusDirectional.only(

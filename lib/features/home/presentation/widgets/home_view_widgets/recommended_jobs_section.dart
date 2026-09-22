@@ -6,8 +6,8 @@ import 'package:MatchIn/core/routing/app_routes.dart';
 import 'package:MatchIn/core/widgets/loading/app_loading.dart';
 import 'package:MatchIn/core/widgets/empty/app_empty.dart';
 import 'package:MatchIn/core/widgets/error/app_error.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_cubit.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_state.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_cubit.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_state.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/job_details_widgets/job_card_widgets/job_card.dart';
 import 'package:go_router/go_router.dart';
 
@@ -37,29 +37,26 @@ class RecommendedJobsSection extends StatelessWidget {
             ],
           ),
           SizedBox(height: 12.h),
-          BlocBuilder<JobsCubit, JobsState>(
+          BlocBuilder<JobsFeedCubit, JobsFeedState>(
             builder: (context, state) {
               return switch (state) {
-                JobsInitial() ||
-                JobsLoading() => const AppLoadingWidget(),
-                JobsError(:final message) => AppErrorWidget(
-                  message: message,
-                ),
-                JobsEmpty() => const AppEmptyWidget(
+                JobsFeedInitial() || JobsFeedLoading() =>
+                  const AppLoadingWidget(),
+                JobsFeedError(:final message) =>
+                  AppErrorWidget(message: message),
+                JobsFeedEmpty() => const AppEmptyWidget(
                   message: '',
                 ),
-                JobsLoaded(:final jobs) => Column(
+                JobsFeedLoaded(:final jobs) => Column(
                   children: [
                     for (final job in jobs) ...[
                       JobCard(
                         job: job,
                         showShareButton: true,
                         onSave: () => context
-                            .read<JobsCubit>()
+                            .read<JobsFeedCubit>()
                             .toggleSaveJob(job.id),
-                        onApply: () => context
-                            .read<JobsCubit>()
-                            .applyForJob(job.id),
+                        // onApply اتشالت — الزرار بيعمل navigation بس دلوقتي
                       ),
                       SizedBox(height: 12.h),
                     ],

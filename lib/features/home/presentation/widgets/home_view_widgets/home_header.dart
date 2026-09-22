@@ -9,70 +9,60 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeHeader extends StatelessWidget {
-  const HomeHeader({super.key});
+  const HomeHeader({super.key, required this.userName});
+
+  final String userName;
 
   @override
   Widget build(BuildContext context) {
     final s = S.of(context);
 
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             children: [
-              Row(
-                children: [
-                  showImage(image: Assets.imagesTextLogo),
-
-                  const Spacer(),
-
-                  InkWell(
-                    onTap: () {
-                      context.push(AppRoutes.knotifications);
-                    },
-                    borderRadius: BorderRadius.circular(20.r),
-                    child: Padding(
-                      padding: EdgeInsets.all(6.r),
-                      child: SvgPicture.asset(
-                        Assets.iconsNotificationBellNewIcon,
-                      ),
-                    ),
+              showImage(image: Assets.imagesTextLogo),
+              const Spacer(),
+              InkWell(
+                onTap: () =>
+                    context.push(AppRoutes.knotifications),
+                borderRadius: BorderRadius.circular(20.r),
+                child: Padding(
+                  padding: EdgeInsets.all(6.r),
+                  child: SvgPicture.asset(
+                    Assets.iconsNotificationBellNewIcon,
                   ),
-
-                  SizedBox(width: 8.w),
-
-                  InkWell(
-                    onTap: () {
-                      context.push(AppRoutes.ksettings);
-                    },
-                    borderRadius: BorderRadius.circular(20.r),
-                    child: Padding(
-                      padding: EdgeInsets.all(6.r),
-                      child: SvgPicture.asset(Assets.iconsSettingsIcon),
-                    ),
+                ),
+              ),
+              SizedBox(width: 8.w),
+              InkWell(
+                onTap: () =>
+                    context.push(AppRoutes.ksettings),
+                borderRadius: BorderRadius.circular(20.r),
+                child: Padding(
+                  padding: EdgeInsets.all(6.r),
+                  child: SvgPicture.asset(
+                    Assets.iconsSettingsIcon,
                   ),
-                ],
-              ),
-
-              SizedBox(height: 24.h),
-
-              Text(
-                s.greetingUser('Name'),
-                style: context.textTheme.headlineLarge,
-              ),
-
-              SizedBox(height: 4.h),
-
-              Text(
-                s.readyToFindYourNextOpportunity,
-                style: context.textTheme.titleSmall,
+                ),
               ),
             ],
           ),
-        ),
-      ],
+          SizedBox(height: 24.h),
+          Text(
+            s.greetingUser(userName),
+            style: context.textTheme.headlineLarge,
+          ),
+          SizedBox(height: 4.h),
+          Text(
+            s.readyToFindYourNextOpportunity,
+            style: context.textTheme.titleSmall,
+          ),
+        ],
+      ),
     );
   }
 }
