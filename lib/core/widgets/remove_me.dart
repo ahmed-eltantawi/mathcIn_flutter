@@ -10,15 +10,6 @@ class HomeView extends StatelessWidget {
   }
 }
 
-class AiChatView extends StatelessWidget {
-  const AiChatView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Text('AiChatView');
-  }
-}
-
 class SavedJobsView extends StatelessWidget {
   const SavedJobsView({super.key});
 
