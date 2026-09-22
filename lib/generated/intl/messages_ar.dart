@@ -275,6 +275,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "micPermissionDenied": MessageLookupByLibrary.simpleMessage(
       "تم رفض إذن الميكروفون",
     ),
+    "micPermissionPermanentlyDenied": MessageLookupByLibrary.simpleMessage(
+      "إذن الميكروفون متوقف. فعّله من إعدادات التطبيق لاستخدام الإدخال الصوتي.",
+    ),
     "mostRelevant": MessageLookupByLibrary.simpleMessage("الأكثر ملاءمة"),
     "myCareerRoadmap": MessageLookupByLibrary.simpleMessage(
       "خارطة طريقي المهنية",

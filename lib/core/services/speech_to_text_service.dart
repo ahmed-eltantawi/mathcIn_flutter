@@ -1,3 +1,4 @@
+import 'package:permission_handler/permission_handler.dart';
 import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
@@ -7,19 +8,40 @@ enum SpeechState {
   processing,
   recognized,
   permissionDenied,
+  permissionPermanentlyDenied,
   unavailable,
   error,
 }
 
+enum MicrophonePermissionState { granted, denied, permanentlyDenied }
+
 class SpeechToTextService {
   SpeechToTextService({SpeechToText? speechToText})
-      : _speechToText = speechToText ?? SpeechToText();
+    : _speechToText = speechToText ?? SpeechToText();
 
   final SpeechToText _speechToText;
   bool _isInitialized = false;
 
   bool get isListening => _speechToText.isListening;
   bool get isAvailable => _speechToText.isAvailable;
+
+  Future<MicrophonePermissionState> requestMicrophonePermission() async {
+    final status = await Permission.microphone.status;
+    if (status.isGranted) return MicrophonePermissionState.granted;
+    if (status.isPermanentlyDenied) {
+      return MicrophonePermissionState.permanentlyDenied;
+    }
+
+    final requestedStatus = await Permission.microphone.request();
+    if (requestedStatus.isGranted) return MicrophonePermissionState.granted;
+    if (requestedStatus.isPermanentlyDenied) {
+      return MicrophonePermissionState.permanentlyDenied;
+    }
+
+    return MicrophonePermissionState.denied;
+  }
+
+  Future<bool> openMicrophoneSettings() => openAppSettings();
 
   Future<bool> initialize({
     Function(String status)? onStatus,
@@ -44,16 +66,21 @@ class SpeechToTextService {
     Function(String errorMsg)? onError,
     String localeId = 'en_US',
   }) async {
+    final permissionState = await requestMicrophonePermission();
+    if (permissionState != MicrophonePermissionState.granted) {
+      final speechState =
+          permissionState == MicrophonePermissionState.permanentlyDenied
+          ? SpeechState.permissionPermanentlyDenied
+          : SpeechState.permissionDenied;
+      onStateChanged(speechState);
+      onError?.call('Microphone permission denied');
+      return;
+    }
+
     final available = await initialize();
     if (!available) {
-      final hasMicPermission = await _speechToText.hasPermission;
-      if (!hasMicPermission) {
-        onStateChanged(SpeechState.permissionDenied);
-        onError?.call('Microphone permission denied');
-      } else {
-        onStateChanged(SpeechState.unavailable);
-        onError?.call('Speech recognition unavailable');
-      }
+      onStateChanged(SpeechState.unavailable);
+      onError?.call('Speech recognition unavailable');
       return;
     }
 
@@ -70,6 +97,7 @@ class SpeechToTextService {
           }
         },
         listenOptions: SpeechListenOptions(
+          localeId: localeId,
           listenMode: ListenMode.dictation,
           cancelOnError: true,
           partialResults: true,

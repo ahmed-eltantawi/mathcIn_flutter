@@ -1,26 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:MatchIn/core/services/services_locator.dart';
-import 'package:MatchIn/generated/l10n.dart';
 
-import '../cubit/chatbot_cubit.dart';
-import '../cubit/chatbot_state.dart';
+import 'package:MatchIn/core/services/services_locator.dart';
 import 'package:MatchIn/features/chatbot/domain/entities/chat_message_entity.dart';
-import '../widgets/chat_composer.dart';
-import '../widgets/chat_history_drawer.dart';
-import '../widgets/chat_message_bubble.dart';
-import '../widgets/scroll_to_bottom_button.dart';
-import '../widgets/suggested_questions_grid.dart';
-import '../widgets/typing_indicator.dart';
+import 'package:MatchIn/generated/l10n.dart';
+import 'package:MatchIn/features/chatbot/presentation/cubit/chatbot_cubit.dart';
+import 'package:MatchIn/features/chatbot/presentation/cubit/chatbot_state.dart';
+import 'package:MatchIn/features/chatbot/presentation/cubit/chatbot_voice_cubit.dart';
+import 'package:MatchIn/features/chatbot/presentation/widgets/chat_composer.dart';
+import 'package:MatchIn/features/chatbot/presentation/widgets/chat_history_drawer.dart';
+import 'package:MatchIn/features/chatbot/presentation/widgets/chat_message_bubble.dart';
+import 'package:MatchIn/features/chatbot/presentation/widgets/scroll_to_bottom_button.dart';
+import 'package:MatchIn/features/chatbot/presentation/widgets/suggested_questions_grid.dart';
+import 'package:MatchIn/features/chatbot/presentation/widgets/typing_indicator.dart';
 
 class AiChatView extends StatelessWidget {
   const AiChatView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ChatbotCubit>(
-      create: (context) => getIt<ChatbotCubit>()..initializeChat(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ChatbotCubit>(
+          create: (context) => getIt<ChatbotCubit>()..initializeChat(),
+        ),
+        BlocProvider<ChatbotVoiceCubit>(
+          create: (context) => getIt<ChatbotVoiceCubit>(),
+        ),
+      ],
       child: const _AiChatViewBody(),
     );
   }

@@ -71,6 +71,7 @@ dependencies:
   otp_animated_fields: ^0.1.1
 
   #--> Speech to text
+  permission_handler: ^12.0.1
   speech_to_text: ^7.3.0
 
   #--> Markdown rendering

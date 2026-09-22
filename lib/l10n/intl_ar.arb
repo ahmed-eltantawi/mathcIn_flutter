@@ -286,6 +286,7 @@
 ,"listening": "جارٍ الاستماع..."
 ,"speechUnavailable": "خدمة التعرف على الصوت غير متاحة"
 ,"micPermissionDenied": "تم رفض إذن الميكروفون"
+,"micPermissionPermanentlyDenied": "إذن الميكروفون متوقف. فعّله من إعدادات التطبيق لاستخدام الإدخال الصوتي."
 ,"speechError": "حدث خطأ في التعرف على الصوت"
 ,"copy": "نسخ"
 ,"regenerate": "إعادة إنشاء"

@@ -277,6 +277,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "micPermissionDenied": MessageLookupByLibrary.simpleMessage(
       "Microphone permission denied",
     ),
+    "micPermissionPermanentlyDenied": MessageLookupByLibrary.simpleMessage(
+      "Microphone permission is turned off. Enable it from app settings to use voice input.",
+    ),
     "mostRelevant": MessageLookupByLibrary.simpleMessage("Most relevant"),
     "myCareerRoadmap": MessageLookupByLibrary.simpleMessage(
       "My Career Roadmap",

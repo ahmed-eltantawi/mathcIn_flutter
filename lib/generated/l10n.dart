@@ -2344,6 +2344,16 @@ class S {
     );
   }
 
+  /// `Microphone permission is turned off. Enable it from app settings to use voice input.`
+  String get micPermissionPermanentlyDenied {
+    return Intl.message(
+      'Microphone permission is turned off. Enable it from app settings to use voice input.',
+      name: 'micPermissionPermanentlyDenied',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Speech recognition error`
   String get speechError {
     return Intl.message(

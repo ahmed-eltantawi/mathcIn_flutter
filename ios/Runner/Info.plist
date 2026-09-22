@@ -26,6 +26,10 @@
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>MatchIn needs microphone access so you can dictate chatbot messages.</string>
+		<key>NSSpeechRecognitionUsageDescription</key>
+		<string>MatchIn needs speech recognition access to convert your voice into chatbot text.</string>
 		<key>UIApplicationSceneManifest</key>
 		<dict>
 			<key>UIApplicationSupportsMultipleScenes</key>

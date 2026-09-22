@@ -285,6 +285,7 @@
   "listening": "Listening...",
   "speechUnavailable": "Speech recognition unavailable",
   "micPermissionDenied": "Microphone permission denied",
+  "micPermissionPermanentlyDenied": "Microphone permission is turned off. Enable it from app settings to use voice input.",
   "speechError": "Speech recognition error",
   "copy": "Copy",
   "regenerate": "Regenerate",
