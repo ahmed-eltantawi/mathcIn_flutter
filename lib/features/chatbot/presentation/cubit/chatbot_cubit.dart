@@ -235,17 +235,30 @@ class ChatbotCubit extends Cubit<ChatbotState> {
     );
   }
 
-  Future<void> deleteChat(String chatId) async {
-    await deleteChatUseCase(chatId);
-    if (state.activeChatId == chatId) {
-      initializeChat();
-    } else {
-      await loadHistory();
-    }
+  Future<bool> deleteChat(String chatId) async {
+    final result = await deleteChatUseCase(chatId);
+    return result.fold(
+      (failure) => false,
+      (_) async {
+        if (state.activeChatId == chatId) {
+          initializeChat();
+        } else {
+          await loadHistory();
+        }
+        return true;
+      },
+    );
   }
 
-  Future<void> clearAllChats() async {
-    await clearAllChatsUseCase();
-    initializeChat();
+  Future<bool> clearAllChats() async {
+    final result = await clearAllChatsUseCase();
+    return result.fold(
+      (failure) => false,
+      (_) async {
+        initializeChat();
+        return true;
+      },
+    );
   }
 }
+

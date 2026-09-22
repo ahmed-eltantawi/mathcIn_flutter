@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'package:MatchIn/core/widgets/delete_confirmation_dialog.dart';
 import '../../../../generated/l10n.dart';
 import '../../domain/entities/chat_entity.dart';
 import '../cubit/chatbot_cubit.dart';
@@ -46,59 +47,26 @@ class ChatHistoryDrawer extends StatelessWidget {
 
   void _showDeleteConfirmDialog(BuildContext context, ChatEntity chat) {
     final s = S.of(context);
-    showDialog(
+    final chatbotCubit = context.read<ChatbotCubit>();
+    showDeleteConfirmationDialog(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(s.deleteChat),
-        content: Text(s.confirmDeleteChat),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: Text(s.cancel),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              elevation: 0,
-            ),
-            onPressed: () {
-              Navigator.pop(ctx);
-              context.read<ChatbotCubit>().deleteChat(chat.id);
-            },
-            child: Text(s.delete, style: const TextStyle(color: Colors.white)),
-          ),
-        ],
-      ),
+      title: s.deleteChat,
+      message: s.confirmDeleteChat,
+      onConfirm: () async => await chatbotCubit.deleteChat(chat.id),
     );
   }
 
   void _showClearAllConfirmDialog(BuildContext context) {
     final s = S.of(context);
-    showDialog(
+    final chatbotCubit = context.read<ChatbotCubit>();
+    showDeleteConfirmationDialog(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(s.deleteAllConversations),
-        content: Text(s.undoWarning),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: Text(s.cancel),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              elevation: 0,
-            ),
-            onPressed: () {
-              Navigator.pop(ctx);
-              context.read<ChatbotCubit>().clearAllChats();
-            },
-            child: Text(s.delete, style: const TextStyle(color: Colors.white)),
-          ),
-        ],
-      ),
+      title: s.deleteAllConversations,
+      message: s.undoWarning,
+      onConfirm: () async => await chatbotCubit.clearAllChats(),
     );
   }
+
 
   @override
   Widget build(BuildContext context) {

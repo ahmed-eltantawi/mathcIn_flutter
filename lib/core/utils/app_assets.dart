@@ -145,4 +145,9 @@ class Assets {
       "assets/images/onb1_hero.png";
   static const String onb2Hero =
       "assets/images/onb2_hero.png";
+
+  /// Assets for Rive delete animation
+  static const String deleteRiv =
+      "assets/riv/delete.riv";
 }
+
