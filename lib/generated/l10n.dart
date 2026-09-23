@@ -1365,9 +1365,9 @@ class S {
     );
   }
 
-  /// `CV / Résumé`
+  /// `CV / Resume`
   String get cvResume {
-    return Intl.message('CV / Résumé', name: 'cvResume', desc: '', args: []);
+    return Intl.message('CV / Resume', name: 'cvResume', desc: '', args: []);
   }
 
   /// `Updated 5 days ago`

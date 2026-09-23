@@ -3,6 +3,7 @@ import 'package:MatchIn/core/services/services_locator.dart';
 import 'package:MatchIn/core/services/shared_preferences_service.dart';
 import 'package:MatchIn/core/widgets/app_web_view.dart';
 import 'package:MatchIn/core/widgets/main_navigation_screen.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_entity.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/views/application_questions_view.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/views/application_submitted_view.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/views/apply_for_role_view.dart';
@@ -143,9 +144,10 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kJobDetailsView,
         pageBuilder: (context, state) {
+          final job = state.extra as JobEntity;
           return _buildTransitionPage(
             state: state,
-            child: const JobDetailsView(),
+            child: JobDetailsView(job: job),
           );
         },
       ),
@@ -263,9 +265,10 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kapplyForRole,
         pageBuilder: (context, state) {
+          final job = state.extra as JobEntity;
           return _buildTransitionPage(
             state: state,
-            child: const ApplyForRoleView(),
+            child: ApplyForRoleView(job: job),
           );
         },
       ),
@@ -274,9 +277,10 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kapplicationQuestions,
         pageBuilder: (context, state) {
+          final job = state.extra as JobEntity;
           return _buildTransitionPage(
             state: state,
-            child: const ApplicationQuestionsView(),
+            child: ApplicationQuestionsView(job: job),
           );
         },
       ),
@@ -285,9 +289,10 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kreviewApplication,
         pageBuilder: (context, state) {
+          final job = state.extra as JobEntity;
           return _buildTransitionPage(
             state: state,
-            child: const ReviewApplicationView(),
+            child: ReviewApplicationView(job: job),
           );
         },
       ),
@@ -296,9 +301,10 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kapplicationSubmitted,
         pageBuilder: (context, state) {
+          final job = state.extra as JobEntity;
           return _buildTransitionPage(
             state: state,
-            child: const ApplicationSubmittedView(),
+            child: ApplicationSubmittedView(job: job),
           );
         },
       ),
@@ -307,9 +313,10 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.ktrackingApplication,
         pageBuilder: (context, state) {
+          final job = state.extra as JobEntity;
           return _buildTransitionPage(
             state: state,
-            child: const TrackingApplicationView(),
+            child: TrackingApplicationView(job: job),
           );
         },
       ),

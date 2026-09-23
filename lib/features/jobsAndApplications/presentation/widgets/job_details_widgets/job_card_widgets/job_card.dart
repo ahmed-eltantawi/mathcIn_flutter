@@ -42,7 +42,10 @@ class JobCard extends StatelessWidget {
       child: InkWell(
         onTap:
             onTap ??
-            () => context.push(AppRoutes.kJobDetailsView),
+            () => context.push(
+              AppRoutes.kJobDetailsView,
+              extra: job,
+            ),
         child: Padding(
           padding: EdgeInsets.all(16.r),
           child: Column(
@@ -77,7 +80,6 @@ class JobCard extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 10.h),
-              // TODO: نستبدل job.postedDate.toString() بدالة تنسيق تاريخ نسبي
               JobCardPostedDate(
                 postedDate: job.postedDate.timeAgo(context),
               ),

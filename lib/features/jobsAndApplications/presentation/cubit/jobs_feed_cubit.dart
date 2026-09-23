@@ -1,3 +1,4 @@
+import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_entity.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/apply_for_job_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_jobs_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/toggle_save_job_use_case.dart';
@@ -70,5 +71,21 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
         emit(JobsFeedLoaded(updatedJobs));
       },
     );
+  }
+
+  JobEntity? getJobById(String jobId) {
+    final currentState = state;
+
+    if (currentState is! JobsFeedLoaded) {
+      return null;
+    }
+
+    for (final job in currentState.jobs) {
+      if (job.id == jobId) {
+        return job;
+      }
+    }
+
+    return null;
   }
 }

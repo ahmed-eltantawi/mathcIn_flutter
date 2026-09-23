@@ -201,7 +201,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "cvAnalysisDescription": MessageLookupByLibrary.simpleMessage(
       "We extracted 12 skills and updated your career profile.",
     ),
-    "cvResume": MessageLookupByLibrary.simpleMessage("CV / Résumé"),
+    "cvResume": MessageLookupByLibrary.simpleMessage("CV / Resume"),
     "cvSkillsDescription": MessageLookupByLibrary.simpleMessage(
       "Extracted automatically from your uploaded resume.",
     ),

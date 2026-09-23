@@ -12,8 +12,7 @@ class SavedJobsView extends StatelessWidget {
       body: AppEmptyWidget(
         icon: Icons.bookmark_border_rounded,
         title: context.l10n.savedJobs,
-        message:
-            'No saved jobs yet. Bookmarked opportunities will appear here.',
+        message: 'No saved jobs yet. Bookmarked opportunities will appear here.',
       ),
     );
   }

@@ -1,24 +1,26 @@
+import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:MatchIn/core/routing/app_routes.dart';
-import 'package:MatchIn/core/utils/app_colors.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/submitted_status_card.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_entity.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/application_submitted_view_widgets/submitted_status_card.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class ApplicationSubmittedViewBody extends StatelessWidget {
-  const ApplicationSubmittedViewBody({super.key});
+  const ApplicationSubmittedViewBody({
+    super.key,
+    required this.job,
+  });
 
+  final JobEntity job;
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final s = S.of(context);
 
     return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: 24.w,
-        vertical: 20.h,
-      ),
+      padding: EdgeInsets.all(16.r),
       child: Column(
         children: [
           Align(
@@ -55,20 +57,18 @@ class ApplicationSubmittedViewBody extends StatelessWidget {
             height: 96.r,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: AppColors.forestGreen.withValues(
-                alpha: 0.12,
-              ),
+              color: context.semanticColors.success
+                  .withValues(alpha: 0.25),
               shape: BoxShape.circle,
               border: Border.all(
-                color: AppColors.forestGreen.withValues(
-                  alpha: 0.25,
-                ),
+                color: context.semanticColors.success
+                    .withValues(alpha: 0.25),
               ),
             ),
             child: Icon(
               Icons.check_rounded,
               size: 52.sp,
-              color: AppColors.forestGreen,
+              color: context.semanticColors.success,
             ),
           ),
 
@@ -95,14 +95,14 @@ class ApplicationSubmittedViewBody extends StatelessWidget {
               children: [
                 TextSpan(text: '${s.yourApplicationFor} '),
                 TextSpan(
-                  text: s.juniorFlutterDeveloper,
+                  text: job.title,
                   style: TextStyle(
                     color: theme.colorScheme.primary,
                   ),
                 ),
                 TextSpan(text: ' ${s.at} '),
                 TextSpan(
-                  text: 'TechNova',
+                  text: job.companyName,
                   style: TextStyle(
                     color: theme.colorScheme.primary,
                   ),
@@ -127,6 +127,7 @@ class ApplicationSubmittedViewBody extends StatelessWidget {
               onPressed: () {
                 context.push(
                   AppRoutes.ktrackingApplication,
+                  extra: job,
                 );
               },
               child: Row(
@@ -153,8 +154,6 @@ class ApplicationSubmittedViewBody extends StatelessWidget {
               ),
             ),
           ),
-
-          SizedBox(height: 8.h),
         ],
       ),
     );

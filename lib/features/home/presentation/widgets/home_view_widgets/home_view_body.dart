@@ -49,8 +49,9 @@ class HomeViewBody extends StatelessWidget {
 
         BlocBuilder<HomeCubit, HomeState>(
           builder: (context, state) {
-            if (state is! HomeLoaded)
+            if (state is! HomeLoaded) {
               return const SizedBox.shrink();
+            }
             return HomeCardViewMatchesJobs(
               matchesCount: state.dashboard.matchesCount,
             );

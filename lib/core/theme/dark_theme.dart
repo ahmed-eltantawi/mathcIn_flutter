@@ -1,9 +1,12 @@
+import 'package:MatchIn/core/theme/app_semantic_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:MatchIn/core/utils/app_colors.dart';
 import 'package:MatchIn/core/utils/app_text_styles.dart';
 
 ThemeData getDarkTheme({bool isArabic = false}) {
-  final textTheme = AppTextStyles.textTheme(isArabic: isArabic);
+  final textTheme = AppTextStyles.textTheme(
+    isArabic: isArabic,
+  );
 
   const colorScheme = ColorScheme.dark(
     primary: AppColors.midnightBlue,
@@ -34,6 +37,10 @@ ThemeData getDarkTheme({bool isArabic = false}) {
     scaffoldBackgroundColor: AppColors.darkBackground,
     textTheme: themedTextTheme,
 
+    extensions: const [
+      AppSemanticColors(success: AppColors.forestGreen),
+    ],
+
     appBarTheme: const AppBarTheme(
       backgroundColor: AppColors.darkBackground,
       foregroundColor: AppColors.darkTextPrimary,
@@ -57,19 +64,28 @@ ThemeData getDarkTheme({bool isArabic = false}) {
       thickness: 1,
     ),
 
-    iconTheme: const IconThemeData(color: AppColors.darkTextSecondary),
+    iconTheme: const IconThemeData(
+      color: AppColors.darkTextSecondary,
+    ),
 
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: AppColors.darkSurface,
-      hintStyle: const TextStyle(color: AppColors.darkTextSecondary),
+      hintStyle: const TextStyle(
+        color: AppColors.darkTextSecondary,
+      ),
       border: _darkInputBorder,
       enabledBorder: _darkInputBorder,
       focusedBorder: _darkInputBorder.copyWith(
-        borderSide: const BorderSide(color: AppColors.terracotta, width: 1.5),
+        borderSide: const BorderSide(
+          color: AppColors.terracotta,
+          width: 1.5,
+        ),
       ),
       errorBorder: _darkInputBorder.copyWith(
-        borderSide: const BorderSide(color: AppColors.mutedRed),
+        borderSide: const BorderSide(
+          color: AppColors.mutedRed,
+        ),
       ),
     ),
 
@@ -79,17 +95,22 @@ ThemeData getDarkTheme({bool isArabic = false}) {
         foregroundColor: AppColors.white,
         elevation: 0,
         minimumSize: const Size(double.infinity, 56),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
       ),
     ),
 
     textButtonTheme: TextButtonThemeData(
-      style: TextButton.styleFrom(foregroundColor: AppColors.terracotta),
+      style: TextButton.styleFrom(
+        foregroundColor: AppColors.terracotta,
+      ),
     ),
 
-    progressIndicatorTheme: const ProgressIndicatorThemeData(
-      color: AppColors.goldenMustard,
-    ),
+    progressIndicatorTheme:
+        const ProgressIndicatorThemeData(
+          color: AppColors.goldenMustard,
+        ),
   );
 }
 

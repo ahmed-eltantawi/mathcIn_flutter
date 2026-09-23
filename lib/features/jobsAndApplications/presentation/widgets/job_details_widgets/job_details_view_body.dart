@@ -1,51 +1,69 @@
+import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_entity.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_cubit.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_state.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/job_details_widgets/application_summary_card.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/job_details_widgets/improve_match_card.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/job_details_widgets/job_card_widgets/job_card.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/job_details_widgets/job_details_header.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/job_details_widgets/job_details_overview_card.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/job_details_widgets/job_match_card.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/job_details_widgets/job_requirements_card.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/job_details_widgets/matched_skills_card.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/job_details_widgets/skills_to_improve_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 
 class JobDetailsViewBody extends StatelessWidget {
-  const JobDetailsViewBody({super.key});
+  const JobDetailsViewBody({super.key, required this.job});
+  final JobEntity job;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const JobDetailsHeader(),
-        const Divider(height: 1),
-        Expanded(
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: EdgeInsets.symmetric(
-              horizontal: 16.w,
-              vertical: 16.h,
+    return BlocBuilder<JobsFeedCubit, JobsFeedState>(
+      builder: (context, state) {
+        final currentJob =
+            context.read<JobsFeedCubit>().getJobById(
+              job.id,
+            ) ??
+            job;
+        final isApplied =
+            currentJob.applicationStatus !=
+            JobApplicationStatus.pending;
+
+        return Column(
+          children: [
+            const JobDetailsHeader(),
+            const Divider(height: 1),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.all(16.r),
+                child: ListView(
+                  children: [
+                    JobCard(job: job),
+                    Gap(14.h),
+                    const JobMatchCard(),
+                    Gap(14.h),
+                    const MatchedSkillsCard(),
+                    Gap(14.h),
+                    const SkillsToImproveCard(),
+                    Gap(14.h),
+                    const JobRequirementsCard(),
+                    Gap(14.h),
+                    const ImproveMatchCard(),
+
+                    if (isApplied) ...[
+                      Gap(14.h),
+                      const ApplicationSummaryCard(),
+                    ],
+                    Gap(14.h),
+                  ],
+                ),
+              ),
             ),
-            child: Column(
-              children: [
-                const JobDetailsOverviewCard(),
-                SizedBox(height: 14.h),
-                const JobMatchCard(),
-                SizedBox(height: 14.h),
-                const MatchedSkillsCard(),
-                SizedBox(height: 14.h),
-                const SkillsToImproveCard(),
-                SizedBox(height: 14.h),
-                const JobRequirementsCard(),
-                SizedBox(height: 14.h),
-                const ImproveMatchCard(),
-                SizedBox(height: 14.h),
-                const ApplicationSummaryCard(),
-                SizedBox(height: 24.h),
-              ],
-            ),
-          ),
-        ),
-      ],
+          ],
+        );
+      },
     );
   }
 }

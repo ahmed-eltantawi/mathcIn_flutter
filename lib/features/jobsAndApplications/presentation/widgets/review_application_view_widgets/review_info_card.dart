@@ -1,19 +1,22 @@
+import 'package:MatchIn/core/routing/app_routes.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class ReviewInfoCard extends StatelessWidget {
   const ReviewInfoCard({
     super.key,
     required this.title,
     required this.child,
+    required this.job,
     this.actionLabel,
-    this.onAction,
   });
 
   final String title;
   final Widget child;
+  final JobEntity job;
   final String? actionLabel;
-  final VoidCallback? onAction;
 
   @override
   Widget build(BuildContext context) {
@@ -31,15 +34,21 @@ class ReviewInfoCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     title,
-                    style: theme.textTheme.titleLarge?.copyWith(
-                      color: theme.colorScheme.primary,
-                      fontWeight: FontWeight.w700,
-                    ),
+                    style: theme.textTheme.titleLarge
+                        ?.copyWith(
+                          color: theme.colorScheme.primary,
+                          fontWeight: FontWeight.w700,
+                        ),
                   ),
                 ),
                 if (actionLabel != null)
                   TextButton(
-                    onPressed: onAction ?? () {},
+                    onPressed: () {
+                      context.replace(
+                        AppRoutes.kapplyForRole,
+                        extra: job,
+                      );
+                    },
                     child: Text(actionLabel!),
                   ),
               ],

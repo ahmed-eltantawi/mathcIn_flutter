@@ -1,18 +1,23 @@
 import 'package:MatchIn/core/routing/app_routes.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/application_details_card.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_entity.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/tracking_application_view_widgets/application_details_card.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/application_notes_card.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/application_timeline_card.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/career_help_card.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/current_status_card.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/tracking_header.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/tracking_job_card.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/tracking_application_view_widgets/tracking_job_card.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class TrackingApplicationViewBody extends StatelessWidget {
-  const TrackingApplicationViewBody({super.key});
+  const TrackingApplicationViewBody({
+    super.key,
+    required this.job,
+  });
+  final JobEntity job;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +42,7 @@ class TrackingApplicationViewBody extends StatelessWidget {
                   onViewJob: () {
                     context.push(AppRoutes.kJobDetailsView);
                   },
+                  job: job,
                 ),
 
                 SizedBox(height: 16.h),

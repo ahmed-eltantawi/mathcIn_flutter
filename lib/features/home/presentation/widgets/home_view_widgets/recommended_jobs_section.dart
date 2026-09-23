@@ -56,7 +56,6 @@ class RecommendedJobsSection extends StatelessWidget {
                         onSave: () => context
                             .read<JobsFeedCubit>()
                             .toggleSaveJob(job.id),
-                        // onApply اتشالت — الزرار بيعمل navigation بس دلوقتي
                       ),
                       SizedBox(height: 12.h),
                     ],
