@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import '../../../../generated/l10n.dart';
 import '../../domain/entities/chat_message_entity.dart';
 
 class ChatMessageBubble extends StatelessWidget {
-  const ChatMessageBubble({super.key, required this.message});
+  const ChatMessageBubble({
+    super.key,
+    required this.message,
+  });
 
   final ChatMessageEntity message;
 
@@ -24,9 +26,8 @@ class ChatMessageBubble extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Row(
-        mainAxisAlignment: _isUser
-            ? MainAxisAlignment.end
-            : MainAxisAlignment.start,
+        mainAxisAlignment:
+            _isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!_isUser) ...[
@@ -72,9 +73,7 @@ class ChatMessageBubble extends StatelessWidget {
                     style: TextStyle(
                       color: message.isError
                           ? Colors.red
-                          : (_isUser
-                                ? Colors.white
-                                : theme.textTheme.bodyLarge?.color),
+                          : (_isUser ? Colors.white : theme.textTheme.bodyLarge?.color),
                       fontSize: 15,
                       height: 1.4,
                     ),
@@ -86,9 +85,7 @@ class ChatMessageBubble extends StatelessWidget {
                       children: [
                         InkWell(
                           onTap: () {
-                            Clipboard.setData(
-                              ClipboardData(text: message.content),
-                            );
+                            Clipboard.setData(ClipboardData(text: message.content));
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(S.of(context).copiedToClipboard),

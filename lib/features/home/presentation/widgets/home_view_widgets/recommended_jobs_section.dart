@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:MatchIn/core/routing/app_routes.dart';
 import 'package:MatchIn/core/widgets/loading/app_loading.dart';
-import 'package:MatchIn/core/widgets/empty/app_empty.dart';
+import 'package:MatchIn/core/widgets/app_empty.dart';
 import 'package:MatchIn/core/widgets/error/app_error.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_cubit.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_state.dart';

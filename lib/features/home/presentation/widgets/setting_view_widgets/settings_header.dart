@@ -10,7 +10,10 @@ class SettingsHeader extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+      padding: EdgeInsets.symmetric(
+        horizontal: 16.w,
+        vertical: 12.h,
+      ),
       child: Row(
         children: [
           IconButton(
@@ -23,15 +26,16 @@ class SettingsHeader extends StatelessWidget {
           Expanded(
             child: Text(
               S.of(context).settings,
-              style: theme.textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
+              style: theme.textTheme.headlineSmall
+                  ?.copyWith(fontWeight: FontWeight.w700),
             ),
           ),
 
           Icon(
             Icons.tune_rounded,
-            color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+            color: theme.colorScheme.onSurface.withValues(
+              alpha: 0.6,
+            ),
           ),
         ],
       ),

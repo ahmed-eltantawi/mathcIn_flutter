@@ -26,7 +26,10 @@ class OtpSuccessOverlay extends StatelessWidget {
             ),
           ],
         ),
-        child: Lottie.asset(Assets.lottieCorrect, repeat: false),
+        child: Lottie.asset(
+          Assets.lottieCorrect,
+          repeat: false,
+        ),
       ),
     );
   }

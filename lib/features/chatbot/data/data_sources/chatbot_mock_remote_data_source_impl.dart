@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-
 import '../../domain/entities/chat_message_entity.dart';
 import '../models/chat_message_model.dart';
 import 'chatbot_remote_data_source.dart';
@@ -28,9 +27,7 @@ class ChatbotMockRemoteDataSourceImpl implements ChatbotRemoteDataSource {
   String _generateSmartResponse(String prompt) {
     final lower = prompt.toLowerCase();
 
-    if (lower.contains('resume') ||
-        lower.contains('cv') ||
-        lower.contains('سيرة')) {
+    if (lower.contains('resume') || lower.contains('cv') || lower.contains('سيرة')) {
       return '''Here are 3 quick tips to improve your resume for Tech roles:
 
 1. **Highlight Impact with Metrics**: Use numbers (e.g., "Increased app speed by 35%").
@@ -40,9 +37,7 @@ class ChatbotMockRemoteDataSourceImpl implements ChatbotRemoteDataSource {
 Would you like me to help review a specific section of your CV?''';
     }
 
-    if (lower.contains('interview') ||
-        lower.contains('مقابلة') ||
-        lower.contains('أسئلة')) {
+    if (lower.contains('interview') || lower.contains('مقابلة') || lower.contains('أسئلة')) {
       return '''Top Flutter interview topics to prepare:
 
 • **State Management**: BLoC vs Provider vs Riverpod lifecycle & architectural patterns.
@@ -53,9 +48,7 @@ Would you like me to help review a specific section of your CV?''';
 Shall we simulate a technical interview question together?''';
     }
 
-    if (lower.contains('flutter') ||
-        lower.contains('dart') ||
-        lower.contains('cubit')) {
+    if (lower.contains('flutter') || lower.contains('dart') || lower.contains('cubit')) {
       return '''Flutter is Google's UI toolkit for building natively compiled applications from a single codebase.
 
 Key architectural recommendations:
@@ -66,10 +59,7 @@ Key architectural recommendations:
 Let me know if you want code examples!''';
     }
 
-    if (lower.contains('job') ||
-        lower.contains('career') ||
-        lower.contains('عمل') ||
-        lower.contains('وظيفة')) {
+    if (lower.contains('job') || lower.contains('career') || lower.contains('عمل') || lower.contains('وظيفة')) {
       return '''Based on your profile, here are strategic career steps:
 
 1. **Build Proof of Work**: Publish open-source Flutter packages or apps on GitHub.

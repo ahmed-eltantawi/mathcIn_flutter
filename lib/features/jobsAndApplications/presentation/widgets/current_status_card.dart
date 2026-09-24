@@ -22,9 +22,11 @@ class CurrentStatusCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     s.currentStatus,
-                    style: theme.textTheme.labelLarge?.copyWith(
-                      color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-                    ),
+                    style: theme.textTheme.labelLarge
+                        ?.copyWith(
+                          color: theme.colorScheme.onSurface
+                              .withValues(alpha: 0.6),
+                        ),
                   ),
                 ),
                 Container(
@@ -34,14 +36,18 @@ class CurrentStatusCard extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color: theme.colorScheme.primary,
-                    borderRadius: BorderRadius.circular(20.r),
+                    borderRadius: BorderRadius.circular(
+                      20.r,
+                    ),
                   ),
                   child: Text(
                     s.applied,
-                    style: theme.textTheme.labelMedium?.copyWith(
-                      color: theme.colorScheme.onPrimary,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: theme.textTheme.labelMedium
+                        ?.copyWith(
+                          color:
+                              theme.colorScheme.onPrimary,
+                          fontWeight: FontWeight.w600,
+                        ),
                   ),
                 ),
               ],
@@ -52,15 +58,18 @@ class CurrentStatusCard extends StatelessWidget {
                 Icon(
                   Icons.schedule_outlined,
                   size: 19.sp,
-                  color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                  color: theme.colorScheme.onSurface
+                      .withValues(alpha: 0.6),
                 ),
                 SizedBox(width: 8.w),
                 Expanded(
                   child: Text(
                     s.submittedTodayTime,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-                    ),
+                    style: theme.textTheme.bodyMedium
+                        ?.copyWith(
+                          color: theme.colorScheme.onSurface
+                              .withValues(alpha: 0.6),
+                        ),
                   ),
                 ),
               ],

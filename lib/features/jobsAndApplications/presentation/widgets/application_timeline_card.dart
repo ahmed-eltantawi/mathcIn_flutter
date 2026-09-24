@@ -115,7 +115,10 @@ class _TimelineItem extends StatelessWidget {
                 ),
                 if (showLine)
                   Expanded(
-                    child: Container(width: 2.w, color: theme.dividerColor),
+                    child: Container(
+                      width: 2.w,
+                      color: theme.dividerColor,
+                    ),
                   ),
               ],
             ),
@@ -123,22 +126,28 @@ class _TimelineItem extends StatelessWidget {
           SizedBox(width: 8.w),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.only(bottom: showLine ? 22.h : 0),
+              padding: EdgeInsets.only(
+                bottom: showLine ? 22.h : 0,
+              ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
                 children: [
                   Text(
                     title,
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: theme.textTheme.bodyLarge
+                        ?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
                   ),
                   SizedBox(height: 3.h),
                   Text(
                     subtitle,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-                    ),
+                    style: theme.textTheme.bodyMedium
+                        ?.copyWith(
+                          color: theme.colorScheme.onSurface
+                              .withValues(alpha: 0.6),
+                        ),
                   ),
                 ],
               ),

@@ -12,11 +12,17 @@ class ReviewQuestionsCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _ReviewAnswer(label: s.preferredWorkModeLabel, value: s.hybrid),
+        _ReviewAnswer(
+          label: s.preferredWorkModeLabel,
+          value: s.hybrid,
+        ),
         SizedBox(height: 14.h),
         const Divider(height: 1),
         SizedBox(height: 14.h),
-        _ReviewAnswer(label: s.expectedSalary, value: '15,000 EGP / month'),
+        _ReviewAnswer(
+          label: s.expectedSalary,
+          value: '15,000 EGP / month',
+        ),
         SizedBox(height: 14.h),
         const Divider(height: 1),
         SizedBox(height: 14.h),
@@ -41,7 +47,10 @@ class ReviewQuestionsCard extends StatelessWidget {
 }
 
 class _ReviewAnswer extends StatelessWidget {
-  const _ReviewAnswer({required this.label, required this.value});
+  const _ReviewAnswer({
+    required this.label,
+    required this.value,
+  });
 
   final String label;
   final String value;
@@ -74,9 +83,14 @@ class _TechnologyChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
+      padding: EdgeInsets.symmetric(
+        horizontal: 14.w,
+        vertical: 6.h,
+      ),
       decoration: BoxDecoration(
-        border: Border.all(color: Theme.of(context).dividerColor),
+        border: Border.all(
+          color: Theme.of(context).dividerColor,
+        ),
         borderRadius: BorderRadius.circular(20.r),
       ),
       child: Text(

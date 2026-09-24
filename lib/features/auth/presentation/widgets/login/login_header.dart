@@ -12,9 +12,12 @@ class LoginHeader extends StatelessWidget {
 
     return Column(
       children: [
-        Image.asset('assets/images/app_icon.jpg', height: 80.h),
+        Image.asset('assets/images/app_icon.png', height: 80.h),
         SizedBox(height: 16.h),
-        Text(locale.welcomeBack, style: theme.textTheme.headlineSmall),
+        Text(
+          locale.welcomeBack,
+          style: theme.textTheme.headlineSmall,
+        ),
         SizedBox(height: 8.h),
         Text(
           locale.smartCareerDiscoveryPlatform,

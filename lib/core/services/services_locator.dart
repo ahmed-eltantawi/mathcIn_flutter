@@ -25,9 +25,12 @@ import 'package:MatchIn/features/auth/data/data_sources/auth_mock_remote_data_so
 import 'package:MatchIn/features/auth/data/data_sources/auth_remote_data_source.dart';
 import 'package:MatchIn/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:MatchIn/features/auth/domain/repositories/auth_repository.dart';
+import 'package:MatchIn/features/auth/domain/use_cases/login_use_case.dart';
+import 'package:MatchIn/features/auth/domain/use_cases/register_use_case.dart';
 import 'package:MatchIn/features/auth/domain/use_cases/resend_otp_use_case.dart';
 import 'package:MatchIn/features/auth/domain/use_cases/reset_password_use_case.dart';
 import 'package:MatchIn/features/auth/domain/use_cases/verify_otp_use_case.dart';
+import 'package:MatchIn/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/otp_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/reset_password_cubit.dart';
 import 'package:MatchIn/features/chatbot/data/data_sources/chatbot_local_data_source.dart';
@@ -48,6 +51,14 @@ import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_fee
 import 'package:MatchIn/features/roadmap/presentation/manager/roadmap_cubit/roadmap_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/skill_task_cubit/skill_task_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/treasure_cubit/treasure_cubit.dart';
+import 'package:MatchIn/features/saved/data/data_sources/saved_jobs_remote_data_source.dart';
+import 'package:MatchIn/features/saved/data/data_sources/saved_jobs_remote_data_source_impl.dart';
+import 'package:MatchIn/features/saved/data/repositories/saved_jobs_repository_impl.dart';
+import 'package:MatchIn/features/saved/domain/repositories/saved_jobs_repository.dart';
+import 'package:MatchIn/features/saved/domain/use_cases/get_saved_jobs_use_case.dart';
+import 'package:MatchIn/features/saved/domain/use_cases/save_job_use_case.dart';
+import 'package:MatchIn/features/saved/domain/use_cases/unsave_job_use_case.dart';
+import 'package:MatchIn/features/saved/presentation/cubit/saved_jobs_cubit.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -79,6 +90,14 @@ Future<void> setupServiceLocator() async {
     ),
   );
 
+  getIt.registerLazySingleton<RegisterUseCase>(
+    () => RegisterUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<LoginUseCase>(
+    () => LoginUseCase(repository: getIt()),
+  );
+
   getIt.registerLazySingleton<VerifyOtpUseCase>(
     () => VerifyOtpUseCase(repository: getIt()),
   );
@@ -89,6 +108,13 @@ Future<void> setupServiceLocator() async {
 
   getIt.registerLazySingleton<ResetPasswordUseCase>(
     () => ResetPasswordUseCase(repository: getIt()),
+  );
+
+  getIt.registerFactory<AuthCubit>(
+    () => AuthCubit(
+      loginUseCase: getIt(),
+      registerUseCase: getIt(),
+    ),
   );
 
   getIt.registerFactory<OtpCubit>(
@@ -288,6 +314,41 @@ Future<void> setupServiceLocator() async {
   getIt.registerFactory<CvCubit>(
     () => CvCubit(
       filePickerService: getIt<FilePickerService>(),
+    ),
+  );
+
+  // =========================================================
+  // Saved Jobs Feature
+  // =========================================================
+
+  getIt.registerLazySingleton<SavedJobsRemoteDataSource>(
+    () => SavedJobsRemoteDataSourceImpl(apiConsumer: getIt<ApiConsumer>()),
+  );
+
+  getIt.registerLazySingleton<SavedJobsRepository>(
+    () => SavedJobsRepositoryImpl(
+      remoteDataSource: getIt<SavedJobsRemoteDataSource>(),
+      networkInfo: getIt<NetworkInfo>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<GetSavedJobsUseCase>(
+    () => GetSavedJobsUseCase(repository: getIt<SavedJobsRepository>()),
+  );
+
+  getIt.registerLazySingleton<SaveJobUseCase>(
+    () => SaveJobUseCase(repository: getIt<SavedJobsRepository>()),
+  );
+
+  getIt.registerLazySingleton<UnsaveJobUseCase>(
+    () => UnsaveJobUseCase(repository: getIt<SavedJobsRepository>()),
+  );
+
+  getIt.registerFactory<SavedJobsCubit>(
+    () => SavedJobsCubit(
+      getSavedJobsUseCase: getIt<GetSavedJobsUseCase>(),
+      saveJobUseCase: getIt<SaveJobUseCase>(),
+      unsaveJobUseCase: getIt<UnsaveJobUseCase>(),
     ),
   );
 }

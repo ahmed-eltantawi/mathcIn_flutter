@@ -26,12 +26,20 @@ class CoverNote extends StatelessWidget {
               ),
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
+              padding: EdgeInsets.symmetric(
+                horizontal: 8.w,
+                vertical: 3.h,
+              ),
               decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest,
+                color: theme
+                    .colorScheme
+                    .surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(5.r),
               ),
-              child: Text(s.optional, style: theme.textTheme.bodySmall),
+              child: Text(
+                s.optional,
+                style: theme.textTheme.bodySmall,
+              ),
             ),
           ],
         ),

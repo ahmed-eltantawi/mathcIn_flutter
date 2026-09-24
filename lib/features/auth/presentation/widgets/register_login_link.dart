@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RegisterLoginLink extends StatelessWidget {
-  const RegisterLoginLink({super.key, required this.onPressed});
+  const RegisterLoginLink({
+    super.key,
+    required this.onPressed,
+  });
 
   final VoidCallback onPressed;
 

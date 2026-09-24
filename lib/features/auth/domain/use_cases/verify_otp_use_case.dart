@@ -13,4 +13,5 @@ class VerifyOtpUseCase {
   }) async {
     return await repository.verifyOtp(email: email, otp: otp);
   }
+  
 }

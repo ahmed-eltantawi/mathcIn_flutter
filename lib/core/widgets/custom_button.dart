@@ -9,6 +9,7 @@ class CustomButton extends StatelessWidget {
     this.isLoading = false,
     this.width = double.infinity,
   });
+
   final String text;
   final VoidCallback onPressed;
   final bool isLoading;

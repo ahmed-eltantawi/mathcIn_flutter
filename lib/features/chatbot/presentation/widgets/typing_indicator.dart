@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 class TypingIndicator extends StatefulWidget {
@@ -44,7 +43,8 @@ class _TypingIndicatorState extends State<TypingIndicator>
               width: 8,
               height: 8,
               decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor
+                color: Theme.of(context)
+                    .primaryColor
                     .withValues(alpha: 0.3 + (value * 0.7)),
                 shape: BoxShape.circle,
               ),

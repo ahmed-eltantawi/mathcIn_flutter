@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../../../generated/l10n.dart';
 
 class ChatInputBar extends StatefulWidget {
@@ -72,9 +71,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
                 decoration: BoxDecoration(
                   color: isDark
                       ? Colors.grey[850]
-                      : theme.colorScheme.surfaceContainerHighest.withValues(
-                          alpha: 0.5,
-                        ),
+                      : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
                   borderRadius: BorderRadius.circular(24),
                   border: Border.all(
                     color: isDark ? Colors.grey[700]! : Colors.grey[300]!,
@@ -105,9 +102,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
                 shape: BoxShape.circle,
               ),
               child: IconButton(
-                onPressed: (_canSend && !widget.isGenerating)
-                    ? _handleSend
-                    : null,
+                onPressed: (_canSend && !widget.isGenerating) ? _handleSend : null,
                 icon: widget.isGenerating
                     ? const SizedBox(
                         width: 18,

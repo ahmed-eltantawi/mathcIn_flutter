@@ -14,6 +14,7 @@ class CustomTextField extends StatefulWidget {
     this.keyboardType = TextInputType.text,
     this.textInputAction,
   });
+
   final String? labelText;
   final String hintText;
   final Widget? prefixIcon;
@@ -24,9 +25,9 @@ class CustomTextField extends StatefulWidget {
   final TextInputType keyboardType;
   final TextInputAction? textInputAction;
 
+
   @override
-  State<CustomTextField> createState() =>
-      _CustomTextFieldState();
+  State<CustomTextField> createState() => _CustomTextFieldState();
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
@@ -45,7 +46,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (widget.labelText != null) ...[
-          Text(widget.labelText!),
+          Text(
+            widget.labelText!,
+          ),
           SizedBox(height: 8.h),
         ],
         TextFormField(

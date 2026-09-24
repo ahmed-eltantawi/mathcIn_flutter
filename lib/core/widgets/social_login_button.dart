@@ -8,6 +8,7 @@ class SocialLoginButton extends StatelessWidget {
     required this.icon,
     required this.onPressed,
   });
+
   final String text;
   final Widget icon;
   final VoidCallback onPressed;
@@ -29,10 +30,7 @@ class SocialLoginButton extends StatelessWidget {
           SizedBox(width: 8.w),
           Text(
             text,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-            ),
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
           ),
         ],
       ),

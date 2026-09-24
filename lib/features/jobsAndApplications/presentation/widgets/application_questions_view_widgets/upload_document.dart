@@ -23,13 +23,17 @@ class UploadDocument extends StatelessWidget {
                 Expanded(
                   child: Text(
                     s.supportingDocumentOptional,
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      color: theme.colorScheme.primary,
-                      fontWeight: FontWeight.w700,
-                    ),
+                    style: theme.textTheme.titleSmall
+                        ?.copyWith(
+                          color: theme.colorScheme.primary,
+                          fontWeight: FontWeight.w700,
+                        ),
                   ),
                 ),
-                Text('PDF, DOCX', style: theme.textTheme.bodySmall),
+                Text(
+                  'PDF, DOCX',
+                  style: theme.textTheme.bodySmall,
+                ),
               ],
             ),
             SizedBox(height: 12.h),
@@ -38,7 +42,9 @@ class UploadDocument extends StatelessWidget {
               borderRadius: BorderRadius.circular(10.r),
               child: Container(
                 width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 22.h),
+                padding: EdgeInsets.symmetric(
+                  vertical: 22.h,
+                ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.r),
                   border: Border.all(
@@ -56,13 +62,18 @@ class UploadDocument extends StatelessWidget {
                     SizedBox(height: 8.h),
                     Text(
                       s.uploadFile,
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        color: theme.colorScheme.primary,
-                        fontWeight: FontWeight.w700,
-                      ),
+                      style: theme.textTheme.titleSmall
+                          ?.copyWith(
+                            color:
+                                theme.colorScheme.primary,
+                            fontWeight: FontWeight.w700,
+                          ),
                     ),
                     SizedBox(height: 3.h),
-                    Text(s.uploadFileHint, style: theme.textTheme.bodySmall),
+                    Text(
+                      s.uploadFileHint,
+                      style: theme.textTheme.bodySmall,
+                    ),
                   ],
                 ),
               ),

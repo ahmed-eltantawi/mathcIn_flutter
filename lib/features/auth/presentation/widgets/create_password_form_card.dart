@@ -30,7 +30,10 @@ class CreatePasswordFormCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: theme.dividerColor, width: 1),
+        border: Border.all(
+          color: theme.dividerColor,
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,7 +55,10 @@ class CreatePasswordFormCard extends StatelessWidget {
             ),
           ),
           SizedBox(height: 12.h),
-          Divider(color: theme.dividerColor, thickness: 1),
+          Divider(
+            color: theme.dividerColor,
+            thickness: 1,
+          ),
           SizedBox(height: 12.h),
           CustomTextField(
             controller: confirmPasswordController,

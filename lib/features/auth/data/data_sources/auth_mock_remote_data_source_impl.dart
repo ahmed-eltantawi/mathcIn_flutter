@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:MatchIn/core/errors/error_model.dart';
 import 'package:MatchIn/core/errors/exceptions.dart';
 import 'package:MatchIn/features/auth/data/data_sources/auth_remote_data_source.dart';
+import 'package:MatchIn/features/auth/data/models/login_model.dart';
 
 class AuthMockRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
@@ -40,5 +41,28 @@ class AuthMockRemoteDataSourceImpl implements AuthRemoteDataSource {
         ),
       );
     }
+  }
+  @override
+  Future<void> register({
+    required String name,
+    required String email,
+    required String password,
+    required String passwordConfirmation,
+  }) async {
+    // بنعمل تاخير وهمي عشان يبان اكنه بيكلم سيرفر
+    await Future.delayed(const Duration(milliseconds: 800));
+  }
+
+  @override
+  Future<LoginModel> login({
+    required String email,
+    required String password,
+  }) async {
+    await Future.delayed(const Duration(milliseconds: 800));
+    // بنرجع داتا وهميه تمشي الحال ف التيست
+    return LoginModel(
+      accessToken: 'mock_access_token_12345',
+      tokenType: 'bearer',
+    );
   }
 }

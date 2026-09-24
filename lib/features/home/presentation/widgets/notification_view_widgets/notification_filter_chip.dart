@@ -18,17 +18,24 @@ class NotificationFilterChip extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Material(
-      color: isSelected ? theme.colorScheme.primary : theme.colorScheme.surface,
+      color: isSelected
+          ? theme.colorScheme.primary
+          : theme.colorScheme.surface,
       shape: StadiumBorder(
         side: BorderSide(
-          color: isSelected ? theme.colorScheme.primary : theme.dividerColor,
+          color: isSelected
+              ? theme.colorScheme.primary
+              : theme.dividerColor,
         ),
       ),
       child: InkWell(
         onTap: onTap,
         customBorder: const StadiumBorder(),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+          padding: EdgeInsets.symmetric(
+            horizontal: 20.w,
+            vertical: 10.h,
+          ),
           child: Text(
             label,
             style: theme.textTheme.bodyMedium?.copyWith(

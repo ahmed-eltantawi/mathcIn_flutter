@@ -24,10 +24,12 @@ class CareerHelpCard extends StatelessWidget {
               height: 48.w,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: theme.colorScheme.secondary.withValues(alpha: 0.08),
+                color: theme.colorScheme.secondary
+                    .withValues(alpha: 0.08),
                 borderRadius: BorderRadius.circular(9.r),
                 border: Border.all(
-                  color: theme.colorScheme.secondary.withValues(alpha: 0.25),
+                  color: theme.colorScheme.secondary
+                      .withValues(alpha: 0.25),
                 ),
               ),
               child: Icon(
@@ -38,28 +40,35 @@ class CareerHelpCard extends StatelessWidget {
             SizedBox(width: 12.w),
             Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
                 children: [
                   Text(
                     s.needHelpWithNextSteps,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
+                    style: theme.textTheme.titleMedium
+                        ?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
                   ),
                   SizedBox(height: 4.h),
                   Text(
                     s.askCareerMentorDescription,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-                    ),
+                    style: theme.textTheme.bodyMedium
+                        ?.copyWith(
+                          color: theme.colorScheme.onSurface
+                              .withValues(alpha: 0.7),
+                        ),
                   ),
                   SizedBox(height: 12.h),
                   ElevatedButton.icon(
                     onPressed: onAskChatBot ?? () {},
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: theme.colorScheme.secondary,
+                      backgroundColor:
+                          theme.colorScheme.secondary,
                       minimumSize: Size(0, 44.h),
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                      ),
                     ),
                     icon: const Icon(Icons.chat_outlined),
                     label: Text(s.askChatBot),

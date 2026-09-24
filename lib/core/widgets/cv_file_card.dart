@@ -3,7 +3,13 @@ import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-enum CvFileStatus { empty, uploaded, analyzing, analyzed, failed }
+enum CvFileStatus {
+  empty,
+  uploaded,
+  analyzing,
+  analyzed,
+  failed,
+}
 
 class CvFileCard extends StatelessWidget {
   const CvFileCard({
@@ -122,7 +128,9 @@ class _CvHeader extends StatelessWidget {
             visualDensity: VisualDensity.compact,
             icon: Icon(
               Icons.edit_outlined,
-              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+              color: theme.colorScheme.onSurface.withValues(
+                alpha: 0.6,
+              ),
             ),
           ),
       ],
@@ -147,7 +155,8 @@ class _EmptyCvContent extends StatelessWidget {
           height: 64.r,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: theme.colorScheme.surfaceContainerHighest,
+            color:
+                theme.colorScheme.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(14.r),
             border: Border.all(color: theme.dividerColor),
           ),
@@ -170,7 +179,9 @@ class _EmptyCvContent extends StatelessWidget {
           s.cvUploadRequirements,
           textAlign: TextAlign.center,
           style: theme.textTheme.bodyMedium?.copyWith(
-            color: theme.colorScheme.onSurface.withValues(alpha: 0.65),
+            color: theme.colorScheme.onSurface.withValues(
+              alpha: 0.65,
+            ),
           ),
         ),
         SizedBox(height: 18.h),
@@ -185,11 +196,13 @@ class _EmptyCvContent extends StatelessWidget {
         SizedBox(height: 12.h),
         Container(
           width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
+          padding: EdgeInsets.symmetric(
+            horizontal: 14.w,
+            vertical: 14.h,
+          ),
           decoration: BoxDecoration(
-            color: theme.colorScheme.surfaceContainerHighest.withValues(
-              alpha: 0.45,
-            ),
+            color: theme.colorScheme.surfaceContainerHighest
+                .withValues(alpha: 0.45),
             borderRadius: BorderRadius.circular(10.r),
             border: Border.all(color: theme.dividerColor),
           ),
@@ -197,15 +210,18 @@ class _EmptyCvContent extends StatelessWidget {
             children: [
               Icon(
                 Icons.insert_drive_file_outlined,
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.55),
+                color: theme.colorScheme.onSurface
+                    .withValues(alpha: 0.55),
               ),
               SizedBox(width: 10.w),
               Expanded(
                 child: Text(
                   s.noFileSelected,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurface.withValues(alpha: 0.65),
-                  ),
+                  style: theme.textTheme.bodyMedium
+                      ?.copyWith(
+                        color: theme.colorScheme.onSurface
+                            .withValues(alpha: 0.65),
+                      ),
                 ),
               ),
             ],
@@ -242,9 +258,8 @@ class _CvFileContent extends StatelessWidget {
           width: double.infinity,
           padding: EdgeInsets.all(14.r),
           decoration: BoxDecoration(
-            color: theme.colorScheme.surfaceContainerHighest.withValues(
-              alpha: 0.35,
-            ),
+            color: theme.colorScheme.surfaceContainerHighest
+                .withValues(alpha: 0.35),
             borderRadius: BorderRadius.circular(10.r),
             border: Border.all(color: theme.dividerColor),
           ),
@@ -255,7 +270,8 @@ class _CvFileContent extends StatelessWidget {
                 height: 48.w,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.08),
+                  color: theme.colorScheme.primary
+                      .withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(10.r),
                 ),
                 child: Icon(
@@ -267,31 +283,38 @@ class _CvFileContent extends StatelessWidget {
               SizedBox(width: 12.w),
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
                   children: [
                     Text(
                       fileName,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: theme.textTheme.titleMedium
+                          ?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
                     SizedBox(height: 4.h),
                     Wrap(
                       spacing: 8.w,
                       runSpacing: 4.h,
-                      crossAxisAlignment: WrapCrossAlignment.center,
+                      crossAxisAlignment:
+                          WrapCrossAlignment.center,
                       children: [
                         _StatusBadge(status: status),
                         if (updatedText != null)
                           Text(
                             updatedText!,
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.colorScheme.onSurface.withValues(
-                                alpha: 0.6,
-                              ),
-                            ),
+                            style: theme.textTheme.bodySmall
+                                ?.copyWith(
+                                  color: theme
+                                      .colorScheme
+                                      .onSurface
+                                      .withValues(
+                                        alpha: 0.6,
+                                      ),
+                                ),
                           ),
                       ],
                     ),
@@ -335,7 +358,10 @@ class _StatusBadge extends StatelessWidget {
     final data = _getData(context);
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
+      padding: EdgeInsets.symmetric(
+        horizontal: 8.w,
+        vertical: 3.h,
+      ),
       decoration: BoxDecoration(
         color: data.color.withValues(alpha: 0.10),
         borderRadius: BorderRadius.circular(6.r),
@@ -356,7 +382,10 @@ class _StatusBadge extends StatelessWidget {
 
     switch (status) {
       case CvFileStatus.empty:
-        return _CvStatusData(label: '', color: theme.colorScheme.onSurface);
+        return _CvStatusData(
+          label: '',
+          color: theme.colorScheme.onSurface,
+        );
 
       case CvFileStatus.uploaded:
         return _CvStatusData(
@@ -365,19 +394,31 @@ class _StatusBadge extends StatelessWidget {
         );
 
       case CvFileStatus.analyzing:
-        return _CvStatusData(label: s.analyzing, color: AppColors.amber);
+        return _CvStatusData(
+          label: s.analyzing,
+          color: AppColors.amber,
+        );
 
       case CvFileStatus.analyzed:
-        return _CvStatusData(label: s.analyzed, color: AppColors.forestGreen);
+        return _CvStatusData(
+          label: s.analyzed,
+          color: AppColors.forestGreen,
+        );
 
       case CvFileStatus.failed:
-        return _CvStatusData(label: s.failed, color: theme.colorScheme.error);
+        return _CvStatusData(
+          label: s.failed,
+          color: theme.colorScheme.error,
+        );
     }
   }
 }
 
 class _CvStatusData {
-  const _CvStatusData({required this.label, required this.color});
+  const _CvStatusData({
+    required this.label,
+    required this.color,
+  });
 
   final String label;
   final Color color;

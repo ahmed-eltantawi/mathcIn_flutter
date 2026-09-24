@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ApplicationSummaryCard extends StatelessWidget {
-  const ApplicationSummaryCard({super.key, this.onViewApplication});
+  const ApplicationSummaryCard({
+    super.key,
+    this.onViewApplication,
+  });
 
   final VoidCallback? onViewApplication;
 
@@ -20,19 +23,23 @@ class ApplicationSummaryCard extends StatelessWidget {
           children: [
             Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
                 children: [
                   Text(
                     s.alreadySubmitted,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-                    ),
+                    style: theme.textTheme.bodySmall
+                        ?.copyWith(
+                          color: theme.colorScheme.onSurface
+                              .withValues(alpha: 0.6),
+                        ),
                   ),
                   Text(
                     '${s.application} #SM-2849',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
+                    style: theme.textTheme.bodyMedium
+                        ?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
                   ),
                 ],
               ),
@@ -41,7 +48,9 @@ class ApplicationSummaryCard extends StatelessWidget {
               onPressed: onViewApplication ?? () {},
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(0, 44.h),
-                padding: EdgeInsets.symmetric(horizontal: 18.w),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 18.w,
+                ),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,

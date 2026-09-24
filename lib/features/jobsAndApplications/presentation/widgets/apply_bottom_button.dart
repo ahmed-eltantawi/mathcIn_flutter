@@ -24,34 +24,36 @@ class ApplyBottomButton extends StatelessWidget {
           top: BorderSide(color: theme.dividerColor),
         ),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: onPressed,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(label),
-                  SizedBox(width: 8.w),
-                  const Icon(Icons.arrow_forward),
-                ],
+      child: SafeArea(
+        top: false,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: onPressed,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(label),
+                    SizedBox(width: 8.w),
+                    const Icon(Icons.arrow_forward),
+                  ],
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 8.h),
-          Text(
-            helperText,
-            textAlign: TextAlign.center,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurface.withValues(
-                alpha: 0.6,
+            SizedBox(height: 8.h),
+            Text(
+              helperText,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurface
+                    .withValues(alpha: 0.6),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

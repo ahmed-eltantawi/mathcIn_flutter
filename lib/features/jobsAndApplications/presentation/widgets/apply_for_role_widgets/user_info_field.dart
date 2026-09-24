@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UserInfoField extends StatelessWidget {
-  const UserInfoField({super.key, required this.label, required this.value});
+  const UserInfoField({
+    super.key,
+    required this.label,
+    required this.value,
+  });
 
   final String label;
   final String value;
@@ -24,14 +28,22 @@ class UserInfoField extends StatelessWidget {
         SizedBox(height: 8.h),
         Container(
           width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+          padding: EdgeInsets.symmetric(
+            horizontal: 16.w,
+            vertical: 16.h,
+          ),
           decoration: BoxDecoration(
             border: Border.all(color: theme.dividerColor),
             borderRadius: BorderRadius.circular(12.r),
           ),
           child: Row(
             children: [
-              Expanded(child: Text(value, style: theme.textTheme.bodyLarge)),
+              Expanded(
+                child: Text(
+                  value,
+                  style: theme.textTheme.bodyLarge,
+                ),
+              ),
               Icon(
                 Icons.check_circle_outline_rounded,
                 color: AppColors.forestGreen,

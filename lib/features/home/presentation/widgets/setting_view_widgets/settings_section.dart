@@ -19,24 +19,34 @@ class SettingsSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsetsDirectional.only(start: 4.w, bottom: 10.h),
+          padding: EdgeInsetsDirectional.only(
+            start: 4.w,
+            bottom: 10.h,
+          ),
           child: Text(
             title,
             style: theme.textTheme.labelLarge?.copyWith(
-              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+              color: theme.colorScheme.onSurface.withValues(
+                alpha: 0.6,
+              ),
             ),
           ),
         ),
 
         Card(
           margin: EdgeInsets.zero,
-          child: Column(children: _withDividers(context, children)),
+          child: Column(
+            children: _withDividers(context, children),
+          ),
         ),
       ],
     );
   }
 
-  List<Widget> _withDividers(BuildContext context, List<Widget> widgets) {
+  List<Widget> _withDividers(
+    BuildContext context,
+    List<Widget> widgets,
+  ) {
     if (widgets.length <= 1) {
       return widgets;
     }
@@ -49,7 +59,10 @@ class SettingsSection extends StatelessWidget {
       if (index != widgets.length - 1) {
         result.add(
           Padding(
-            padding: EdgeInsetsDirectional.only(start: 70.w, end: 14.w),
+            padding: EdgeInsetsDirectional.only(
+              start: 70.w,
+              end: 14.w,
+            ),
             child: const Divider(height: 1),
           ),
         );

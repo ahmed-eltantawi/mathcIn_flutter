@@ -1,9 +1,11 @@
+import 'package:MatchIn/core/routing/app_routes.dart';
 import 'package:MatchIn/features/home/presentation/widgets/setting_view_widgets/settings_header.dart';
 import 'package:MatchIn/features/home/presentation/widgets/setting_view_widgets/settings_section.dart';
 import 'package:MatchIn/features/home/presentation/widgets/setting_view_widgets/settings_tile.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class SettingsViewBody extends StatelessWidget {
   const SettingsViewBody({super.key});
@@ -35,7 +37,7 @@ class SettingsViewBody extends StatelessWidget {
                       icon: Icons.lock_outline_rounded,
                       title: s.changePassword,
                       onTap: () {
-                        // UI Only.
+                        context.go(AppRoutes.kChangePasswordView);
                       },
                     ),
                   ],

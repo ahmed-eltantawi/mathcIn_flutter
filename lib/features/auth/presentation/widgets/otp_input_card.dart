@@ -56,7 +56,10 @@ class OtpInputCard extends StatelessWidget {
             child: isSuccess
                 ? SizedBox(
                     height: 80.h,
-                    child: Lottie.asset(Assets.lottieCorrect, repeat: false),
+                    child: Lottie.asset(
+                      Assets.lottieCorrect,
+                      repeat: false,
+                    ),
                   )
                 : OtpAnimatedField(
                     controller: controller,

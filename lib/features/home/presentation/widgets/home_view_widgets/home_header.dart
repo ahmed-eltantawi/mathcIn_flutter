@@ -24,29 +24,27 @@ class HomeHeader extends StatelessWidget {
         children: [
           Row(
             children: [
-              showImage(image: Assets.imagesTextLogo),
+              showImage(image: Assets.iconsTextLogo),
               const Spacer(),
               InkWell(
-                onTap: () =>
-                    context.push(AppRoutes.knotifications),
+                onTap: () {
+                  context.push(AppRoutes.knotifications);
+                },
                 borderRadius: BorderRadius.circular(20.r),
                 child: Padding(
                   padding: EdgeInsets.all(6.r),
-                  child: SvgPicture.asset(
-                    Assets.iconsNotificationBellNewIcon,
-                  ),
+                  child: SvgPicture.asset(Assets.iconsNotificationBellNewIcon),
                 ),
               ),
               SizedBox(width: 8.w),
               InkWell(
-                onTap: () =>
-                    context.push(AppRoutes.ksettings),
+                onTap: () {
+                  context.push(AppRoutes.ksettings);
+                },
                 borderRadius: BorderRadius.circular(20.r),
                 child: Padding(
                   padding: EdgeInsets.all(6.r),
-                  child: SvgPicture.asset(
-                    Assets.iconsSettingsIcon,
-                  ),
+                  child: SvgPicture.asset(Assets.iconsSettingsIcon),
                 ),
               ),
             ],

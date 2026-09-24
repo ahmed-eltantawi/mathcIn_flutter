@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProfileSectionCard extends StatelessWidget {
-  const ProfileSectionCard({
-    super.key,
-    required this.child,
-  });
+  const ProfileSectionCard({super.key, required this.child});
+
   final Widget child;
 
   @override
@@ -19,7 +17,9 @@ class ProfileSectionCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: theme.dividerColor),
+        border: Border.all(
+          color: theme.dividerColor,
+        ),
       ),
       child: child,
     );

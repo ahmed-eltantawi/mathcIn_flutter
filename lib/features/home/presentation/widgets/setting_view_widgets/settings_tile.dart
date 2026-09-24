@@ -32,7 +32,10 @@ class SettingsTile extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
+          padding: EdgeInsets.symmetric(
+            horizontal: 14.w,
+            vertical: 14.h,
+          ),
           child: Row(
             children: [
               Container(
@@ -40,10 +43,16 @@ class SettingsTile extends StatelessWidget {
                 height: 42.w,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: foregroundColor.withValues(alpha: 0.08),
+                  color: foregroundColor.withValues(
+                    alpha: 0.08,
+                  ),
                   borderRadius: BorderRadius.circular(10.r),
                 ),
-                child: Icon(icon, color: foregroundColor, size: 24.sp),
+                child: Icon(
+                  icon,
+                  color: foregroundColor,
+                  size: 24.sp,
+                ),
               ),
 
               SizedBox(width: 14.w),
@@ -51,12 +60,13 @@ class SettingsTile extends StatelessWidget {
               Expanded(
                 child: Text(
                   title,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: isDestructive
-                        ? theme.colorScheme.error
-                        : theme.colorScheme.onSurface,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: theme.textTheme.titleMedium
+                      ?.copyWith(
+                        color: isDestructive
+                            ? theme.colorScheme.error
+                            : theme.colorScheme.onSurface,
+                        fontWeight: FontWeight.w500,
+                      ),
                 ),
               ),
 
@@ -66,17 +76,22 @@ class SettingsTile extends StatelessWidget {
                 if (trailingText != null) ...[
                   Text(
                     trailingText!,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-                    ),
+                    style: theme.textTheme.bodyMedium
+                        ?.copyWith(
+                          color: theme.colorScheme.onSurface
+                              .withValues(alpha: 0.6),
+                        ),
                   ),
                   SizedBox(width: 6.w),
                 ],
                 Icon(
                   Icons.chevron_right_rounded,
                   color: isDestructive
-                      ? theme.colorScheme.error.withValues(alpha: 0.7)
-                      : theme.colorScheme.onSurface.withValues(alpha: 0.25),
+                      ? theme.colorScheme.error.withValues(
+                          alpha: 0.7,
+                        )
+                      : theme.colorScheme.onSurface
+                            .withValues(alpha: 0.25),
                 ),
               ],
             ],

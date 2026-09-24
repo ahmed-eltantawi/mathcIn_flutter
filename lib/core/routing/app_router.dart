@@ -1,6 +1,5 @@
 import 'package:MatchIn/core/routing/app_routes.dart';
 import 'package:MatchIn/core/services/services_locator.dart';
-import 'package:MatchIn/core/services/shared_preferences_service.dart';
 import 'package:MatchIn/core/widgets/app_web_view.dart';
 import 'package:MatchIn/core/widgets/main_navigation_screen.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_entity.dart';
@@ -20,10 +19,8 @@ import 'package:MatchIn/features/jobsAndApplications/presentation/views/job_deta
 import 'package:MatchIn/features/home/presentation/views/jobs_search_view.dart';
 import 'package:MatchIn/features/home/presentation/views/notifications_view.dart';
 import 'package:MatchIn/features/home/presentation/views/settings_view.dart';
-import 'package:MatchIn/features/onboarding/presentation/pages/onbording.dart';
-import 'package:MatchIn/features/profile/presentation/views/edit_career_preferences_view.dart';
-import 'package:MatchIn/features/profile/presentation/views/edit_projects_view.dart';
-import 'package:MatchIn/features/profile/presentation/views/edit_skills_view.dart';
+import 'package:MatchIn/features/onbording/presentation/pages/onbording.dart';
+import 'package:MatchIn/features/splash/presentation/pages/splash_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -31,49 +28,27 @@ import 'package:go_router/go_router.dart';
 abstract final class AppRouter {
   AppRouter._();
 
-  static CustomTransitionPage<dynamic>
-  _buildTransitionPage({
+  static CustomTransitionPage<dynamic> _buildTransitionPage({
     required GoRouterState state,
     required Widget child,
   }) {
     return CustomTransitionPage(
       key: state.pageKey,
       child: child,
-      transitionsBuilder:
-          (context, animation, secondaryAnimation, child) {
-            return FadeTransition(
-              opacity: animation,
-              child: child,
-            );
-          },
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(opacity: animation, child: child);
+      },
     );
   }
 
   static final GoRouter router = GoRouter(
-    initialLocation: AppRoutes.kHomeView,
+    initialLocation: AppRoutes.kSplashView,
     redirect: (context, state) {
-      if (!getIt.isRegistered<SharedPreferencesService>()) {
-        return null;
-      }
-
-      final prefs = getIt<SharedPreferencesService>();
-
-      final isOnboarded = prefs.isOnBoardingViewed();
-      final isLoggedIn = prefs.isLoggedIn();
-
       final location = state.uri.path;
 
       if (location == AppRoutes.kSplashView ||
           location == AppRoutes.kOnboardingView) {
-        if (!isOnboarded) {
-          return AppRoutes.kOnboardingView;
-        }
-
-        if (isLoggedIn) {
-          return AppRoutes.kHomeView;
-        }
-
-        return AppRoutes.kRegisterView;
+        return null;
       }
 
       return null;
@@ -83,10 +58,7 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kSplashView,
         pageBuilder: (context, state) {
-          return _buildTransitionPage(
-            state: state,
-            child: const Onb1(),
-          );
+          return _buildTransitionPage(state: state, child: const SplashView());
         },
       ),
 
@@ -94,10 +66,7 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kOnboardingView,
         pageBuilder: (context, state) {
-          return _buildTransitionPage(
-            state: state,
-            child: const Onb1(),
-          );
+          return _buildTransitionPage(state: state, child: const Onb1());
         },
       ),
 
@@ -112,12 +81,11 @@ abstract final class AppRouter {
         },
       ),
 
-      // Reusable WebView
+      // WebView
       GoRoute(
         path: AppRoutes.kWebView,
         pageBuilder: (context, state) {
-          final args =
-              state.extra as Map<String, dynamic>? ?? {};
+          final args = state.extra as Map<String, dynamic>? ?? {};
 
           final url = args['url'] as String? ?? '';
           final title = args['title'] as String?;
@@ -189,10 +157,7 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kLoginView,
         pageBuilder: (context, state) {
-          return _buildTransitionPage(
-            state: state,
-            child: const LoginView(),
-          );
+          return _buildTransitionPage(state: state, child: const LoginView());
         },
       ),
 
@@ -205,16 +170,14 @@ abstract final class AppRouter {
             child: BlocProvider(
               create: (_) => getIt<OtpCubit>(),
               child: OtpVerificationView(
-                email:
-                    state.extra as String? ??
-                    'user@example.com',
+                email: state.extra as String? ?? 'user@example.com',
               ),
             ),
           );
         },
       ),
 
-      // OTP Verification
+      // OTP
       GoRoute(
         path: AppRoutes.kOtpVerificationView,
         pageBuilder: (context, state) {
@@ -223,9 +186,7 @@ abstract final class AppRouter {
             child: BlocProvider(
               create: (_) => getIt<OtpCubit>(),
               child: OtpVerificationView(
-                email:
-                    state.extra as String? ??
-                    'user@example.com',
+                email: state.extra as String? ?? 'user@example.com',
               ),
             ),
           );
@@ -241,9 +202,7 @@ abstract final class AppRouter {
             child: BlocProvider(
               create: (_) => getIt<ResetPasswordCubit>(),
               child: CreateNewPasswordView(
-                email:
-                    state.extra as String? ??
-                    'user@example.com',
+                email: state.extra as String? ?? 'user@example.com',
               ),
             ),
           );
@@ -317,39 +276,6 @@ abstract final class AppRouter {
           return _buildTransitionPage(
             state: state,
             child: TrackingApplicationView(job: job),
-          );
-        },
-      ),
-
-      // Edit Skills
-      GoRoute(
-        path: AppRoutes.keditSkillsView,
-        pageBuilder: (context, state) {
-          return _buildTransitionPage(
-            state: state,
-            child: const EditSkillsView(),
-          );
-        },
-      ),
-
-      // Edit Projects
-      GoRoute(
-        path: AppRoutes.keditProjectsView,
-        pageBuilder: (context, state) {
-          return _buildTransitionPage(
-            state: state,
-            child: const EditProjectsView(),
-          );
-        },
-      ),
-
-      // Edit Career Preferences
-      GoRoute(
-        path: AppRoutes.keditcareerPrefView,
-        pageBuilder: (context, state) {
-          return _buildTransitionPage(
-            state: state,
-            child: const EditCareerPreferencesView(),
           );
         },
       ),

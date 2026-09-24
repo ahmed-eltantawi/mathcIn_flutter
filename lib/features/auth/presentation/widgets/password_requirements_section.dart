@@ -23,7 +23,12 @@ class PasswordRequirementsSection extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.only(top: 12.h),
       decoration: BoxDecoration(
-        border: Border(top: BorderSide(color: theme.dividerColor, width: 1)),
+        border: Border(
+          top: BorderSide(
+            color: theme.dividerColor,
+            width: 1,
+          ),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

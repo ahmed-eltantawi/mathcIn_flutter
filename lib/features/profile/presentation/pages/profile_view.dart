@@ -15,7 +15,10 @@ class ProfileView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(locale.candidateProfile, style: theme.textTheme.titleLarge),
+        title: Text(
+          locale.candidateProfile,
+          style: theme.textTheme.titleLarge,
+        ),
       ),
       body: SafeArea(
         child: ListView(

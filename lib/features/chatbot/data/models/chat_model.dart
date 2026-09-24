@@ -16,8 +16,7 @@ class ChatModel extends ChatEntity {
       title: json['title'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
-      messages:
-          (json['messages'] as List<dynamic>?)
+      messages: (json['messages'] as List<dynamic>?)
               ?.map((e) => ChatMessageModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],

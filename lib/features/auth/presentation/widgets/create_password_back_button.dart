@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CreatePasswordBackButton extends StatelessWidget {
-  const CreatePasswordBackButton({super.key, required this.onPressed});
+  const CreatePasswordBackButton({
+    super.key,
+    required this.onPressed,
+  });
 
   final VoidCallback onPressed;
 

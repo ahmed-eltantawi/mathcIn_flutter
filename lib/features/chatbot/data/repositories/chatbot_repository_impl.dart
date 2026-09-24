@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-
 import '../../../../core/errors/failures.dart';
 import '../../domain/entities/chat_entity.dart';
 import '../../domain/entities/chat_message_entity.dart';
@@ -60,9 +59,7 @@ class ChatbotRepositoryImpl implements ChatbotRepository {
 
       return Right(responseMessage);
     } catch (e) {
-      return const Left(
-        ServerFailure(message: 'Failed to get response from AI'),
-      );
+      return const Left(ServerFailure(message: 'Failed to get response from AI'));
     }
   }
 

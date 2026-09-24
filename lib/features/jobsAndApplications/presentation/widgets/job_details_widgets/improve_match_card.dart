@@ -27,8 +27,11 @@ class ImproveMatchCard extends StatelessWidget {
                   height: 44.w,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.primary.withValues(alpha: 0.08),
-                    borderRadius: BorderRadius.circular(9.r),
+                    color: theme.colorScheme.primary
+                        .withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(
+                      9.r,
+                    ),
                   ),
                   child: Icon(
                     Icons.alt_route_rounded,
@@ -38,13 +41,15 @@ class ImproveMatchCard extends StatelessWidget {
                 SizedBox(width: 12.w),
                 Expanded(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
                     children: [
                       Text(
                         s.wantToImproveYourMatch,
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
+                        style: theme.textTheme.titleMedium
+                            ?.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
                       ),
                       SizedBox(height: 4.h),
                       Container(
@@ -52,14 +57,16 @@ class ImproveMatchCard extends StatelessWidget {
                           horizontal: 8.w,
                           vertical: 3.h,
                         ),
-                        color: theme.colorScheme.primary.withValues(
-                          alpha: 0.08,
-                        ),
+                        color: theme.colorScheme.primary
+                            .withValues(alpha: 0.08),
                         child: Text(
                           s.focusOnTwoHighPrioritySkills,
-                          style: theme.textTheme.labelSmall?.copyWith(
-                            color: theme.colorScheme.primary,
-                          ),
+                          style: theme.textTheme.labelSmall
+                              ?.copyWith(
+                                color: theme
+                                    .colorScheme
+                                    .primary,
+                              ),
                         ),
                       ),
                     ],
@@ -72,7 +79,8 @@ class ImproveMatchCard extends StatelessWidget {
               s.roadmapMatchDescription,
               style: theme.textTheme.bodyMedium?.copyWith(
                 height: 1.5,
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                color: theme.colorScheme.onSurface
+                    .withValues(alpha: 0.6),
               ),
             ),
             SizedBox(height: 14.h),
@@ -89,7 +97,8 @@ class ImproveMatchCard extends StatelessWidget {
                 s.roadmapBasedOnJob,
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                  color: theme.colorScheme.onSurface
+                      .withValues(alpha: 0.5),
                 ),
               ),
             ),

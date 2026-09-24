@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:MatchIn/core/services/services_locator.dart';
 import 'package:MatchIn/generated/l10n.dart';
-
 import '../cubit/chatbot_cubit.dart';
 import '../cubit/chatbot_state.dart';
 import '../widgets/chat_history_drawer.dart';
@@ -111,9 +110,7 @@ class _AiChatViewBodyState extends State<_AiChatViewBody> {
                             Container(
                               padding: const EdgeInsets.all(20),
                               decoration: BoxDecoration(
-                                color: theme.primaryColor.withValues(
-                                  alpha: 0.1,
-                                ),
+                                color: theme.primaryColor.withValues(alpha: 0.1),
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(
@@ -143,8 +140,7 @@ class _AiChatViewBodyState extends State<_AiChatViewBody> {
                         controller: _scrollController,
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         itemCount:
-                            state.messages.length +
-                            (state.isGenerating ? 1 : 0),
+                            state.messages.length + (state.isGenerating ? 1 : 0),
                         itemBuilder: (context, index) {
                           if (index < state.messages.length) {
                             final message = state.messages[index];
@@ -160,9 +156,7 @@ class _AiChatViewBodyState extends State<_AiChatViewBody> {
                                   Container(
                                     padding: const EdgeInsets.all(8),
                                     decoration: BoxDecoration(
-                                      color: theme.primaryColor.withValues(
-                                        alpha: 0.15,
-                                      ),
+                                      color: theme.primaryColor.withValues(alpha: 0.15),
                                       shape: BoxShape.circle,
                                     ),
                                     child: Icon(
@@ -178,9 +172,7 @@ class _AiChatViewBodyState extends State<_AiChatViewBody> {
                                       vertical: 12,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: theme
-                                          .colorScheme
-                                          .surfaceContainerHighest
+                                      color: theme.colorScheme.surfaceContainerHighest
                                           .withValues(alpha: 0.5),
                                       borderRadius: BorderRadius.circular(18),
                                     ),

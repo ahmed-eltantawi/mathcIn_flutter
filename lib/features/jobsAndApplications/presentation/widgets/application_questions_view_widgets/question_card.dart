@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class QuestionCard extends StatelessWidget {
-  const QuestionCard({super.key, required this.title, required this.child});
+  const QuestionCard({
+    super.key,
+    required this.title,
+    required this.child,
+  });
 
   final String title;
   final Widget child;

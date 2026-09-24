@@ -25,7 +25,9 @@ class TechnologyOption extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.r),
           border: Border.all(
-            color: isSelected ? theme.colorScheme.primary : theme.dividerColor,
+            color: isSelected
+                ? theme.colorScheme.primary
+                : theme.dividerColor,
           ),
         ),
         child: Row(
@@ -36,14 +38,18 @@ class TechnologyOption extends StatelessWidget {
                   : Icons.check_box_outline_blank,
               color: isSelected
                   ? theme.colorScheme.primary
-                  : theme.colorScheme.onSurface.withValues(alpha: 0.3),
+                  : theme.colorScheme.onSurface.withValues(
+                      alpha: 0.3,
+                    ),
             ),
             SizedBox(width: 8.w),
             Expanded(
               child: Text(
                 label,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
+                  fontWeight: isSelected
+                      ? FontWeight.w700
+                      : FontWeight.w400,
                 ),
               ),
             ),

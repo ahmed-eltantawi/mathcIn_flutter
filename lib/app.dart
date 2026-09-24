@@ -27,11 +27,9 @@ class MatchIn extends StatelessWidget {
         BlocProvider.value(
           value: getIt<HomeCubit>()..getHomeDashboard(),
         ),
-
         BlocProvider.value(
           value: getIt<MainNavigationCubit>(),
         ),
-        // أي Cubit مشترك تاني هيتضاف هنا مستقبلاً
       ],
       child: ScreenUtilInit(
         designSize: const Size(390, 845),

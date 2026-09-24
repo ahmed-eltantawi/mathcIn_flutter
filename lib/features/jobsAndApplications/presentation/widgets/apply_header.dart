@@ -21,13 +21,11 @@ class ApplyHeader extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
       child: Row(
         children: [
           IconButton(
-            onPressed:
-                onBack ??
-                () => Navigator.of(context).maybePop(),
+            onPressed: onBack ?? () => Navigator.of(context).maybePop(),
             icon: const Icon(Icons.arrow_back),
           ),
           SizedBox(width: 8.w),

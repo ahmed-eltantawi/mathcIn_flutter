@@ -10,6 +10,7 @@ class MainProfileCard extends StatelessWidget {
     required this.jobTitle,
     required this.location,
   });
+
   final String name;
   final String jobTitle;
   final String location;
@@ -24,9 +25,7 @@ class MainProfileCard extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 35.r,
-            backgroundImage: const NetworkImage(
-              AppConstants.defaultAvatarUrl,
-            ),
+            backgroundImage: const NetworkImage(AppConstants.defaultAvatarUrl),
           ),
           SizedBox(width: 16.w),
           Expanded(
@@ -35,18 +34,16 @@ class MainProfileCard extends StatelessWidget {
               children: [
                 Text(
                   name,
-                  style: theme.textTheme.titleLarge
-                      ?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 SizedBox(height: 4.h),
                 Text(
                   jobTitle,
-                  style: theme.textTheme.bodyMedium
-                      ?.copyWith(
-                        color: theme.colorScheme.onSurface,
-                      ),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
+                  ),
                 ),
                 SizedBox(height: 8.h),
                 Row(

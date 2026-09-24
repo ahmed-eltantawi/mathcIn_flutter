@@ -9,6 +9,7 @@ class EducationCard extends StatelessWidget {
     required this.degree,
     required this.years,
   });
+
   final String universityName;
   final String degree;
   final String years;
@@ -22,8 +23,7 @@ class EducationCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment:
-                MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 'Education',
@@ -49,9 +49,15 @@ class EducationCard extends StatelessWidget {
             ),
           ),
           SizedBox(height: 4.h),
-          Text(degree, style: theme.textTheme.bodyMedium),
+          Text(
+            degree,
+            style: theme.textTheme.bodyMedium,
+          ),
           SizedBox(height: 4.h),
-          Text(years, style: theme.textTheme.bodySmall),
+          Text(
+            years,
+            style: theme.textTheme.bodySmall,
+          ),
         ],
       ),
     );

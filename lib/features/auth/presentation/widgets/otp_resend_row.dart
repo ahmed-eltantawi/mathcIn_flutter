@@ -36,7 +36,10 @@ class OtpResendRow extends StatelessWidget {
           onTap: canTap ? onResend : null,
           borderRadius: BorderRadius.circular(4.r),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+            padding: EdgeInsets.symmetric(
+              horizontal: 4.w,
+              vertical: 2.h,
+            ),
             child: Text(
               S.of(context).resendCode,
               style: theme.textTheme.labelSmall?.copyWith(

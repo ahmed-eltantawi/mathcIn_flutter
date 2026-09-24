@@ -42,25 +42,35 @@ class NotificationCard extends StatelessWidget {
                 height: 48.w,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.08),
+                  color: theme.colorScheme.primary
+                      .withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(12.r),
                 ),
-                child: Icon(icon, color: theme.colorScheme.primary),
+                child: Icon(
+                  icon,
+                  color: theme.colorScheme.primary,
+                ),
               ),
               SizedBox(width: 12.w),
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
                   children: [
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment:
+                          CrossAxisAlignment.center,
                       children: [
                         Flexible(
                           child: Text(
                             title,
-                            style: theme.textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
+                            style: theme
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                  fontWeight:
+                                      FontWeight.w600,
+                                ),
                           ),
                         ),
                         if (isUnread) ...[
@@ -69,7 +79,9 @@ class NotificationCard extends StatelessWidget {
                             width: 8.r,
                             height: 8.r,
                             decoration: BoxDecoration(
-                              color: theme.colorScheme.secondary,
+                              color: theme
+                                  .colorScheme
+                                  .secondary,
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -79,11 +91,13 @@ class NotificationCard extends StatelessWidget {
                     SizedBox(height: 6.h),
                     Text(
                       description,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(
-                          alpha: 0.6,
-                        ),
-                      ),
+                      style: theme.textTheme.bodyMedium
+                          ?.copyWith(
+                            color: theme
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
+                          ),
                     ),
                     SizedBox(height: 12.h),
                     const Divider(height: 1),
@@ -93,11 +107,15 @@ class NotificationCard extends StatelessWidget {
                         Expanded(
                           child: Text(
                             time,
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.colorScheme.onSurface.withValues(
-                                alpha: 0.6,
-                              ),
-                            ),
+                            style: theme.textTheme.bodySmall
+                                ?.copyWith(
+                                  color: theme
+                                      .colorScheme
+                                      .onSurface
+                                      .withValues(
+                                        alpha: 0.6,
+                                      ),
+                                ),
                           ),
                         ),
                         TextButton(
@@ -107,7 +125,10 @@ class NotificationCard extends StatelessWidget {
                             children: [
                               Text(actionLabel),
                               SizedBox(width: 4.w),
-                              const Icon(Icons.arrow_forward, size: 16),
+                              const Icon(
+                                Icons.arrow_forward,
+                                size: 16,
+                              ),
                             ],
                           ),
                         ),

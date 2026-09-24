@@ -5,7 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ReviewJobCard extends StatelessWidget {
   const ReviewJobCard({super.key, required this.job});
+
   final JobEntity job;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -20,34 +22,29 @@ class ReviewJobCard extends StatelessWidget {
           children: [
             Expanded(
               child: Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     s.applyingFor,
-                    style: theme.textTheme.bodyMedium
-                        ?.copyWith(
-                          color:
-                              theme.colorScheme.secondary,
-                          fontWeight: FontWeight.w600,
-                        ),
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.secondary,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   SizedBox(height: 8.h),
                   Text(
-                    s.juniorFlutterDeveloper,
-                    style: theme.textTheme.titleLarge
-                        ?.copyWith(
-                          color: theme.colorScheme.primary,
-                          fontWeight: FontWeight.w700,
-                        ),
+                    job.title,
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      color: theme.colorScheme.primary,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                   SizedBox(height: 4.h),
                   Text(
-                    '${job.title} • ${job.companyName}',
-                    style: theme.textTheme.titleMedium
-                        ?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
+                    job.companyName,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   SizedBox(height: 12.h),
                   Row(
@@ -55,22 +52,21 @@ class ReviewJobCard extends StatelessWidget {
                       Icon(
                         Icons.location_on_outlined,
                         size: 18.sp,
-                        color: theme.colorScheme.onSurface
-                            .withValues(alpha: 0.6),
+                        color: theme.colorScheme.onSurface.withValues(
+                          alpha: 0.6,
+                        ),
                       ),
                       SizedBox(width: 4.w),
                       Expanded(
                         child: Text(
-                          '${job.location} • ${job.workMode} • ${job.employmentType}',
-                          style: theme.textTheme.bodyMedium
-                              ?.copyWith(
-                                color: theme
-                                    .colorScheme
-                                    .onSurface
-                                    .withValues(
-                                      alpha: 0.65,
-                                    ),
-                              ),
+                          '${job.location} • '
+                          '${job.workMode} • '
+                          '${job.employmentType}',
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.colorScheme.onSurface.withValues(
+                              alpha: 0.65,
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -84,26 +80,38 @@ class ReviewJobCard extends StatelessWidget {
               height: 48.w,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: theme
-                    .colorScheme
-                    .surfaceContainerHighest,
+                color: theme.colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(8.r),
-                border: Border.all(
-                  color: theme.dividerColor,
-                ),
+                border: Border.all(color: theme.dividerColor),
               ),
               child: Text(
-                'TN',
-                style: theme.textTheme.titleMedium
-                    ?.copyWith(
-                      color: theme.colorScheme.primary,
-                      fontWeight: FontWeight.w700,
-                    ),
+                _companyInitials(job.companyName),
+                style: theme.textTheme.titleMedium?.copyWith(
+                  color: theme.colorScheme.primary,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  String _companyInitials(String companyName) {
+    final words = companyName
+        .trim()
+        .split(RegExp(r'\s+'))
+        .where((word) => word.isNotEmpty)
+        .toList();
+
+    if (words.isEmpty) return '';
+
+    if (words.length == 1) {
+      final word = words.first;
+      return word.substring(0, word.length >= 2 ? 2 : 1).toUpperCase();
+    }
+
+    return '${words.first[0]}${words.last[0]}'.toUpperCase();
   }
 }

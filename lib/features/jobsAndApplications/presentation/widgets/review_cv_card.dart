@@ -14,9 +14,8 @@ class ReviewCvCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(12.r),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(
-          alpha: 0.35,
-        ),
+        color: theme.colorScheme.surfaceContainerHighest
+            .withValues(alpha: 0.35),
         borderRadius: BorderRadius.circular(8.r),
         border: Border.all(color: theme.dividerColor),
       ),
@@ -27,7 +26,9 @@ class ReviewCvCard extends StatelessWidget {
             height: 42.w,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: theme.colorScheme.primary.withValues(alpha: 0.10),
+              color: theme.colorScheme.primary.withValues(
+                alpha: 0.10,
+              ),
               borderRadius: BorderRadius.circular(6.r),
             ),
             child: Icon(
@@ -44,23 +45,31 @@ class ReviewCvCard extends StatelessWidget {
                   'Ahmed_Mohamed_CV.pdf',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: theme.textTheme.bodyMedium
+                      ?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 Text(
                   'PDF • 1.4 MB',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-                  ),
+                  style: theme.textTheme.bodySmall
+                      ?.copyWith(
+                        color: theme.colorScheme.onSurface
+                            .withValues(alpha: 0.6),
+                      ),
                 ),
               ],
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 9.w, vertical: 4.h),
+            padding: EdgeInsets.symmetric(
+              horizontal: 9.w,
+              vertical: 4.h,
+            ),
             decoration: BoxDecoration(
-              color: AppColors.forestGreen.withValues(alpha: 0.10),
+              color: AppColors.forestGreen.withValues(
+                alpha: 0.10,
+              ),
               borderRadius: BorderRadius.circular(20.r),
             ),
             child: Text(
