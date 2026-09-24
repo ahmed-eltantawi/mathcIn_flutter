@@ -62,7 +62,6 @@ abstract final class AppConstants {
   static const int goodMatchThreshold = 80;
   static const int fairMatchThreshold = 60;
 
-  static const String appFamilyFont = 'DMSans';
   static const String defaultAvatarUrl =
       'https://i.pinimg.com/736x/bd/42/8e/bd428e6bb156d90045700dbf3e967c3e.jpg';
   static const String noInternetConnection =

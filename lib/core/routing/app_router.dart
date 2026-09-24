@@ -1,6 +1,7 @@
 import 'package:MatchIn/core/routing/app_routes.dart';
 import 'package:MatchIn/features/splash/presentation/pages/splash_view.dart';
 import 'package:MatchIn/core/services/services_locator.dart';
+import 'package:MatchIn/core/services/shared_preferences_service.dart';
 import 'package:MatchIn/core/widgets/app_web_view.dart';
 import 'package:MatchIn/core/widgets/main_navigation_screen.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/views/application_questions_view.dart';

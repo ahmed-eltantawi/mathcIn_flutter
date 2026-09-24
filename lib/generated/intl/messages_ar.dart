@@ -20,7 +20,25 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ar';
 
-  static String m0(name) => "مرحبًا، ${name} 👋";
+  static String m0(count) =>
+      "${Intl.plural(count, one: 'منذ يوم', two: 'منذ يومين', few: 'منذ ${count} أيام', other: 'منذ ${count} يوم')}";
+
+  static String m1(name) => "مرحبًا، ${name} 👋";
+
+  static String m2(count) =>
+      "${Intl.plural(count, one: 'منذ ساعة', two: 'منذ ساعتين', few: 'منذ ${count} ساعات', other: 'منذ ${count} ساعة')}";
+
+  static String m3(count) =>
+      "${Intl.plural(count, one: 'منذ دقيقة', two: 'منذ دقيقتين', few: 'منذ ${count} دقائق', other: 'منذ ${count} دقيقة')}";
+
+  static String m4(count) =>
+      "${Intl.plural(count, one: 'منذ شهر', two: 'منذ شهرين', few: 'منذ ${count} أشهر', other: 'منذ ${count} شهر')}";
+
+  static String m5(count) =>
+      "${Intl.plural(count, one: 'منذ أسبوع', two: 'منذ أسبوعين', few: 'منذ ${count} أسابيع', other: 'منذ ${count} أسبوع')}";
+
+  static String m6(count) =>
+      "${Intl.plural(count, one: 'منذ سنة', two: 'منذ سنتين', few: 'منذ ${count} سنوات', other: 'منذ ${count} سنة')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -120,6 +138,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "confirmPasswordHint":
             MessageLookupByLibrary.simpleMessage("أعد إدخال كلمة المرور"),
         "contactUs": MessageLookupByLibrary.simpleMessage("تواصل معنا"),
+        "continueAsGuest": MessageLookupByLibrary.simpleMessage("الدخول كضيف"),
         "continueText": MessageLookupByLibrary.simpleMessage("متابعة"),
         "continueWithGoogle":
             MessageLookupByLibrary.simpleMessage("المتابعة مع Google"),
@@ -146,6 +165,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "بعدين تقدر ترفع سيرتك الذاتية (اختياري)."),
         "cvUploadRequirements":
             MessageLookupByLibrary.simpleMessage("PDF أو DOCX • بحد أقصى 5 MB"),
+        "daysAgo": m0,
         "delete": MessageLookupByLibrary.simpleMessage("حذف"),
         "deleteChat": MessageLookupByLibrary.simpleMessage("حذف المحادثة"),
         "edit": MessageLookupByLibrary.simpleMessage("تعديل"),
@@ -172,6 +192,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "failed": MessageLookupByLibrary.simpleMessage("فشل"),
         "failedToSendMessage": MessageLookupByLibrary.simpleMessage(
             "فشل إرسال الرسالة. الرجاء المحاولة مرة أخرى."),
+        "fairMatch": MessageLookupByLibrary.simpleMessage("تطابق متوسط"),
         "finalConfirmation":
             MessageLookupByLibrary.simpleMessage("التأكيد النهائي"),
         "finalDecisionAndOnboarding":
@@ -200,11 +221,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "github": MessageLookupByLibrary.simpleMessage("GitHub"),
         "good": MessageLookupByLibrary.simpleMessage("جيد"),
         "goodMatch": MessageLookupByLibrary.simpleMessage("توافق جيد"),
-        "greetingUser": m0,
+        "greetingUser": m1,
         "helpfulAdvantage":
             MessageLookupByLibrary.simpleMessage("ميزة إضافية مفيدة"),
         "highPriority": MessageLookupByLibrary.simpleMessage("أولوية عالية"),
         "home": MessageLookupByLibrary.simpleMessage("الرئيسية"),
+        "hoursAgo": m2,
         "howCanIHelpYouToday":
             MessageLookupByLibrary.simpleMessage("كيف يمكنني مساعدتك اليوم؟"),
         "hybrid": MessageLookupByLibrary.simpleMessage("هجين"),
@@ -226,6 +248,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "وجدنا وظائف تناسب ملفك الشخصي"),
         "juniorFlutterDeveloper":
             MessageLookupByLibrary.simpleMessage("مطور Flutter مبتدئ"),
+        "justNow": MessageLookupByLibrary.simpleMessage("الآن"),
         "keepMeSignedIn": MessageLookupByLibrary.simpleMessage("ابقَ متصلاً"),
         "keepTrackerUpdated": MessageLookupByLibrary.simpleMessage(
             "حدّث حالة طلبك عندما يصلك رد من صاحب العمل."),
@@ -247,6 +270,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "matches": MessageLookupByLibrary.simpleMessage("وظيفة مناسبة"),
         "mentionedInJobRequirements":
             MessageLookupByLibrary.simpleMessage("مذكورة في متطلبات الوظيفة"),
+        "minutesAgo": m3,
+        "monthsAgo": m4,
         "mostRelevant": MessageLookupByLibrary.simpleMessage("الأكثر ملاءمة"),
         "myCareerRoadmap":
             MessageLookupByLibrary.simpleMessage("خارطة طريقي المهنية"),
@@ -513,6 +538,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("بانتظار رد مسؤول التوظيف."),
         "wantToImproveYourMatch":
             MessageLookupByLibrary.simpleMessage("هل تريد تحسين توافقك؟"),
+        "weeksAgo": m5,
         "welcomeBack": MessageLookupByLibrary.simpleMessage("مرحباً بعودتك!"),
         "whatYouAlreadyMatch":
             MessageLookupByLibrary.simpleMessage("المهارات المتوافقة لديك"),
@@ -525,6 +551,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "withinThreeBusinessDays":
             MessageLookupByLibrary.simpleMessage("خلال 3 أيام عمل"),
         "workMode": MessageLookupByLibrary.simpleMessage("طريقة العمل"),
+        "yearsAgo": m6,
         "yesterday": MessageLookupByLibrary.simpleMessage("أمس"),
         "yesterdayTime": MessageLookupByLibrary.simpleMessage("أمس • 3:45 م"),
         "yourApplicationFor":

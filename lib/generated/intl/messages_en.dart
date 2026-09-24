@@ -20,7 +20,25 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static String m0(name) => "Hello, ${name} 👋";
+  static String m0(count) =>
+      "${Intl.plural(count, one: '1 day ago', other: '${count} days ago')}";
+
+  static String m1(name) => "Hello, ${name} 👋";
+
+  static String m2(count) =>
+      "${Intl.plural(count, one: '1 hour ago', other: '${count} hours ago')}";
+
+  static String m3(count) =>
+      "${Intl.plural(count, one: '1 minute ago', other: '${count} minutes ago')}";
+
+  static String m4(count) =>
+      "${Intl.plural(count, one: '1 month ago', other: '${count} months ago')}";
+
+  static String m5(count) =>
+      "${Intl.plural(count, one: '1 week ago', other: '${count} weeks ago')}";
+
+  static String m6(count) =>
+      "${Intl.plural(count, one: '1 year ago', other: '${count} years ago')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -120,6 +138,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "confirmPasswordHint":
             MessageLookupByLibrary.simpleMessage("Re-enter your password"),
         "contactUs": MessageLookupByLibrary.simpleMessage("Contact Us"),
+        "continueAsGuest":
+            MessageLookupByLibrary.simpleMessage("Continue as Guest"),
         "continueText": MessageLookupByLibrary.simpleMessage("Continue"),
         "continueWithGoogle":
             MessageLookupByLibrary.simpleMessage("Continue with Google"),
@@ -145,6 +165,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Next, you can upload your CV (optional)."),
         "cvUploadRequirements":
             MessageLookupByLibrary.simpleMessage("PDF or DOCX • Max 5 MB"),
+        "daysAgo": m0,
         "delete": MessageLookupByLibrary.simpleMessage("Delete"),
         "deleteChat": MessageLookupByLibrary.simpleMessage("Delete Chat"),
         "edit": MessageLookupByLibrary.simpleMessage("Edit"),
@@ -170,6 +191,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "failed": MessageLookupByLibrary.simpleMessage("Failed"),
         "failedToSendMessage": MessageLookupByLibrary.simpleMessage(
             "Failed to send message. Please try again."),
+        "fairMatch": MessageLookupByLibrary.simpleMessage("Fair Match"),
         "finalConfirmation":
             MessageLookupByLibrary.simpleMessage("Final Confirmation"),
         "finalDecisionAndOnboarding": MessageLookupByLibrary.simpleMessage(
@@ -198,11 +220,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "github": MessageLookupByLibrary.simpleMessage("GitHub"),
         "good": MessageLookupByLibrary.simpleMessage("Good"),
         "goodMatch": MessageLookupByLibrary.simpleMessage("Good Match"),
-        "greetingUser": m0,
+        "greetingUser": m1,
         "helpfulAdvantage":
             MessageLookupByLibrary.simpleMessage("Helpful advantage"),
         "highPriority": MessageLookupByLibrary.simpleMessage("High priority"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
+        "hoursAgo": m2,
         "howCanIHelpYouToday":
             MessageLookupByLibrary.simpleMessage("How can I help you today?"),
         "hybrid": MessageLookupByLibrary.simpleMessage("Hybrid"),
@@ -224,6 +247,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "We found jobs that match your profile"),
         "juniorFlutterDeveloper":
             MessageLookupByLibrary.simpleMessage("Junior Flutter Developer"),
+        "justNow": MessageLookupByLibrary.simpleMessage("Just now"),
         "keepMeSignedIn":
             MessageLookupByLibrary.simpleMessage("Keep me signed in"),
         "keepTrackerUpdated": MessageLookupByLibrary.simpleMessage(
@@ -245,6 +269,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "matches": MessageLookupByLibrary.simpleMessage("matches"),
         "mentionedInJobRequirements": MessageLookupByLibrary.simpleMessage(
             "Mentioned in job requirements"),
+        "minutesAgo": m3,
+        "monthsAgo": m4,
         "mostRelevant": MessageLookupByLibrary.simpleMessage("Most relevant"),
         "myCareerRoadmap":
             MessageLookupByLibrary.simpleMessage("My Career Roadmap"),
@@ -509,6 +535,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Waiting for a response from the recruiter."),
         "wantToImproveYourMatch":
             MessageLookupByLibrary.simpleMessage("Want to improve your match?"),
+        "weeksAgo": m5,
         "welcomeBack": MessageLookupByLibrary.simpleMessage("Welcome Back!"),
         "whatYouAlreadyMatch":
             MessageLookupByLibrary.simpleMessage("What you already match"),
@@ -521,6 +548,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "withinThreeBusinessDays":
             MessageLookupByLibrary.simpleMessage("Within 3 business days"),
         "workMode": MessageLookupByLibrary.simpleMessage("Work mode"),
+        "yearsAgo": m6,
         "yesterday": MessageLookupByLibrary.simpleMessage("YESTERDAY"),
         "yesterdayTime":
             MessageLookupByLibrary.simpleMessage("Yesterday • 3:45 PM"),

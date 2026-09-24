@@ -3349,6 +3349,108 @@ class S {
       args: [],
     );
   }
+
+  /// `Fair Match`
+  String get fairMatch {
+    return Intl.message(
+      'Fair Match',
+      name: 'fairMatch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Just now`
+  String get justNow {
+    return Intl.message(
+      'Just now',
+      name: 'justNow',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{count, plural, =1{1 minute ago} other{{count} minutes ago}}`
+  String minutesAgo(int count) {
+    return Intl.plural(
+      count,
+      one: '1 minute ago',
+      other: '$count minutes ago',
+      name: 'minutesAgo',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `{count, plural, =1{1 hour ago} other{{count} hours ago}}`
+  String hoursAgo(int count) {
+    return Intl.plural(
+      count,
+      one: '1 hour ago',
+      other: '$count hours ago',
+      name: 'hoursAgo',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `{count, plural, =1{1 day ago} other{{count} days ago}}`
+  String daysAgo(int count) {
+    return Intl.plural(
+      count,
+      one: '1 day ago',
+      other: '$count days ago',
+      name: 'daysAgo',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `{count, plural, =1{1 week ago} other{{count} weeks ago}}`
+  String weeksAgo(int count) {
+    return Intl.plural(
+      count,
+      one: '1 week ago',
+      other: '$count weeks ago',
+      name: 'weeksAgo',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `{count, plural, =1{1 month ago} other{{count} months ago}}`
+  String monthsAgo(int count) {
+    return Intl.plural(
+      count,
+      one: '1 month ago',
+      other: '$count months ago',
+      name: 'monthsAgo',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `{count, plural, =1{1 year ago} other{{count} years ago}}`
+  String yearsAgo(int count) {
+    return Intl.plural(
+      count,
+      one: '1 year ago',
+      other: '$count years ago',
+      name: 'yearsAgo',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `Continue as Guest`
+  String get continueAsGuest {
+    return Intl.message(
+      'Continue as Guest',
+      name: 'continueAsGuest',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
