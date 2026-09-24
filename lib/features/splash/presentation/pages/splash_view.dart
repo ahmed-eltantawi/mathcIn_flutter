@@ -1,5 +1,6 @@
 import 'package:MatchIn/features/splash/presentation/widgets/splash_view-body.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 import 'package:MatchIn/core/routing/app_routes.dart';
 import 'package:MatchIn/core/utils/app_colors.dart';

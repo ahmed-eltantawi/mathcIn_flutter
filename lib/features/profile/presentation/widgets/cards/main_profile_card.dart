@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MainProfileCard extends StatelessWidget {
-  final String name;
-  final String jobTitle;
-  final String location;
-
   const MainProfileCard({
     super.key,
     required this.name,
     required this.jobTitle,
     required this.location,
   });
+
+  final String name;
+  final String jobTitle;
+  final String location;
 
   @override
   Widget build(BuildContext context) {

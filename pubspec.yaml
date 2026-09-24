@@ -70,9 +70,17 @@ dependencies:
   #--> OTP animation fields
   otp_animated_fields: ^0.1.1
 
+  #--> Staggered list animations
+  flutter_staggered_animations: ^1.1.1
+
+  #--> Splash screen
+  flutter_native_splash: ^2.4.8
+
+  #--> Google Ads
+  google_mobile_ads: ^9.1.0
+
 dev_dependencies:
   flutter_lints: ^6.0.0
-  flutter_native_splash: ^2.4.8
   flutter_test:
     sdk: flutter
 
@@ -142,3 +150,11 @@ flutter_assets:
   filename: app_assets.dart
   field_prefix: null
 
+flutter_launcher_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/images/app_icon.png"
+  min_sdk_android: 21
+  adaptive_icon_background: "#092856"
+  adaptive_icon_foreground: "assets/images/app_icon.png"

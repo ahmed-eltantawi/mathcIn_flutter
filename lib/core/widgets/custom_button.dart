@@ -2,11 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomButton extends StatelessWidget {
-  final String text;
-  final VoidCallback onPressed;
-  final bool isLoading;
-  final double width;
-
   const CustomButton({
     super.key,
     required this.text,
@@ -14,6 +9,11 @@ class CustomButton extends StatelessWidget {
     this.isLoading = false,
     this.width = double.infinity,
   });
+
+  final String text;
+  final VoidCallback onPressed;
+  final bool isLoading;
+  final double width;
 
   @override
   Widget build(BuildContext context) {

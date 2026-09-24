@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomDialog extends StatelessWidget {
-  final String title;
-  final String message;
-  final VoidCallback onConfirm;
-
   const CustomDialog({
     super.key,
     required this.title,
     required this.message,
     required this.onConfirm,
   });
+
+  final String title;
+  final String message;
+  final VoidCallback onConfirm;
 
   @override
   Widget build(BuildContext context) {

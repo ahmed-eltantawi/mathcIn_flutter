@@ -15,11 +15,11 @@ class ResourceButton extends StatelessWidget {
   String _getAssetPath() {
     switch (resource.type) {
       case TaskResourceType.youtube:
-        return Assets.videoIcon;
+        return Assets.imagesVideo;
       case TaskResourceType.documentation:
-        return Assets.docsIcon;
+        return Assets.imagesDoc;
       default:
-        return Assets.docsIcon;
+        return Assets.imagesDocs;
     }
   }
 

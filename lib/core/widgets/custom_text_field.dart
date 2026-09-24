@@ -2,16 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomTextField extends StatefulWidget {
-  final String? labelText;
-  final String hintText;
-  final Widget? prefixIcon;
-  final Widget? suffixIcon;
-  final bool isPassword;
-  final TextEditingController? controller;
-  final String? Function(String?)? validator;
-  final TextInputType keyboardType;
-  final TextInputAction? textInputAction;
-
   const CustomTextField({
     super.key,
     this.labelText,
@@ -24,6 +14,17 @@ class CustomTextField extends StatefulWidget {
     this.keyboardType = TextInputType.text,
     this.textInputAction,
   });
+
+  final String? labelText;
+  final String hintText;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
+  final bool isPassword;
+  final TextEditingController? controller;
+  final String? Function(String?)? validator;
+  final TextInputType keyboardType;
+  final TextInputAction? textInputAction;
+
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();

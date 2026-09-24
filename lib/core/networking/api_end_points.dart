@@ -1,24 +1,27 @@
 ///* EndPoints: the endpoints of the api
 abstract class EndPoint {
   //TODO: change these values
-  static const String baseUrl = 'http://127.0.0.1:8000/api/';
+  static const String baseUrl = 'http://10.0.2.2:8000/api/';
   static const String login = 'auth/login';
   static const String register = 'auth/register';
   static const String refreshToken = 'auth/refresh-token';
-  
+
   // Email Verification
   static const String verifyEmailOtp = 'auth/verify-email-otp';
   static const String resendEmailOtp = 'auth/resend-email-otp';
-  
+
   // Password Recovery
   static const String forgotPassword = 'auth/forgot-password';
-  static const String verifyPasswordResetOtp = 'auth/forgot-password/verify-otp';
+  static const String verifyPasswordResetOtp =
+      'auth/forgot-password/verify-otp';
   static const String resetPassword = 'auth/reset-password';
-  
+
   // Current User
   static const String currentUser = 'auth/me';
-  
+
   static const String chatMessage = 'chatbot/chat';
+  static const String savedJobs = 'saved-jobs';
+  static String saveJob(dynamic jobPostId) => 'jobs/$jobPostId/save';
 }
 
 ///* ApiKeys: the keys of the api
@@ -34,6 +37,10 @@ abstract class ApiKey {
   static const String name = 'name';
   static const String password = 'password';
   static const String passwordConfirmation = 'password_confirmation';
+  static const String page = 'page';
+  static const String perPage = 'per_page';
+  static const String jobId = 'job_id';
+  static const String isSaved = 'is_saved';
   // static const String id = 'id';
 }
 

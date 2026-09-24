@@ -1,0 +1,4 @@
+enum SavedTabType {
+  saved,
+  applied,
+}

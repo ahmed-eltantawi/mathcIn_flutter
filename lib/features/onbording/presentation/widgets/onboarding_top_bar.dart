@@ -1,5 +1,4 @@
 import 'package:MatchIn/core/extensions/context_extensions.dart';
-import 'package:MatchIn/features/onbording/presentation/widgets/onboarding_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -8,16 +7,18 @@ class OnboardingTopBar extends StatelessWidget {
     super.key,
     required this.currentPage,
     required this.onSkip,
+    this.onNotNow,
     this.totalSteps = 3,
   });
 
   final int currentPage;
   final VoidCallback onSkip;
+  final VoidCallback? onNotNow;
   final int totalSteps;
 
   @override
   Widget build(BuildContext context) {
-    final bool showSkip = currentPage < totalSteps - 1;
+    final bool isLastPage = currentPage >= totalSteps - 1;
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
@@ -26,7 +27,7 @@ class OnboardingTopBar extends StatelessWidget {
         children: [
           // Brand Wordmark
           Text(
-            'SkillMatch',
+            'Matchin',
             style: TextStyle(
               fontFamily: 'DM Sans',
               fontSize: 18.sp,
@@ -37,35 +38,27 @@ class OnboardingTopBar extends StatelessWidget {
             ),
           ),
 
-          // Animated Indicator Dots
-          OnboardingIndicator(currentPage: currentPage, itemCount: totalSteps),
-
-          // Trailing Action: Skip
-          SizedBox(
-            width: 50.w,
-            child: showSkip
-                ? Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: onSkip,
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        minimumSize: Size(40.w, 24.h),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                      child: Text(
-                        context.l10n.skip,
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                          color: context.colors.secondary,
-                          height: 20 / 14,
-                        ),
-                      ),
-                    ),
-                  )
-                : const SizedBox.shrink(),
+          // Trailing Action: Skip on earlier pages, Not Now on last page
+          Align(
+            alignment: AlignmentDirectional.centerEnd,
+            child: TextButton(
+              onPressed: isLastPage ? (onNotNow ?? onSkip) : onSkip,
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.zero,
+                minimumSize: Size(40.w, 24.h),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+              child: Text(
+                isLastPage ? context.l10n.notNow : context.l10n.skip,
+                style: TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w500,
+                  color: context.colors.secondary,
+                  height: 20 / 14,
+                ),
+              ),
+            ),
           ),
         ],
       ),

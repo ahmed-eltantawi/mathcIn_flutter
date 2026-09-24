@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class EducationCard extends StatelessWidget {
-  final String universityName;
-  final String degree;
-  final String years;
-
   const EducationCard({
     super.key,
     required this.universityName,
     required this.degree,
     required this.years,
   });
+
+  final String universityName;
+  final String degree;
+  final String years;
 
   @override
   Widget build(BuildContext context) {

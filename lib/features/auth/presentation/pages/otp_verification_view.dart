@@ -107,6 +107,14 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
     }
   }
 
+  void _handleBack() {
+    if (context.canPop()) {
+      context.pop();
+    } else {
+      context.go(AppRoutes.kLoginView);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -130,7 +138,10 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
       },
       child: Scaffold(
         backgroundColor: theme.scaffoldBackgroundColor,
-        appBar: CustomAppBar(title: S.of(context).enterVerificationCode),
+        appBar: CustomAppBar(
+          title: S.of(context).enterVerificationCode,
+          onBack: _handleBack,
+        ),
         body: SafeArea(
           child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
@@ -150,7 +161,7 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
                   isSuccess: _showSuccessLottie,
                 ),
                 SizedBox(height: 24.h),
-                OtpBackButton(onPressed: () => context.pop()),
+                OtpBackButton(onPressed: _handleBack),
               ],
             ),
           ),

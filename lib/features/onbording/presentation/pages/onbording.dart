@@ -7,10 +7,10 @@ import 'package:MatchIn/core/services/services_locator.dart';
 import 'package:MatchIn/core/services/shared_preferences_service.dart';
 import 'package:MatchIn/features/onbording/presentation/widgets/career_path_hero_widget.dart';
 import 'package:MatchIn/features/onbording/presentation/widgets/job_match_hero_widget.dart';
+import 'package:MatchIn/features/onbording/presentation/widgets/onboarding_indicator.dart';
 import 'package:MatchIn/features/onbording/presentation/widgets/onboarding_narrative_section.dart';
 import 'package:MatchIn/features/onbording/presentation/widgets/onboarding_top_bar.dart';
 import 'package:MatchIn/features/onbording/presentation/widgets/opportunity_hero_widget.dart';
-import 'package:MatchIn/features/onbording/presentation/widgets/profile_setup_card.dart';
 
 class Onb1 extends StatefulWidget {
   const Onb1({super.key});
@@ -58,9 +58,10 @@ class _Onb1State extends State<Onb1> {
               currentPage: _currentPage,
               totalSteps: 3,
               onSkip: () => _goToPage(2),
+              onNotNow: _finishOnboarding,
             ),
 
-            // Main Flow PageView
+            // Main Visual Area (Only Images/Visuals in PageView)
             Expanded(
               child: PageView(
                 controller: _pageController,
@@ -69,40 +70,36 @@ class _Onb1State extends State<Onb1> {
                     _currentPage = page;
                   });
                 },
-                children: [
-                  // Step 1: Turn CV into Opportunities
-                  _buildStep(
-                    centerVisual: const OpportunityHeroWidget(),
-                    bottomSection: OnboardingNarrativeSection(
-                      title: l10n.turnCvIntoOpportunities,
-                      subtitle: l10n.turnCvIntoOpportunitiesDesc,
-                      buttonText: l10n.next,
-                      onNext: () => _goToPage(1),
-                    ),
+                children: const [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                    child: OpportunityHeroWidget(),
                   ),
-
-                  // Step 2: Explainable Match
-                  _buildStep(
-                    centerVisual: const JobMatchHeroWidget(),
-                    bottomSection: OnboardingNarrativeSection(
-                      title: l10n.getExplainableMatch,
-                      subtitle: l10n.getExplainableMatchDesc,
-                      titleFontSize: 26.sp,
-                      buttonText: l10n.next,
-                      onNext: () => _goToPage(2),
-                    ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                    child: JobMatchHeroWidget(),
                   ),
-
-                  // Step 3: Career Profile Setup
-                  _buildStep(
-                    centerVisual: const CareerPathHeroWidget(),
-                    bottomSection: ProfileSetupCard(
-                      onStart: _finishOnboarding,
-                      onNotNow: _finishOnboarding,
-                    ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                    child: CareerPathHeroWidget(),
                   ),
                 ],
               ),
+            ),
+
+            // Indicator above the text section
+            Padding(
+              padding: EdgeInsets.only(top: 8.h, bottom: 16.h),
+              child: OnboardingIndicator(
+                currentPage: _currentPage,
+                itemCount: 3,
+              ),
+            ),
+
+            // Fixed Bottom Content & Button Area
+            Padding(
+              padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 16.h),
+              child: _buildBottomSection(l10n),
             ),
           ],
         ),
@@ -110,21 +107,35 @@ class _Onb1State extends State<Onb1> {
     );
   }
 
-  Widget _buildStep({
-    required Widget centerVisual,
-    required Widget bottomSection,
-  }) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
-      child: Column(
-        children: [
-          Expanded(child: centerVisual),
-          Padding(
-            padding: EdgeInsets.only(bottom: 16.h),
-            child: bottomSection,
-          ),
-        ],
-      ),
-    );
+  Widget _buildBottomSection(dynamic l10n) {
+    switch (_currentPage) {
+      case 0:
+        return OnboardingNarrativeSection(
+          key: const ValueKey(0),
+          title: l10n.turnCvIntoOpportunities,
+          subtitle: l10n.turnCvIntoOpportunitiesDesc,
+          buttonText: l10n.next,
+          onNext: () => _goToPage(1),
+        );
+      case 1:
+        return OnboardingNarrativeSection(
+          key: const ValueKey(1),
+          title: l10n.getExplainableMatch,
+          subtitle: l10n.getExplainableMatchDesc,
+          titleFontSize: 26.sp,
+          buttonText: l10n.next,
+          onNext: () => _goToPage(2),
+        );
+      case 2:
+        return OnboardingNarrativeSection(
+          key: const ValueKey(2),
+          title: l10n.setupCareerProfile,
+          subtitle: l10n.setupCareerProfileDesc,
+          buttonText: l10n.start,
+          onNext: _finishOnboarding,
+        );
+      default:
+        return const SizedBox.shrink();
+    }
   }
 }

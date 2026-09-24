@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ExperienceCard extends StatelessWidget {
-  final String jobTitle;
-  final String companyName;
-  final String duration;
-
   const ExperienceCard({
     super.key,
     required this.jobTitle,
     required this.companyName,
     required this.duration,
   });
+
+  final String jobTitle;
+  final String companyName;
+  final String duration;
 
   @override
   Widget build(BuildContext context) {

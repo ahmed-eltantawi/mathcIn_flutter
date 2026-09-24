@@ -339,5 +339,32 @@
   "linkedin": "LinkedIn",
   "secureProtectionText": "يحمي SkillMatch بياناتك وتاريخ تقديمك بشكل آمن.",
   "skillmatchPortal": "بوابة SKILLMATCH",
-  "accessYourPathways": "قم بالوصول إلى مساراتك المهنية الموثقة والفرص المتاحة."
+  "accessYourPathways": "قم بالوصول إلى مساراتك المهنية الموثقة والفرص المتاحة.",
+  "fairMatch": "تطابق متوسط",
+  "justNow": "الآن",
+  "minutesAgo": "{count, plural, =1{منذ دقيقة} =2{منذ دقيقتين} few{منذ {count} دقائق} other{منذ {count} دقيقة}}",
+  "@minutesAgo": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "hoursAgo": "{count, plural, =1{منذ ساعة} =2{منذ ساعتين} few{منذ {count} ساعات} other{منذ {count} ساعة}}",
+  "@hoursAgo": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "daysAgo": "{count, plural, =1{منذ يوم} =2{منذ يومين} few{منذ {count} أيام} other{منذ {count} يوم}}",
+  "@daysAgo": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "weeksAgo": "{count, plural, =1{منذ أسبوع} =2{منذ أسبوعين} few{منذ {count} أسابيع} other{منذ {count} أسبوع}}",
+  "@weeksAgo": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "monthsAgo": "{count, plural, =1{منذ شهر} =2{منذ شهرين} few{منذ {count} أشهر} other{منذ {count} شهر}}",
+  "@monthsAgo": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "yearsAgo": "{count, plural, =1{منذ سنة} =2{منذ سنتين} few{منذ {count} سنوات} other{منذ {count} سنة}}",
+  "@yearsAgo": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "continueAsGuest": "الدخول كضيف"
 }

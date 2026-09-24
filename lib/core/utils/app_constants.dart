@@ -45,18 +45,28 @@ abstract final class AppConstants {
   // Animation
   // =========================================================
 
-  static const Duration shortAnimation = Duration(milliseconds: 200);
-  static const Duration mediumAnimation = Duration(milliseconds: 300);
+  static const Duration shortAnimation = Duration(
+    milliseconds: 200,
+  );
+  static const Duration mediumAnimation = Duration(
+    milliseconds: 300,
+  );
 
   // =========================================================
   // Pagination
   // =========================================================
-
   static const int defaultPageSize = 20;
+
+  // MatchingStatus
+  static const int excellentMatchThreshold = 90;
+  static const int goodMatchThreshold = 80;
+  static const int fairMatchThreshold = 60;
+
   static const String appFamilyFont = 'DMSans';
   static const String defaultAvatarUrl =
       'https://i.pinimg.com/736x/bd/42/8e/bd428e6bb156d90045700dbf3e967c3e.jpg';
-  static const String noInternetConnection = 'No Internet Connection';
+  static const String noInternetConnection =
+      'No Internet Connection';
 
   // TODO: change the app language from here
   static const String languageCode = 'en';

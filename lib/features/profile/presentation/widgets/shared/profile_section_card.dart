@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProfileSectionCard extends StatelessWidget {
-  final Widget child;
-
   const ProfileSectionCard({super.key, required this.child});
+
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {

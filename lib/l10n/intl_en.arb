@@ -336,5 +336,32 @@
   "linkedin": "LinkedIn",
   "secureProtectionText": "SkillMatch securely protects your verified credentials and application histories.",
   "skillmatchPortal": "SKILLMATCH PORTAL",
-  "accessYourPathways": "Access your verified career pathways and opportunities."
+  "accessYourPathways": "Access your verified career pathways and opportunities.",
+  "fairMatch": "Fair Match",
+  "justNow": "Just now",
+  "minutesAgo": "{count, plural, =1{1 minute ago} other{{count} minutes ago}}",
+  "@minutesAgo": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "hoursAgo": "{count, plural, =1{1 hour ago} other{{count} hours ago}}",
+  "@hoursAgo": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "daysAgo": "{count, plural, =1{1 day ago} other{{count} days ago}}",
+  "@daysAgo": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "weeksAgo": "{count, plural, =1{1 week ago} other{{count} weeks ago}}",
+  "@weeksAgo": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "monthsAgo": "{count, plural, =1{1 month ago} other{{count} months ago}}",
+  "@monthsAgo": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "yearsAgo": "{count, plural, =1{1 year ago} other{{count} years ago}}",
+  "@yearsAgo": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "continueAsGuest": "Continue as Guest"
 }
