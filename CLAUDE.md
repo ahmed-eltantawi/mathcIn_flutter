@@ -244,9 +244,11 @@
 9. Strict Cubit / UI Separation:
    - Presentation widgets must only focus on rendering UI layout and capturing user inputs.
    - All state mutations, data fetching, and business operations belong inside Cubits/Blocs.
-10. Granular Widget Decomposition:
-   - Break down complex presentation files into small, single-responsibility sub-widgets.
-   - Avoid monolithic `build()` methods by extracting inner sections into modular sub-widgets (e.g., `_TaskHeaderRow`, `_TaskExpandedDetails`, `_TreasureBoxArtwork`).
+10. Granular Widget Decomposition & File-Size Focus:
+   - Keep Flutter files small and focused. Avoid large UI files containing multiple unrelated widgets or responsibilities.
+   - When a file becomes unnecessarily large or contains multiple independent UI sections, extract those sections into focused, reusable widgets/files following the existing project structure and naming conventions.
+   - Do not split files arbitrarily; extraction should improve readability, maintainability, reusability, and adherence to Single Responsibility Principle.
+   - Before adding substantial UI code to an existing widget file, check whether the new section should be extracted into its own widget/file. Prefer focused widgets over very large `build()` methods (e.g., `_TaskHeaderRow`, `_TaskExpandedDetails`, `_TreasureBoxArtwork`).
 11. Cubit vs. Widget Boundaries:
    - **Cubit / State Management**: Business logic, roadmap state, node status/state changes, unlock logic, treasure claiming logic, data transformations, API/repository calls, state updates.
    - **Widgets**: `BuildContext`, `GlobalKey`, `RenderBox`, `setState`, Layout calculations, `Positioned`, `Transform`, `CustomPaint`, Bottom Sheet presentation, SnackBar presentation, UI callbacks.

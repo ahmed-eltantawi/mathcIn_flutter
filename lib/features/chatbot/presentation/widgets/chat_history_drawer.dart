@@ -3,10 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:MatchIn/core/widgets/delete_confirmation_dialog.dart';
-import '../../../../generated/l10n.dart';
-import '../../domain/entities/chat_entity.dart';
-import '../cubit/chatbot_cubit.dart';
-import '../cubit/chatbot_state.dart';
+import 'package:MatchIn/features/chatbot/domain/entities/chat_entity.dart';
+import 'package:MatchIn/features/chatbot/presentation/cubit/chatbot_cubit.dart';
+import 'package:MatchIn/features/chatbot/presentation/cubit/chatbot_state.dart';
+import 'package:MatchIn/features/chatbot/presentation/widgets/chat_drawer_header.dart';
+import 'package:MatchIn/features/chatbot/presentation/widgets/chat_history_empty_state.dart';
+import 'package:MatchIn/features/chatbot/presentation/widgets/chat_history_item_tile.dart';
+import 'package:MatchIn/generated/l10n.dart';
 
 class ChatHistoryDrawer extends StatelessWidget {
   const ChatHistoryDrawer({super.key});
@@ -40,7 +43,6 @@ class ChatHistoryDrawer extends StatelessWidget {
       }
     }
 
-    // Remove empty groups
     grouped.removeWhere((key, value) => value.isEmpty);
     return grouped;
   }
@@ -67,7 +69,6 @@ class ChatHistoryDrawer extends StatelessWidget {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     final s = S.of(context);
@@ -79,69 +80,7 @@ class ChatHistoryDrawer extends StatelessWidget {
       child: SafeArea(
         child: Column(
           children: [
-            // Drawer Header with New Chat Button
-            Padding(
-              padding: EdgeInsets.all(16.r),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(6.r),
-                        decoration: BoxDecoration(
-                          color: theme.primaryColor.withValues(alpha: 0.12),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          Icons.auto_awesome,
-                          color: theme.primaryColor,
-                          size: 20.r,
-                        ),
-                      ),
-                      SizedBox(width: 10.w),
-                      Text(
-                        s.chatHistory,
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.sp,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 16.h),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        context.read<ChatbotCubit>().initializeChat();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: theme.primaryColor,
-                        padding: EdgeInsets.symmetric(vertical: 12.h),
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
-                      ),
-                      icon: Icon(
-                        Icons.add_rounded,
-                        color: Colors.white,
-                        size: 20.r,
-                      ),
-                      label: Text(
-                        s.newChat,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14.sp,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            const ChatDrawerHeader(),
             Divider(height: 1.h),
 
             // History List
@@ -151,27 +90,7 @@ class ChatHistoryDrawer extends StatelessWidget {
                   final grouped = _groupChats(context, state.chatHistory);
 
                   if (state.chatHistory.isEmpty) {
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.chat_bubble_outline_rounded,
-                            size: 48.r,
-                            color: theme.hintColor.withValues(alpha: 0.4),
-                          ),
-                          SizedBox(height: 12.h),
-                          Text(
-                            s.noConversationsYet,
-                            style: TextStyle(
-                              color: theme.hintColor,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
+                    return const ChatHistoryEmptyState();
                   }
 
                   return ListView.builder(
@@ -203,53 +122,17 @@ class ChatHistoryDrawer extends StatelessWidget {
                           ),
                           ...chats.map((chat) {
                             final isSelected = chat.id == state.activeChatId;
-                            return ListTile(
-                              dense: true,
-                              selected: isSelected,
-                              selectedTileColor: theme.primaryColor.withValues(
-                                alpha: 0.1,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: 12.w,
-                                vertical: 0,
-                              ),
-                              leading: Icon(
-                                Icons.chat_bubble_outline_rounded,
-                                size: 18.r,
-                                color: isSelected
-                                    ? theme.primaryColor
-                                    : theme.hintColor,
-                              ),
-                              title: Text(
-                                chat.title,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 13.5.sp,
-                                  fontWeight: isSelected
-                                      ? FontWeight.bold
-                                      : FontWeight.normal,
-                                  color: isSelected ? theme.primaryColor : null,
-                                ),
-                              ),
-                              trailing: IconButton(
-                                icon: Icon(
-                                  Icons.delete_outline_rounded,
-                                  size: 18.r,
-                                  color: theme.hintColor.withValues(alpha: 0.7),
-                                ),
-                                onPressed: () =>
-                                    _showDeleteConfirmDialog(context, chat),
-                              ),
-                              onTap: () {
+                            return ChatHistoryItemTile(
+                              chat: chat,
+                              isSelected: isSelected,
+                              onSelect: () {
                                 Navigator.pop(context);
                                 context.read<ChatbotCubit>().selectChat(
-                                  chat.id,
-                                );
+                                      chat.id,
+                                    );
                               },
+                              onDelete: () =>
+                                  _showDeleteConfirmDialog(context, chat),
                             );
                           }),
                         ],

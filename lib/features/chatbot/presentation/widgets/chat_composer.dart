@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:MatchIn/features/chatbot/presentation/cubit/chatbot_voice_cubit.dart';
+import 'package:MatchIn/features/chatbot/presentation/widgets/chat_send_button.dart';
 import 'package:MatchIn/features/chatbot/presentation/widgets/chat_voice_listener.dart';
 import 'package:MatchIn/features/chatbot/presentation/widgets/voice_input_button.dart';
 import 'package:MatchIn/generated/l10n.dart';
@@ -96,36 +97,11 @@ class _ChatComposerState extends State<ChatComposer> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (isListening) ...[
-                    Padding(
-                      padding: EdgeInsets.only(
-                        bottom: 8.h,
-                        left: 12.w,
-                        right: 12.w,
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 8.r,
-                            height: 8.r,
-                            decoration: BoxDecoration(
-                              color: statusColor,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                          SizedBox(width: 8.w),
-                          Text(
-                            s.listening,
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w600,
-                              color: statusColor,
-                            ),
-                          ),
-                        ],
-                      ),
+                  if (isListening)
+                    _ListeningStatusHeader(
+                      statusText: s.listening,
+                      statusColor: statusColor,
                     ),
-                  ],
                   Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: 14.w,
@@ -183,50 +159,19 @@ class _ChatComposerState extends State<ChatComposer> {
                           onPressed: () {
                             final locale =
                                 Localizations.localeOf(context).languageCode ==
-                                    'ar'
-                                ? 'ar_SA'
-                                : 'en_US';
+                                        'ar'
+                                    ? 'ar_SA'
+                                    : 'en_US';
                             context.read<ChatbotVoiceCubit>().toggleListening(
-                              localeId: locale,
-                            );
+                                  localeId: locale,
+                                );
                           },
                         ),
                         SizedBox(width: 6.w),
-                        AnimatedContainer(
-                          duration: const Duration(milliseconds: 200),
-                          width: 38.r,
-                          height: 38.r,
-                          decoration: BoxDecoration(
-                            color: (_canSend && !widget.isGenerating)
-                                ? colorScheme.primary
-                                : colorScheme.onSurface.withValues(alpha: 0.12),
-                            shape: BoxShape.circle,
-                          ),
-                          child: IconButton(
-                            onPressed: (_canSend && !widget.isGenerating)
-                                ? _handleSend
-                                : null,
-                            padding: EdgeInsets.all(8.r),
-                            constraints: const BoxConstraints(),
-                            tooltip: s.verify,
-                            icon: widget.isGenerating
-                                ? SizedBox(
-                                    width: 16.r,
-                                    height: 16.r,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2.r,
-                                      color: colorScheme.onPrimary,
-                                    ),
-                                  )
-                                : Icon(
-                                    Icons.arrow_upward_rounded,
-                                    size: 18.r,
-                                    color: (_canSend && !widget.isGenerating)
-                                        ? colorScheme.onPrimary
-                                        : colorScheme.onSurfaceVariant
-                                              .withValues(alpha: 0.65),
-                                  ),
-                          ),
+                        ChatSendButton(
+                          canSend: _canSend,
+                          isGenerating: widget.isGenerating,
+                          onSend: _handleSend,
                         ),
                       ],
                     ),
@@ -236,6 +181,48 @@ class _ChatComposerState extends State<ChatComposer> {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _ListeningStatusHeader extends StatelessWidget {
+  const _ListeningStatusHeader({
+    required this.statusText,
+    required this.statusColor,
+  });
+
+  final String statusText;
+  final Color statusColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: 8.h,
+        left: 12.w,
+        right: 12.w,
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 8.r,
+            height: 8.r,
+            decoration: BoxDecoration(
+              color: statusColor,
+              shape: BoxShape.circle,
+            ),
+          ),
+          SizedBox(width: 8.w),
+          Text(
+            statusText,
+            style: TextStyle(
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w600,
+              color: statusColor,
+            ),
+          ),
+        ],
       ),
     );
   }

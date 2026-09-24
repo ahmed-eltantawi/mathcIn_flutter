@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'package:MatchIn/features/chatbot/presentation/widgets/suggested_question_card.dart';
 import '../../../../generated/l10n.dart';
 
 class SuggestedQuestionsGrid extends StatelessWidget {
@@ -64,59 +65,11 @@ class SuggestedQuestionsGrid extends StatelessWidget {
           itemCount: _questions.length,
           itemBuilder: (context, index) {
             final q = _questions[index];
-            return Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: () => onSelectQuestion(q['prompt']!),
-                borderRadius: BorderRadius.circular(16.r),
-                splashColor: theme.primaryColor.withValues(alpha: 0.1),
-                highlightColor: theme.primaryColor.withValues(alpha: 0.05),
-                child: Container(
-                  padding: EdgeInsets.all(12.r),
-                  decoration: BoxDecoration(
-                    color: isDark
-                        ? Colors.grey[850]
-                        : theme.colorScheme.surfaceContainerHighest.withValues(
-                            alpha: 0.35,
-                          ),
-                    borderRadius: BorderRadius.circular(16.r),
-                    border: Border.all(
-                      color: isDark
-                          ? Colors.grey[750]!
-                          : theme.colorScheme.outlineVariant.withValues(
-                              alpha: 0.4,
-                            ),
-                      width: 1,
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(6.r),
-                        decoration: BoxDecoration(
-                          color: theme.primaryColor.withValues(alpha: 0.1),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Text(
-                          q['icon']!,
-                          style: TextStyle(fontSize: 18.sp),
-                        ),
-                      ),
-                      Text(
-                        q['title']!,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 13.sp,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+            return SuggestedQuestionCard(
+              icon: q['icon']!,
+              title: q['title']!,
+              prompt: q['prompt']!,
+              onTap: () => onSelectQuestion(q['prompt']!),
             );
           },
         ),
