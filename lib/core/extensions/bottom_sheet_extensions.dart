@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:MatchIn/core/widgets/bottom_sheet/app_bottom_sheet.dart';
+import 'package:MatchIn/core/widgets/app_bottom_sheet.dart';
 
 /// Extension on [BuildContext] for displaying standard bottom sheets.
 extension BottomSheetExtensions on BuildContext {
