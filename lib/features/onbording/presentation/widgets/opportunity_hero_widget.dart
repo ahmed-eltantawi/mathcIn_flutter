@@ -4,7 +4,10 @@ import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:MatchIn/core/utils/app_assets.dart';
 
 class OpportunityHeroWidget extends StatelessWidget {
-  const OpportunityHeroWidget({super.key, this.imagePath = Assets.onb1Hero});
+  const OpportunityHeroWidget({
+    super.key,
+    this.imagePath = Assets.imagesOnboarding1,
+  });
 
   final String imagePath;
 

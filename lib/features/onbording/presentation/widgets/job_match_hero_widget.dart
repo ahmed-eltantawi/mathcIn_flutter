@@ -4,7 +4,10 @@ import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:MatchIn/core/utils/app_assets.dart';
 
 class JobMatchHeroWidget extends StatelessWidget {
-  const JobMatchHeroWidget({super.key, this.imagePath = Assets.onb2Hero});
+  const JobMatchHeroWidget({
+    super.key,
+    this.imagePath = Assets.imagesOnboarding2,
+  });
 
   final String imagePath;
 

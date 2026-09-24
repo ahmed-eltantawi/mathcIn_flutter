@@ -24,19 +24,15 @@ class HomeHeader extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  showImage(image: Assets.imagesTextLogo),
+                  showImage(image: Assets.iconsTextLogo),
 
                   const Spacer(),
 
                   InkWell(
                     onTap: () {
-                      context.push(
-                        AppRoutes.knotifications,
-                      );
+                      context.push(AppRoutes.knotifications);
                     },
-                    borderRadius: BorderRadius.circular(
-                      20.r,
-                    ),
+                    borderRadius: BorderRadius.circular(20.r),
                     child: Padding(
                       padding: EdgeInsets.all(6.r),
                       child: SvgPicture.asset(
@@ -51,14 +47,10 @@ class HomeHeader extends StatelessWidget {
                     onTap: () {
                       context.push(AppRoutes.ksettings);
                     },
-                    borderRadius: BorderRadius.circular(
-                      20.r,
-                    ),
+                    borderRadius: BorderRadius.circular(20.r),
                     child: Padding(
                       padding: EdgeInsets.all(6.r),
-                      child: SvgPicture.asset(
-                        Assets.iconsSettingsIcon,
-                      ),
+                      child: SvgPicture.asset(Assets.iconsSettingsIcon),
                     ),
                   ),
                 ],
