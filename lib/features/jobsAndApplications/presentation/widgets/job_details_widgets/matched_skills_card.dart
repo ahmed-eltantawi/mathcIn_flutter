@@ -1,14 +1,20 @@
-import 'package:MatchIn/core/utils/app_colors.dart';
-import 'package:MatchIn/generated/l10n.dart';
+import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 
 class MatchedSkillsCard extends StatelessWidget {
-  const MatchedSkillsCard({super.key});
+  const MatchedSkillsCard({
+    super.key,
+    required this.skills,
+  });
+
+  final List<String> skills;
 
   @override
   Widget build(BuildContext context) {
-    final s = S.of(context);
+    final s = context.l10n;
+    final theme = context.theme;
 
     return Card(
       margin: EdgeInsets.zero,
@@ -18,17 +24,15 @@ class MatchedSkillsCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.check_circle_outline,
-                  color: AppColors.forestGreen,
+                  color: context.semanticColors.success,
                 ),
-                SizedBox(width: 7.w),
+                Gap(7.w),
                 Expanded(
                   child: Text(
                     s.whatYouAlreadyMatch,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium
+                    style: theme.textTheme.titleMedium
                         ?.copyWith(
                           fontWeight: FontWeight.w700,
                         ),
@@ -37,24 +41,13 @@ class MatchedSkillsCard extends StatelessWidget {
                 _SourceChip(label: s.fromYourCv),
               ],
             ),
-            SizedBox(height: 8.h),
-            _MatchedSkill(
-              title: 'Flutter',
-              subtitle: s.foundInCvAndProjects,
-            ),
-            _MatchedSkill(
-              title: 'REST APIs',
-              subtitle: s.usedInTwoProjects,
-            ),
-            _MatchedSkill(
-              title: 'Git & GitHub',
-              subtitle: s.foundInYourSkills,
-            ),
-            _MatchedSkill(
-              title: 'State Management',
-              subtitle: s.experienceWithBloc,
-              showDivider: false,
-            ),
+            Gap(8.h),
+            ...List.generate(skills.length, (index) {
+              return _MatchedSkill(
+                title: skills[index],
+                showDivider: index != skills.length - 1,
+              );
+            }),
           ],
         ),
       ),
@@ -65,17 +58,15 @@ class MatchedSkillsCard extends StatelessWidget {
 class _MatchedSkill extends StatelessWidget {
   const _MatchedSkill({
     required this.title,
-    required this.subtitle,
-    this.showDivider = true,
+    required this.showDivider,
   });
 
   final String title;
-  final String subtitle;
   final bool showDivider;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.theme;
 
     return Column(
       children: [
@@ -84,36 +75,19 @@ class _MatchedSkill extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(
+              Icon(
                 Icons.check_rounded,
-                color: AppColors.forestGreen,
-                size: 19,
+                color: context.semanticColors.success,
+                size: 19.sp,
               ),
-              SizedBox(width: 10.w),
+              Gap(10.w),
               Expanded(
-                child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: theme.textTheme.bodyMedium
-                          ?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                    ),
-                    SizedBox(height: 2.h),
-                    Text(
-                      subtitle,
-                      style: theme.textTheme.bodySmall
-                          ?.copyWith(
-                            color: theme
-                                .colorScheme
-                                .onSurface
-                                .withValues(alpha: 0.6),
-                          ),
-                    ),
-                  ],
+                child: Text(
+                  title,
+                  style: theme.textTheme.bodyMedium
+                      ?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
               ),
             ],
@@ -138,21 +112,18 @@ class _SourceChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
+
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: 10.w,
         vertical: 5.h,
       ),
       decoration: BoxDecoration(
-        border: Border.all(
-          color: Theme.of(context).dividerColor,
-        ),
+        border: Border.all(color: theme.dividerColor),
         borderRadius: BorderRadius.circular(5.r),
       ),
-      child: Text(
-        label,
-        style: Theme.of(context).textTheme.bodySmall,
-      ),
+      child: Text(label, style: theme.textTheme.bodySmall),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:MatchIn/core/routing/app_routes.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_entity.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_cubit.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/apply_header.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/review_application_view_widgets/user_info.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/review_cv_card.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/review_application_view_widgets/review_info_card.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/review_application_view_widgets/review_job_card.dart';
@@ -103,7 +104,7 @@ class ReviewApplicationViewBody extends StatelessWidget {
                     actionLabel: s.edit,
 
                     job: job,
-                    child: const _UserInformation(),
+                    child: const UserInformation(),
                   ),
 
                   SizedBox(height: 16.h),
@@ -221,70 +222,6 @@ class ReviewApplicationViewBody extends StatelessWidget {
                 ),
               ),
             ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _UserInformation extends StatelessWidget {
-  const _UserInformation();
-
-  @override
-  Widget build(BuildContext context) {
-    final s = S.of(context);
-
-    return Column(
-      children: [
-        _InfoRow(label: s.fullName, value: 'Ahmed Mohamed'),
-        SizedBox(height: 12.h),
-        _InfoRow(
-          label: s.emailAddress,
-          value: 'ahmed@email.com',
-        ),
-        SizedBox(height: 12.h),
-        _InfoRow(
-          label: s.phoneNumber,
-          value: '+20 100 000 0000',
-        ),
-      ],
-    );
-  }
-}
-
-class _InfoRow extends StatelessWidget {
-  const _InfoRow({
-    required this.label,
-    required this.value,
-  });
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Row(
-      children: [
-        Expanded(
-          child: Text(
-            label,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onSurface.withValues(
-                alpha: 0.65,
-              ),
-            ),
-          ),
-        ),
-        Flexible(
-          child: Text(
-            value,
-            textAlign: TextAlign.end,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
           ),
         ),
       ],

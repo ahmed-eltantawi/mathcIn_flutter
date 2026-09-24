@@ -15,6 +15,8 @@ class ApplyForRoleView extends StatelessWidget {
       create: (_) => getIt<CvCubit>(),
       child: Scaffold(
         body: SafeArea(
+          top: true,
+          bottom: false,
           child: ApplyForRoleViewBody(job: job),
         ),
       ),

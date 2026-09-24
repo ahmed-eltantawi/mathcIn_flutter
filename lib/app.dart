@@ -1,4 +1,5 @@
 import 'package:MatchIn/core/routing/app_router.dart';
+import 'package:MatchIn/core/routing/cubit/main_navigation_cubit.dart';
 import 'package:MatchIn/core/services/services_locator.dart';
 import 'package:MatchIn/core/theme/dark_theme.dart';
 import 'package:MatchIn/core/theme/light_theme.dart';
@@ -25,6 +26,10 @@ class MatchIn extends StatelessWidget {
         ),
         BlocProvider.value(
           value: getIt<HomeCubit>()..getHomeDashboard(),
+        ),
+
+        BlocProvider.value(
+          value: getIt<MainNavigationCubit>(),
         ),
         // أي Cubit مشترك تاني هيتضاف هنا مستقبلاً
       ],

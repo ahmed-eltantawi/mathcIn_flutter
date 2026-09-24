@@ -3,6 +3,7 @@ import 'package:MatchIn/core/cache/shared_preferences_helper.dart';
 import 'package:MatchIn/core/networking/api_consumer.dart';
 import 'package:MatchIn/core/networking/dio_consumer.dart';
 import 'package:MatchIn/core/networking/network_info.dart';
+import 'package:MatchIn/core/routing/cubit/main_navigation_cubit.dart';
 import 'package:MatchIn/core/services/file_picker_service.dart';
 import 'package:MatchIn/core/services/secure_storage_service.dart';
 import 'package:MatchIn/core/services/shared_preferences_service.dart';
@@ -54,6 +55,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 final getIt = GetIt.instance;
 
 Future<void> setupServiceLocator() async {
+  // =========================================================
+  // Main Navigation
+  // =========================================================
+
+  getIt.registerLazySingleton<MainNavigationCubit>(
+    () => MainNavigationCubit(),
+  );
+
   // =========================================================
   // Auth Feature
   // =========================================================

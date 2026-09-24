@@ -13,6 +13,8 @@ class ApplicationQuestionsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
+        top: true,
+        bottom: false,
         child: ApplicationQuestionsViewBody(job: job),
       ),
     );

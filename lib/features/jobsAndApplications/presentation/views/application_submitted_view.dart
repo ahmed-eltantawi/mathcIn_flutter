@@ -12,6 +12,8 @@ class ApplicationSubmittedView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
+        top: true,
+        bottom: false,
         child: ApplicationSubmittedViewBody(job: job),
       ),
     );

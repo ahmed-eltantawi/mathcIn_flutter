@@ -29,29 +29,48 @@ class JobDetailsViewBody extends StatelessWidget {
             job;
         final isApplied =
             currentJob.applicationStatus !=
-            JobApplicationStatus.pending;
+            JobApplicationStatus.notApplied;
 
         return Column(
           children: [
             const JobDetailsHeader(),
-            const Divider(height: 1),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.all(16.r),
                 child: ListView(
                   children: [
-                    JobCard(job: job),
+                    JobCard(job: currentJob),
                     Gap(14.h),
                     const JobMatchCard(),
                     Gap(14.h),
-                    const MatchedSkillsCard(),
+                    if (currentJob
+                        .matchedSkills
+                        .isNotEmpty) ...[
+                      MatchedSkillsCard(
+                        skills: currentJob.matchedSkills,
+                      ),
+                      Gap(14.h),
+                    ],
                     Gap(14.h),
-                    const SkillsToImproveCard(),
-                    Gap(14.h),
+                    if (currentJob
+                        .missingSkills
+                        .isNotEmpty) ...[
+                      SkillsToImproveCard(
+                        skills: currentJob.missingSkills,
+                      ),
+                      Gap(14.h),
+                    ],
                     const JobRequirementsCard(),
-                    Gap(14.h),
-                    const ImproveMatchCard(),
-
+                    if (currentJob
+                        .missingSkills
+                        .isNotEmpty) ...[
+                      Gap(14.h),
+                      ImproveMatchCard(
+                        onBuildRoadmap: () {
+                          // Next step: Chatbot handoff.
+                        },
+                      ),
+                    ],
                     if (isApplied) ...[
                       Gap(14.h),
                       const ApplicationSummaryCard(),

@@ -25,17 +25,16 @@ class ApplyForRoleViewBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = S.of(context);
 
-    return Padding(
-      padding: EdgeInsets.all(16.r),
-      child: Column(
-        children: [
-          ApplyHeader(
-            title: s.applyForRole,
-            currentStep: 1,
-            totalSteps: 3,
-          ),
-          const Divider(height: 1),
-          Expanded(
+    return Column(
+      children: [
+        ApplyHeader(
+          title: s.applyForRole,
+          currentStep: 1,
+          totalSteps: 3,
+        ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(16.r),
             child: ListView(
               children: [
                 JobSummaryCard(job: job),
@@ -112,21 +111,21 @@ class ApplyForRoleViewBody extends StatelessWidget {
                 SizedBox(height: 24.h),
                 const CoverNote(),
                 SizedBox(height: 20.h),
+                ApplyBottomButton(
+                  label: s.continueText,
+                  helperText: s.nextApplicationQuestions,
+                  onPressed: () {
+                    context.push(
+                      AppRoutes.kapplicationQuestions,
+                      extra: job,
+                    );
+                  },
+                ),
               ],
             ),
           ),
-          ApplyBottomButton(
-            label: s.continueText,
-            helperText: s.nextApplicationQuestions,
-            onPressed: () {
-              context.push(
-                AppRoutes.kapplicationQuestions,
-                extra: job,
-              );
-            },
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

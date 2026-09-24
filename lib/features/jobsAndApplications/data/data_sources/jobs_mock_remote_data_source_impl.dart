@@ -19,6 +19,8 @@ class JobsMockRemoteDataSourceImpl
       ),
       skills: const ['Flutter', 'REST API', 'Bloc'],
       matchPercentage: 92,
+      matchedSkills: const [],
+      missingSkills: const [],
     ),
     JobEntity(
       id: '2',
@@ -30,6 +32,8 @@ class JobsMockRemoteDataSourceImpl
       employmentType: 'Internship',
       postedDate: DateTime.now(),
       skills: const ['Flutter', 'Firebase', 'Git'],
+      matchedSkills: const ['Flutter'],
+      missingSkills: const ['Firebase', 'Git'],
       matchPercentage: 82,
     ),
     JobEntity(
@@ -44,7 +48,9 @@ class JobsMockRemoteDataSourceImpl
         const Duration(days: 1),
       ),
       skills: const ['Dart', 'Flutter'],
-      matchPercentage: 75,
+      matchedSkills: const ['Dart', 'Flutter'],
+      missingSkills: const [],
+      matchPercentage: 100,
     ),
   ];
 

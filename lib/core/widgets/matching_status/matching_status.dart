@@ -1,4 +1,5 @@
 import 'package:MatchIn/core/extensions/context_extensions.dart';
+import 'package:MatchIn/core/widgets/matching_status/matching_status_data.dart';
 import 'package:MatchIn/core/widgets/matching_status/matching_status_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -55,7 +56,7 @@ class MatchingStatus extends StatelessWidget {
     );
   }
 
-  _MatchingStatusData _getStatusData(
+  MatchingStatusData _getStatusData(
     BuildContext context,
     MatchingStatusType type,
     int percentage,
@@ -64,38 +65,28 @@ class MatchingStatus extends StatelessWidget {
 
     switch (type) {
       case MatchingStatusType.excellent:
-        return _MatchingStatusData(
+        return MatchingStatusData(
           label: '$percentage% ${context.l10n.strongMatch}',
-          color: colors.primary,
+          color: context.semanticColors.success,
         );
 
       case MatchingStatusType.good:
-        return _MatchingStatusData(
+        return MatchingStatusData(
           label: '$percentage% ${context.l10n.goodMatch}',
           color: colors.tertiary,
         );
 
       case MatchingStatusType.fair:
-        return _MatchingStatusData(
+        return MatchingStatusData(
           label: '$percentage% ${context.l10n.fairMatch}',
           color: colors.secondary,
         );
 
       case MatchingStatusType.poor:
-        return _MatchingStatusData(
+        return MatchingStatusData(
           label: '$percentage% ${context.l10n.match}',
           color: colors.error,
         );
     }
   }
-}
-
-class _MatchingStatusData {
-  const _MatchingStatusData({
-    required this.label,
-    required this.color,
-  });
-
-  final String label;
-  final Color color;
 }

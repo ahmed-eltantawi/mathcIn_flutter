@@ -27,8 +27,6 @@ class TrackingApplicationViewBody extends StatelessWidget {
     return Column(
       children: [
         const TrackingHeader(),
-        const Divider(height: 1),
-
         Expanded(
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),

@@ -8,7 +8,11 @@ class JobDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(child: JobDetailsViewBody(job: job)),
+      body: SafeArea(
+        top: true,
+        bottom: false,
+        child: JobDetailsViewBody(job: job),
+      ),
     );
   }
 }

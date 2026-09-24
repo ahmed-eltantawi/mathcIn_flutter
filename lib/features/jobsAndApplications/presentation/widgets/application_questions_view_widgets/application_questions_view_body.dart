@@ -31,7 +31,6 @@ class ApplicationQuestionsViewBody extends StatelessWidget {
           currentStep: 2,
           totalSteps: 3,
         ),
-        const Divider(height: 1),
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(16.r),

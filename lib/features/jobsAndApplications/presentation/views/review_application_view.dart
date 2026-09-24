@@ -12,6 +12,8 @@ class ReviewApplicationView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
+        top: true,
+        bottom: false,
         child: ReviewApplicationViewBody(job: job),
       ),
     );

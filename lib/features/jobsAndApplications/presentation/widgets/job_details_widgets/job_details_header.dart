@@ -1,3 +1,4 @@
+import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,7 +20,10 @@ class JobDetailsHeader extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+      padding: EdgeInsets.symmetric(
+        horizontal: 12.w,
+        vertical: 8.h,
+      ),
       child: Row(
         children: [
           IconButton(
@@ -37,11 +41,16 @@ class JobDetailsHeader extends StatelessWidget {
           ),
           IconButton(
             onPressed: onSave ?? () {},
+            visualDensity: VisualDensity.compact,
             icon: Icon(
-              isSaved ? Icons.bookmark_rounded : Icons.bookmark_border_rounded,
+              isSaved
+                  ? Icons.bookmark_rounded
+                  : Icons.bookmark_border_rounded,
               color: isSaved
-                  ? theme.colorScheme.secondary
-                  : theme.iconTheme.color,
+                  ? context.colors.secondary
+                  : context.colors.onSurface.withValues(
+                      alpha: 0.6,
+                    ),
             ),
           ),
           IconButton(
