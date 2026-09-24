@@ -128,12 +128,9 @@ class _ApplicationSubmittedViewBodyState
             child: ElevatedButton(
               onPressed: () {
                 _adManager.showAd(
-                  onAdClosed: () {
-                    if (!mounted) {
-                      return;
-                    }
-                    context.push(AppRoutes.ktrackingApplication);
-                  },
+                  onAdClosed: () => _customNavigatorWithGoogleAd(
+                    AppRoutes.ktrackingApplication,
+                  ),
                 );
               },
               child: Row(
@@ -150,9 +147,7 @@ class _ApplicationSubmittedViewBodyState
           SizedBox(height: 10.h),
 
           TextButton(
-            onPressed: () {
-              context.go(AppRoutes.kHomeView);
-            },
+            onPressed: () => _customNavigatorWithGoogleAd(AppRoutes.kHomeView),
             child: Text(
               s.backToJobs,
               style: TextStyle(color: theme.colorScheme.secondary),
@@ -162,6 +157,17 @@ class _ApplicationSubmittedViewBodyState
           SizedBox(height: 8.h),
         ],
       ),
+    );
+  }
+
+  void _customNavigatorWithGoogleAd(String route) {
+    _adManager.showAd(
+      onAdClosed: () {
+        if (!mounted) {
+          return;
+        }
+        context.push(route);
+      },
     );
   }
 }
