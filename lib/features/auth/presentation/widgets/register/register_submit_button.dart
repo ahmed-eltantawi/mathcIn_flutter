@@ -8,13 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class RegisterSubmitButton extends StatelessWidget {
-  final GlobalKey<FormState> formKey;
-  final TextEditingController emailController;
-  final TextEditingController nameController;
-  final TextEditingController passwordController;
-  final TextEditingController confirmPasswordController;
-  final ValueNotifier<bool> isTermsAccepted;
-
   const RegisterSubmitButton({
     super.key,
     required this.formKey,
@@ -24,6 +17,13 @@ class RegisterSubmitButton extends StatelessWidget {
     required this.confirmPasswordController,
     required this.isTermsAccepted,
   });
+
+  final GlobalKey<FormState> formKey;
+  final TextEditingController emailController;
+  final TextEditingController nameController;
+  final TextEditingController passwordController;
+  final TextEditingController confirmPasswordController;
+  final ValueNotifier<bool> isTermsAccepted;
 
   @override
   Widget build(BuildContext context) {

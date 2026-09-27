@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RegisterTermsCheckbox extends StatelessWidget {
-  final ValueNotifier<bool> isTermsAccepted;
-
   const RegisterTermsCheckbox({super.key, required this.isTermsAccepted});
+
+  final ValueNotifier<bool> isTermsAccepted;
 
   @override
   Widget build(BuildContext context) {

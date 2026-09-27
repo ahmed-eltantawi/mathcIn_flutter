@@ -7,9 +7,9 @@ import 'package:MatchIn/core/utils/app_text_styles.dart';
 
 //gsi lpjh[i hrsl hg;,] h;jv
 class AnimatedLogoWidget extends StatefulWidget {
-  final VoidCallback? onAnimationCompleted;
-
   const AnimatedLogoWidget({super.key, this.onAnimationCompleted});
+
+  final VoidCallback? onAnimationCompleted;
 
   @override
   State<AnimatedLogoWidget> createState() => _AnimatedLogoWidgetState();

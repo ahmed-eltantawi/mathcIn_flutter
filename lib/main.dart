@@ -1,16 +1,23 @@
+import 'dart:async';
+
 import 'package:MatchIn/app.dart';
 import 'package:MatchIn/core/services/services_locator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 Future<void> main() async {
-  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  WidgetsFlutterBinding.ensureInitialized();
 
-  MobileAds.instance.initialize();
-
+  // Initialize core dependencies
   await setupServiceLocator();
+
+  // Initialize Mobile Ads asynchronously in background without blocking startup
+  unawaited(
+    MobileAds.instance.initialize().catchError((e) {
+      debugPrint('MobileAds init error: $e');
+      return InitializationStatus({});
+    }),
+  );
 
   // Run the app
   runApp(const MatchIn());

@@ -35,6 +35,9 @@ class RewardedAdManager {
 
   //! ===== Load =====
   void loadAd() {
+    if (kIsWeb || (!Platform.isAndroid && !Platform.isIOS)) {
+      return;
+    }
     if (_isDisposed) {
       return;
     }
@@ -74,6 +77,10 @@ class RewardedAdManager {
     VoidCallback? onAdClosed,
     Function(AdError error)? onAdFailedToShow,
   }) async {
+    if (kIsWeb || (!Platform.isAndroid && !Platform.isIOS)) {
+      onAdClosed?.call();
+      return;
+    }
     final ad = _rewardedAd;
     if (!_isDisposed && ad != null && _isAdLoaded) {
       developer.log('Rewarded ad is being shown.');

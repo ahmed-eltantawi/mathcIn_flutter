@@ -66,8 +66,9 @@ class _LoginFormState extends State<LoginForm> {
             isPassword: true,
             textInputAction: TextInputAction.done,
             validator: (value) {
-              if (value == null || value.isEmpty)
+              if (value == null || value.isEmpty) {
                 return locale.passwordRequirements;
+              }
               return null;
             },
           ),
@@ -82,7 +83,7 @@ class _LoginFormState extends State<LoginForm> {
                     builder: (context, value, child) {
                       return Switch(
                         value: value,
-                        activeColor: AppColors.white,
+                        activeThumbColor: AppColors.white,
                         activeTrackColor: AppColors.midnightBlue,
                         inactiveTrackColor: AppColors.surfaceVariant,
                         onChanged: (newValue) =>

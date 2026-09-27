@@ -1,12 +1,10 @@
-import 'dart:ui';
-
 import 'package:MatchIn/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class LogoPainter extends CustomPainter {
-  final double progress;
-
   LogoPainter({required this.progress});
+
+  final double progress;
 
   @override
   void paint(Canvas canvas, Size size) {
