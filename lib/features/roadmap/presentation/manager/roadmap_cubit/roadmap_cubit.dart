@@ -35,8 +35,14 @@ class RoadmapCubit extends Cubit<RoadmapState> {
       }
 
       final normalized = _normalizeNodes(roadmapNodes, activeTaskIds);
+      final rewardedAdXp = sharedPreferencesService.getRewardedAdXp();
 
-      emit(RoadmapSuccess(nodes: normalized));
+      emit(
+        RoadmapSuccess(
+          nodes: normalized,
+          rewardedAdXp: rewardedAdXp,
+        ),
+      );
     } catch (e) {
       emit(RoadmapFailure(errorMessage: e.toString()));
     }
@@ -46,8 +52,40 @@ class RoadmapCubit extends Cubit<RoadmapState> {
     final base = state is RoadmapSuccess
         ? (state as RoadmapSuccess).nodes
         : roadmapNodes;
+    final currentRewardedAdXp = state is RoadmapSuccess
+        ? (state as RoadmapSuccess).rewardedAdXp
+        : sharedPreferencesService.getRewardedAdXp();
+
     final normalized = _normalizeNodes(base, completedTaskIds);
-    emit(RoadmapSuccess(nodes: normalized));
+    emit(
+      RoadmapSuccess(
+        nodes: normalized,
+        rewardedAdXp: currentRewardedAdXp,
+      ),
+    );
+  }
+
+  Future<void> addRewardedAdXp(int amount) async {
+    try {
+      final currentXp = sharedPreferencesService.getRewardedAdXp();
+      final updatedXp = currentXp + amount;
+      await sharedPreferencesService.saveRewardedAdXp(updatedXp);
+
+      if (state is RoadmapSuccess) {
+        final currentNodes = (state as RoadmapSuccess).nodes;
+        emit(
+          RoadmapSuccess(
+            nodes: currentNodes,
+            rewardedAdXp: updatedXp,
+          ),
+        );
+      } else {
+        fetchRoadmapNodes();
+      }
+    } catch (e) {
+      // If XP persistence/update fails, keep state consistent
+      emit(RoadmapFailure(errorMessage: e.toString()));
+    }
   }
 
   List<RoadmapNode> _normalizeNodes(

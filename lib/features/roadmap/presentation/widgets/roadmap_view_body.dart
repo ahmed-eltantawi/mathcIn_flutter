@@ -32,6 +32,7 @@ class RoadmapViewBody extends StatelessWidget {
               return RoadmapContentWidget(
                 nodes: state.nodes,
                 collectedTreasures: collectedTreasures,
+                rewardedAdXp: state.rewardedAdXp,
               );
             },
           );
