@@ -9,10 +9,12 @@ class RoadmapXpBar extends StatelessWidget {
     super.key,
     required this.nodes,
     this.collectedTreasures = const {},
+    this.rewardedAdXp = 0,
   });
 
   final List<RoadmapNode> nodes;
   final Set<int> collectedTreasures;
+  final int rewardedAdXp;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,9 @@ class RoadmapXpBar extends StatelessWidget {
 
     final earnedMilestonesXp = collectedTreasures.length * 50;
     currentXp += earnedMilestonesXp;
+
+    // Add bonus XP earned from rewarded ads
+    currentXp += rewardedAdXp;
 
     final double progress = (totalXp > 0)
         ? (currentXp / totalXp).clamp(0.0, 1.0)

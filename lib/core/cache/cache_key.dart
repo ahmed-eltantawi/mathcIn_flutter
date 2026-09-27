@@ -9,6 +9,7 @@ abstract class CacheKey {
   static const String fcmToken = 'fcmToken';
   static const String collectedTreasures = 'collectedTreasures';
   static const String completedTaskIds = 'completedTaskIds';
+  static const String rewardedAdXp = 'rewardedAdXp';
   static const String chatSessions = 'chatSessions';
   static const String chatMessagesPrefix = 'chatMessages_';
 }

@@ -7,6 +7,7 @@ import 'package:MatchIn/core/routing/cubit/main_navigation_cubit.dart';
 import 'package:MatchIn/core/services/file_picker_service.dart';
 import 'package:MatchIn/core/services/secure_storage_service.dart';
 import 'package:MatchIn/core/services/shared_preferences_service.dart';
+import 'package:MatchIn/core/widgets/ads/rewarded_ad_manager.dart';
 import 'package:MatchIn/features/home/data/data_sources/home_mock_remote_data_source_impl.dart';
 import 'package:MatchIn/features/home/data/data_sources/home_remote_data_source.dart';
 import 'package:MatchIn/features/home/data/data_sources/repositories/home_repository_impl.dart';
@@ -70,9 +71,7 @@ Future<void> setupServiceLocator() async {
   // Main Navigation
   // =========================================================
 
-  getIt.registerLazySingleton<MainNavigationCubit>(
-    () => MainNavigationCubit(),
-  );
+  getIt.registerLazySingleton<MainNavigationCubit>(() => MainNavigationCubit());
 
   // =========================================================
   // Auth Feature
@@ -84,10 +83,7 @@ Future<void> setupServiceLocator() async {
   );
 
   getIt.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(
-      remoteDataSource: getIt(),
-      networkInfo: getIt(),
-    ),
+    () => AuthRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
   );
 
   getIt.registerLazySingleton<RegisterUseCase>(
@@ -111,17 +107,11 @@ Future<void> setupServiceLocator() async {
   );
 
   getIt.registerFactory<AuthCubit>(
-    () => AuthCubit(
-      loginUseCase: getIt(),
-      registerUseCase: getIt(),
-    ),
+    () => AuthCubit(loginUseCase: getIt(), registerUseCase: getIt()),
   );
 
   getIt.registerFactory<OtpCubit>(
-    () => OtpCubit(
-      verifyOtpUseCase: getIt(),
-      resendOtpUseCase: getIt(),
-    ),
+    () => OtpCubit(verifyOtpUseCase: getIt(), resendOtpUseCase: getIt()),
   );
 
   getIt.registerFactory<ResetPasswordCubit>(
@@ -131,6 +121,8 @@ Future<void> setupServiceLocator() async {
   // =========================================================
   // Roadmap Feature
   // =========================================================
+
+  getIt.registerLazySingleton<RewardedAdManager>(() => RewardedAdManager());
 
   getIt.registerFactory<RoadmapCubit>(
     () => RoadmapCubit(sharedPreferencesService: getIt()),
@@ -154,9 +146,7 @@ Future<void> setupServiceLocator() async {
   );
 
   getIt.registerLazySingleton<ChatbotLocalDataSource>(
-    () => ChatbotLocalDataSourceImpl(
-      sharedPreferencesHelper: getIt(),
-    ),
+    () => ChatbotLocalDataSourceImpl(sharedPreferencesHelper: getIt()),
   );
 
   getIt.registerLazySingleton<ChatbotRepository>(
@@ -254,12 +244,9 @@ Future<void> setupServiceLocator() async {
   // External
   // =========================================================
 
-  final sharedPreferences =
-      await SharedPreferences.getInstance();
+  final sharedPreferences = await SharedPreferences.getInstance();
 
-  getIt.registerLazySingleton<SharedPreferences>(
-    () => sharedPreferences,
-  );
+  getIt.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
 
   // =========================================================
   // Core Storage Helpers
@@ -269,9 +256,7 @@ Future<void> setupServiceLocator() async {
     () => SharedPreferencesHelper(preferences: getIt()),
   );
 
-  getIt.registerLazySingleton<SecureStorageHelper>(
-    () => SecureStorageHelper(),
-  );
+  getIt.registerLazySingleton<SecureStorageHelper>(() => SecureStorageHelper());
 
   // =========================================================
   // Core Services
@@ -285,17 +270,13 @@ Future<void> setupServiceLocator() async {
     () => SecureStorageService(getIt()),
   );
 
-  getIt.registerLazySingleton<FilePickerService>(
-    () => FilePickerService(),
-  );
+  getIt.registerLazySingleton<FilePickerService>(() => FilePickerService());
 
   // =========================================================
   // Networking
   // =========================================================
 
-  getIt.registerLazySingleton<NetworkInfo>(
-    () => NetworkInfoImpl(),
-  );
+  getIt.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl());
 
   getIt.registerLazySingleton<Dio>(() => Dio());
 
@@ -312,9 +293,7 @@ Future<void> setupServiceLocator() async {
   // =========================================================
 
   getIt.registerFactory<CvCubit>(
-    () => CvCubit(
-      filePickerService: getIt<FilePickerService>(),
-    ),
+    () => CvCubit(filePickerService: getIt<FilePickerService>()),
   );
 
   // =========================================================

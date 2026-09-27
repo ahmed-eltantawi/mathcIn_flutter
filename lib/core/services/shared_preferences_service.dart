@@ -82,4 +82,16 @@ class SharedPreferencesService {
     if (list == null) return {};
     return list.toSet();
   }
+
+  // --- Roadmap rewarded ad XP persistence ---
+  Future<void> saveRewardedAdXp(int xp) async {
+    await _sharedPreferencesHelper.saveData(
+      key: CacheKey.rewardedAdXp,
+      value: xp,
+    );
+  }
+
+  int getRewardedAdXp() {
+    return _sharedPreferencesHelper.getData(key: CacheKey.rewardedAdXp) ?? 0;
+  }
 }
