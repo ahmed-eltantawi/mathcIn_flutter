@@ -6,6 +6,7 @@ import 'package:MatchIn/core/networking/network_info.dart';
 import 'package:MatchIn/core/services/file_picker_service.dart';
 import 'package:MatchIn/core/services/secure_storage_service.dart';
 import 'package:MatchIn/core/services/shared_preferences_service.dart';
+import 'package:MatchIn/core/widgets/ads/rewarded_ad_manager.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/cv_cubit.dart';
 import 'package:MatchIn/features/auth/data/data_sources/auth_mock_remote_data_source_impl.dart';
 import 'package:MatchIn/features/auth/data/data_sources/auth_remote_data_source.dart';
@@ -108,6 +109,10 @@ Future<void> setupServiceLocator() async {
   // =========================================================
   // Roadmap Feature
   // =========================================================
+
+  getIt.registerLazySingleton<RewardedAdManager>(
+    () => RewardedAdManager(),
+  );
 
   getIt.registerFactory<RoadmapCubit>(
     () => RoadmapCubit(sharedPreferencesService: getIt()),

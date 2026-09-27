@@ -46,6 +46,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "A few more questions",
     ),
     "account": MessageLookupByLibrary.simpleMessage("ACCOUNT"),
+    "adDismissedNoReward": MessageLookupByLibrary.simpleMessage(
+      "Ad closed early. No XP awarded.",
+    ),
+    "adNotAvailable": MessageLookupByLibrary.simpleMessage("Ad Not Available"),
+    "adRewardSuccess": MessageLookupByLibrary.simpleMessage(
+      "🎉 Congratulations! You earned +50 XP!",
+    ),
     "aiAssistant": MessageLookupByLibrary.simpleMessage("AI Assistant"),
     "aiIsTyping": MessageLookupByLibrary.simpleMessage("AI is thinking..."),
     "all": MessageLookupByLibrary.simpleMessage("All"),
@@ -202,6 +209,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Experience with Bloc",
     ),
     "failed": MessageLookupByLibrary.simpleMessage("Failed"),
+    "failedToLoadAd": MessageLookupByLibrary.simpleMessage("Failed to Load Ad"),
     "failedToSendMessage": MessageLookupByLibrary.simpleMessage(
       "Failed to send message. Please try again.",
     ),
@@ -276,6 +284,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "language": MessageLookupByLibrary.simpleMessage("Language"),
     "learningTasks": MessageLookupByLibrary.simpleMessage("LEARNING TASKS"),
     "light": MessageLookupByLibrary.simpleMessage("Light"),
+    "loadingAd": MessageLookupByLibrary.simpleMessage("Loading Ad..."),
     "logOut": MessageLookupByLibrary.simpleMessage("Log Out"),
     "login": MessageLookupByLibrary.simpleMessage("Login"),
     "markAllRead": MessageLookupByLibrary.simpleMessage("Mark all read"),
@@ -375,6 +384,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "pleaseCheckYourInternetConnection": MessageLookupByLibrary.simpleMessage(
       "Please check your internet connection and try again",
     ),
+    "plus50Xp": MessageLookupByLibrary.simpleMessage("+50 XP"),
     "popular": MessageLookupByLibrary.simpleMessage("Popular"),
     "portfolioLinkHint": MessageLookupByLibrary.simpleMessage(
       "https://github.com/username or portfolio",
@@ -444,6 +454,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reviewInformationBeforeContinuing": MessageLookupByLibrary.simpleMessage(
       "Review your information before continuing.",
     ),
+    "rewardEarned": MessageLookupByLibrary.simpleMessage("Reward Earned!"),
     "roadMap": MessageLookupByLibrary.simpleMessage("RoadMap"),
     "roadmap": MessageLookupByLibrary.simpleMessage("Roadmap"),
     "roadmapBasedOnJob": MessageLookupByLibrary.simpleMessage(
@@ -596,6 +607,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "wantToImproveYourMatch": MessageLookupByLibrary.simpleMessage(
       "Want to improve your match?",
+    ),
+    "watchAd": MessageLookupByLibrary.simpleMessage("Watch Ad"),
+    "watchAdEarnXp": MessageLookupByLibrary.simpleMessage(
+      "Watch Ad & Earn 50 XP",
     ),
     "weeksAgo": m5,
     "welcomeBack": MessageLookupByLibrary.simpleMessage("Welcome Back!"),

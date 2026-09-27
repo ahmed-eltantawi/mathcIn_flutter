@@ -2615,6 +2615,81 @@ class S {
       args: [],
     );
   }
+
+  /// `Watch Ad`
+  String get watchAd {
+    return Intl.message('Watch Ad', name: 'watchAd', desc: '', args: []);
+  }
+
+  /// `Watch Ad & Earn 50 XP`
+  String get watchAdEarnXp {
+    return Intl.message(
+      'Watch Ad & Earn 50 XP',
+      name: 'watchAdEarnXp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Loading Ad...`
+  String get loadingAd {
+    return Intl.message('Loading Ad...', name: 'loadingAd', desc: '', args: []);
+  }
+
+  /// `Reward Earned!`
+  String get rewardEarned {
+    return Intl.message(
+      'Reward Earned!',
+      name: 'rewardEarned',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `+50 XP`
+  String get plus50Xp {
+    return Intl.message('+50 XP', name: 'plus50Xp', desc: '', args: []);
+  }
+
+  /// `Ad Not Available`
+  String get adNotAvailable {
+    return Intl.message(
+      'Ad Not Available',
+      name: 'adNotAvailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to Load Ad`
+  String get failedToLoadAd {
+    return Intl.message(
+      'Failed to Load Ad',
+      name: 'failedToLoadAd',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `🎉 Congratulations! You earned +50 XP!`
+  String get adRewardSuccess {
+    return Intl.message(
+      '🎉 Congratulations! You earned +50 XP!',
+      name: 'adRewardSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ad closed early. No XP awarded.`
+  String get adDismissedNoReward {
+    return Intl.message(
+      'Ad closed early. No XP awarded.',
+      name: 'adDismissedNoReward',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

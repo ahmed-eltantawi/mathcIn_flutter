@@ -46,6 +46,15 @@ class MessageLookup extends MessageLookupByLibrary {
       "بعض الأسئلة الإضافية",
     ),
     "account": MessageLookupByLibrary.simpleMessage("الحساب"),
+    "adDismissedNoReward": MessageLookupByLibrary.simpleMessage(
+      "تم إغلاق الإعلان مبكرًا. لم يتم إضافة XP.",
+    ),
+    "adNotAvailable": MessageLookupByLibrary.simpleMessage(
+      "الإعلان غير متاح حالياً",
+    ),
+    "adRewardSuccess": MessageLookupByLibrary.simpleMessage(
+      "🎉 تهانينا! لقد حصلت على +50 XP!",
+    ),
     "aiAssistant": MessageLookupByLibrary.simpleMessage("المساعد الذكي"),
     "aiIsTyping": MessageLookupByLibrary.simpleMessage(
       "الذكاء الاصطناعي يفكر...",
@@ -198,6 +207,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "experience": MessageLookupByLibrary.simpleMessage("الخبرة"),
     "experienceWithBloc": MessageLookupByLibrary.simpleMessage("خبرة في Bloc"),
     "failed": MessageLookupByLibrary.simpleMessage("فشل"),
+    "failedToLoadAd": MessageLookupByLibrary.simpleMessage("فشل تحميل الإعلان"),
     "failedToSendMessage": MessageLookupByLibrary.simpleMessage(
       "فشل إرسال الرسالة. الرجاء المحاولة مرة أخرى.",
     ),
@@ -272,6 +282,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "language": MessageLookupByLibrary.simpleMessage("اللغة"),
     "learningTasks": MessageLookupByLibrary.simpleMessage("مهام التعلم"),
     "light": MessageLookupByLibrary.simpleMessage("فاتح"),
+    "loadingAd": MessageLookupByLibrary.simpleMessage("جارٍ تحميل الإعلان..."),
     "logOut": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
     "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "markAllRead": MessageLookupByLibrary.simpleMessage("تحديد الكل كمقروء"),
@@ -369,6 +380,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "pleaseCheckYourInternetConnection": MessageLookupByLibrary.simpleMessage(
       "يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى",
     ),
+    "plus50Xp": MessageLookupByLibrary.simpleMessage("+50 XP"),
     "popular": MessageLookupByLibrary.simpleMessage("شائع"),
     "portfolioLinkHint": MessageLookupByLibrary.simpleMessage(
       "https://github.com/username أو رابط معرض الأعمال",
@@ -435,6 +447,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "reviewCv": MessageLookupByLibrary.simpleMessage("مراجعة السيرة الذاتية"),
     "reviewInformationBeforeContinuing": MessageLookupByLibrary.simpleMessage(
       "راجع معلوماتك قبل المتابعة.",
+    ),
+    "rewardEarned": MessageLookupByLibrary.simpleMessage(
+      "تم الحصول على المكافأة!",
     ),
     "roadMap": MessageLookupByLibrary.simpleMessage("خارطة الطريق"),
     "roadmap": MessageLookupByLibrary.simpleMessage("خارطة الطريق"),
@@ -574,6 +589,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "wantToImproveYourMatch": MessageLookupByLibrary.simpleMessage(
       "هل تريد تحسين توافقك؟",
+    ),
+    "watchAd": MessageLookupByLibrary.simpleMessage("شاهد إعلانًا"),
+    "watchAdEarnXp": MessageLookupByLibrary.simpleMessage(
+      "شاهد إعلانًا واحصل على 50 XP",
     ),
     "weeksAgo": m5,
     "welcomeBack": MessageLookupByLibrary.simpleMessage("مرحباً بعودتك!"),

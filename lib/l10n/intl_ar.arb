@@ -333,5 +333,14 @@
   "@yearsAgo": {
     "placeholders": { "count": { "type": "int" } }
   },
-  "continueAsGuest": "الدخول كضيف"
+  "continueAsGuest": "الدخول كضيف",
+  "watchAd": "شاهد إعلانًا",
+  "watchAdEarnXp": "شاهد إعلانًا واحصل على 50 XP",
+  "loadingAd": "جارٍ تحميل الإعلان...",
+  "rewardEarned": "تم الحصول على المكافأة!",
+  "plus50Xp": "+50 XP",
+  "adNotAvailable": "الإعلان غير متاح حالياً",
+  "failedToLoadAd": "فشل تحميل الإعلان",
+  "adRewardSuccess": "🎉 تهانينا! لقد حصلت على +50 XP!",
+  "adDismissedNoReward": "تم إغلاق الإعلان مبكرًا. لم يتم إضافة XP."
 }

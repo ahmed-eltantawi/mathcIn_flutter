@@ -56,5 +56,14 @@ void main() {
       final state = skillTaskCubit.state as SkillTaskLoaded;
       expect(state.completedTaskIds.contains('task-1'), isTrue);
     });
+    test('RoadmapCubit adds rewarded ad XP (+50 XP) and persists state', () async {
+      roadmapCubit.fetchRoadmapNodes();
+      expect(roadmapCubit.state, isA<RoadmapSuccess>());
+
+      await roadmapCubit.addRewardedAdXp(50);
+      final state = roadmapCubit.state as RoadmapSuccess;
+      expect(state.rewardedAdXp, equals(50));
+      expect(sharedPreferencesService.getRewardedAdXp(), equals(50));
+    });
   });
 }

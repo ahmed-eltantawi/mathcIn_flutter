@@ -333,5 +333,14 @@
   "@yearsAgo": {
     "placeholders": { "count": { "type": "int" } }
   },
-  "continueAsGuest": "Continue as Guest"
+  "continueAsGuest": "Continue as Guest",
+  "watchAd": "Watch Ad",
+  "watchAdEarnXp": "Watch Ad & Earn 50 XP",
+  "loadingAd": "Loading Ad...",
+  "rewardEarned": "Reward Earned!",
+  "plus50Xp": "+50 XP",
+  "adNotAvailable": "Ad Not Available",
+  "failedToLoadAd": "Failed to Load Ad",
+  "adRewardSuccess": "🎉 Congratulations! You earned +50 XP!",
+  "adDismissedNoReward": "Ad closed early. No XP awarded."
 }
