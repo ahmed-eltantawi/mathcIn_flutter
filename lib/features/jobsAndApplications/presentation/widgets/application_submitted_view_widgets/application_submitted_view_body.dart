@@ -1,16 +1,17 @@
+import 'package:MatchIn/core/extensions/context_extensions.dart';
+import 'package:MatchIn/core/routing/app_routes.dart';
+import 'package:MatchIn/core/widgets/ads/interstitial_ad_manager.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_entity.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/application_submitted_view_widgets/submitted_status_card.dart';
+import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:MatchIn/core/routing/app_routes.dart';
-import 'package:MatchIn/core/utils/app_colors.dart';
-import 'package:MatchIn/core/widgets/ads/interstitial_ad_manager.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/submitted_status_card.dart';
-import 'package:MatchIn/generated/l10n.dart';
-
 class ApplicationSubmittedViewBody extends StatefulWidget {
-  const ApplicationSubmittedViewBody({super.key});
+  const ApplicationSubmittedViewBody({super.key, required this.job});
+
+  final JobEntity job;
 
   @override
   State<ApplicationSubmittedViewBody> createState() =>
@@ -60,29 +61,25 @@ class _ApplicationSubmittedViewBodyState
               ),
             ),
           ),
-
           const Spacer(),
-
           Container(
             width: 96.r,
             height: 96.r,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: AppColors.forestGreen.withValues(alpha: 0.12),
+              color: context.semanticColors.success.withValues(alpha: 0.12),
               shape: BoxShape.circle,
               border: Border.all(
-                color: AppColors.forestGreen.withValues(alpha: 0.25),
+                color: context.semanticColors.success.withValues(alpha: 0.25),
               ),
             ),
             child: Icon(
               Icons.check_rounded,
               size: 52.sp,
-              color: AppColors.forestGreen,
+              color: context.semanticColors.success,
             ),
           ),
-
           SizedBox(height: 28.h),
-
           Text(
             s.applicationSubmitted,
             textAlign: TextAlign.center,
@@ -91,9 +88,7 @@ class _ApplicationSubmittedViewBodyState
               fontWeight: FontWeight.w700,
             ),
           ),
-
           SizedBox(height: 12.h),
-
           Text.rich(
             TextSpan(
               style: theme.textTheme.bodyLarge?.copyWith(
@@ -103,12 +98,12 @@ class _ApplicationSubmittedViewBodyState
               children: [
                 TextSpan(text: '${s.yourApplicationFor} '),
                 TextSpan(
-                  text: s.juniorFlutterDeveloper,
+                  text: widget.job.title,
                   style: TextStyle(color: theme.colorScheme.primary),
                 ),
                 TextSpan(text: ' ${s.at} '),
                 TextSpan(
-                  text: 'TechNova',
+                  text: widget.job.companyName,
                   style: TextStyle(color: theme.colorScheme.primary),
                 ),
                 TextSpan(text: ' ${s.submittedSuccessfully}'),
@@ -116,21 +111,22 @@ class _ApplicationSubmittedViewBodyState
             ),
             textAlign: TextAlign.center,
           ),
-
           SizedBox(height: 30.h),
-
           const SubmittedStatusCard(),
-
           const Spacer(),
-
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
                 _adManager.showAd(
-                  onAdClosed: () => _customNavigatorWithGoogleAd(
-                    AppRoutes.ktrackingApplication,
-                  ),
+                  onAdClosed: () {
+                    if (!mounted) return;
+
+                    context.push(
+                      AppRoutes.ktrackingApplication,
+                      extra: widget.job,
+                    );
+                  },
                 );
               },
               child: Row(
@@ -143,31 +139,24 @@ class _ApplicationSubmittedViewBodyState
               ),
             ),
           ),
-
           SizedBox(height: 10.h),
-
           TextButton(
-            onPressed: () => _customNavigatorWithGoogleAd(AppRoutes.kHomeView),
+            onPressed: () {
+              _adManager.showAd(
+                onAdClosed: () {
+                  if (!mounted) return;
+
+                  context.go(AppRoutes.kHomeView);
+                },
+              );
+            },
             child: Text(
               s.backToJobs,
               style: TextStyle(color: theme.colorScheme.secondary),
             ),
           ),
-
-          SizedBox(height: 8.h),
         ],
       ),
-    );
-  }
-
-  void _customNavigatorWithGoogleAd(String route) {
-    _adManager.showAd(
-      onAdClosed: () {
-        if (!mounted) {
-          return;
-        }
-        context.push(route);
-      },
     );
   }
 }

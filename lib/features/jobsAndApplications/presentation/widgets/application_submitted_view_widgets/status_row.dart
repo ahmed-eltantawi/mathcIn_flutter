@@ -1,46 +1,9 @@
-import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class SubmittedStatusCard extends StatelessWidget {
-  const SubmittedStatusCard({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final s = S.of(context);
-
-    return Card(
-      margin: EdgeInsets.zero,
-      child: Padding(
-        padding: EdgeInsets.all(16.r),
-        child: Column(
-          children: [
-            _StatusRow(
-              label: s.applicationStatus,
-              value: s.applied,
-              showDot: true,
-            ),
-            const Divider(height: 24),
-            _StatusRow(
-              icon: Icons.schedule_outlined,
-              label: s.timeline,
-              value: s.submittedJustNow,
-            ),
-            const Divider(height: 24),
-            _StatusRow(
-              icon: Icons.apartment_rounded,
-              label: s.recruiterReview,
-              value: s.withinThreeBusinessDays,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _StatusRow extends StatelessWidget {
-  const _StatusRow({
+class StatusRow extends StatelessWidget {
+  const StatusRow({
+    super.key,
     required this.label,
     required this.value,
     this.icon,
@@ -100,12 +63,15 @@ class _StatusRow extends StatelessWidget {
           )
         else
           Flexible(
-            child: Text(
-              value,
-              textAlign: TextAlign.end,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.primary,
-                fontWeight: FontWeight.w500,
+            child: Align(
+              alignment: .centerEnd,
+              child: Text(
+                value,
+                textAlign: TextAlign.end,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.primary,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
           ),

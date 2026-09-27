@@ -24,6 +24,8 @@ class JobEntity extends Equatable {
     this.currency,
     required this.postedDate,
     required this.skills,
+    required this.matchedSkills,
+    required this.missingSkills,
     this.matchPercentage,
     this.isSaved = false,
     this.applicationStatus =
@@ -45,12 +47,24 @@ class JobEntity extends Equatable {
   final String? currency;
 
   final DateTime postedDate;
+
+  /// All skills required by the job.
   final List<String> skills;
 
-  /// جاي محسوب من السيرفر (per-candidate)، مش عمود ثابت في job_posts
+  /// Job skills that the current candidate already has.
+  ///
+  /// Candidate-specific and should be calculated by the backend.
+  final List<String> matchedSkills;
+
+  /// Job skills that the current candidate is missing.
+  ///
+  /// Candidate-specific and should be calculated by the backend.
+  final List<String> missingSkills;
+
+  /// Calculated by the backend per candidate.
   final int? matchPercentage;
 
-  /// جاي محسوب من السيرفر بمقارنة saved_jobs
+  /// Calculated based on the current candidate's saved jobs.
   final bool isSaved;
 
   final JobApplicationStatus applicationStatus;
@@ -73,6 +87,8 @@ class JobEntity extends Equatable {
       currency: currency,
       postedDate: postedDate,
       skills: skills,
+      matchedSkills: matchedSkills,
+      missingSkills: missingSkills,
       matchPercentage: matchPercentage,
       isSaved: isSaved ?? this.isSaved,
       applicationStatus:
@@ -80,6 +96,7 @@ class JobEntity extends Equatable {
     );
   }
 
+  @override
   @override
   List<Object?> get props => [
     id,
@@ -95,6 +112,8 @@ class JobEntity extends Equatable {
     currency,
     postedDate,
     skills,
+    matchedSkills,
+    missingSkills,
     matchPercentage,
     isSaved,
     applicationStatus,

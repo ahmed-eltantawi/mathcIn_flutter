@@ -1,3 +1,4 @@
+import 'package:MatchIn/core/theme/app_semantic_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:MatchIn/generated/l10n.dart';
 
@@ -9,6 +10,10 @@ extension BuildContextX on BuildContext {
 
   /// Returns the current [ColorScheme].
   ColorScheme get colors => Theme.of(this).colorScheme;
+
+  /// Returns semantic application colors.
+  AppSemanticColors get semanticColors =>
+      Theme.of(this).extension<AppSemanticColors>()!;
 
   /// Returns the current [TextTheme].
   TextTheme get textTheme => Theme.of(this).textTheme;

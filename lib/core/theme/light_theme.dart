@@ -1,9 +1,12 @@
+import 'package:MatchIn/core/theme/app_semantic_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:MatchIn/core/utils/app_colors.dart';
 import 'package:MatchIn/core/utils/app_text_styles.dart';
 
 ThemeData getLightTheme({bool isArabic = false}) {
-  final textTheme = AppTextStyles.textTheme(isArabic: isArabic);
+  final textTheme = AppTextStyles.textTheme(
+    isArabic: isArabic,
+  );
 
   const colorScheme = ColorScheme.light(
     primary: AppColors.midnightBlue,
@@ -34,6 +37,10 @@ ThemeData getLightTheme({bool isArabic = false}) {
     scaffoldBackgroundColor: AppColors.lightBackground,
     textTheme: themedTextTheme,
 
+    extensions: const [
+      AppSemanticColors(success: AppColors.forestGreen),
+    ],
+
     appBarTheme: const AppBarTheme(
       backgroundColor: AppColors.lightBackground,
       foregroundColor: AppColors.lightTextPrimary,
@@ -47,7 +54,9 @@ ThemeData getLightTheme({bool isArabic = false}) {
       surfaceTintColor: Colors.transparent,
       elevation: 0,
       shape: RoundedRectangleBorder(
-        side: const BorderSide(color: AppColors.lightBorder),
+        side: const BorderSide(
+          color: AppColors.lightBorder,
+        ),
         borderRadius: BorderRadius.circular(16),
       ),
     ),
@@ -60,14 +69,21 @@ ThemeData getLightTheme({bool isArabic = false}) {
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: AppColors.lightSurface,
-      hintStyle: const TextStyle(color: AppColors.lightTextSecondary),
+      hintStyle: const TextStyle(
+        color: AppColors.lightTextSecondary,
+      ),
       border: _lightInputBorder,
       enabledBorder: _lightInputBorder,
       focusedBorder: _lightInputBorder.copyWith(
-        borderSide: const BorderSide(color: AppColors.midnightBlue, width: 1.5),
+        borderSide: const BorderSide(
+          color: AppColors.midnightBlue,
+          width: 1.5,
+        ),
       ),
       errorBorder: _lightInputBorder.copyWith(
-        borderSide: const BorderSide(color: AppColors.mutedRed),
+        borderSide: const BorderSide(
+          color: AppColors.mutedRed,
+        ),
       ),
     ),
 
@@ -77,17 +93,22 @@ ThemeData getLightTheme({bool isArabic = false}) {
         foregroundColor: AppColors.white,
         elevation: 0,
         minimumSize: const Size(double.infinity, 56),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
       ),
     ),
 
-    progressIndicatorTheme: const ProgressIndicatorThemeData(
-      color: AppColors.midnightBlue,
-    ),
+    progressIndicatorTheme:
+        const ProgressIndicatorThemeData(
+          color: AppColors.midnightBlue,
+        ),
   );
 }
 
 final _lightInputBorder = OutlineInputBorder(
   borderRadius: BorderRadius.circular(12),
-  borderSide: const BorderSide(color: AppColors.lightBorder),
+  borderSide: const BorderSide(
+    color: AppColors.lightBorder,
+  ),
 );

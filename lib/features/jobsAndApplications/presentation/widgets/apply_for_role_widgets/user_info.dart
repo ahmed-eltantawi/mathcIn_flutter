@@ -1,4 +1,4 @@
-import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/user_info_field.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/apply_for_role_widgets/user_info_field.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

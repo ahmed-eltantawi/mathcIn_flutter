@@ -67,6 +67,8 @@ class SavedJobEntity extends Equatable {
       experienceLevel: experience,
       postedDate: DateTime.tryParse(postedDate) ?? DateTime.now(),
       skills: skills,
+      matchedSkills: const [],
+      missingSkills: const [],
       matchPercentage: matchPercentage,
       isSaved: isSaved,
     );
@@ -74,16 +76,16 @@ class SavedJobEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        title,
-        company,
-        location,
-        workMode,
-        experience,
-        jobType,
-        postedDate,
-        skills,
-        matchPercentage,
-        isSaved,
-      ];
+    id,
+    title,
+    company,
+    location,
+    workMode,
+    experience,
+    jobType,
+    postedDate,
+    skills,
+    matchPercentage,
+    isSaved,
+  ];
 }

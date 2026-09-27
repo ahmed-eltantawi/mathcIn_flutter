@@ -18,7 +18,6 @@ class ApplyBottomButton extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 10.h),
       decoration: BoxDecoration(
         color: theme.scaffoldBackgroundColor,
         border: Border(

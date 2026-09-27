@@ -1,15 +1,17 @@
 import 'package:MatchIn/core/widgets/matching_status/matching_status.dart';
-import 'package:MatchIn/generated/l10n.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 
 class JobSummaryCard extends StatelessWidget {
-  const JobSummaryCard({super.key});
+  const JobSummaryCard({super.key, required this.job});
+
+  final JobEntity job;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final s = S.of(context);
 
     return Card(
       margin: EdgeInsets.zero,
@@ -42,22 +44,22 @@ class JobSummaryCard extends StatelessWidget {
                     size: 28.sp,
                   ),
                 ),
-                SizedBox(width: 12.w),
+                Gap(12.w),
                 Expanded(
                   child: Column(
                     crossAxisAlignment:
                         CrossAxisAlignment.start,
                     children: [
                       Text(
-                        s.juniorFlutterDeveloper,
+                        job.title,
                         style: theme.textTheme.titleLarge
                             ?.copyWith(
                               fontWeight: FontWeight.w700,
                             ),
                       ),
-                      SizedBox(height: 4.h),
+                      Gap(4.h),
                       Text(
-                        'TechNova',
+                        job.companyName,
                         style: theme.textTheme.bodyMedium
                             ?.copyWith(
                               color: theme
@@ -70,13 +72,15 @@ class JobSummaryCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(width: 8.w),
-                const MatchingStatus(percentage: 78),
+                Gap(8.w),
+                MatchingStatus(
+                  percentage: job.matchPercentage,
+                ),
               ],
             ),
-            SizedBox(height: 16.h),
+            Gap(16.h),
             const Divider(height: 1),
-            SizedBox(height: 14.h),
+            Gap(14.h),
             Row(
               children: [
                 Icon(
@@ -85,10 +89,12 @@ class JobSummaryCard extends StatelessWidget {
                   color: theme.colorScheme.onSurface
                       .withValues(alpha: 0.7),
                 ),
-                SizedBox(width: 4.w),
+                Gap(4.w),
                 Expanded(
                   child: Text(
-                    '${s.cairo} • ${s.hybrid} • ${s.fullTime}',
+                    '${job.location} • '
+                    '${job.workMode} • '
+                    '${job.employmentType}',
                     style: theme.textTheme.bodyMedium,
                   ),
                 ),
@@ -106,7 +112,7 @@ class JobSummaryCard extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    s.zeroToTwoYearsExp,
+                    job.experienceLevel,
                     style: theme.textTheme.bodyMedium
                         ?.copyWith(
                           color:
