@@ -1,3 +1,5 @@
+import 'package:MatchIn/core/utils/app_assets.dart';
+import 'package:MatchIn/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:MatchIn/generated/l10n.dart';
@@ -12,17 +14,36 @@ class LoginHeader extends StatelessWidget {
 
     return Column(
       children: [
-        Image.asset('assets/images/app_icon.png', height: 80.h),
-        SizedBox(height: 16.h),
+        Image.asset(Assets.appIcon, height: 60.h),
+        SizedBox(height: 12.h),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+          decoration: BoxDecoration(
+            color: AppColors.surfaceVariant,
+            borderRadius: BorderRadius.circular(4.r),
+          ),
+          child: Text(
+            locale.skillmatchPortal,
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: AppColors.textSecondary,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.2,
+            ),
+          ),
+        ),
+        SizedBox(height: 12.h),
         Text(
           locale.welcomeBack,
-          style: theme.textTheme.headlineSmall,
+          style: theme.textTheme.headlineSmall?.copyWith(
+            color: AppColors.midnightBlue,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        SizedBox(height: 8.h),
+        SizedBox(height: 4.h),
         Text(
-          locale.smartCareerDiscoveryPlatform,
+          locale.accessYourPathways,
           style: theme.textTheme.bodyMedium?.copyWith(
-            color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+            color: AppColors.textSecondary,
           ),
           textAlign: TextAlign.center,
         ),

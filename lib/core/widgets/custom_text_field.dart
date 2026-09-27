@@ -32,11 +32,29 @@ class CustomTextField extends StatefulWidget {
 
 class _CustomTextFieldState extends State<CustomTextField> {
   bool _obscureText = false;
+  late FocusNode _focusNode;
+  bool _hasLostFocusOnce = false; // المتغير ده اللي هيتحكم في ظهور الإيرور
 
   @override
   void initState() {
     super.initState();
     _obscureText = widget.isPassword;
+    _focusNode = FocusNode();
+
+    // هنا بنراقب اليوزر، أول ما يسيب الحقل بنشغل الفاليديشن
+    _focusNode.addListener(() {
+      if (!_focusNode.hasFocus) {
+        setState(() {
+          _hasLostFocusOnce = true;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -46,17 +64,20 @@ class _CustomTextFieldState extends State<CustomTextField> {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (widget.labelText != null) ...[
-          Text(
-            widget.labelText!,
-          ),
+          Text(widget.labelText!),
           SizedBox(height: 8.h),
         ],
         TextFormField(
           controller: widget.controller,
+          focusNode: _focusNode,
           obscureText: _obscureText,
           validator: widget.validator,
           keyboardType: widget.keyboardType,
           textInputAction: widget.textInputAction,
+          // الفاليديشن اللحظي مش هيشتغل غير بعد ما اليوزر يسيب الحقل لأول مرة
+          autovalidateMode: _hasLostFocusOnce
+              ? AutovalidateMode.onUserInteraction
+              : AutovalidateMode.disabled,
           decoration: InputDecoration(
             hintText: widget.hintText,
             prefixIcon: widget.prefixIcon,

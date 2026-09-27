@@ -1,5 +1,6 @@
 import 'package:MatchIn/core/routing/app_routes.dart';
 import 'package:MatchIn/core/widgets/social_login_button.dart';
+import 'package:MatchIn/core/utils/app_colors.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,25 +18,36 @@ class RegisterFooter extends StatelessWidget {
       children: [
         Row(
           children: [
-            const Expanded(child: Divider()),
+            const Expanded(child: Divider(color: AppColors.border)),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Text(locale.or, style: theme.textTheme.bodyMedium),
+              child: Text(
+                locale.or,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: AppColors.textSecondary,
+                ),
+              ),
             ),
-            const Expanded(child: Divider()),
+            const Expanded(child: Divider(color: AppColors.border)),
           ],
         ),
-        SizedBox(height: 16.h),
+        SizedBox(height: 12.h),
         SocialLoginButton(
           text: locale.registerWithGoogle,
-          icon: const Icon(Icons.g_mobiledata, size: 32),
+          icon: const Icon(Icons.g_mobiledata, size: 24),
           onPressed: () {},
         ),
-        SizedBox(height: 32.h),
+        SizedBox(height: 16.h),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(locale.alreadyHaveAccount, style: theme.textTheme.bodyMedium),
+            Text(
+              locale.alreadyHaveAccount,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: AppColors.terracotta,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
             InkWell(
               onTap: () => context.go(AppRoutes.kLoginView),
               child: Padding(
@@ -43,7 +55,7 @@ class RegisterFooter extends StatelessWidget {
                 child: Text(
                   locale.login,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.primary,
+                    color: AppColors.terracotta,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

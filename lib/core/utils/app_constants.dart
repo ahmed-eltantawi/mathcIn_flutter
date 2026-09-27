@@ -1,7 +1,7 @@
 abstract final class AppConstants {
   AppConstants._();
 
-  static const String appName = 'SkillMatch';
+  static const String appName = 'MatchIn';
 
   // =========================================================
   // Font Families
@@ -62,8 +62,6 @@ abstract final class AppConstants {
   static const int goodMatchThreshold = 80;
   static const int fairMatchThreshold = 60;
 
-  //TODO: change these values
-  static const String appFamilyFont = 'Montserrat';
   static const String defaultAvatarUrl =
       'https://i.pinimg.com/736x/bd/42/8e/bd428e6bb156d90045700dbf3e967c3e.jpg';
   static const String noInternetConnection =
