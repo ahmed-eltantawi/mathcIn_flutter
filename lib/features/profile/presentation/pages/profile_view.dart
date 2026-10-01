@@ -32,46 +32,48 @@ class ProfileView extends StatelessWidget {
           child: BlocBuilder<ProfileCubit, ProfileState>(
             builder: (context, state) {
               return switch (state) {
-                ProfileInitial() || ProfileLoading() => const AppLoadingWidget(),
+                ProfileInitial() ||
+                ProfileLoading() => const AppLoadingWidget(),
                 ProfileError(:final message) => AppErrorWidget(
-                    message: message,
-                    onRetry: () =>
-                        context.read<ProfileCubit>().fetchUserProfile(),
-                  ),
+                  message: message,
+                  onRetry: () =>
+                      context.read<ProfileCubit>().fetchUserProfile(),
+                ),
                 ProfileLoaded(:final userProfile) => RefreshIndicator(
-                    onRefresh: () =>
-                        context.read<ProfileCubit>().fetchUserProfile(),
-                    child: ListView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      padding: EdgeInsets.all(16.w),
-                      children: [
-                        MainProfileCard(
-                          name: userProfile.name,
-                          jobTitle: userProfile.jobTitle,
-                          location: userProfile.location,
-                          avatarUrl: userProfile.avatarUrl,
+                  onRefresh: () =>
+                      context.read<ProfileCubit>().fetchUserProfile(),
+                  child: ListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: EdgeInsets.all(16.w),
+                    children: [
+                      MainProfileCard(
+                        name: userProfile.name,
+                        jobTitle: userProfile.jobTitle,
+                        location: userProfile.location,
+                        avatarUrl: userProfile.avatarUrl,
+                      ),
+                      if (userProfile.universityName != null) ...[
+                        SizedBox(height: 12.h),
+                        EducationCard(
+                          universityName: userProfile.universityName!,
+                          degree: userProfile.degree ?? '',
+                          years: userProfile.years ?? '',
                         ),
-                        if (userProfile.universityName != null) ...[
-                          SizedBox(height: 12.h),
-                          EducationCard(
-                            universityName: userProfile.universityName!,
-                            degree: userProfile.degree ?? '',
-                            years: userProfile.years ?? '',
-                          ),
-                        ],
-                        if (userProfile.experienceJobTitle != null ||
-                            userProfile.companyName != null) ...[
-                          SizedBox(height: 12.h),
-                          ExperienceCard(
-                            jobTitle: userProfile.experienceJobTitle ??
-                                userProfile.jobTitle,
-                            companyName: userProfile.companyName ?? '',
-                            duration: userProfile.duration ?? '',
-                          ),
-                        ],
                       ],
-                    ),
+                      if (userProfile.experienceJobTitle != null ||
+                          userProfile.companyName != null) ...[
+                        SizedBox(height: 12.h),
+                        ExperienceCard(
+                          jobTitle:
+                              userProfile.experienceJobTitle ??
+                              userProfile.jobTitle,
+                          companyName: userProfile.companyName ?? '',
+                          duration: userProfile.duration ?? '',
+                        ),
+                      ],
+                    ],
                   ),
+                ),
               };
             },
           ),

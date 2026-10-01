@@ -60,10 +60,7 @@ class MainProfileCard extends StatelessWidget {
                       color: theme.colorScheme.primary,
                     ),
                     SizedBox(width: 4.w),
-                    Text(
-                      location,
-                      style: theme.textTheme.bodySmall,
-                    ),
+                    Text(location, style: theme.textTheme.bodySmall),
                   ],
                 ),
               ],

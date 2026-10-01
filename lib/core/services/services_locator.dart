@@ -401,9 +401,8 @@ Future<void> setupServiceLocator() async {
   );
 
   getIt.registerLazySingleton<WithdrawApplicationUseCase>(
-    () => WithdrawApplicationUseCase(
-      repository: getIt<ApplicationsRepository>(),
-    ),
+    () =>
+        WithdrawApplicationUseCase(repository: getIt<ApplicationsRepository>()),
   );
 
   getIt.registerFactory<CvCubit>(
@@ -421,8 +420,7 @@ Future<void> setupServiceLocator() async {
     () => ApplicationDetailsCubit(
       getApplicationDetailsUseCase: getIt<GetApplicationDetailsUseCase>(),
       withdrawApplicationUseCase: getIt<WithdrawApplicationUseCase>(),
-      updateApplicationStatusUseCase:
-          getIt<UpdateApplicationStatusUseCase>(),
+      updateApplicationStatusUseCase: getIt<UpdateApplicationStatusUseCase>(),
     ),
   );
 

@@ -33,18 +33,18 @@ class UserProfileEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        name,
-        email,
-        jobTitle,
-        location,
-        avatarUrl,
-        phone,
-        universityName,
-        degree,
-        years,
-        experienceJobTitle,
-        companyName,
-        duration,
-      ];
+    id,
+    name,
+    email,
+    jobTitle,
+    location,
+    avatarUrl,
+    phone,
+    universityName,
+    degree,
+    years,
+    experienceJobTitle,
+    companyName,
+    duration,
+  ];
 }

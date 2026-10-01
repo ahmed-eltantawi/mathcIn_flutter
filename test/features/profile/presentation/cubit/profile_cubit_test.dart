@@ -18,12 +18,12 @@ class FakeProfileRepository implements ProfileRepository {
 }
 
 UserProfileEntity _makeProfile() => const UserProfileEntity(
-      id: 1,
-      name: 'Amira Sultan',
-      email: 'amira@example.com',
-      jobTitle: 'Flutter Developer',
-      location: 'Mansoura, Egypt',
-    );
+  id: 1,
+  name: 'Amira Sultan',
+  email: 'amira@example.com',
+  jobTitle: 'Flutter Developer',
+  location: 'Mansoura, Egypt',
+);
 
 void main() {
   late FakeProfileRepository repo;
@@ -37,9 +37,7 @@ void main() {
       'emits [ProfileLoading, ProfileLoaded] when getUserProfile succeeds',
       build: () {
         repo.result = Right(_makeProfile());
-        return ProfileCubit(
-          getUserProfileUseCase: GetUserProfileUseCase(repo),
-        );
+        return ProfileCubit(getUserProfileUseCase: GetUserProfileUseCase(repo));
       },
       act: (cubit) => cubit.fetchUserProfile(),
       expect: () => [
@@ -51,11 +49,10 @@ void main() {
     blocTest<ProfileCubit, ProfileState>(
       'emits [ProfileLoading, ProfileError] when getUserProfile fails',
       build: () {
-        repo.result =
-            const Left(ServerFailure(message: 'Profile fetch failed'));
-        return ProfileCubit(
-          getUserProfileUseCase: GetUserProfileUseCase(repo),
+        repo.result = const Left(
+          ServerFailure(message: 'Profile fetch failed'),
         );
+        return ProfileCubit(getUserProfileUseCase: GetUserProfileUseCase(repo));
       },
       act: (cubit) => cubit.fetchUserProfile(),
       expect: () => [
