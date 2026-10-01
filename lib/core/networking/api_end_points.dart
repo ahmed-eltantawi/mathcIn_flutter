@@ -24,7 +24,7 @@ abstract class EndPoint {
   static String saveJob(dynamic jobPostId) => 'jobs/$jobPostId/save';
 }
 
-///* ApiKeys: the keys of the api
+///* ApiKeys: the keys of the apia
 abstract class ApiKey {
   //TODO: change these values
   static const String statusCode = 'statusCode';
@@ -41,7 +41,14 @@ abstract class ApiKey {
   static const String perPage = 'per_page';
   static const String jobId = 'job_id';
   static const String isSaved = 'is_saved';
-  // static const String id = 'id';
+  static const String data = 'data';
+  static const String user = 'user';
+  static const String resetToken = 'reset_token';
+  static const String id = 'id';
+  static const String role = 'role';
+  static const String avatar = 'avatar';
+  static const String phone = 'phone';
+  static const String isActive = 'is_active';
 }
 
 ///* ApiHeaderKey: the header keys of the api
