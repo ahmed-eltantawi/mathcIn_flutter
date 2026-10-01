@@ -4,9 +4,9 @@ import 'package:MatchIn/features/auth/domain/repositories/auth_repository.dart';
 import 'package:dartz/dartz.dart';
 
 class LoginUseCase {
-  final AuthRepository repository;
+  const LoginUseCase({required this.repository});
 
-  LoginUseCase({required this.repository});
+  final AuthRepository repository;
 
   Future<Either<Failure, LoginEntity>> call({
     required String email,
