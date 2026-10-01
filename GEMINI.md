@@ -954,4 +954,21 @@ These rules apply to code inside `lib/features`.
 955:   - New widgets must follow the feature-based folder structure (`presentation/widgets/`).
 956:   - Preserve Clean Architecture, SOLID principles, localization (`S.of(context)`), theme system (`Theme.of(context)`), and responsive layout (`flutter_screenutil`).
 957: - **Composition-First Views**: Top-level page views should primarily act as screen composers, composing extracted sub-widgets rather than implementing long UI trees inline.
-958: - **Before Modifying Large Files**: Check whether new or existing UI sections should be extracted into separate files rather than increasing file complexity.
+958: - **Before Modifying Large Files**: Check whether new or existing UI sections should be extracted into separate files rather than increasing file complexity.
+
+---
+
+## Data Model Keys & API Integration Rules
+
+- **No Hardcoded String Literals for Model JSON Keys**:
+  - Never hardcode raw string literals (e.g. `'employment_type'`, `'work_mode'`, `'published_at'`) inside data model `fromJson` or `toJson` methods.
+  - Every model must define an `abstract class <ModelName>Key` (e.g., `JobModelKey`, `CompanyModelKey`, `SkillModelKey`) or reuse `ApiKey` to hold all JSON keys as `static const String` constants.
+  - Parse and serialize JSON exclusively through these static key constants.
+
+- **Removal of Mockup & Static Data**:
+  - Mock remote data source files (e.g. `*MockRemoteDataSourceImpl`) and static dummy lists must be completely removed once backend API endpoints are integrated.
+  - Features must rely exclusively on real API consumers (`DioConsumer`) and real remote data source implementations.
+
+- **Feature Cubit DI Lifecycle**:
+  - Feature Cubits registered in `services_locator.dart` must always use `registerFactory<T>` so that each view gets a fresh instance, unless an explicit singleton exception is documented.
+

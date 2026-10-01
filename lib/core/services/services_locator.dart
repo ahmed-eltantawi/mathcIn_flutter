@@ -14,11 +14,14 @@ import 'package:MatchIn/features/home/data/data_sources/repositories/home_reposi
 import 'package:MatchIn/features/home/domain/repositories/home_repository.dart';
 import 'package:MatchIn/features/home/domain/use_cases/get_home_dashboard_use_case.dart';
 import 'package:MatchIn/features/home/presentation/cubit/home_cubit.dart';
-import 'package:MatchIn/features/jobsAndApplications/data/data_sources/jobs_mock_remote_data_source_impl.dart';
+import 'package:MatchIn/features/jobsAndApplications/data/data_sources/jobs_local_data_source.dart';
+import 'package:MatchIn/features/jobsAndApplications/data/data_sources/jobs_local_data_source_impl.dart';
 import 'package:MatchIn/features/jobsAndApplications/data/data_sources/jobs_remote_data_source.dart';
+import 'package:MatchIn/features/jobsAndApplications/data/data_sources/jobs_remote_data_source_impl.dart';
 import 'package:MatchIn/features/jobsAndApplications/data/repositories/jobs_repository_impl.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/repositories/jobs_repository.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/apply_for_job_use_case.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_cached_jobs_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_jobs_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/toggle_save_job_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/cv_cubit.dart';
@@ -38,8 +41,6 @@ import 'package:MatchIn/features/chatbot/data/data_sources/chatbot_local_data_so
 import 'package:MatchIn/features/chatbot/data/data_sources/chatbot_local_data_source_impl.dart';
 import 'package:MatchIn/features/chatbot/data/data_sources/chatbot_mock_remote_data_source_impl.dart';
 import 'package:MatchIn/features/chatbot/data/data_sources/chatbot_remote_data_source.dart';
-// ignore: unused_import
-import 'package:MatchIn/features/chatbot/data/data_sources/chatbot_remote_data_source_impl.dart';
 import 'package:MatchIn/features/chatbot/data/repositories/chatbot_repository_impl.dart';
 import 'package:MatchIn/features/chatbot/domain/repositories/chatbot_repository.dart';
 import 'package:MatchIn/features/chatbot/domain/use_cases/clear_all_chats_use_case.dart';
@@ -190,17 +191,28 @@ Future<void> setupServiceLocator() async {
   // Jobs Feature
   // =========================================================
 
+  getIt.registerLazySingleton<JobsLocalDataSource>(
+    () => JobsLocalDataSourceImpl(sharedPreferencesHelper: getIt()),
+  );
+
   getIt.registerLazySingleton<JobsRemoteDataSource>(
-    () => JobsMockRemoteDataSourceImpl(),
-    // () => JobsRemoteDataSourceImpl(apiConsumer: getIt()),
+    () => JobsRemoteDataSourceImpl(apiConsumer: getIt()),
   );
 
   getIt.registerLazySingleton<JobsRepository>(
-    () => JobsRepositoryImpl(remoteDataSource: getIt()),
+    () => JobsRepositoryImpl(
+      remoteDataSource: getIt(),
+      localDataSource: getIt(),
+      networkInfo: getIt(),
+    ),
   );
 
   getIt.registerLazySingleton<GetJobsUseCase>(
     () => GetJobsUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<GetCachedJobsUseCase>(
+    () => GetCachedJobsUseCase(repository: getIt()),
   );
 
   getIt.registerLazySingleton<ToggleSaveJobUseCase>(
@@ -214,6 +226,7 @@ Future<void> setupServiceLocator() async {
   getIt.registerLazySingleton<JobsFeedCubit>(
     () => JobsFeedCubit(
       getJobsUseCase: getIt(),
+      getCachedJobsUseCase: getIt(),
       toggleSaveJobUseCase: getIt(),
       applyForJobUseCase: getIt(),
     ),

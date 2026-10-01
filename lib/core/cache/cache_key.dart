@@ -12,4 +12,5 @@ abstract class CacheKey {
   static const String rewardedAdXp = 'rewardedAdXp';
   static const String chatSessions = 'chatSessions';
   static const String chatMessagesPrefix = 'chatMessages_';
+  static const String jobsFeedPrefix = 'jobs_feed_';
 }
