@@ -16,7 +16,7 @@ import 'package:MatchIn/features/home/domain/use_cases/get_home_dashboard_use_ca
 import 'package:MatchIn/features/home/presentation/cubit/home_cubit.dart';
 import 'package:MatchIn/features/jobsAndApplications/data/data_sources/jobs_mock_remote_data_source_impl.dart';
 import 'package:MatchIn/features/jobsAndApplications/data/data_sources/jobs_remote_data_source.dart';
-import 'package:MatchIn/features/jobsAndApplications/data/data_sources/repositories/jobs_repository_impl.dart';
+import 'package:MatchIn/features/jobsAndApplications/data/repositories/jobs_repository_impl.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/repositories/jobs_repository.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/apply_for_job_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_jobs_use_case.dart';
