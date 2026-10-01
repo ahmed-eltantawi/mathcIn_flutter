@@ -2840,6 +2840,26 @@ class S {
     );
   }
 
+  /// `Name`
+  String get name {
+    return Intl.message(
+      'Name',
+      name: 'name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your name`
+  String get nameHint {
+    return Intl.message(
+      'Enter your name',
+      name: 'nameHint',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Email`
   String get email {
     return Intl.message(
@@ -3000,10 +3020,10 @@ class S {
     );
   }
 
-  /// `Smart Career Discovery`
+  /// `Your smart career discovery platform`
   String get smartCareerDiscoveryPlatform {
     return Intl.message(
-      'Smart Career Discovery',
+      'Your smart career discovery platform',
       name: 'smartCareerDiscoveryPlatform',
       desc: '',
       args: [],
@@ -3021,316 +3041,6 @@ class S {
   }
 
   /// `SKILLMATCH PORTAL`
-  String get skillMatchPortal {
-    return Intl.message(
-      'SKILLMATCH PORTAL',
-      name: 'skillMatchPortal',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Access your verified career pathways and opportunities.`
-  String get loginSubtitle {
-    return Intl.message(
-      'Access your verified career pathways and opportunities.',
-      name: 'loginSubtitle',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Only on trusted devices`
-  String get onlyOnTrustedDevices {
-    return Intl.message(
-      'Only on trusted devices',
-      name: 'onlyOnTrustedDevices',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `SkillMatch securely protects your verified credentials and application histories.`
-  String get securityBadge {
-    return Intl.message(
-      'SkillMatch securely protects your verified credentials and application histories.',
-      name: 'securityBadge',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Continue with Google`
-  String get continueWithGoogle {
-    return Intl.message(
-      'Continue with Google',
-      name: 'continueWithGoogle',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Sign up with Google`
-  String get signUpWithGoogle {
-    return Intl.message(
-      'Sign up with Google',
-      name: 'signUpWithGoogle',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Use 8+ characters`
-  String get use8PlusCharacters {
-    return Intl.message(
-      'Use 8+ characters',
-      name: 'use8PlusCharacters',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Next, you can upload your CV (optional).`
-  String get cvUploadNotice {
-    return Intl.message(
-      'Next, you can upload your CV (optional).',
-      name: 'cvUploadNotice',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Edit Profile`
-  String get editProfile {
-    return Intl.message(
-      'Edit Profile',
-      name: 'editProfile',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Career profile`
-  String get careerProfile {
-    return Intl.message(
-      'Career profile',
-      name: 'careerProfile',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Almost complete`
-  String get almostComplete {
-    return Intl.message(
-      'Almost complete',
-      name: 'almostComplete',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Excellent`
-  String get excellent {
-    return Intl.message(
-      'Excellent',
-      name: 'excellent',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Needs Improvement`
-  String get needsImprovement {
-    return Intl.message(
-      'Needs Improvement',
-      name: 'needsImprovement',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Skills`
-  String get skills {
-    return Intl.message(
-      'Skills',
-      name: 'skills',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Projects`
-  String get projects {
-    return Intl.message(
-      'Projects',
-      name: 'projects',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Career Preferences`
-  String get careerPreferences {
-    return Intl.message(
-      'Career Preferences',
-      name: 'careerPreferences',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `+ Add skill`
-  String get addSkill {
-    return Intl.message(
-      '+ Add skill',
-      name: 'addSkill',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `View project`
-  String get viewProject {
-    return Intl.message(
-      'View project',
-      name: 'viewProject',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Choose your language`
-  String get chooseYourLanguage {
-    return Intl.message(
-      'Choose your language',
-      name: 'chooseYourLanguage',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `You can change it later in Settings`
-  String get changeLanguageLater {
-    return Intl.message(
-      'You can change it later in Settings',
-      name: 'changeLanguageLater',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `I agree to the Terms & Privacy Policy`
-  String get iAgreeToTerms {
-    return Intl.message(
-      'I agree to the Terms & Privacy Policy',
-      name: 'iAgreeToTerms',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Please accept the Terms & Privacy Policy`
-  String get pleaseAcceptTerms {
-    return Intl.message(
-      'Please accept the Terms & Privacy Policy',
-      name: 'pleaseAcceptTerms',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Phone number`
-  String get phoneNumberLabel {
-    return Intl.message(
-      'Phone number',
-      name: 'phoneNumberLabel',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Target role`
-  String get targetRole {
-    return Intl.message(
-      'Target role',
-      name: 'targetRole',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Job type`
-  String get jobType {
-    return Intl.message(
-      'Job type',
-      name: 'jobType',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Work mode`
-  String get workMode {
-    return Intl.message(
-      'Work mode',
-      name: 'workMode',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Preferred location`
-  String get preferredLocation {
-    return Intl.message(
-      'Preferred location',
-      name: 'preferredLocation',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `From CV`
-  String get fromCv {
-    return Intl.message(
-      'From CV',
-      name: 'fromCv',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `GitHub`
-  String get github {
-    return Intl.message(
-      'GitHub',
-      name: 'github',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `LinkedIn`
-  String get linkedin {
-    return Intl.message(
-      'LinkedIn',
-      name: 'linkedin',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `SkillMatch securely protects your verified credentials and application histories.`
-  String get secureProtectionText {
-    return Intl.message(
-      'SkillMatch securely protects your verified credentials and application histories.',
-      name: 'secureProtectionText',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `SKILLMATCH PORTAL`
   String get skillmatchPortal {
     return Intl.message(
       'SKILLMATCH PORTAL',
@@ -3340,11 +3050,41 @@ class S {
     );
   }
 
-  /// `Access your verified career pathways and opportunities.`
+  /// `Access your verified career pathways and available opportunities.`
   String get accessYourPathways {
     return Intl.message(
-      'Access your verified career pathways and opportunities.',
+      'Access your verified career pathways and available opportunities.',
       name: 'accessYourPathways',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `On trusted devices only`
+  String get onlyOnTrustedDevices {
+    return Intl.message(
+      'On trusted devices only',
+      name: 'onlyOnTrustedDevices',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `SkillMatch securely protects your data and application history.`
+  String get secureProtectionText {
+    return Intl.message(
+      'SkillMatch securely protects your data and application history.',
+      name: 'secureProtectionText',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue as Guest`
+  String get continueAsGuest {
+    return Intl.message(
+      'Continue as Guest',
+      name: 'continueAsGuest',
       desc: '',
       args: [],
     );
@@ -3439,16 +3179,6 @@ class S {
       name: 'yearsAgo',
       desc: '',
       args: [count],
-    );
-  }
-
-  /// `Continue as Guest`
-  String get continueAsGuest {
-    return Intl.message(
-      'Continue as Guest',
-      name: 'continueAsGuest',
-      desc: '',
-      args: [],
     );
   }
 }
