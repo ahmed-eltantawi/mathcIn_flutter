@@ -14,13 +14,10 @@ class PasswordRequirementTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final Color iconColor = isMet
-        ? AppColors.success
-        : theme.colorScheme.onSurfaceVariant;
+    final Color iconColor = isMet ? AppColors.success : const Color(0xFF74777F);
     final Color textColor = isMet
         ? AppColors.textPrimary
-        : theme.colorScheme.onSurface;
+        : const Color(0xFF44474E);
 
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 4.h),
@@ -47,9 +44,12 @@ class PasswordRequirementTile extends StatelessWidget {
           Expanded(
             child: AnimatedDefaultTextStyle(
               duration: const Duration(milliseconds: 250),
-              style: theme.textTheme.bodySmall!.copyWith(
+              style: TextStyle(
+                fontFamily: 'Inter',
+                fontSize: 12.sp,
                 fontWeight: isMet ? FontWeight.w500 : FontWeight.w400,
                 color: textColor,
+                height: 16 / 12,
               ),
               child: Text(text),
             ),

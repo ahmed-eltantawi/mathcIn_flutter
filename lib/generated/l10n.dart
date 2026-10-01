@@ -2349,26 +2349,6 @@ class S {
     );
   }
 
-  /// `Name`
-  String get name {
-    return Intl.message(
-      'Name',
-      name: 'name',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Enter your name`
-  String get nameHint {
-    return Intl.message(
-      'Enter your name',
-      name: 'nameHint',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Email`
   String get email {
     return Intl.message('Email', name: 'email', desc: '', args: []);
@@ -2509,10 +2489,10 @@ class S {
     );
   }
 
-  /// `Your smart career discovery platform`
+  /// `Smart Career Discovery`
   String get smartCareerDiscoveryPlatform {
     return Intl.message(
-      'Your smart career discovery platform',
+      'Smart Career Discovery',
       name: 'smartCareerDiscoveryPlatform',
       desc: '',
       args: [],
@@ -2544,6 +2524,16 @@ class S {
     return Intl.message(
       'Access your verified career pathways and opportunities.',
       name: 'loginSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Only on trusted devices`
+  String get onlyOnTrustedDevices {
+    return Intl.message(
+      'Only on trusted devices',
+      name: 'onlyOnTrustedDevices',
       desc: '',
       args: [],
     );
@@ -2769,7 +2759,17 @@ class S {
     return Intl.message('LinkedIn', name: 'linkedin', desc: '', args: []);
   }
 
+  /// `SkillMatch securely protects your verified credentials and application histories.`
+  String get secureProtectionText {
+    return Intl.message(
+      'SkillMatch securely protects your verified credentials and application histories.',
+      name: 'secureProtectionText',
+      desc: '',
+      args: [],
+    );
+  }
 
+  /// `SKILLMATCH PORTAL`
   String get skillmatchPortal {
     return Intl.message(
       'SKILLMATCH PORTAL',
@@ -2779,41 +2779,11 @@ class S {
     );
   }
 
-  /// `Access your verified career pathways and available opportunities.`
+  /// `Access your verified career pathways and opportunities.`
   String get accessYourPathways {
     return Intl.message(
-      'Access your verified career pathways and available opportunities.',
+      'Access your verified career pathways and opportunities.',
       name: 'accessYourPathways',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `On trusted devices only`
-  String get onlyOnTrustedDevices {
-    return Intl.message(
-      'On trusted devices only',
-      name: 'onlyOnTrustedDevices',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `SkillMatch securely protects your data and application history.`
-  String get secureProtectionText {
-    return Intl.message(
-      'SkillMatch securely protects your data and application history.',
-      name: 'secureProtectionText',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Continue as Guest`
-  String get continueAsGuest {
-    return Intl.message(
-      'Continue as Guest',
-      name: 'continueAsGuest',
       desc: '',
       args: [],
     );
@@ -2900,6 +2870,17 @@ class S {
       args: [count],
     );
   }
+
+  /// `Continue as Guest`
+  String get continueAsGuest {
+    return Intl.message(
+      'Continue as Guest',
+      name: 'continueAsGuest',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Watch Ad`
   String get watchAd {
     return Intl.message('Watch Ad', name: 'watchAd', desc: '', args: []);
@@ -2970,16 +2951,6 @@ class S {
     return Intl.message(
       'Ad closed early. No XP awarded.',
       name: 'adDismissedNoReward',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No saved jobs yet`
-  String get noSavedJobsYet {
-    return Intl.message(
-      'No saved jobs yet',
-      name: 'noSavedJobsYet',
       desc: '',
       args: [],
     );

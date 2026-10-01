@@ -1,7 +1,13 @@
-import 'package:MatchIn/features/auth/domain/entities/login_entity.dart';
+import 'package:MatchIn/features/auth/data/models/login_model.dart';
+abstract class AuthRemoteDataSource {
+  Future<void> verifyOtp({required String email, required String otp});
 
-abstract interface class AuthRemoteDataSource {
-  Future<LoginEntity> login({required String email, required String password});
+  Future<void> resendOtp({required String email});
+
+  Future<void> resetPassword({
+    required String email,
+    required String newPassword,
+  });
 
   Future<void> register({
     required String name,
@@ -10,22 +16,8 @@ abstract interface class AuthRemoteDataSource {
     required String passwordConfirmation,
   });
 
-  Future<void> verifyOtp({required String email, required String otp});
-
-  Future<void> resendOtp({required String email});
-
-  // فلو تغيير الباسورد الجديد
-  Future<void> forgotPassword({required String email});
-
-  Future<String> verifyPasswordResetOtp({
+  Future<LoginModel> login({
     required String email,
-    required String otp,
-  });
-
-  Future<void> resetPassword({
-    required String email,
-    required String resetToken,
     required String password,
-    required String passwordConfirmation,
   });
 }

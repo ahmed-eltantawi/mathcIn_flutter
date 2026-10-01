@@ -1,49 +1,22 @@
-import 'package:MatchIn/core/cache/cache_key.dart';
-import 'package:MatchIn/core/cache/shared_preferences_helper.dart';
-import 'package:MatchIn/features/auth/data/models/user_model.dart';
-import 'package:MatchIn/features/auth/domain/entities/user_entity.dart';
+
+import '../cache/cache_key.dart';
+import '../cache/shared_preferences_helper.dart';
 
 class SharedPreferencesService {
   const SharedPreferencesService(this._sharedPreferencesHelper);
 
   final SharedPreferencesHelper _sharedPreferencesHelper;
 
-  //! ===== Auth =====
-
-  Future<void> setLoggedIn() async {
+  // --- This methods are used to save and get data about login status ---
+  Future<void> setLoggedIn(bool value) async {
     await _sharedPreferencesHelper.saveData(
       key: CacheKey.isLoggedIn,
-      value: true,
+      value: value,
     );
   }
 
   bool isLoggedIn() {
     return _sharedPreferencesHelper.getData(key: CacheKey.isLoggedIn) ?? false;
-  }
-
-  /// Serialises the full user object to a JSON string and persists it.
-  /// A single cache entry replaces all scattered primitive keys.
-  Future<void> saveUserData(UserEntity user) async {
-    final model = UserModel(
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      isActive: user.isActive,
-      avatar: user.avatar,
-      phone: user.phone,
-    );
-    await _sharedPreferencesHelper.saveData(
-      key: CacheKey.userDataKey,
-      value: model.toJsonString(),
-    );
-  }
-
-  /// Retrieves and deserialises the cached user object, or returns null.
-  UserEntity? getUserData() {
-    final raw = _sharedPreferencesHelper.getString(key: CacheKey.userDataKey);
-    if (raw == null || raw.isEmpty) return null;
-    return UserModel.fromJsonString(raw);
   }
 
   Future<void> clearAuthData() async {
@@ -52,8 +25,7 @@ class SharedPreferencesService {
     await _sharedPreferencesHelper.deleteData(key: CacheKey.isLoggedIn);
   }
 
-  //! ===== Onboarding =====
-
+  // --- This methods are used to save and get data about onboarding status ---
   Future<void> onBoardingViewed() async {
     await _sharedPreferencesHelper.saveData(
       key: CacheKey.onBoardingViewed,
@@ -62,14 +34,11 @@ class SharedPreferencesService {
   }
 
   bool isOnBoardingViewed() {
-    return _sharedPreferencesHelper.getData(
-          key: CacheKey.onBoardingViewed,
-        ) ??
+    return _sharedPreferencesHelper.getData(key: CacheKey.onBoardingViewed) ??
         false;
   }
 
-  //! ===== FCM =====
-
+  // --- FCM token — persisted locally so it can be re-sent after a restart ---
   Future<void> saveFcmToken(String token) async {
     await _sharedPreferencesHelper.saveData(
       key: CacheKey.fcmToken,
@@ -81,8 +50,7 @@ class SharedPreferencesService {
     return _sharedPreferencesHelper.getString(key: CacheKey.fcmToken);
   }
 
-  //! ===== Roadmap — Treasures & Tasks =====
-
+  // --- Roadmap collected treasure milestones persistence ---
   Future<void> saveCollectedTreasures(Set<int> milestoneIndices) async {
     final list = milestoneIndices.map((e) => e.toString()).toList();
     await _sharedPreferencesHelper.saveData(
@@ -99,6 +67,7 @@ class SharedPreferencesService {
     return list.map((e) => int.tryParse(e)).whereType<int>().toSet();
   }
 
+  // --- Roadmap completed tasks persistence ---
   Future<void> saveCompletedTasks(Set<String> taskIds) async {
     await _sharedPreferencesHelper.saveData(
       key: CacheKey.completedTaskIds,

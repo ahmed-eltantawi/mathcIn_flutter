@@ -57,9 +57,7 @@ void main() {
     test('resetPassword returns Right(unit) with valid password', () async {
       final result = await resetPasswordUseCase(
         email: 'test@example.com',
-        resetToken: 'mock_reset_token_abc',
-        password: 'Password123!',
-        passwordConfirmation: 'Password123!',
+        newPassword: 'Password123!',
       );
 
       expect(result.isRight(), isTrue);
@@ -70,9 +68,7 @@ void main() {
       () async {
         final result = await resetPasswordUseCase(
           email: 'test@example.com',
-          resetToken: 'mock_reset_token_abc',
-          password: 'short',
-          passwordConfirmation: 'short',
+          newPassword: 'short',
         );
 
         expect(result.isLeft(), isTrue);

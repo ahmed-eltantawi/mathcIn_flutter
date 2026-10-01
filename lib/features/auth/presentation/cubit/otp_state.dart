@@ -40,18 +40,3 @@ class OtpResendError extends OtpState {
   @override
   List<Object?> get props => [message];
 }
-
-/// Emitted every second while the resend countdown is active.
-class OtpTimerTick extends OtpState {
-  const OtpTimerTick({required this.secondsRemaining});
-
-  final int secondsRemaining;
-
-  @override
-  List<Object?> get props => [secondsRemaining];
-}
-
-/// Emitted when the countdown reaches zero — resend is now available.
-class OtpResendAvailable extends OtpState {
-  const OtpResendAvailable();
-}

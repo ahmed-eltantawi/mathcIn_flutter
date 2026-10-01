@@ -1,9 +1,7 @@
-import 'package:MatchIn/core/services/secure_storage_service.dart';
-import 'package:MatchIn/core/services/shared_preferences_service.dart';
-import 'package:MatchIn/features/auth/domain/entities/login_entity.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:MatchIn/features/auth/data/models/login_model.dart';
 import 'package:MatchIn/features/auth/domain/use_cases/login_use_case.dart';
 import 'package:MatchIn/features/auth/domain/use_cases/register_use_case.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'auth_state.dart';
 
@@ -11,36 +9,17 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit({
     required this.loginUseCase,
     required this.registerUseCase,
-    required this.secureStorageService,
-    required this.sharedPreferencesService,
   }) : super(AuthInitial());
 
   final LoginUseCase loginUseCase;
   final RegisterUseCase registerUseCase;
-  final SecureStorageService secureStorageService;
-  final SharedPreferencesService sharedPreferencesService;
 
   Future<void> login({required String email, required String password}) async {
     emit(LoginLoading());
     final result = await loginUseCase(email: email, password: password);
-
-    await result.fold(
-      (failure) async => emit(LoginFailure(message: failure.message)),
-      (loginEntity) async {
-        // --- Persist JWT tokens in encrypted storage ---
-        await secureStorageService.saveTokens(
-          accessToken: loginEntity.accessToken,
-          refreshToken: loginEntity.refreshToken,
-        );
-
-        // --- Persist the full user object + mark as logged in ---
-        if (loginEntity.user != null) {
-          await sharedPreferencesService.saveUserData(loginEntity.user!);
-        }
-        await sharedPreferencesService.setLoggedIn();
-
-        emit(LoginSuccess(loginEntity: loginEntity));
-      },
+    result.fold(
+      (failure) => emit(LoginFailure(message: failure.message)),
+      (loginModel) => emit(LoginSuccess(loginModel: loginModel)),
     );
   }
 
@@ -59,7 +38,7 @@ class AuthCubit extends Cubit<AuthState> {
     );
     result.fold(
       (failure) => emit(RegisterFailure(message: failure.message)),
-      (_) => emit(RegisterSuccess()),
+      (success) => emit(RegisterSuccess()),
     );
   }
 }

@@ -1,4 +1,4 @@
-import 'package:MatchIn/features/auth/presentation/widgets/reset_password/password_requirement_tile.dart';
+import 'package:MatchIn/features/auth/presentation/widgets/password_requirement_tile.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

@@ -4,7 +4,6 @@ abstract class CacheKey {
   static const String refreshToken = 'refreshToken';
   static const String isLoggedIn = 'isLoggedIn';
   static const String id = 'id';
-  // Full user object stored as a JSON-encoded string
   static const String userDataKey = 'userDataKey';
   static const String onBoardingViewed = 'onBoardingViewed';
   static const String fcmToken = 'fcmToken';
