@@ -9,11 +9,15 @@ class ResetPasswordUseCase {
 
   Future<Either<Failure, Unit>> call({
     required String email,
-    required String newPassword,
+    required String resetToken,
+    required String password,
+    required String passwordConfirmation,
   }) async {
     return await repository.resetPassword(
       email: email,
-      newPassword: newPassword,
+      resetToken: resetToken,
+      password: password,
+      passwordConfirmation: passwordConfirmation,
     );
   }
 }

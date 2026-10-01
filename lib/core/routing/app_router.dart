@@ -189,12 +189,12 @@ abstract final class AppRouter {
               create: (_) => getIt<OtpCubit>(),
               child: OtpVerificationView(
                 email: state.extra as String? ?? 'user@example.com',
+                isPasswordReset: true,
               ),
             ),
           );
         },
       ),
-
       // OTP
       GoRoute(
         path: AppRoutes.kOtpVerificationView,
@@ -215,12 +215,15 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kCreateNewPasswordView,
         pageBuilder: (context, state) {
+          final args = state.extra as Map<String, dynamic>?;
+
           return _buildTransitionPage(
             state: state,
             child: BlocProvider(
               create: (_) => getIt<ResetPasswordCubit>(),
               child: CreateNewPasswordView(
-                email: state.extra as String? ?? 'user@example.com',
+                email: args?['email'] as String? ?? 'user@example.com',
+                resetToken: args?['resetToken'] as String? ?? '',
               ),
             ),
           );

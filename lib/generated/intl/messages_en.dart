@@ -46,7 +46,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "A few more questions",
     ),
     "accessYourPathways": MessageLookupByLibrary.simpleMessage(
-      "Access your verified career pathways and opportunities.",
+      "Access your verified career pathways and available opportunities.",
     ),
     "account": MessageLookupByLibrary.simpleMessage("ACCOUNT"),
     "adDismissedNoReward": MessageLookupByLibrary.simpleMessage(
@@ -338,6 +338,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "myCareerRoadmap": MessageLookupByLibrary.simpleMessage(
       "My Career Roadmap",
     ),
+    "name": MessageLookupByLibrary.simpleMessage("Name"),
+    "nameHint": MessageLookupByLibrary.simpleMessage("Enter your name"),
     "needHelpWithNextSteps": MessageLookupByLibrary.simpleMessage(
       "Need help with next steps?",
     ),
@@ -366,6 +368,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "No internet connection",
     ),
     "noJobsFound": MessageLookupByLibrary.simpleMessage("No jobs found"),
+    "noSavedJobsYet": MessageLookupByLibrary.simpleMessage("No saved jobs yet"),
     "noLearningTasks": MessageLookupByLibrary.simpleMessage(
       "No learning tasks defined for this skill yet.",
     ),
@@ -385,7 +388,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Get matched with high-fit opportunities",
     ),
     "onlyOnTrustedDevices": MessageLookupByLibrary.simpleMessage(
-      "Only on trusted devices",
+      "On trusted devices only",
     ),
     "opportunities": MessageLookupByLibrary.simpleMessage("opportunities"),
     "optional": MessageLookupByLibrary.simpleMessage("Optional"),
@@ -525,7 +528,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "searchJobsTitle": MessageLookupByLibrary.simpleMessage("Search Jobs"),
     "secondsSuffix": MessageLookupByLibrary.simpleMessage("s"),
     "secureProtectionText": MessageLookupByLibrary.simpleMessage(
-      "SkillMatch securely protects your verified credentials and application histories.",
+      "SkillMatch securely protects your data and application history.",
     ),
     "securityBadge": MessageLookupByLibrary.simpleMessage(
       "SkillMatch securely protects your verified credentials and application histories.",
@@ -560,7 +563,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "skip": MessageLookupByLibrary.simpleMessage("Skip"),
     "smartCareerDiscoveryPlatform": MessageLookupByLibrary.simpleMessage(
-      "Smart Career Discovery",
+      "Your smart career discovery platform",
     ),
     "somethingWentWrong": MessageLookupByLibrary.simpleMessage(
       "Something went wrong",

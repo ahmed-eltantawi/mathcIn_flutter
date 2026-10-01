@@ -360,6 +360,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "لا يوجد اتصال بالإنترنت",
     ),
     "noJobsFound": MessageLookupByLibrary.simpleMessage("لا توجد وظائف متاحة"),
+    "noSavedJobsYet": MessageLookupByLibrary.simpleMessage("لا توجد وظائف محفوظة بعد"),
     "noLearningTasks": MessageLookupByLibrary.simpleMessage(
       "لا توجد مهام تعلم محددة لهذه المهارة بعد.",
     ),

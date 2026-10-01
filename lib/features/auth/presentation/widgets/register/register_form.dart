@@ -76,7 +76,6 @@ class _RegisterFormState extends State<RegisterForm> {
             textInputAction: TextInputAction.next,
             validator: Validator.validatePassword,
           ),
-          SizedBox(height: 8.h),
           SizedBox(height: 16.h),
           CustomTextField(
             controller: _confirmPasswordController,

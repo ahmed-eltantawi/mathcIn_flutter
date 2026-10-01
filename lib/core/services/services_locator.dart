@@ -24,16 +24,18 @@ import 'package:MatchIn/features/jobsAndApplications/domain/use_case/apply_for_j
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_cached_jobs_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_jobs_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/toggle_save_job_use_case.dart';
+import 'package:MatchIn/features/auth/data/data_sources/auth_remote_data_source_impl.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/cv_cubit.dart';
-import 'package:MatchIn/features/auth/data/data_sources/auth_mock_remote_data_source_impl.dart';
 import 'package:MatchIn/features/auth/data/data_sources/auth_remote_data_source.dart';
 import 'package:MatchIn/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:MatchIn/features/auth/domain/repositories/auth_repository.dart';
 import 'package:MatchIn/features/auth/domain/use_cases/login_use_case.dart';
 import 'package:MatchIn/features/auth/domain/use_cases/register_use_case.dart';
 import 'package:MatchIn/features/auth/domain/use_cases/resend_otp_use_case.dart';
+import 'package:MatchIn/features/auth/domain/use_cases/forgot_password_use_case.dart';
 import 'package:MatchIn/features/auth/domain/use_cases/reset_password_use_case.dart';
 import 'package:MatchIn/features/auth/domain/use_cases/verify_otp_use_case.dart';
+import 'package:MatchIn/features/auth/domain/use_cases/verify_password_reset_otp_use_case.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/otp_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/reset_password_cubit.dart';
@@ -79,10 +81,10 @@ Future<void> setupServiceLocator() async {
   // =========================================================
 
   getIt.registerLazySingleton<AuthRemoteDataSource>(
-    () => AuthMockRemoteDataSourceImpl(),
-    // () => AuthRemoteDataSourceImpl(apiConsumer: getIt()),
+    // هنعطل الموك خلاص
+    // () => AuthMockRemoteDataSourceImpl(),
+    () => AuthRemoteDataSourceImpl(apiConsumer: getIt()),
   );
-
   getIt.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
   );
@@ -103,16 +105,33 @@ Future<void> setupServiceLocator() async {
     () => ResendOtpUseCase(repository: getIt()),
   );
 
+  getIt.registerLazySingleton<ForgotPasswordUseCase>(
+    () => ForgotPasswordUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<VerifyPasswordResetOtpUseCase>(
+    () => VerifyPasswordResetOtpUseCase(repository: getIt()),
+  );
+
   getIt.registerLazySingleton<ResetPasswordUseCase>(
     () => ResetPasswordUseCase(repository: getIt()),
   );
 
   getIt.registerFactory<AuthCubit>(
-    () => AuthCubit(loginUseCase: getIt(), registerUseCase: getIt()),
+    () => AuthCubit(
+      loginUseCase: getIt(),
+      registerUseCase: getIt(),
+      secureStorageService: getIt(),
+      sharedPreferencesService: getIt(),
+    ),
   );
 
   getIt.registerFactory<OtpCubit>(
-    () => OtpCubit(verifyOtpUseCase: getIt(), resendOtpUseCase: getIt()),
+    () => OtpCubit(
+      verifyOtpUseCase: getIt(),
+      resendOtpUseCase: getIt(),
+      verifyPasswordResetOtpUseCase: getIt(),
+    ),
   );
 
   getIt.registerFactory<ResetPasswordCubit>(

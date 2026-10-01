@@ -10,13 +10,17 @@ class ResetPasswordCubit extends Cubit<ResetPasswordState> {
 
   Future<void> resetPassword({
     required String email,
-    required String newPassword,
+    required String resetToken,
+    required String password,
+    required String passwordConfirmation,
   }) async {
     emit(const ResetPasswordLoading());
 
     final result = await resetPasswordUseCase(
       email: email,
-      newPassword: newPassword,
+      resetToken: resetToken,
+      password: password,
+      passwordConfirmation: passwordConfirmation,
     );
 
     result.fold(
