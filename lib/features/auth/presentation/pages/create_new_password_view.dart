@@ -4,9 +4,9 @@ import 'package:MatchIn/core/widgets/custom_button.dart';
 import 'package:MatchIn/core/widgets/custom_snack_bar.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/reset_password_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/reset_password_state.dart';
-import 'package:MatchIn/features/auth/presentation/widgets/create_password_back_button.dart';
-import 'package:MatchIn/features/auth/presentation/widgets/create_password_form_card.dart';
-import 'package:MatchIn/features/auth/presentation/widgets/create_password_header.dart';
+import 'package:MatchIn/features/auth/presentation/widgets/reset_password/create_password_back_button.dart';
+import 'package:MatchIn/features/auth/presentation/widgets/reset_password/create_password_form_card.dart';
+import 'package:MatchIn/features/auth/presentation/widgets/reset_password/create_password_header.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,9 +14,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class CreateNewPasswordView extends StatefulWidget {
-  const CreateNewPasswordView({super.key, this.email = 'user@example.com'});
+  const CreateNewPasswordView({
+    super.key,
+    required this.email,
+    required this.resetToken,
+  });
 
   final String email;
+  final String resetToken;
 
   @override
   State<CreateNewPasswordView> createState() => _CreateNewPasswordViewState();
@@ -64,7 +69,9 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
 
     context.read<ResetPasswordCubit>().resetPassword(
       email: widget.email,
-      newPassword: _passwordController.text,
+      resetToken: widget.resetToken,
+      password: _passwordController.text,
+      passwordConfirmation: _confirmPasswordController.text,
     );
   }
 
@@ -79,8 +86,6 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
         }
       },
       builder: (context, state) {
-        final isLoading = state is ResetPasswordLoading;
-
         return Scaffold(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           appBar: CustomAppBar(title: S.of(context).createNewPassword),
@@ -103,7 +108,7 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
                   CustomButton(
                     text: S.of(context).resetPassword,
                     onPressed: _onSubmit,
-                    isLoading: isLoading,
+                    isLoading: state is ResetPasswordLoading,
                   ),
                   SizedBox(height: 12.h),
                   CreatePasswordBackButton(
