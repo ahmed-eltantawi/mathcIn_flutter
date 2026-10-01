@@ -32,12 +32,20 @@ import 'package:MatchIn/features/chatbot/domain/use_cases/get_chat_history_use_c
 import 'package:MatchIn/features/chatbot/domain/use_cases/save_chat_use_case.dart';
 import 'package:MatchIn/features/chatbot/domain/use_cases/send_message_use_case.dart';
 import 'package:MatchIn/features/chatbot/presentation/cubit/chatbot_cubit.dart';
-import 'package:MatchIn/features/home/data/data_sources/home_mock_remote_data_source_impl.dart';
+import 'package:MatchIn/features/home/data/data_sources/home_remote_data_source_impl.dart';
 import 'package:MatchIn/features/home/data/data_sources/home_remote_data_source.dart';
-import 'package:MatchIn/features/home/data/data_sources/repositories/home_repository_impl.dart';
+import 'package:MatchIn/features/home/data/repositories/home_repository_impl.dart';
 import 'package:MatchIn/features/home/domain/repositories/home_repository.dart';
 import 'package:MatchIn/features/home/domain/use_cases/get_home_dashboard_use_case.dart';
 import 'package:MatchIn/features/home/presentation/cubit/home_cubit.dart';
+import 'package:MatchIn/features/profile/data/data_sources/profile_local_data_source.dart';
+import 'package:MatchIn/features/profile/data/data_sources/profile_local_data_source_impl.dart';
+import 'package:MatchIn/features/profile/data/data_sources/profile_remote_data_source.dart';
+import 'package:MatchIn/features/profile/data/data_sources/profile_remote_data_source_impl.dart';
+import 'package:MatchIn/features/profile/data/repositories/profile_repository_impl.dart';
+import 'package:MatchIn/features/profile/domain/repositories/profile_repository.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/get_user_profile_use_case.dart';
+import 'package:MatchIn/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:MatchIn/features/jobsAndApplications/data/data_sources/applications_local_data_source.dart';
 import 'package:MatchIn/features/jobsAndApplications/data/data_sources/applications_local_data_source_impl.dart';
 import 'package:MatchIn/features/jobsAndApplications/data/data_sources/applications_remote_data_source.dart';
@@ -252,7 +260,10 @@ Future<void> setupServiceLocator() async {
   // =========================================================
 
   getIt.registerLazySingleton<HomeRemoteDataSource>(
-    () => HomeMockRemoteDataSourceImpl(),
+    () => HomeRemoteDataSourceImpl(
+      apiConsumer: getIt(),
+      profileLocalDataSource: getIt(),
+    ),
   );
 
   getIt.registerLazySingleton<HomeRepository>(
@@ -265,6 +276,34 @@ Future<void> setupServiceLocator() async {
 
   getIt.registerLazySingleton<HomeCubit>(
     () => HomeCubit(getHomeDashboardUseCase: getIt()),
+  );
+
+  // =========================================================
+  // Profile Feature
+  // =========================================================
+
+  getIt.registerLazySingleton<ProfileRemoteDataSource>(
+    () => ProfileRemoteDataSourceImpl(getIt()),
+  );
+
+  getIt.registerLazySingleton<ProfileLocalDataSource>(
+    () => ProfileLocalDataSourceImpl(getIt()),
+  );
+
+  getIt.registerLazySingleton<ProfileRepository>(
+    () => ProfileRepositoryImpl(
+      remoteDataSource: getIt(),
+      localDataSource: getIt(),
+      networkInfo: getIt(),
+    ),
+  );
+
+  getIt.registerLazySingleton<GetUserProfileUseCase>(
+    () => GetUserProfileUseCase(getIt()),
+  );
+
+  getIt.registerFactory<ProfileCubit>(
+    () => ProfileCubit(getUserProfileUseCase: getIt()),
   );
 
   // =========================================================

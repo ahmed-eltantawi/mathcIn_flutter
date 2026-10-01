@@ -9,11 +9,13 @@ class MainProfileCard extends StatelessWidget {
     required this.name,
     required this.jobTitle,
     required this.location,
+    this.avatarUrl,
   });
 
   final String name;
   final String jobTitle;
   final String location;
+  final String? avatarUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,11 @@ class MainProfileCard extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 35.r,
-            backgroundImage: const NetworkImage(AppConstants.defaultAvatarUrl),
+            backgroundImage: NetworkImage(
+              (avatarUrl != null && avatarUrl!.isNotEmpty)
+                  ? avatarUrl!
+                  : AppConstants.defaultAvatarUrl,
+            ),
           ),
           SizedBox(width: 16.w),
           Expanded(

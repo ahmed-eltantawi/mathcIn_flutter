@@ -30,13 +30,10 @@ class ApiInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    // get access token from secure storage
-
     //TODO: remove the commet from this line
     // final accessToken = await secureStorageService.getAccessToken();
     final accessToken =
-        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3NraWxsbWF0Y2guaXB0dmRlbW8uc2VydjVncm91cC5jb20vYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3OTA4NTgwNjksImV4cCI6MTc5MDg2MTY2OSwibmJmIjoxNzkwODU4MDY5LCJqdGkiOiJMNUFCUXZ6UzRvbmZWbDRXIiwic3ViIjoiODciLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.UmAZ76EdG_tmIvNXuQcD4HYm4ZJyE28BgcFvZFlNn0Y';
-    // add access token in request header
+        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3NraWxsbWF0Y2guaXB0dmRlbW8uc2VydjVncm91cC5jb20vYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3OTA4NTgwNjksImV4cCI6MTc5MDg2MTY2OSwibmJmIjoxNzkwODU4MDY5LCJqdGkiOiJMNUFCUXZ6UzRvbmZWbDRXIiwic3ViIjoiODciLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.UmAZ76EdG_tmIvNXuQcD4HYm4ZJyE28BgcFvZFlNn0Y'; // add access token in request header
     options.headers[ApiHeaderKey.authorization] =
         ApiHeaderKey.getAuthorizationValue(accessToken: accessToken);
 

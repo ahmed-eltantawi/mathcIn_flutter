@@ -1,8 +1,14 @@
+import 'package:MatchIn/core/services/services_locator.dart';
+import 'package:MatchIn/core/widgets/error/app_error.dart';
+import 'package:MatchIn/core/widgets/loading/app_loading.dart';
+import 'package:MatchIn/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:MatchIn/features/profile/presentation/cubit/profile_state.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/cards/education_card.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/cards/experience_card.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/cards/main_profile_card.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProfileView extends StatelessWidget {
@@ -13,33 +19,62 @@ class ProfileView extends StatelessWidget {
     final theme = Theme.of(context);
     final locale = S.of(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          locale.candidateProfile,
-          style: theme.textTheme.titleLarge,
+    return BlocProvider<ProfileCubit>(
+      create: (_) => getIt<ProfileCubit>()..fetchUserProfile(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            locale.candidateProfile,
+            style: theme.textTheme.titleLarge,
+          ),
         ),
-      ),
-      body: SafeArea(
-        child: ListView(
-          padding: EdgeInsets.all(16.w),
-          children: const [
-            MainProfileCard(
-              name: 'Eng-Amira Sultan',
-              jobTitle: 'Junior Flutter Developer',
-              location: 'Mansoura, Egypt',
-            ),
-            EducationCard(
-              universityName: 'Tanta University',
-              degree: 'Bachelor of Computer Science',
-              years: '2021 - 2025',
-            ),
-            ExperienceCard(
-              jobTitle: 'Junior Flutter Developer',
-              companyName: 'MatchIn',
-              duration: '2026 - Present',
-            ),
-          ],
+        body: SafeArea(
+          child: BlocBuilder<ProfileCubit, ProfileState>(
+            builder: (context, state) {
+              return switch (state) {
+                ProfileInitial() || ProfileLoading() => const AppLoadingWidget(),
+                ProfileError(:final message) => AppErrorWidget(
+                    message: message,
+                    onRetry: () =>
+                        context.read<ProfileCubit>().fetchUserProfile(),
+                  ),
+                ProfileLoaded(:final userProfile) => RefreshIndicator(
+                    onRefresh: () =>
+                        context.read<ProfileCubit>().fetchUserProfile(),
+                    child: ListView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      padding: EdgeInsets.all(16.w),
+                      children: [
+                        MainProfileCard(
+                          name: userProfile.name,
+                          jobTitle: userProfile.jobTitle,
+                          location: userProfile.location,
+                          avatarUrl: userProfile.avatarUrl,
+                        ),
+                        if (userProfile.universityName != null) ...[
+                          SizedBox(height: 12.h),
+                          EducationCard(
+                            universityName: userProfile.universityName!,
+                            degree: userProfile.degree ?? '',
+                            years: userProfile.years ?? '',
+                          ),
+                        ],
+                        if (userProfile.experienceJobTitle != null ||
+                            userProfile.companyName != null) ...[
+                          SizedBox(height: 12.h),
+                          ExperienceCard(
+                            jobTitle: userProfile.experienceJobTitle ??
+                                userProfile.jobTitle,
+                            companyName: userProfile.companyName ?? '',
+                            duration: userProfile.duration ?? '',
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+              };
+            },
+          ),
         ),
       ),
     );

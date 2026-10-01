@@ -1,3 +1,4 @@
+import 'package:MatchIn/core/networking/api_end_points.dart';
 import 'package:MatchIn/features/jobsAndApplications/data/models/job_links_model.dart';
 import 'package:MatchIn/features/jobsAndApplications/data/models/job_model.dart';
 import 'package:MatchIn/features/jobsAndApplications/data/models/job_pagination_model.dart';
@@ -8,21 +9,21 @@ class PaginatedJobsModel {
 
   factory PaginatedJobsModel.fromJson(Map<String, dynamic> json) {
     List<JobModel> jobs = [];
-    if (json['data'] is List) {
-      jobs = (json['data'] as List)
+    if (json[ApiKey.data] is List) {
+      jobs = (json[ApiKey.data] as List)
           .whereType<Map<String, dynamic>>()
           .map(JobModel.fromJson)
           .toList();
     }
 
     JobLinksModel? links;
-    if (json['links'] is Map<String, dynamic>) {
-      links = JobLinksModel.fromJson(json['links'] as Map<String, dynamic>);
+    if (json[ApiKey.links] is Map<String, dynamic>) {
+      links = JobLinksModel.fromJson(json[ApiKey.links] as Map<String, dynamic>);
     }
 
     JobPaginationModel? meta;
-    if (json['meta'] is Map<String, dynamic>) {
-      meta = JobPaginationModel.fromJson(json['meta'] as Map<String, dynamic>);
+    if (json[ApiKey.meta] is Map<String, dynamic>) {
+      meta = JobPaginationModel.fromJson(json[ApiKey.meta] as Map<String, dynamic>);
     }
 
     return PaginatedJobsModel(data: jobs, links: links, meta: meta);
@@ -34,9 +35,9 @@ class PaginatedJobsModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'data': data.map((j) => j.toJson()).toList(),
-      'links': links?.toJson(),
-      'meta': meta?.toJson(),
+      ApiKey.data: data.map((j) => j.toJson()).toList(),
+      ApiKey.links: links?.toJson(),
+      ApiKey.meta: meta?.toJson(),
     };
   }
 
