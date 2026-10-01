@@ -21,6 +21,7 @@ abstract class EndPoint {
 
   static const String chatMessage = 'chatbot/chat';
   static const String savedJobs = 'saved-jobs';
+  static const String jobs = 'jobs';
   static String saveJob(dynamic jobPostId) => 'jobs/$jobPostId/save';
 }
 
@@ -41,6 +42,21 @@ abstract class ApiKey {
   static const String perPage = 'per_page';
   static const String jobId = 'job_id';
   static const String isSaved = 'is_saved';
+  static const String search = 'search';
+  static const String sort = 'sort';
+  static const String companyId = 'company_id';
+  static const String jobType = 'job_type';
+  static const String workMode = 'work_mode';
+  static const String employmentType = 'employment_type';
+  static const String experienceLevel = 'experience_level';
+  static const String country = 'country';
+  static const String state = 'state';
+  static const String city = 'city';
+  static const String source = 'source';
+  static const String applicationMethod = 'application_method';
+  static const String isVerifiedCompany = 'is_verified_company';
+  static const String requiredSkillIds = 'required_skill_ids[]';
+  static const String preferredSkillIds = 'preferred_skill_ids[]';
   // static const String id = 'id';
 }
 

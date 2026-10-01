@@ -61,6 +61,20 @@ class RecommendedJobsSection extends StatelessWidget {
                     ],
                   ],
                 ),
+                JobsFeedOfflineWithCache(:final jobs) => Column(
+                  children: [
+                    for (final job in jobs) ...[
+                      JobCard(
+                        job: job,
+                        showShareButton: true,
+                        onSave: () => context
+                            .read<JobsFeedCubit>()
+                            .toggleSaveJob(job.id),
+                      ),
+                      SizedBox(height: 12.h),
+                    ],
+                  ],
+                ),
               };
             },
           ),

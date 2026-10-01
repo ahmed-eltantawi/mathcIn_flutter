@@ -372,5 +372,6 @@
   "adNotAvailable": "Ad Not Available",
   "failedToLoadAd": "Failed to Load Ad",
   "adRewardSuccess": "🎉 Congratulations! You earned +50 XP!",
-  "adDismissedNoReward": "Ad closed early. No XP awarded."
+  "adDismissedNoReward": "Ad closed early. No XP awarded.",
+  "noSavedJobsYet" : "No saved jobs yet"
 }
