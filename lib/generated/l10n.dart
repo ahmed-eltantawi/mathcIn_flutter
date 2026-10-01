@@ -2955,6 +2955,16 @@ class S {
       args: [],
     );
   }
+
+  /// `No saved jobs yet`
+  String get noSavedJobsYet {
+    return Intl.message(
+      'No saved jobs yet',
+      name: 'noSavedJobsYet',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

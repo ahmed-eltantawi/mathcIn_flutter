@@ -363,6 +363,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "noLearningTasks": MessageLookupByLibrary.simpleMessage(
       "لا توجد مهام تعلم محددة لهذه المهارة بعد.",
     ),
+    "noSavedJobsYet": MessageLookupByLibrary.simpleMessage(
+      "لا يوجد وظائف متاحة حالياً",
+    ),
     "notNow": MessageLookupByLibrary.simpleMessage("ليس الآن"),
     "notes": MessageLookupByLibrary.simpleMessage("الملاحظات"),
     "notifications": MessageLookupByLibrary.simpleMessage("الإشعارات"),
