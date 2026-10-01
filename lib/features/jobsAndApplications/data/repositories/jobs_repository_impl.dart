@@ -28,41 +28,63 @@ class JobsRepositoryImpl implements JobsRepository {
 
     if (await networkInfo.isConnected) {
       try {
-        final result = await remoteDataSource.getJobs(params: params);
+        final result = await remoteDataSource.getJobs(
+          params: params,
+        );
+
         await localDataSource.cacheJobs(cacheKey, result);
+
         return Right(result.toEntity());
       } on ServerException catch (e) {
-        final cached = await localDataSource.getCachedJobs(cacheKey);
+        final cached = await localDataSource.getCachedJobs(
+          cacheKey,
+        );
+
         if (cached != null && cached.data.isNotEmpty) {
           return Right(cached.toEntity());
         }
-        return Left(ServerFailure(message: e.errorModel.errorMessage));
+
+        return Left(
+          ServerFailure(message: e.errorModel.errorMessage),
+        );
       } catch (e) {
-        final cached = await localDataSource.getCachedJobs(cacheKey);
+        final cached = await localDataSource.getCachedJobs(
+          cacheKey,
+        );
+
         if (cached != null && cached.data.isNotEmpty) {
           return Right(cached.toEntity());
         }
+
         return Left(ServerFailure(message: e.toString()));
       }
-    } else {
-      final cached = await localDataSource.getCachedJobs(cacheKey);
-      if (cached != null && cached.data.isNotEmpty) {
-        return Right(cached.toEntity());
-      }
-      return const Left(OfflineFailure());
     }
+
+    final cached = await localDataSource.getCachedJobs(
+      cacheKey,
+    );
+
+    if (cached != null && cached.data.isNotEmpty) {
+      return Right(cached.toEntity());
+    }
+
+    return const Left(OfflineFailure());
   }
 
   @override
-  Future<Either<Failure, PaginatedJobsEntity?>> getCachedJobs({
-    JobFilterParams? params,
-  }) async {
+  Future<Either<Failure, PaginatedJobsEntity?>>
+  getCachedJobs({JobFilterParams? params}) async {
     try {
       final cacheKey = params?.toCacheKey() ?? 'default';
-      final cached = await localDataSource.getCachedJobs(cacheKey);
+
+      final cached = await localDataSource.getCachedJobs(
+        cacheKey,
+      );
+
       if (cached != null) {
         return Right(cached.toEntity());
       }
+
       return const Right(null);
     } catch (e) {
       return Left(CacheFailure(message: e.toString()));
@@ -73,17 +95,22 @@ class JobsRepositoryImpl implements JobsRepository {
   Future<Either<Failure, JobEntity>> toggleSaveJob(
     String jobId,
   ) async {
-    if (await networkInfo.isConnected) {
-      try {
-        final job = await remoteDataSource.toggleSaveJob(jobId);
-        return Right(job);
-      } on ServerException catch (e) {
-        return Left(ServerFailure(message: e.errorModel.errorMessage));
-      } catch (e) {
-        return Left(ServerFailure(message: e.toString()));
-      }
-    } else {
+    if (!await networkInfo.isConnected) {
       return const Left(OfflineFailure());
+    }
+
+    try {
+      final job = await remoteDataSource.toggleSaveJob(
+        jobId,
+      );
+
+      return Right(job);
+    } on ServerException catch (e) {
+      return Left(
+        ServerFailure(message: e.errorModel.errorMessage),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
     }
   }
 
@@ -91,17 +118,20 @@ class JobsRepositoryImpl implements JobsRepository {
   Future<Either<Failure, JobEntity>> applyForJob(
     String jobId,
   ) async {
-    if (await networkInfo.isConnected) {
-      try {
-        final job = await remoteDataSource.applyForJob(jobId);
-        return Right(job);
-      } on ServerException catch (e) {
-        return Left(ServerFailure(message: e.errorModel.errorMessage));
-      } catch (e) {
-        return Left(ServerFailure(message: e.toString()));
-      }
-    } else {
+    if (!await networkInfo.isConnected) {
       return const Left(OfflineFailure());
+    }
+
+    try {
+      final job = await remoteDataSource.applyForJob(jobId);
+
+      return Right(job);
+    } on ServerException catch (e) {
+      return Left(
+        ServerFailure(message: e.errorModel.errorMessage),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
     }
   }
 }

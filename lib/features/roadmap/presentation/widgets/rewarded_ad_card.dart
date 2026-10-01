@@ -12,7 +12,8 @@ class RewardedAdCard extends StatefulWidget {
   const RewardedAdCard({super.key});
 
   @override
-  State<RewardedAdCard> createState() => _RewardedAdCardState();
+  State<RewardedAdCard> createState() =>
+      _RewardedAdCardState();
 }
 
 class _RewardedAdCardState extends State<RewardedAdCard> {
@@ -31,7 +32,9 @@ class _RewardedAdCardState extends State<RewardedAdCard> {
     if (_isShowingAd) return;
 
     if (!_rewardedAdManager.isAdReady) {
-      context.showWarningSnackBar(context.l10n.adNotAvailable);
+      context.showWarningSnackBar(
+        context.l10n.adNotAvailable,
+      );
       _rewardedAdManager.loadAd();
       setState(() {});
       return;
@@ -47,7 +50,9 @@ class _RewardedAdCardState extends State<RewardedAdCard> {
         if (!mounted) return;
         _hasEarnedReward = true;
         context.read<RoadmapCubit>().addRewardedAdXp(50);
-        context.showSuccessSnackBar(context.l10n.adRewardSuccess);
+        context.showSuccessSnackBar(
+          context.l10n.adRewardSuccess,
+        );
       },
       onAdClosed: () {
         if (!mounted) return;
@@ -55,7 +60,9 @@ class _RewardedAdCardState extends State<RewardedAdCard> {
           _isShowingAd = false;
         });
         if (!_hasEarnedReward) {
-          context.showWarningSnackBar(context.l10n.adDismissedNoReward);
+          context.showWarningSnackBar(
+            context.l10n.adDismissedNoReward,
+          );
         }
         _hasEarnedReward = false;
       },
@@ -64,7 +71,9 @@ class _RewardedAdCardState extends State<RewardedAdCard> {
         setState(() {
           _isShowingAd = false;
         });
-        context.showErrorSnackBar(context.l10n.failedToLoadAd);
+        context.showErrorSnackBar(
+          context.l10n.failedToLoadAd,
+        );
       },
     );
   }
@@ -72,21 +81,27 @@ class _RewardedAdCardState extends State<RewardedAdCard> {
   @override
   Widget build(BuildContext context) {
     final bool isReady = _rewardedAdManager.isAdReady;
-    final bool isLoading = _rewardedAdManager.isLoading && !_isShowingAd;
+    final bool isLoading =
+        _rewardedAdManager.isLoading && !_isShowingAd;
 
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(14.r),
       decoration: BoxDecoration(
-        color: context.colors.surfaceContainerHighest.withValues(alpha: 0.5),
+        color: context.colors.surfaceContainerHighest
+            .withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(16.r),
         border: Border.all(
-          color: context.colors.primary.withValues(alpha: 0.3),
+          color: context.colors.primary.withValues(
+            alpha: 0.3,
+          ),
           width: 1.2.w,
         ),
         boxShadow: [
           BoxShadow(
-            color: context.colors.primary.withValues(alpha: 0.06),
+            color: context.colors.primary.withValues(
+              alpha: 0.06,
+            ),
             blurRadius: 12.r,
             offset: Offset(0, 4.h),
           ),
@@ -101,7 +116,9 @@ class _RewardedAdCardState extends State<RewardedAdCard> {
               gradient: LinearGradient(
                 colors: [
                   context.colors.primary,
-                  context.colors.primary.withValues(alpha: 0.8),
+                  context.colors.primary.withValues(
+                    alpha: 0.8,
+                  ),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -109,7 +126,9 @@ class _RewardedAdCardState extends State<RewardedAdCard> {
               borderRadius: BorderRadius.circular(14.r),
               boxShadow: [
                 BoxShadow(
-                  color: context.colors.primary.withValues(alpha: 0.3),
+                  color: context.colors.primary.withValues(
+                    alpha: 0.3,
+                  ),
                   blurRadius: 8.r,
                   offset: Offset(0, 3.h),
                 ),
@@ -149,8 +168,12 @@ class _RewardedAdCardState extends State<RewardedAdCard> {
                     vertical: 2.h,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.success.withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(6.r),
+                    color: AppColors.success.withValues(
+                      alpha: 0.15,
+                    ),
+                    borderRadius: BorderRadius.circular(
+                      6.r,
+                    ),
                   ),
                   child: Text(
                     context.l10n.plus50Xp,
@@ -168,20 +191,33 @@ class _RewardedAdCardState extends State<RewardedAdCard> {
           SizedBox(width: 8.w),
 
           // Action Button (Watch Ad / Loading / Retry)
-          ElevatedButton(
-            onPressed: (_isShowingAd || isLoading) ? null : _onWatchAdPressed,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: context.colors.primary,
-              foregroundColor: Colors.white,
-              elevation: 2,
-              padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.r),
+          Flexible(
+            child: ElevatedButton(
+              onPressed: (_isShowingAd || isLoading)
+                  ? null
+                  : _onWatchAdPressed,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: context.colors.primary,
+                foregroundColor: Colors.white,
+                elevation: 2,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 14.w,
+                  vertical: 10.h,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                disabledBackgroundColor: context
+                    .colors
+                    .primary
+                    .withValues(alpha: 0.4),
               ),
-              disabledBackgroundColor:
-                  context.colors.primary.withValues(alpha: 0.4),
+              child: _buildButtonContent(
+                context,
+                isReady: isReady,
+                isLoading: isLoading,
+              ),
             ),
-            child: _buildButtonContent(context, isReady: isReady, isLoading: isLoading),
           ),
         ],
       ),
