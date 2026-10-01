@@ -13,15 +13,6 @@ class ApplicationModel {
     this.job,
   });
 
-  final String id;
-  final String type;
-  final String status;
-  final String? coverLetter;
-  final DateTime? appliedAt;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final JobModel? job;
-
   factory ApplicationModel.fromJson(Map<String, dynamic> json) {
     // Check if JSON has a nested 'data' key or attributes
     final dataObj = json.containsKey('data') && json['data'] is Map<String, dynamic>
@@ -65,6 +56,15 @@ class ApplicationModel {
       job: job,
     );
   }
+
+  final String id;
+  final String type;
+  final String status;
+  final String? coverLetter;
+  final DateTime? appliedAt;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final JobModel? job;
 
   Map<String, dynamic> toJson() {
     return {

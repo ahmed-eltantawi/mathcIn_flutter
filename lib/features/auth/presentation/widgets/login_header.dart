@@ -1,4 +1,6 @@
 import 'package:MatchIn/core/utils/app_colors.dart';
+import 'package:MatchIn/core/utils/app_text_styles.dart';
+import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -27,21 +29,17 @@ class LoginHeader extends StatelessWidget {
         ),
         SizedBox(height: 24.h),
         Text(
-          'Welcome Back',
-          style: TextStyle(
-            fontFamily: 'DM Sans',
-            fontSize: 24.sp,
-            fontWeight: FontWeight.w700,
+          S.of(context).welcomeBack,
+          style: AppTextStyles.heading24Bold(
+            isArabic: false,
             color: AppColors.textPrimary,
-            letterSpacing: -0.6,
           ),
         ),
         SizedBox(height: 4.h),
         Text(
-          'Sign in to continue your career journey',
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 14.sp,
+          S.of(context).loginSubtitle,
+          style: AppTextStyles.body14Regular(
+            isArabic: false,
             color: AppColors.textSecondary,
           ),
         ),

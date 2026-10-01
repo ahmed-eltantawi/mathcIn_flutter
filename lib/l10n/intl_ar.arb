@@ -376,5 +376,6 @@
   "failedToLoadAd": "فشل تحميل الإعلان",
   "adRewardSuccess": "🎉 تهانينا! لقد حصلت على +50 XP!",
   "adDismissedNoReward": "تم إغلاق الإعلان مبكرًا. لم يتم إضافة XP.",
-  "noSavedJobsYet": "لا يوجد وظائف متاحة حالياً"
+  "noSavedJobsYet": "لا يوجد وظائف متاحة حالياً",
+  "noApplicationsYet": "لا توجد طلبات تقديم بعد"
 }

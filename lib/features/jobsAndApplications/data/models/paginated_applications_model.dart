@@ -10,12 +10,6 @@ class PaginatedApplicationsModel {
     required this.hasNextPage,
   });
 
-  final List<ApplicationModel> applications;
-  final int currentPage;
-  final int lastPage;
-  final int total;
-  final bool hasNextPage;
-
   factory PaginatedApplicationsModel.fromJson(Map<String, dynamic> json) {
     List<ApplicationModel> apps = [];
 
@@ -44,6 +38,12 @@ class PaginatedApplicationsModel {
       hasNextPage: hasNextPage,
     );
   }
+
+  final List<ApplicationModel> applications;
+  final int currentPage;
+  final int lastPage;
+  final int total;
+  final bool hasNextPage;
 
   Map<String, dynamic> toJson() {
     return {

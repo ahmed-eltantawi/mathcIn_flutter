@@ -1,3 +1,4 @@
+import 'package:MatchIn/core/utils/app_text_styles.dart';
 import 'package:MatchIn/core/widgets/custom_text_field.dart';
 import 'package:MatchIn/features/auth/presentation/widgets/password_requirements_section.dart';
 import 'package:MatchIn/generated/l10n.dart';
@@ -47,10 +48,8 @@ class CreatePasswordFormCard extends StatelessWidget {
           SizedBox(height: 4.h),
           Text(
             S.of(context).passwordLengthHint,
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w400,
+            style: AppTextStyles.body12Regular(
+              isArabic: false,
               color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
             ),
           ),

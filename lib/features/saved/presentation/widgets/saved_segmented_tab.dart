@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:MatchIn/core/utils/app_colors.dart';
+import 'package:MatchIn/core/utils/app_text_styles.dart';
+import 'package:MatchIn/generated/l10n.dart';
 import 'package:MatchIn/features/saved/presentation/models/saved_tab_type.dart';
 
 class SavedSegmentedTab extends StatelessWidget {
@@ -32,7 +34,8 @@ class SavedSegmentedTab extends StatelessWidget {
           children: [
             Expanded(
               child: _buildTabItem(
-                title: 'Saved',
+                context: context,
+                title: S.of(context).savedJobs,
                 isSelected: activeTab == SavedTabType.saved,
                 onTap: () => onTabChanged(SavedTabType.saved),
               ),
@@ -40,7 +43,8 @@ class SavedSegmentedTab extends StatelessWidget {
             SizedBox(width: 4.w),
             Expanded(
               child: _buildTabItem(
-                title: 'Applied',
+                context: context,
+                title: S.of(context).applications,
                 isSelected: activeTab == SavedTabType.applied,
                 onTap: () => onTabChanged(SavedTabType.applied),
               ),
@@ -52,6 +56,7 @@ class SavedSegmentedTab extends StatelessWidget {
   }
 
   Widget _buildTabItem({
+    required BuildContext context,
     required String title,
     required bool isSelected,
     required VoidCallback onTap,
@@ -77,12 +82,9 @@ class SavedSegmentedTab extends StatelessWidget {
         ),
         child: Text(
           title,
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 14.sp,
-            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+          style: AppTextStyles.body14SemiBold(
+            isArabic: false,
             color: isSelected ? Colors.white : AppColors.textSecondary,
-            height: 20 / 14,
           ),
         ),
       ),

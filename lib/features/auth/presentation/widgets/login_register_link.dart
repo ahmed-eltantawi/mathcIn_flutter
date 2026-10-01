@@ -1,6 +1,7 @@
 import 'package:MatchIn/core/utils/app_colors.dart';
+import 'package:MatchIn/core/utils/app_text_styles.dart';
+import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginRegisterLink extends StatelessWidget {
   const LoginRegisterLink({
@@ -17,19 +18,16 @@ class LoginRegisterLink extends StatelessWidget {
         onPressed: onPressed,
         child: RichText(
           text: TextSpan(
-            text: "Don't have an account? ",
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 14.sp,
+            text: '${S.of(context).newHere} ',
+            style: AppTextStyles.body14Regular(
+              isArabic: false,
               color: AppColors.textSecondary,
             ),
             children: [
               TextSpan(
-                text: 'Create Account',
-                style: TextStyle(
-                  fontFamily: 'DM Sans',
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
+                text: S.of(context).createAccount,
+                style: AppTextStyles.body14SemiBold(
+                  isArabic: false,
                   color: AppColors.secondary,
                 ),
               ),
