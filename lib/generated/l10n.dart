@@ -2956,6 +2956,476 @@ class S {
       args: [],
     );
   }
+
+  /// `No saved jobs yet`
+  String get noSavedJobsYet {
+    return Intl.message(
+      'No saved jobs yet',
+      name: 'noSavedJobsYet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Skills Profile`
+  String get skillsProfile {
+    return Intl.message(
+      'Skills Profile',
+      name: 'skillsProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Skills help SkillMatch understand which opportunities fit you.`
+  String get skillsProfileDescription {
+    return Intl.message(
+      'Skills help SkillMatch understand which opportunities fit you.',
+      name: 'skillsProfileDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Profile Match Quality`
+  String get profileMatchQuality {
+    return Intl.message(
+      'Profile Match Quality',
+      name: 'profileMatchQuality',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add New Skill`
+  String get addNewSkill {
+    return Intl.message(
+      'Add New Skill',
+      name: 'addNewSkill',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add a skill (e.g. Docker, GraphQL)`
+  String get addSkillHint {
+    return Intl.message(
+      'Add a skill (e.g. Docker, GraphQL)',
+      name: 'addSkillHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add`
+  String get add {
+    return Intl.message('Add', name: 'add', desc: '', args: []);
+  }
+
+  /// `Suggestions`
+  String get suggestions {
+    return Intl.message('Suggestions', name: 'suggestions', desc: '', args: []);
+  }
+
+  /// `Extracted automatically from your uploaded resume.`
+  String get cvSkillsDescription {
+    return Intl.message(
+      'Extracted automatically from your uploaded resume.',
+      name: 'cvSkillsDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Added manually`
+  String get addedManually {
+    return Intl.message(
+      'Added manually',
+      name: 'addedManually',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Manage all skills`
+  String get manageAllSkills {
+    return Intl.message(
+      'Manage all skills',
+      name: 'manageAllSkills',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{count} skills`
+  String skillsCount(Object count) {
+    return Intl.message(
+      '$count skills',
+      name: 'skillsCount',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `Add project links and measurable outcomes to strengthen your profile.`
+  String get projectsImprovementHint {
+    return Intl.message(
+      'Add project links and measurable outcomes to strengthen your profile.',
+      name: 'projectsImprovementHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View live project`
+  String get viewLiveProject {
+    return Intl.message(
+      'View live project',
+      name: 'viewLiveProject',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View GitHub repository`
+  String get viewGithubRepository {
+    return Intl.message(
+      'View GitHub repository',
+      name: 'viewGithubRepository',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ` Add New Project`
+  String get addNewProject {
+    return Intl.message(
+      ' Add New Project',
+      name: 'addNewProject',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Project Details`
+  String get addProjectDetails {
+    return Intl.message(
+      'Add Project Details',
+      name: 'addProjectDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Draft`
+  String get draft {
+    return Intl.message('Draft', name: 'draft', desc: '', args: []);
+  }
+
+  /// `Project Name`
+  String get projectName {
+    return Intl.message(
+      'Project Name',
+      name: 'projectName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `e.g. HealthTracker Companion`
+  String get projectNameHint {
+    return Intl.message(
+      'e.g. HealthTracker Companion',
+      name: 'projectNameHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Description`
+  String get description {
+    return Intl.message('Description', name: 'description', desc: '', args: []);
+  }
+
+  /// `Describe goals, your role, and overall product purpose...`
+  String get projectDescriptionHint {
+    return Intl.message(
+      'Describe goals, your role, and overall product purpose...',
+      name: 'projectDescriptionHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Describe goals and tech stack`
+  String get projectDescriptionHelper {
+    return Intl.message(
+      'Describe goals and tech stack',
+      name: 'projectDescriptionHelper',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Technologies / Skills`
+  String get technologiesSkills {
+    return Intl.message(
+      'Technologies / Skills',
+      name: 'technologiesSkills',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `e.g. TypeScript, GraphQL`
+  String get technologiesHint {
+    return Intl.message(
+      'e.g. TypeScript, GraphQL',
+      name: 'technologiesHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Project URL`
+  String get projectUrl {
+    return Intl.message('Project URL', name: 'projectUrl', desc: '', args: []);
+  }
+
+  /// `GitHub Repository URL`
+  String get githubRepositoryUrl {
+    return Intl.message(
+      'GitHub Repository URL',
+      name: 'githubRepositoryUrl',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start Date`
+  String get startDate {
+    return Intl.message('Start Date', name: 'startDate', desc: '', args: []);
+  }
+
+  /// `End Date`
+  String get endDate {
+    return Intl.message('End Date', name: 'endDate', desc: '', args: []);
+  }
+
+  /// `MM / YYYY`
+  String get monthYearHint {
+    return Intl.message('MM / YYYY', name: 'monthYearHint', desc: '', args: []);
+  }
+
+  /// `Ongoing project`
+  String get ongoingProject {
+    return Intl.message(
+      'Ongoing project',
+      name: 'ongoingProject',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Key Achievements`
+  String get keyAchievements {
+    return Intl.message(
+      'Key Achievements',
+      name: 'keyAchievements',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `e.g. Optimized database queries reducing API latency by 42%...`
+  String get keyAchievementsHint {
+    return Intl.message(
+      'e.g. Optimized database queries reducing API latency by 42%...',
+      name: 'keyAchievementsHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add measurable outcomes when possible (e.g. reduced load time by 30%).`
+  String get keyAchievementsHelper {
+    return Intl.message(
+      'Add measurable outcomes when possible (e.g. reduced load time by 30%).',
+      name: 'keyAchievementsHelper',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save Project`
+  String get saveProject {
+    return Intl.message(
+      'Save Project',
+      name: 'saveProject',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tell us what you're looking for`
+  String get careerPreferencesIntroTitle {
+    return Intl.message(
+      'Tell us what you\'re looking for',
+      name: 'careerPreferencesIntroTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your preferences help SkillMatch recommend more relevant opportunities.`
+  String get careerPreferencesIntroDescription {
+    return Intl.message(
+      'Your preferences help SkillMatch recommend more relevant opportunities.',
+      name: 'careerPreferencesIntroDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Required`
+  String get required {
+    return Intl.message('Required', name: 'required', desc: '', args: []);
+  }
+
+  /// `Suggested Roles`
+  String get suggestedRoles {
+    return Intl.message(
+      'Suggested Roles',
+      name: 'suggestedRoles',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Experience Level`
+  String get experienceLevel {
+    return Intl.message(
+      'Experience Level',
+      name: 'experienceLevel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Student`
+  String get student {
+    return Intl.message('Student', name: 'student', desc: '', args: []);
+  }
+
+  /// `Junior`
+  String get junior {
+    return Intl.message('Junior', name: 'junior', desc: '', args: []);
+  }
+
+  /// `Mid-Level`
+  String get midLevel {
+    return Intl.message('Mid-Level', name: 'midLevel', desc: '', args: []);
+  }
+
+  /// `Senior`
+  String get senior {
+    return Intl.message('Senior', name: 'senior', desc: '', args: []);
+  }
+
+  /// `Multi-select`
+  String get multiSelect {
+    return Intl.message(
+      'Multi-select',
+      name: 'multiSelect',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Part-time`
+  String get partTime {
+    return Intl.message('Part-time', name: 'partTime', desc: '', args: []);
+  }
+
+  /// `Contract`
+  String get contract {
+    return Intl.message('Contract', name: 'contract', desc: '', args: []);
+  }
+
+  /// `Freelance`
+  String get freelance {
+    return Intl.message('Freelance', name: 'freelance', desc: '', args: []);
+  }
+
+  /// `Flexible`
+  String get flexible {
+    return Intl.message('Flexible', name: 'flexible', desc: '', args: []);
+  }
+
+  /// `Country`
+  String get country {
+    return Intl.message('Country', name: 'country', desc: '', args: []);
+  }
+
+  /// `State / Governorate`
+  String get stateGovernorate {
+    return Intl.message(
+      'State / Governorate',
+      name: 'stateGovernorate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `City`
+  String get city {
+    return Intl.message('City', name: 'city', desc: '', args: []);
+  }
+
+  /// `I’m open to opportunities anywhere`
+  String get openToOpportunitiesAnywhere {
+    return Intl.message(
+      'I’m open to opportunities anywhere',
+      name: 'openToOpportunitiesAnywhere',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Career Goal`
+  String get careerGoal {
+    return Intl.message('Career Goal', name: 'careerGoal', desc: '', args: []);
+  }
+
+  /// `e.g. Gain professional Flutter experience and contribute to high-impact mobile products.`
+  String get careerGoalHint {
+    return Intl.message(
+      'e.g. Gain professional Flutter experience and contribute to high-impact mobile products.',
+      name: 'careerGoalHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tell us briefly what you want to achieve next.`
+  String get careerGoalHelper {
+    return Intl.message(
+      'Tell us briefly what you want to achieve next.',
+      name: 'careerGoalHelper',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save Preferences`
+  String get savePreferences {
+    return Intl.message(
+      'Save Preferences',
+      name: 'savePreferences',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

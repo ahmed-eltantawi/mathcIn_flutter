@@ -1,4 +1,7 @@
 import 'package:MatchIn/core/routing/app_routes.dart';
+import 'package:MatchIn/features/profile/presentation/views/edit_career_preferences_view.dart';
+import 'package:MatchIn/features/profile/presentation/views/edit_projects_view.dart';
+import 'package:MatchIn/features/profile/presentation/views/edit_skills_view.dart';
 import 'package:MatchIn/features/splash/presentation/pages/splash_view.dart';
 import 'package:MatchIn/core/services/services_locator.dart';
 import 'package:MatchIn/core/services/shared_preferences_service.dart';
@@ -29,16 +32,21 @@ import 'package:go_router/go_router.dart';
 abstract final class AppRouter {
   AppRouter._();
 
-  static CustomTransitionPage<dynamic> _buildTransitionPage({
+  static CustomTransitionPage<dynamic>
+  _buildTransitionPage({
     required GoRouterState state,
     required Widget child,
   }) {
     return CustomTransitionPage(
       key: state.pageKey,
       child: child,
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        return FadeTransition(opacity: animation, child: child);
-      },
+      transitionsBuilder:
+          (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
     );
   }
 
@@ -66,7 +74,9 @@ abstract final class AppRouter {
 
       // Onboarded but still on onboarding page → move forward
       if (location == AppRoutes.kOnboardingView) {
-        return isLoggedIn ? AppRoutes.kHomeView : AppRoutes.kRegisterView;
+        return isLoggedIn
+            ? AppRoutes.kHomeView
+            : AppRoutes.kRegisterView;
       }
 
       return null;
@@ -76,7 +86,10 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kSplashView,
         pageBuilder: (context, state) {
-          return _buildTransitionPage(state: state, child: const SplashView());
+          return _buildTransitionPage(
+            state: state,
+            child: const SplashView(),
+          );
         },
       ),
 
@@ -84,7 +97,10 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kOnboardingView,
         pageBuilder: (context, state) {
-          return _buildTransitionPage(state: state, child: const Onb1());
+          return _buildTransitionPage(
+            state: state,
+            child: const Onb1(),
+          );
         },
       ),
 
@@ -103,7 +119,8 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kWebView,
         pageBuilder: (context, state) {
-          final args = state.extra as Map<String, dynamic>? ?? {};
+          final args =
+              state.extra as Map<String, dynamic>? ?? {};
 
           final url = args['url'] as String? ?? '';
           final title = args['title'] as String?;
@@ -175,7 +192,10 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kLoginView,
         pageBuilder: (context, state) {
-          return _buildTransitionPage(state: state, child: const LoginView());
+          return _buildTransitionPage(
+            state: state,
+            child: const LoginView(),
+          );
         },
       ),
 
@@ -188,7 +208,9 @@ abstract final class AppRouter {
             child: BlocProvider(
               create: (_) => getIt<OtpCubit>(),
               child: OtpVerificationView(
-                email: state.extra as String? ?? 'user@example.com',
+                email:
+                    state.extra as String? ??
+                    'user@example.com',
               ),
             ),
           );
@@ -204,7 +226,9 @@ abstract final class AppRouter {
             child: BlocProvider(
               create: (_) => getIt<OtpCubit>(),
               child: OtpVerificationView(
-                email: state.extra as String? ?? 'user@example.com',
+                email:
+                    state.extra as String? ??
+                    'user@example.com',
               ),
             ),
           );
@@ -220,7 +244,9 @@ abstract final class AppRouter {
             child: BlocProvider(
               create: (_) => getIt<ResetPasswordCubit>(),
               child: CreateNewPasswordView(
-                email: state.extra as String? ?? 'user@example.com',
+                email:
+                    state.extra as String? ??
+                    'user@example.com',
               ),
             ),
           );
@@ -294,6 +320,39 @@ abstract final class AppRouter {
           return _buildTransitionPage(
             state: state,
             child: TrackingApplicationView(job: job),
+          );
+        },
+      ),
+
+      // Edit Skills View
+      GoRoute(
+        path: AppRoutes.keditSkillsView,
+        pageBuilder: (context, state) {
+          return _buildTransitionPage(
+            state: state,
+            child: const EditSkillsView(),
+          );
+        },
+      ),
+
+      // Edit Projects View
+      GoRoute(
+        path: AppRoutes.keditProjectsView,
+        pageBuilder: (context, state) {
+          return _buildTransitionPage(
+            state: state,
+            child: const EditProjectsView(),
+          );
+        },
+      ),
+
+      // Edit Career Preferences View
+      GoRoute(
+        path: AppRoutes.keditcareerPrefView,
+        pageBuilder: (context, state) {
+          return _buildTransitionPage(
+            state: state,
+            child: const EditCareerPreferencesView(),
           );
         },
       ),
