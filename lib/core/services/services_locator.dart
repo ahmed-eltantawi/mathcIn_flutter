@@ -61,6 +61,7 @@ import 'package:MatchIn/features/profile/domain/use_cases/get_cached_candidate_p
 import 'package:MatchIn/features/profile/domain/use_cases/get_candidate_profile_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/get_candidate_skills_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/remove_candidate_skill_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/search_skills_use_case.dart';
 import 'package:MatchIn/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:MatchIn/features/profile/presentation/cubits/skills_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/roadmap_cubit/roadmap_cubit.dart';
@@ -439,6 +440,7 @@ Future<void> setupServiceLocator() async {
       getCandidateSkillsUseCase: getIt(),
       addCandidateSkillUseCase: getIt(),
       removeCandidateSkillUseCase: getIt(),
+      searchSkillsUseCase: getIt(),
     ),
   );
 
@@ -452,5 +454,9 @@ Future<void> setupServiceLocator() async {
 
   getIt.registerLazySingleton<RemoveCandidateSkillUseCase>(
     () => RemoveCandidateSkillUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<SearchSkillsUseCase>(
+    () => SearchSkillsUseCase(repository: getIt()),
   );
 }

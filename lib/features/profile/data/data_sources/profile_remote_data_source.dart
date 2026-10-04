@@ -1,5 +1,6 @@
 import 'package:MatchIn/features/profile/data/models/candidate_profile_model.dart';
 import 'package:MatchIn/features/profile/data/models/candidate_skill_model.dart';
+import 'package:MatchIn/features/profile/data/models/skill_search_result_model.dart';
 import 'package:MatchIn/features/profile/domain/entities/add_candidate_skill_params.dart';
 
 abstract class ProfileRemoteDataSource {
@@ -10,4 +11,5 @@ abstract class ProfileRemoteDataSource {
   Future<CandidateSkillModel> addCandidateSkill(AddCandidateSkillParams params);
 
   Future<void> removeCandidateSkill(int candidateSkillId);
+  Future<List<SkillSearchResultModel>> searchSkills(String query);
 }

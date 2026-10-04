@@ -38,6 +38,9 @@ abstract class EndPoint {
 
   static String candidateSkill(int candidateSkillId) =>
       'candidate/skills/$candidateSkillId';
+
+  // Search Skills
+  static const String searchSkills = 'skills/search';
 }
 
 ///* ApiKeys: the keys of the api

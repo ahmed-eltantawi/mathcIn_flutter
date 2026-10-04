@@ -1,4 +1,5 @@
 import 'package:MatchIn/features/profile/domain/entities/candidate_skill_entity.dart';
+import 'package:MatchIn/features/profile/domain/entities/skill_search_result_entity.dart';
 import 'package:equatable/equatable.dart';
 
 sealed class SkillsState extends Equatable {
@@ -42,4 +43,23 @@ final class SkillsActionFailure extends SkillsState {
 
   @override
   List<Object?> get props => [skills, message];
+}
+
+final class SkillsSearchSuccess extends SkillsState {
+  const SkillsSearchSuccess({required this.skills, required this.suggestions});
+
+  final List<CandidateSkillEntity> skills;
+  final List<SkillSearchResultEntity> suggestions;
+
+  @override
+  List<Object?> get props => [skills, suggestions];
+}
+
+final class SkillsSearchCleared extends SkillsState {
+  const SkillsSearchCleared({required this.skills});
+
+  final List<CandidateSkillEntity> skills;
+
+  @override
+  List<Object?> get props => [skills];
 }

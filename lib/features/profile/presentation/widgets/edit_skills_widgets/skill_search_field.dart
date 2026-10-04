@@ -1,25 +1,25 @@
 import 'package:MatchIn/core/extensions/context_extensions.dart';
+import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:MatchIn/generated/l10n.dart';
 
 class SkillSearchField extends StatelessWidget {
   const SkillSearchField({
     required this.onAddPressed,
     this.controller,
-
+    this.onChanged,
     super.key,
   });
 
   final TextEditingController? controller;
-
+  final ValueChanged<String>? onChanged;
   final VoidCallback onAddPressed;
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final ColorScheme colors = theme.colorScheme;
-    final S locale = S.of(context);
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+    final locale = S.of(context);
 
     return Row(
       children: [
@@ -28,6 +28,7 @@ class SkillSearchField extends StatelessWidget {
             height: 52.h,
             child: TextField(
               controller: controller,
+              onChanged: onChanged,
               textInputAction: TextInputAction.done,
               decoration: InputDecoration(
                 hintText: locale.addSkillHint,

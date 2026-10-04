@@ -3,6 +3,7 @@ import 'package:MatchIn/features/profile/domain/entities/candidate_skill_entity.
 import 'package:MatchIn/features/profile/domain/use_cases/add_candidate_skill_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/get_candidate_skills_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/remove_candidate_skill_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/search_skills_use_case.dart';
 import 'package:MatchIn/features/profile/presentation/cubits/skills_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,11 +12,13 @@ class SkillsCubit extends Cubit<SkillsState> {
     required this.getCandidateSkillsUseCase,
     required this.addCandidateSkillUseCase,
     required this.removeCandidateSkillUseCase,
+    required this.searchSkillsUseCase,
   }) : super(const SkillsInitial());
 
   final GetCandidateSkillsUseCase getCandidateSkillsUseCase;
   final AddCandidateSkillUseCase addCandidateSkillUseCase;
   final RemoveCandidateSkillUseCase removeCandidateSkillUseCase;
+  final SearchSkillsUseCase searchSkillsUseCase;
 
   List<CandidateSkillEntity> _skills = [];
 
@@ -71,5 +74,32 @@ class SkillsCubit extends Cubit<SkillsState> {
         emit(SkillsSuccess(skills: List.unmodifiable(_skills)));
       },
     );
+  }
+
+  Future<void> searchSkills(String query) async {
+    final result = await searchSkillsUseCase(query);
+
+    result.fold(
+      (failure) {
+        emit(
+          SkillsActionFailure(
+            skills: List.unmodifiable(_skills),
+            message: failure.message,
+          ),
+        );
+      },
+      (suggestions) {
+        emit(
+          SkillsSearchSuccess(
+            skills: List.unmodifiable(_skills),
+            suggestions: suggestions,
+          ),
+        );
+      },
+    );
+  }
+
+  void clearSearch() {
+    emit(SkillsSearchCleared(skills: List.unmodifiable(_skills)));
   }
 }
