@@ -56,9 +56,13 @@ import 'package:MatchIn/features/profile/data/data_sources/profile_remote_data_s
 import 'package:MatchIn/features/profile/data/data_sources/profile_remote_data_source_impl.dart';
 import 'package:MatchIn/features/profile/data/repositories/profile_repository_impl.dart';
 import 'package:MatchIn/features/profile/domain/repositories/profile_repository.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/add_candidate_skill_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/get_cached_candidate_profile_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/get_candidate_profile_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/get_candidate_skills_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/remove_candidate_skill_use_case.dart';
 import 'package:MatchIn/features/profile/presentation/cubits/profile_cubit.dart';
+import 'package:MatchIn/features/profile/presentation/cubits/skills_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/roadmap_cubit/roadmap_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/skill_task_cubit/skill_task_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/treasure_cubit/treasure_cubit.dart';
@@ -409,7 +413,7 @@ Future<void> setupServiceLocator() async {
     ),
   );
 
-  // Profile Use Cases
+  // Profile Use Cases and cubit
   getIt.registerLazySingleton<GetCandidateProfileUseCase>(
     () => GetCandidateProfileUseCase(repository: getIt()),
   );
@@ -427,5 +431,26 @@ Future<void> setupServiceLocator() async {
       getCandidateProfileUseCase: getIt(),
       getCachedCandidateProfileUseCase: getIt(),
     ),
+  );
+
+  // Skills use cases and cubit
+  getIt.registerFactory<SkillsCubit>(
+    () => SkillsCubit(
+      getCandidateSkillsUseCase: getIt(),
+      addCandidateSkillsUseCase: getIt(),
+      removeCandidateSkillsUseCase: getIt(),
+    ),
+  );
+
+  getIt.registerLazySingleton<GetCandidateSkillsUseCase>(
+    () => GetCandidateSkillsUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<AddCandidateSkillUseCase>(
+    () => AddCandidateSkillUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<RemoveCandidateSkillUseCase>(
+    () => RemoveCandidateSkillUseCase(repository: getIt()),
   );
 }
