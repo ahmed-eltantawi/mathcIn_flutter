@@ -20,13 +20,5 @@ class ProfileUserEntity extends Equatable {
   final String? avatar;
 
   @override
-  List<Object?> get props => [
-    id,
-    name,
-    email,
-    role,
-    isActive,
-    phone,
-    avatar,
-  ];
+  List<Object?> get props => [id, name, email, role, isActive, phone, avatar];
 }

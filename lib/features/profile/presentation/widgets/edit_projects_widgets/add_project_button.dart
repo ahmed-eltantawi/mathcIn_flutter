@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AddProjectButton extends StatelessWidget {
-  const AddProjectButton({
-    required this.onPressed,
-    super.key,
-  });
+  const AddProjectButton({required this.onPressed, super.key});
 
   final VoidCallback onPressed;
 
@@ -28,10 +25,7 @@ class AddProjectButton extends StatelessWidget {
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
           foregroundColor: colors.primary,
-          side: BorderSide(
-            color: context.theme.dividerColor,
-            width: 1,
-          ),
+          side: BorderSide(color: context.theme.dividerColor, width: 1),
         ),
         icon: Icon(Icons.add_rounded, size: 20.r),
         label: Text(

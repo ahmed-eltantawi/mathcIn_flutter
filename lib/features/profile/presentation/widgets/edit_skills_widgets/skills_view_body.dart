@@ -34,11 +34,7 @@ class SkillsViewBody extends StatelessWidget {
     final S locale = S.of(context);
 
     return ListView(
-      padding: EdgeInsets.only(
-        left: 16.w,
-        right: 16.w,
-        bottom: 32.h,
-      ),
+      padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 32.h),
       children: [
         SizedBox(height: 8.h),
 
@@ -61,17 +57,11 @@ class SkillsViewBody extends StatelessWidget {
 
         SizedBox(height: 24.h),
 
-        CvSkillsCard(
-          skills: _cvSkills,
-          onRemoveSkill: (skill) {},
-        ),
+        CvSkillsCard(skills: _cvSkills, onRemoveSkill: (skill) {}),
 
         SizedBox(height: 20.h),
 
-        ManualSkillsCard(
-          skills: _manualSkills,
-          onRemoveSkill: (skill) {},
-        ),
+        ManualSkillsCard(skills: _manualSkills, onRemoveSkill: (skill) {}),
 
         SizedBox(height: 20.h),
 
@@ -82,18 +72,14 @@ class SkillsViewBody extends StatelessWidget {
 }
 
 class _SkillsAppBar extends StatelessWidget {
-  const _SkillsAppBar({
-    required this.title,
-    required this.onBackPressed,
-  });
+  const _SkillsAppBar({required this.title, required this.onBackPressed});
 
   final String title;
   final VoidCallback onBackPressed;
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colors = Theme.of(context)
-        .colorScheme;
+    final ColorScheme colors = Theme.of(context).colorScheme;
 
     return SizedBox(
       height: 56.h,
@@ -104,22 +90,15 @@ class _SkillsAppBar extends StatelessWidget {
             alignment: AlignmentDirectional.centerStart,
             child: IconButton(
               onPressed: onBackPressed,
-              icon: Icon(
-                Icons.arrow_back_ios_new_rounded,
-                size: 22.sp,
-              ),
+              icon: Icon(Icons.arrow_back_ios_new_rounded, size: 22.sp),
               color: colors.primary,
-              tooltip: MaterialLocalizations.of(context)
-                  .backButtonTooltip,
+              tooltip: MaterialLocalizations.of(context).backButtonTooltip,
             ),
           ),
           Text(
             title,
             style: Theme.of(context).textTheme.headlineSmall
-                ?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: colors.primary,
-                ),
+                ?.copyWith(fontWeight: FontWeight.w700, color: colors.primary),
           ),
         ],
       ),

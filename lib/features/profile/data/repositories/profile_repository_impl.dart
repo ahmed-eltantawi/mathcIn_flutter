@@ -19,32 +19,24 @@ class ProfileRepositoryImpl implements ProfileRepository {
   final NetworkInfo networkInfo;
 
   @override
-  Future<Either<Failure, CandidateProfileEntity>>
-  getCandidateProfile() async {
+  Future<Either<Failure, CandidateProfileEntity>> getCandidateProfile() async {
     if (await networkInfo.isConnected) {
       try {
-        final profile = await remoteDataSource
-            .getCandidateProfile();
+        final profile = await remoteDataSource.getCandidateProfile();
 
-        await localDataSource.cacheCandidateProfile(
-          profile,
-        );
+        await localDataSource.cacheCandidateProfile(profile);
 
         return Right(profile);
       } on ServerException catch (e) {
-        final cached = await localDataSource
-            .getCachedCandidateProfile();
+        final cached = await localDataSource.getCachedCandidateProfile();
 
         if (cached != null) {
           return Right(cached);
         }
 
-        return Left(
-          ServerFailure(message: e.errorModel.errorMessage),
-        );
+        return Left(ServerFailure(message: e.errorModel.errorMessage));
       } catch (e) {
-        final cached = await localDataSource
-            .getCachedCandidateProfile();
+        final cached = await localDataSource.getCachedCandidateProfile();
 
         if (cached != null) {
           return Right(cached);
@@ -54,8 +46,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
       }
     }
 
-    final cached = await localDataSource
-        .getCachedCandidateProfile();
+    final cached = await localDataSource.getCachedCandidateProfile();
 
     if (cached != null) {
       return Right(cached);
@@ -68,8 +59,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
   Future<Either<Failure, CandidateProfileEntity?>>
   getCachedCandidateProfile() async {
     try {
-      final cached = await localDataSource
-          .getCachedCandidateProfile();
+      final cached = await localDataSource.getCachedCandidateProfile();
 
       return Right(cached);
     } catch (e) {

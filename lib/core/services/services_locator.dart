@@ -50,6 +50,15 @@ import 'package:MatchIn/features/chatbot/domain/use_cases/save_chat_use_case.dar
 import 'package:MatchIn/features/chatbot/domain/use_cases/send_message_use_case.dart';
 import 'package:MatchIn/features/chatbot/presentation/cubit/chatbot_cubit.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_cubit.dart';
+import 'package:MatchIn/features/profile/data/data_sources/profile_local_data_source.dart';
+import 'package:MatchIn/features/profile/data/data_sources/profile_local_data_source_impl.dart';
+import 'package:MatchIn/features/profile/data/data_sources/profile_remote_data_source.dart';
+import 'package:MatchIn/features/profile/data/data_sources/profile_remote_data_source_impl.dart';
+import 'package:MatchIn/features/profile/data/repositories/profile_repository_impl.dart';
+import 'package:MatchIn/features/profile/domain/repositories/profile_repository.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/get_cached_candidate_profile_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/get_candidate_profile_use_case.dart';
+import 'package:MatchIn/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/roadmap_cubit/roadmap_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/skill_task_cubit/skill_task_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/treasure_cubit/treasure_cubit.dart';
@@ -410,6 +419,13 @@ Future<void> setupServiceLocator() async {
   >(
     () => GetCachedCandidateProfileUseCase(
       repository: getIt(),
+    ),
+  );
+
+  getIt.registerFactory<ProfileCubit>(
+    () => ProfileCubit(
+      getCandidateProfileUseCase: getIt(),
+      getCachedCandidateProfileUseCase: getIt(),
     ),
   );
 }

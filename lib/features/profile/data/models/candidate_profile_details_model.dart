@@ -1,7 +1,6 @@
 import 'package:MatchIn/features/profile/domain/entities/candidate_profile_details_entity.dart';
 
-class CandidateProfileDetailsModel
-    extends CandidateProfileDetailsEntity {
+class CandidateProfileDetailsModel extends CandidateProfileDetailsEntity {
   const CandidateProfileDetailsModel({
     required super.id,
     super.dateOfBirth,
@@ -16,9 +15,7 @@ class CandidateProfileDetailsModel
     super.professionalSummary,
   });
 
-  factory CandidateProfileDetailsModel.fromJson(
-    Map<String, dynamic> json,
-  ) {
+  factory CandidateProfileDetailsModel.fromJson(Map<String, dynamic> json) {
     return CandidateProfileDetailsModel(
       id: json['id'] as int,
       dateOfBirth: json['date_of_birth'] as String?,
@@ -30,8 +27,7 @@ class CandidateProfileDetailsModel
       githubUrl: json['github_url'] as String?,
       linkedinUrl: json['linkedin_url'] as String?,
       militaryStatus: json['military_status'] as String?,
-      professionalSummary:
-          json['professional_summary'] as String?,
+      professionalSummary: json['professional_summary'] as String?,
     );
   }
 

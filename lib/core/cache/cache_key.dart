@@ -17,3 +17,8 @@ abstract class CacheKey {
   static const String candidateProfile =
       'candidate_profile';
 }
+
+// TODO Profile Cache:
+// Scope candidate profile cache by authenticated user ID.
+// Use candidate_profile_<userId>.
+// Verify CacheKey.id lifecycle during Auth/Login/Logout first.

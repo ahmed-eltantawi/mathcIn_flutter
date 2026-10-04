@@ -16,12 +16,7 @@ class CareerPreferencesViewBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: EdgeInsetsDirectional.fromSTEB(
-        16.w,
-        8.h,
-        16.w,
-        32.h,
-      ),
+      padding: EdgeInsetsDirectional.fromSTEB(16.w, 8.h, 16.w, 32.h),
       children: [
         CareerPreferencesHeader(
           onBackPressed: () => Navigator.maybePop(context),
@@ -88,8 +83,7 @@ class CareerPreferencesViewBody extends StatelessWidget {
 
         CareerPreferencesActions(
           onSavePressed: () {},
-          onCancelPressed: () =>
-              Navigator.maybePop(context),
+          onCancelPressed: () => Navigator.maybePop(context),
         ),
       ],
     );

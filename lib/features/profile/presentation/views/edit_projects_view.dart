@@ -6,8 +6,6 @@ class EditProjectsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SafeArea(child: ProjectsViewBody()),
-    );
+    return const Scaffold(body: SafeArea(child: ProjectsViewBody()));
   }
 }

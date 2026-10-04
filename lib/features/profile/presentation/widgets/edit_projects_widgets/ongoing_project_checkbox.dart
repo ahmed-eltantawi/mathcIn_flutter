@@ -26,16 +26,10 @@ class OngoingProjectCheckbox extends StatelessWidget {
           SizedBox(
             width: 24.r,
             height: 24.r,
-            child: Checkbox(
-              value: value,
-              onChanged: onChanged,
-            ),
+            child: Checkbox(value: value, onChanged: onChanged),
           ),
           SizedBox(width: 10.w),
-          Text(
-            locale.ongoingProject,
-            style: theme.textTheme.bodyMedium,
-          ),
+          Text(locale.ongoingProject, style: theme.textTheme.bodyMedium),
         ],
       ),
     );

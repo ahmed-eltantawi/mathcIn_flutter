@@ -25,29 +25,22 @@ class ManualSkillsCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: colors.surface,
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(
-          color: context.theme.dividerColor,
-        ),
+        border: Border.all(color: context.theme.dividerColor),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Icon(
-                Icons.edit_note_rounded,
-                size: 26.r,
-                color: colors.primary,
-              ),
+              Icon(Icons.edit_note_rounded, size: 26.r, color: colors.primary),
               SizedBox(width: 10.w),
               Expanded(
                 child: Text(
                   locale.addedManually,
-                  style: theme.textTheme.titleLarge
-                      ?.copyWith(
-                        color: colors.primary,
-                        fontWeight: FontWeight.w500,
-                      ),
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    color: colors.primary,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
               Text(
@@ -60,10 +53,7 @@ class ManualSkillsCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 14.h),
-          Divider(
-            height: 1,
-            color: context.theme.dividerColor,
-          ),
+          Divider(height: 1, color: context.theme.dividerColor),
           SizedBox(height: 16.h),
           Wrap(
             spacing: 10.w,

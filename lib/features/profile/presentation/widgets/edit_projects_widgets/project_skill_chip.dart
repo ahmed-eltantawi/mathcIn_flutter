@@ -3,11 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProjectSkillChip extends StatelessWidget {
-  const ProjectSkillChip({
-    required this.label,
-    this.onRemove,
-    super.key,
-  });
+  const ProjectSkillChip({required this.label, this.onRemove, super.key});
 
   final String label;
   final VoidCallback? onRemove;
@@ -27,10 +23,7 @@ class ProjectSkillChip extends StatelessWidget {
       decoration: BoxDecoration(
         color: colors.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(100.r),
-        border: Border.all(
-          color: context.theme.dividerColor,
-          width: 1,
-        ),
+        border: Border.all(color: context.theme.dividerColor, width: 1),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

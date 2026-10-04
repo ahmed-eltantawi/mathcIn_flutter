@@ -4,9 +4,7 @@ import 'package:MatchIn/features/profile/domain/repositories/profile_repository.
 import 'package:dartz/dartz.dart';
 
 class GetCandidateProfileUseCase {
-  const GetCandidateProfileUseCase({
-    required this.repository,
-  });
+  const GetCandidateProfileUseCase({required this.repository});
 
   final ProfileRepository repository;
 

@@ -12,8 +12,7 @@ class WorkModeSection extends StatelessWidget {
   });
 
   final Set<String> selectedModes;
-  final void Function(String value, bool isSelected)
-  onSelected;
+  final void Function(String value, bool isSelected) onSelected;
 
   static const modes = ['Remote', 'Hybrid', 'On-site'];
 

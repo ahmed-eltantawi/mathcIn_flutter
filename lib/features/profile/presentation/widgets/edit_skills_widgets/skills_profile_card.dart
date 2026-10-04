@@ -18,9 +18,7 @@ class SkillsProfileCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: colors.surface,
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(
-          color: context.theme.dividerColor,
-        ),
+        border: Border.all(color: context.theme.dividerColor),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,25 +43,22 @@ class SkillsProfileCard extends StatelessWidget {
               SizedBox(width: 16.w),
               Expanded(
                 child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       locale.skillsProfile,
-                      style: theme.textTheme.titleLarge
-                          ?.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: colors.primary,
-                          ),
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: colors.primary,
+                      ),
                     ),
                     SizedBox(height: 6.h),
                     Text(
                       locale.skillsProfileDescription,
-                      style: theme.textTheme.bodyLarge
-                          ?.copyWith(
-                            color: colors.onSurfaceVariant,
-                            height: 1.4,
-                          ),
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        color: colors.onSurfaceVariant,
+                        height: 1.4,
+                      ),
                     ),
                   ],
                 ),
@@ -73,9 +68,7 @@ class SkillsProfileCard extends StatelessWidget {
           SizedBox(height: 20.h),
           Divider(height: 1, color: colors.outlineVariant),
           SizedBox(height: 16.h),
-          const ProfileMatchQualityRow(
-            quality: ProfileMatchQuality.excellent,
-          ),
+          const ProfileMatchQualityRow(quality: ProfileMatchQuality.excellent),
         ],
       ),
     );

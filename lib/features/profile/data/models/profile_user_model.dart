@@ -11,9 +11,7 @@ class ProfileUserModel extends ProfileUserEntity {
     super.avatar,
   });
 
-  factory ProfileUserModel.fromJson(
-    Map<String, dynamic> json,
-  ) {
+  factory ProfileUserModel.fromJson(Map<String, dynamic> json) {
     return ProfileUserModel(
       id: json['id'] as int,
       name: json['name'] as String,

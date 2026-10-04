@@ -24,26 +24,16 @@ class ProfileOverviewLinkChip extends StatelessWidget {
         onTap: onPressed,
         borderRadius: BorderRadius.circular(100.r),
         child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: 12.w,
-            vertical: 6.h,
-          ),
+          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
           decoration: BoxDecoration(
             color: colors.surface,
             borderRadius: BorderRadius.circular(100.r),
-            border: Border.all(
-              color: theme.dividerColor,
-              width: 1,
-            ),
+            border: Border.all(color: theme.dividerColor, width: 1),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                icon,
-                size: 16.r,
-                color: colors.onSurface,
-              ),
+              Icon(icon, size: 16.r, color: colors.onSurface),
               SizedBox(width: 5.w),
               Text(
                 label,

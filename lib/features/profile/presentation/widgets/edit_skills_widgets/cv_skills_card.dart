@@ -25,9 +25,7 @@ class CvSkillsCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: colors.surface,
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(
-          color: context.theme.dividerColor,
-        ),
+        border: Border.all(color: context.theme.dividerColor),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,37 +41,25 @@ class CvSkillsCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   locale.fromYourCv,
-                  style: theme.textTheme.titleLarge
-                      ?.copyWith(
-                        color: colors.primary,
-                        fontWeight: FontWeight.w700,
-                      ),
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    color: colors.primary,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 10.w,
-                  vertical: 5.h,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
                 decoration: BoxDecoration(
                   color: colors.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(6.r),
-                  border: Border.all(
-                    color: colors.outlineVariant,
-                  ),
+                  border: Border.all(color: colors.outlineVariant),
                 ),
-                child: Text(
-                  'CV',
-                  style: theme.textTheme.labelMedium,
-                ),
+                child: Text('CV', style: theme.textTheme.labelMedium),
               ),
             ],
           ),
           SizedBox(height: 14.h),
-          Divider(
-            height: 1,
-            color: context.theme.dividerColor,
-          ),
+          Divider(height: 1, color: context.theme.dividerColor),
           SizedBox(height: 16.h),
           Wrap(
             spacing: 10.w,

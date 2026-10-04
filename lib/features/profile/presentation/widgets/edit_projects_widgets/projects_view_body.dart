@@ -14,12 +14,7 @@ class ProjectsViewBody extends StatelessWidget {
     final locale = S.of(context);
 
     return ListView(
-      padding: EdgeInsetsDirectional.fromSTEB(
-        16.w,
-        8.h,
-        16.w,
-        32.h,
-      ),
+      padding: EdgeInsetsDirectional.fromSTEB(16.w, 8.h, 16.w, 32.h),
       children: [
         _ProjectsAppBar(
           title: locale.projects,
@@ -35,15 +30,9 @@ class ProjectsViewBody extends StatelessWidget {
           title: 'Job Finder App',
           date: 'Jan 2025 – Mar 2025',
           description: 'Flutter application for discovering, matching and saving job opportunities.',
-          skills: const [
-            'Flutter',
-            'Dart',
-            'REST API',
-            'Bloc',
-          ],
+          skills: const ['Flutter', 'Dart', 'REST API', 'Bloc'],
           projectUrl: 'https://myproject.live',
-          githubUrl:
-              'https://github.com/username/job-finder',
+          githubUrl: 'https://github.com/username/job-finder',
           onEdit: () {},
           onDelete: () {},
           onProjectPressed: () {},
@@ -57,8 +46,7 @@ class ProjectsViewBody extends StatelessWidget {
           date: 'Oct 2024 – Dec 2024',
           description: 'Mobile shopping application built with Flutter featuring offline cart and state management.',
           skills: const ['Flutter', 'Firebase', 'Bloc'],
-          githubUrl:
-              'https://github.com/username/ecommerce',
+          githubUrl: 'https://github.com/username/ecommerce',
           onEdit: () {},
           onDelete: () {},
           onGithubPressed: () {},
@@ -77,10 +65,7 @@ class ProjectsViewBody extends StatelessWidget {
 }
 
 class _ProjectsAppBar extends StatelessWidget {
-  const _ProjectsAppBar({
-    required this.title,
-    required this.onBackPressed,
-  });
+  const _ProjectsAppBar({required this.title, required this.onBackPressed});
 
   final String title;
   final VoidCallback onBackPressed;
@@ -95,10 +80,7 @@ class _ProjectsAppBar extends StatelessWidget {
         children: [
           IconButton(
             onPressed: onBackPressed,
-            icon: Icon(
-              Icons.arrow_back_ios_new_rounded,
-              size: 21.r,
-            ),
+            icon: Icon(Icons.arrow_back_ios_new_rounded, size: 21.r),
           ),
           SizedBox(width: 105.w),
           Expanded(

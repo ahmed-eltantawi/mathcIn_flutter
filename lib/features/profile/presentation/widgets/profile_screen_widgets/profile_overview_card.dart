@@ -9,7 +9,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProfileOverviewCard extends StatelessWidget {
-  const ProfileOverviewCard({super.key});
+  const ProfileOverviewCard({
+    required this.name,
+    required this.jobTitle,
+    required this.location,
+    required this.summary,
+    this.avatarUrl,
+    this.githubUrl,
+    this.linkedinUrl,
+    super.key,
+  });
+
+  final String name;
+  final String jobTitle;
+  final String location;
+  final String summary;
+
+  final String? avatarUrl;
+  final String? githubUrl;
+  final String? linkedinUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -21,44 +39,51 @@ class ProfileOverviewCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: colors.surface,
         borderRadius: BorderRadius.circular(14.r),
-        border: Border.all(
-          color: context.theme.dividerColor,
-          width: 1,
-        ),
+        border: Border.all(color: context.theme.dividerColor, width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ProfileOverviewAvatar(),
-              SizedBox(width: 12),
+              ProfileOverviewAvatar(imageUrl: avatarUrl),
+              SizedBox(width: 12.w),
               Expanded(
                 child: ProfileOverviewIdentity(
-                  name: '',
-                  jobTitle: '',
-                  location: '',
+                  name: name,
+                  jobTitle: jobTitle,
+                  location: location,
+
+                  // UI only for now.
                   experienceLevel: '',
                 ),
               ),
             ],
           ),
 
-          const SizedBox(height: 12),
-          const ProfileOverviewSummary(),
-          const SizedBox(height: 16),
+          SizedBox(height: 12.h),
+
+          ProfileOverviewSummary(summary: summary),
+
+          SizedBox(height: 16.h),
+
           const ProfileOverviewEditButton(),
-          const SizedBox(height: 16),
+
+          SizedBox(height: 16.h),
+
           const Divider(height: 1),
-          const SizedBox(height: 14),
+
+          SizedBox(height: 14.h),
+
           ProfileOverviewSocialLinks(
-            githubLabel: '',
-            linkedinLabel: '',
-            onGithubPressed: () {},
-            onLinkedinPressed: () {},
+            githubUrl: githubUrl,
+            linkedinUrl: linkedinUrl,
           ),
-          const SizedBox(height: 14),
+
+          SizedBox(height: 14.h),
+
+          // UI only until backend provides completion data.
           const ProfileOverviewCompletionStatus(),
         ],
       ),

@@ -51,10 +51,7 @@ class ProfileOverviewIdentity extends StatelessWidget {
               ),
             ),
             SizedBox(width: 8.w),
-            Text(
-              experienceLevel,
-              style: theme.textTheme.bodyMedium,
-            ),
+            Text(experienceLevel, style: theme.textTheme.bodyMedium),
           ],
         ),
       ],

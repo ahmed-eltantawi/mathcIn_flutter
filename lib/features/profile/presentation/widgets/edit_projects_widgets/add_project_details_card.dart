@@ -27,10 +27,7 @@ class AddProjectDetailsCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: colors.surface,
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(
-          color: context.theme.dividerColor,
-          width: 1,
-        ),
+        border: Border.all(color: context.theme.dividerColor, width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,37 +37,29 @@ class AddProjectDetailsCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   locale.addProjectDetails,
-                  style: theme.textTheme.titleLarge
-                      ?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 8.w,
-                  vertical: 4.h,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                 decoration: BoxDecoration(
                   color: colors.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(5.r),
                 ),
                 child: Text(
                   locale.draft,
-                  style: theme.textTheme.labelSmall
-                      ?.copyWith(
-                        color: colors.onSurfaceVariant,
-                      ),
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: colors.onSurfaceVariant,
+                  ),
                 ),
               ),
             ],
           ),
 
           SizedBox(height: 12.h),
-          Divider(
-            height: 1,
-            color: context.theme.dividerColor,
-          ),
+          Divider(height: 1, color: context.theme.dividerColor),
           SizedBox(height: 16.h),
 
           ProjectTextField(
@@ -183,10 +172,7 @@ class AddProjectDetailsCard extends StatelessWidget {
           SizedBox(height: 10.h),
 
           Center(
-            child: TextButton(
-              onPressed: () {},
-              child: Text(locale.cancel),
-            ),
+            child: TextButton(onPressed: () {}, child: Text(locale.cancel)),
           ),
         ],
       ),

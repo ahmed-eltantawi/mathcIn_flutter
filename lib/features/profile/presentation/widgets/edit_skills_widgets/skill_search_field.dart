@@ -32,10 +32,7 @@ class SkillSearchField extends StatelessWidget {
               textInputAction: TextInputAction.done,
               decoration: InputDecoration(
                 hintText: locale.addSkillHint,
-                prefixIcon: Icon(
-                  Icons.search_rounded,
-                  size: 24.r,
-                ),
+                prefixIcon: Icon(Icons.search_rounded, size: 24.r),
                 filled: true,
                 fillColor: colors.surface,
                 contentPadding: EdgeInsets.symmetric(
@@ -44,22 +41,15 @@ class SkillSearchField extends StatelessWidget {
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12.r),
-                  borderSide: BorderSide(
-                    color: colors.outlineVariant,
-                  ),
+                  borderSide: BorderSide(color: colors.outlineVariant),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12.r),
-                  borderSide: BorderSide(
-                    color: context.theme.dividerColor,
-                  ),
+                  borderSide: BorderSide(color: context.theme.dividerColor),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12.r),
-                  borderSide: BorderSide(
-                    color: colors.primary,
-                    width: 1.4,
-                  ),
+                  borderSide: BorderSide(color: colors.primary, width: 1.4),
                 ),
               ),
             ),
@@ -73,9 +63,7 @@ class SkillSearchField extends StatelessWidget {
             style: FilledButton.styleFrom(
               backgroundColor: colors.primary,
               foregroundColor: colors.onPrimary,
-              padding: EdgeInsets.symmetric(
-                horizontal: 20.w,
-              ),
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.r),
               ),

@@ -3,9 +3,7 @@ import 'package:MatchIn/features/profile/domain/entities/candidate_profile_entit
 import 'package:dartz/dartz.dart';
 
 abstract class ProfileRepository {
-  Future<Either<Failure, CandidateProfileEntity>>
-  getCandidateProfile();
+  Future<Either<Failure, CandidateProfileEntity>> getCandidateProfile();
 
-  Future<Either<Failure, CandidateProfileEntity?>>
-  getCachedCandidateProfile();
+  Future<Either<Failure, CandidateProfileEntity?>> getCachedCandidateProfile();
 }

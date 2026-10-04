@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 
 class ProfileOverviewEditButton extends StatelessWidget {
   const ProfileOverviewEditButton({super.key});
@@ -14,9 +13,7 @@ class ProfileOverviewEditButton extends StatelessWidget {
       width: double.infinity,
       height: 44.h,
       child: OutlinedButton.icon(
-        onPressed: () {
-          GoRouter.of(context).push('');
-        },
+        onPressed: () {},
         icon: Icon(Icons.edit_outlined, size: 18.r),
         label: Text(
           'Edit Profile',

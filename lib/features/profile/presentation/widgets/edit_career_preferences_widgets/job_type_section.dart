@@ -12,8 +12,7 @@ class JobTypeSection extends StatelessWidget {
   });
 
   final Set<String> selectedTypes;
-  final void Function(String value, bool isSelected)
-  onSelected;
+  final void Function(String value, bool isSelected) onSelected;
 
   static const types = [
     'Full-time',

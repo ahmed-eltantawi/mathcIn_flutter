@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ProfileOverviewSummary extends StatelessWidget {
-  const ProfileOverviewSummary({super.key});
+  const ProfileOverviewSummary({required this.summary, super.key});
 
-  static const _summary =
-      'Looking for Flutter and Mobile Development opportunities.';
+  final String summary;
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +11,7 @@ class ProfileOverviewSummary extends StatelessWidget {
     final colors = theme.colorScheme;
 
     return Text(
-      _summary,
+      summary,
       style: theme.textTheme.bodyMedium?.copyWith(
         color: colors.onSurfaceVariant,
         height: 1.45,

@@ -9,21 +9,16 @@ class CandidateProfileModel extends CandidateProfileEntity {
     CandidateProfileDetailsModel? super.profile,
   });
 
-  factory CandidateProfileModel.fromJson(
-    Map<String, dynamic> json,
-  ) {
+  factory CandidateProfileModel.fromJson(Map<String, dynamic> json) {
     final userJson = json['user'] as Map<String, dynamic>;
-    final profileJson =
-        json['profile'] as Map<String, dynamic>?;
+    final profileJson = json['profile'] as Map<String, dynamic>?;
 
     return CandidateProfileModel(
       profileExists: json['profile_exists'] as bool,
       user: ProfileUserModel.fromJson(userJson),
       profile: profileJson == null
           ? null
-          : CandidateProfileDetailsModel.fromJson(
-              profileJson,
-            ),
+          : CandidateProfileDetailsModel.fromJson(profileJson),
     );
   }
 
@@ -52,8 +47,7 @@ class CandidateProfileModel extends CandidateProfileEntity {
               githubUrl: profile!.githubUrl,
               linkedinUrl: profile!.linkedinUrl,
               militaryStatus: profile!.militaryStatus,
-              professionalSummary:
-                  profile!.professionalSummary,
+              professionalSummary: profile!.professionalSummary,
             ).toJson(),
     };
   }
