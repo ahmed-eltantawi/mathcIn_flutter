@@ -12,7 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class SkillsViewBody extends StatelessWidget {
   const SkillsViewBody({super.key});
 
-  // UI only until a suggestions endpoint/source is available.
+  // UI only until a suggestions source/endpoint is available.
   static const List<String> _suggestedSkills = <String>[
     'Testing',
     'CI/CD',
@@ -21,7 +21,7 @@ class SkillsViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final S locale = S.of(context);
+    final locale = S.of(context);
 
     return ListView(
       padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 32.h),
@@ -43,17 +43,38 @@ class SkillsViewBody extends StatelessWidget {
 
         SizedBox(height: 24.h),
 
-        BlocBuilder<SkillsCubit, SkillsState>(
+        BlocConsumer<SkillsCubit, SkillsState>(
+          listener: (context, state) {
+            if (state is SkillsActionFailure) {
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(SnackBar(content: Text(state.message)));
+            }
+          },
           builder: (context, state) {
             if (state is SkillsLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return Padding(
+                padding: EdgeInsets.symmetric(vertical: 24.h),
+                child: const Center(child: CircularProgressIndicator()),
+              );
             }
 
             if (state is SkillsFailure) {
-              return Center(child: Text(state.message));
+              return Padding(
+                padding: EdgeInsets.symmetric(vertical: 24.h),
+                child: Center(child: Text(state.message)),
+              );
             }
 
             if (state is SkillsSuccess) {
+              return BuildSkillsContent(
+                skills: state.skills,
+                onRemoveSkill: (candidateSkillId) {
+                  context.read<SkillsCubit>().removeSkill(candidateSkillId);
+                },
+              );
+            }
+
+            if (state is SkillsActionFailure) {
               return BuildSkillsContent(
                 skills: state.skills,
                 onRemoveSkill: (candidateSkillId) {

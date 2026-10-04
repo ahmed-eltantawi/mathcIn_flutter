@@ -9,7 +9,7 @@ sealed class SkillsState extends Equatable {
 }
 
 final class SkillsInitial extends SkillsState {
-  const SkillsInitial() : super();
+  const SkillsInitial();
 }
 
 final class SkillsLoading extends SkillsState {
@@ -18,6 +18,7 @@ final class SkillsLoading extends SkillsState {
 
 final class SkillsSuccess extends SkillsState {
   const SkillsSuccess({required this.skills});
+
   final List<CandidateSkillEntity> skills;
 
   @override
@@ -26,7 +27,19 @@ final class SkillsSuccess extends SkillsState {
 
 final class SkillsFailure extends SkillsState {
   const SkillsFailure({required this.message});
+
   final String message;
+
   @override
   List<Object?> get props => [message];
+}
+
+final class SkillsActionFailure extends SkillsState {
+  const SkillsActionFailure({required this.skills, required this.message});
+
+  final List<CandidateSkillEntity> skills;
+  final String message;
+
+  @override
+  List<Object?> get props => [skills, message];
 }

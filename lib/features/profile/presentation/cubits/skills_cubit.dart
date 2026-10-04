@@ -43,7 +43,10 @@ class SkillsCubit extends Cubit<SkillsState> {
 
     result.fold(
       (failure) {
-        emit(SkillsFailure(message: failure.message));
+        SkillsActionFailure(
+          skills: List.unmodifiable(_skills),
+          message: failure.message,
+        );
       },
       (skill) {
         _skills = [skill, ..._skills];
