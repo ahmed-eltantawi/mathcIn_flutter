@@ -1,4 +1,5 @@
 import 'package:MatchIn/core/utils/profile_formatters.dart';
+import 'package:MatchIn/core/widgets/cv_file_card.dart';
 import 'package:MatchIn/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:MatchIn/features/profile/presentation/cubits/profile_state.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/profile_screen_widgets/profile_header.dart';
@@ -6,6 +7,7 @@ import 'package:MatchIn/features/profile/presentation/widgets/profile_screen_wid
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfileViewBody extends StatelessWidget {
   const ProfileViewBody({super.key});
@@ -54,10 +56,27 @@ class ProfileViewBody extends StatelessWidget {
 
         // Education
         // Experience
-        // Skills
-        // Projects
-        // CV
-        // Career Preferences
+        TextButton(
+          onPressed: () {
+            GoRouter.of(context).push('/profile/skills');
+          },
+          child: const Text('Edit Skills'),
+        ),
+        TextButton(
+          onPressed: () {
+            GoRouter.of(context).push('/profile/projects');
+          },
+          child: const Text('Edit Projects'),
+        ),
+        const CvFileCard(),
+
+        TextButton(
+          onPressed: () {
+            GoRouter.of(context)
+                .push('/profile/careerPref');
+          },
+          child: const Text('Edit Career Preferences'),
+        ),
       ],
     );
   }
