@@ -379,4 +379,37 @@ Future<void> setupServiceLocator() async {
       unsaveJobUseCase: getIt<UnsaveJobUseCase>(),
     ),
   );
+
+  // Profile Data Sources
+  getIt.registerLazySingleton<ProfileRemoteDataSource>(
+    () => ProfileRemoteDataSourceImpl(apiConsumer: getIt()),
+  );
+
+  getIt.registerLazySingleton<ProfileLocalDataSource>(
+    () => ProfileLocalDataSourceImpl(
+      sharedPreferencesHelper: getIt(),
+    ),
+  );
+
+  // Profile Repository
+  getIt.registerLazySingleton<ProfileRepository>(
+    () => ProfileRepositoryImpl(
+      remoteDataSource: getIt(),
+      localDataSource: getIt(),
+      networkInfo: getIt(),
+    ),
+  );
+
+  // Profile Use Cases
+  getIt.registerLazySingleton<GetCandidateProfileUseCase>(
+    () => GetCandidateProfileUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<
+    GetCachedCandidateProfileUseCase
+  >(
+    () => GetCachedCandidateProfileUseCase(
+      repository: getIt(),
+    ),
+  );
 }
