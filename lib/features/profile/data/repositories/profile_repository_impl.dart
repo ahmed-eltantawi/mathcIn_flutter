@@ -9,6 +9,9 @@ import 'package:MatchIn/features/profile/domain/entities/candidate_skill_entity.
 import 'package:MatchIn/features/profile/domain/repositories/profile_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:MatchIn/features/profile/domain/entities/skill_search_result_entity.dart';
+import 'package:MatchIn/features/profile/domain/entities/candidate_project_entity.dart';
+import 'package:MatchIn/features/profile/domain/entities/add_candidate_project_params.dart';
+import 'package:MatchIn/features/profile/domain/entities/update_candidate_project_params.dart';
 
 class ProfileRepositoryImpl implements ProfileRepository {
   const ProfileRepositoryImpl({
@@ -22,32 +25,24 @@ class ProfileRepositoryImpl implements ProfileRepository {
   final NetworkInfo networkInfo;
 
   @override
-  Future<Either<Failure, CandidateProfileEntity>>
-  getCandidateProfile() async {
+  Future<Either<Failure, CandidateProfileEntity>> getCandidateProfile() async {
     if (await networkInfo.isConnected) {
       try {
-        final profile = await remoteDataSource
-            .getCandidateProfile();
+        final profile = await remoteDataSource.getCandidateProfile();
 
-        await localDataSource.cacheCandidateProfile(
-          profile,
-        );
+        await localDataSource.cacheCandidateProfile(profile);
 
         return Right(profile);
       } on ServerException catch (e) {
-        final cached = await localDataSource
-            .getCachedCandidateProfile();
+        final cached = await localDataSource.getCachedCandidateProfile();
 
         if (cached != null) {
           return Right(cached);
         }
 
-        return Left(
-          ServerFailure(message: e.errorModel.errorMessage),
-        );
+        return Left(ServerFailure(message: e.errorModel.errorMessage));
       } catch (e) {
-        final cached = await localDataSource
-            .getCachedCandidateProfile();
+        final cached = await localDataSource.getCachedCandidateProfile();
 
         if (cached != null) {
           return Right(cached);
@@ -57,8 +52,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
       }
     }
 
-    final cached = await localDataSource
-        .getCachedCandidateProfile();
+    final cached = await localDataSource.getCachedCandidateProfile();
 
     if (cached != null) {
       return Right(cached);
@@ -71,8 +65,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
   Future<Either<Failure, CandidateProfileEntity?>>
   getCachedCandidateProfile() async {
     try {
-      final cached = await localDataSource
-          .getCachedCandidateProfile();
+      final cached = await localDataSource.getCachedCandidateProfile();
 
       return Right(cached);
     } catch (e) {
@@ -80,6 +73,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
     }
   }
 
+  // Candidate Skills
   @override
   Future<Either<Failure, List<CandidateSkillEntity>>>
   getCandidateSkills() async {
@@ -88,35 +82,30 @@ class ProfileRepositoryImpl implements ProfileRepository {
     }
 
     try {
-      final skills = await remoteDataSource
-          .getCandidateSkills();
+      final skills = await remoteDataSource.getCandidateSkills();
 
       return Right(skills);
     } on ServerException catch (e) {
-      return Left(
-        ServerFailure(message: e.errorModel.errorMessage),
-      );
+      return Left(ServerFailure(message: e.errorModel.errorMessage));
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, CandidateSkillEntity>>
-  addCandidateSkill(AddCandidateSkillParams params) async {
+  Future<Either<Failure, CandidateSkillEntity>> addCandidateSkill(
+    AddCandidateSkillParams params,
+  ) async {
     if (!await networkInfo.isConnected) {
       return const Left(OfflineFailure());
     }
 
     try {
-      final skill = await remoteDataSource
-          .addCandidateSkill(params);
+      final skill = await remoteDataSource.addCandidateSkill(params);
 
       return Right(skill);
     } on ServerException catch (e) {
-      return Left(
-        ServerFailure(message: e.errorModel.errorMessage),
-      );
+      return Left(ServerFailure(message: e.errorModel.errorMessage));
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
@@ -131,37 +120,122 @@ class ProfileRepositoryImpl implements ProfileRepository {
     }
 
     try {
-      await remoteDataSource.removeCandidateSkill(
-        candidateSkillId,
-      );
+      await remoteDataSource.removeCandidateSkill(candidateSkillId);
 
       return const Right(unit);
     } on ServerException catch (e) {
-      return Left(
-        ServerFailure(message: e.errorModel.errorMessage),
-      );
+      return Left(ServerFailure(message: e.errorModel.errorMessage));
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, List<SkillSearchResultEntity>>>
-  searchSkills(String query) async {
+  Future<Either<Failure, List<SkillSearchResultEntity>>> searchSkills(
+    String query,
+  ) async {
     if (!await networkInfo.isConnected) {
       return const Left(OfflineFailure());
     }
 
     try {
-      final skills = await remoteDataSource.searchSkills(
-        query,
-      );
+      final skills = await remoteDataSource.searchSkills(query);
 
       return Right(skills);
     } on ServerException catch (e) {
-      return Left(
-        ServerFailure(message: e.errorModel.errorMessage),
-      );
+      return Left(ServerFailure(message: e.errorModel.errorMessage));
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  // Candidate Projects
+  @override
+  Future<Either<Failure, List<CandidateProjectEntity>>> getProjects() async {
+    if (!await networkInfo.isConnected) {
+      return const Left(OfflineFailure());
+    }
+
+    try {
+      final projects = await remoteDataSource.getProjects();
+
+      return Right(projects);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.errorModel.errorMessage));
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, CandidateProjectEntity>> getProject(
+    int projectId,
+  ) async {
+    if (!await networkInfo.isConnected) {
+      return const Left(OfflineFailure());
+    }
+
+    try {
+      final project = await remoteDataSource.getProject(projectId);
+
+      return Right(project);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.errorModel.errorMessage));
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, CandidateProjectEntity>> addCandidateProject(
+    AddCandidateProjectParams params,
+  ) async {
+    if (!await networkInfo.isConnected) {
+      return const Left(OfflineFailure());
+    }
+
+    try {
+      final project = await remoteDataSource.addCandidateProject(params);
+
+      return Right(project);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.errorModel.errorMessage));
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, CandidateProjectEntity>> updateCandidateProject(
+    UpdateCandidateProjectParams params,
+  ) async {
+    if (!await networkInfo.isConnected) {
+      return const Left(OfflineFailure());
+    }
+
+    try {
+      final project = await remoteDataSource.updateCandidateProject(params);
+
+      return Right(project);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.errorModel.errorMessage));
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> deleteCandidateProject(int projectId) async {
+    if (!await networkInfo.isConnected) {
+      return const Left(OfflineFailure());
+    }
+
+    try {
+      await remoteDataSource.deleteCandidateProject(projectId);
+
+      return const Right(unit);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.errorModel.errorMessage));
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }

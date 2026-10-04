@@ -21,16 +21,13 @@ class SkillsViewBody extends StatelessWidget {
     return BlocConsumer<SkillsCubit, SkillsState>(
       listener: (context, state) {
         if (state is SkillsActionFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(state.message)));
         }
       },
       builder: (context, state) {
         if (state is SkillsLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (state is SkillsFailure) {
@@ -41,11 +38,7 @@ class SkillsViewBody extends StatelessWidget {
         final suggestions = _suggestionsFromState(state);
 
         return ListView(
-          padding: EdgeInsets.only(
-            left: 16.w,
-            right: 16.w,
-            bottom: 32.h,
-          ),
+          padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 32.h),
           children: [
             SizedBox(height: 8.h),
 
@@ -69,9 +62,7 @@ class SkillsViewBody extends StatelessWidget {
             BuildSkillsContent(
               skills: skills,
               onRemoveSkill: (candidateSkillId) {
-                context.read<SkillsCubit>().removeSkill(
-                  candidateSkillId,
-                );
+                context.read<SkillsCubit>().removeSkill(candidateSkillId);
               },
             ),
           ],
@@ -80,9 +71,7 @@ class SkillsViewBody extends StatelessWidget {
     );
   }
 
-  List<CandidateSkillEntity> _skillsFromState(
-    SkillsState state,
-  ) {
+  List<CandidateSkillEntity> _skillsFromState(SkillsState state) {
     if (state is SkillsSuccess) {
       return state.skills;
     }
@@ -102,9 +91,7 @@ class SkillsViewBody extends StatelessWidget {
     return const [];
   }
 
-  List<SkillSearchResultEntity> _suggestionsFromState(
-    SkillsState state,
-  ) {
+  List<SkillSearchResultEntity> _suggestionsFromState(SkillsState state) {
     if (state is SkillsSearchSuccess) {
       return state.suggestions;
     }

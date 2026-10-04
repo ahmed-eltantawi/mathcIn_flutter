@@ -8,14 +8,11 @@ abstract class EndPoint {
   static const String refreshToken = 'auth/refresh-token';
 
   // Email Verification
-  static const String verifyEmailOtp =
-      'auth/verify-email-otp';
-  static const String resendEmailOtp =
-      'auth/resend-email-otp';
+  static const String verifyEmailOtp = 'auth/verify-email-otp';
+  static const String resendEmailOtp = 'auth/resend-email-otp';
 
   // Password Recovery
-  static const String forgotPassword =
-      'auth/forgot-password';
+  static const String forgotPassword = 'auth/forgot-password';
   static const String verifyPasswordResetOtp =
       'auth/forgot-password/verify-otp';
   static const String resetPassword = 'auth/reset-password';
@@ -26,12 +23,10 @@ abstract class EndPoint {
   static const String chatMessage = 'chatbot/chat';
   static const String savedJobs = 'saved-jobs';
   static const String jobs = 'jobs';
-  static String saveJob(dynamic jobPostId) =>
-      'jobs/$jobPostId/save';
+  static String saveJob(dynamic jobPostId) => 'jobs/$jobPostId/save';
 
   // get candidate profile
-  static const String candidateProfile =
-      'candidate/profile';
+  static const String candidateProfile = 'candidate/profile';
 
   // Candidate Skills
   static const String candidateSkills = 'candidate/skills';
@@ -41,6 +36,12 @@ abstract class EndPoint {
 
   // Search Skills
   static const String searchSkills = 'skills/search';
+
+  // Candidate Projects
+  static const String candidateProjects = 'candidate/projects';
+
+  static String candidateProject(int projectId) =>
+      'candidate/projects/$projectId';
 }
 
 ///* ApiKeys: the keys of the api
@@ -55,8 +56,7 @@ abstract class ApiKey {
   static const String newPassword = 'new_password';
   static const String name = 'name';
   static const String password = 'password';
-  static const String passwordConfirmation =
-      'password_confirmation';
+  static const String passwordConfirmation = 'password_confirmation';
   static const String page = 'page';
   static const String perPage = 'per_page';
   static const String jobId = 'job_id';
@@ -72,14 +72,10 @@ abstract class ApiKey {
   static const String state = 'state';
   static const String city = 'city';
   static const String source = 'source';
-  static const String applicationMethod =
-      'application_method';
-  static const String isVerifiedCompany =
-      'is_verified_company';
-  static const String requiredSkillIds =
-      'required_skill_ids[]';
-  static const String preferredSkillIds =
-      'preferred_skill_ids[]';
+  static const String applicationMethod = 'application_method';
+  static const String isVerifiedCompany = 'is_verified_company';
+  static const String requiredSkillIds = 'required_skill_ids[]';
+  static const String preferredSkillIds = 'preferred_skill_ids[]';
   // static const String id = 'id';
 }
 
@@ -91,7 +87,6 @@ abstract class ApiHeaderKey {
   static const String accept = 'Accept';
   static const String contentType = 'Content-Type';
 
-  static String getAuthorizationValue({
-    required String? accessToken,
-  }) => '${ApiHeaderKey.bearer} $accessToken';
+  static String getAuthorizationValue({required String? accessToken}) =>
+      '${ApiHeaderKey.bearer} $accessToken';
 }
