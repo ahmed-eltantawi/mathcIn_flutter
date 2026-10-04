@@ -9,14 +9,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class SkillsCubit extends Cubit<SkillsState> {
   SkillsCubit({
     required this.getCandidateSkillsUseCase,
-    required this.removeCandidateSkillsUseCase,
-    required this.addCandidateSkillsUseCase,
+    required this.addCandidateSkillUseCase,
+    required this.removeCandidateSkillUseCase,
   }) : super(const SkillsInitial());
 
   final GetCandidateSkillsUseCase getCandidateSkillsUseCase;
-  final AddCandidateSkillUseCase addCandidateSkillsUseCase;
-  final RemoveCandidateSkillUseCase
-  removeCandidateSkillsUseCase;
+  final AddCandidateSkillUseCase addCandidateSkillUseCase;
+  final RemoveCandidateSkillUseCase removeCandidateSkillUseCase;
 
   List<CandidateSkillEntity> _skills = [];
 
@@ -26,25 +25,22 @@ class SkillsCubit extends Cubit<SkillsState> {
     final result = await getCandidateSkillsUseCase();
 
     result.fold(
-      (failure) =>
-          emit(SkillsFailure(message: failure.message)),
+      (failure) {
+        emit(SkillsFailure(message: failure.message));
+      },
       (skills) {
         _skills = skills;
-        emit(SkillsSuccess(skills: skills));
+
+        emit(SkillsSuccess(skills: List.unmodifiable(_skills)));
       },
     );
   }
 
-  Future<void> addSkill({
-    required String name,
-    required String proficiencyLevel,
-  }) async {
-    final result = await addCandidateSkillsUseCase(
-      AddCandidateSkillParams(
-        name: name,
-        proficiencyLevel: proficiencyLevel,
-      ),
+  Future<void> addSkill({required String name}) async {
+    final result = await addCandidateSkillUseCase(
+      AddCandidateSkillParams(name: name),
     );
+
     result.fold(
       (failure) {
         emit(SkillsFailure(message: failure.message));
@@ -52,17 +48,13 @@ class SkillsCubit extends Cubit<SkillsState> {
       (skill) {
         _skills = [skill, ..._skills];
 
-        emit(
-          SkillsSuccess(skills: List.unmodifiable(_skills)),
-        );
+        emit(SkillsSuccess(skills: List.unmodifiable(_skills)));
       },
     );
   }
 
   Future<void> removeSkill(int candidateSkillId) async {
-    final result = await removeCandidateSkillsUseCase(
-      candidateSkillId,
-    );
+    final result = await removeCandidateSkillUseCase(candidateSkillId);
 
     result.fold(
       (failure) {
@@ -73,9 +65,7 @@ class SkillsCubit extends Cubit<SkillsState> {
             .where((skill) => skill.id != candidateSkillId)
             .toList();
 
-        emit(
-          SkillsSuccess(skills: List.unmodifiable(_skills)),
-        );
+        emit(SkillsSuccess(skills: List.unmodifiable(_skills)));
       },
     );
   }

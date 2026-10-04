@@ -6,20 +6,16 @@ import 'package:dartz/dartz.dart';
 
 abstract class ProfileRepository {
   // Candidate Profile
-  Future<Either<Failure, CandidateProfileEntity>>
-  getCandidateProfile();
+  Future<Either<Failure, CandidateProfileEntity>> getCandidateProfile();
 
-  Future<Either<Failure, CandidateProfileEntity?>>
-  getCachedCandidateProfile();
+  Future<Either<Failure, CandidateProfileEntity?>> getCachedCandidateProfile();
 
   // Candidate Skills
-  Future<Either<Failure, List<CandidateSkillEntity>>>
-  getCandidateSkills();
+  Future<Either<Failure, List<CandidateSkillEntity>>> getCandidateSkills();
 
-  Future<Either<Failure, CandidateSkillEntity>>
-  addCandidateSkill(AddCandidateSkillParams params);
-
-  Future<Either<Failure, Unit>> removeCandidateSkill(
-    int candidateSkillId,
+  Future<Either<Failure, CandidateSkillEntity>> addCandidateSkill(
+    AddCandidateSkillParams params,
   );
+
+  Future<Either<Failure, Unit>> removeCandidateSkill(int candidateSkillId);
 }

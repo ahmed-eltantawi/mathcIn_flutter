@@ -6,19 +6,17 @@ class CandidateSkillModel extends CandidateSkillEntity {
     required super.skillId,
     required super.name,
     required super.source,
-    required super.proficiencyLevel,
+    super.proficiencyLevel,
   });
 
-  factory CandidateSkillModel.fromJson(
-    Map<String, dynamic> json,
-  ) {
+  factory CandidateSkillModel.fromJson(Map<String, dynamic> json) {
     final skill = json['skill'] as Map<String, dynamic>;
 
     return CandidateSkillModel(
       id: json['id'] as int,
       skillId: json['skill_id'] as int,
       source: json['source'] as String,
-      proficiencyLevel: json['proficiency_level'] as String,
+      proficiencyLevel: json['proficiency_level'] as String?,
       name: skill['name'] as String,
     );
   }

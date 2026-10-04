@@ -4,14 +4,11 @@ import 'package:MatchIn/features/profile/domain/repositories/profile_repository.
 import 'package:dartz/dartz.dart';
 
 class GetCandidateSkillsUseCase {
-  const GetCandidateSkillsUseCase({
-    required this.repository,
-  });
+  const GetCandidateSkillsUseCase({required this.repository});
 
   final ProfileRepository repository;
 
-  Future<Either<Failure, List<CandidateSkillEntity>>>
-  call() {
+  Future<Either<Failure, List<CandidateSkillEntity>>> call() {
     return repository.getCandidateSkills();
   }
 }

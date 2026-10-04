@@ -437,8 +437,8 @@ Future<void> setupServiceLocator() async {
   getIt.registerFactory<SkillsCubit>(
     () => SkillsCubit(
       getCandidateSkillsUseCase: getIt(),
-      addCandidateSkillsUseCase: getIt(),
-      removeCandidateSkillsUseCase: getIt(),
+      addCandidateSkillUseCase: getIt(),
+      removeCandidateSkillUseCase: getIt(),
     ),
   );
 

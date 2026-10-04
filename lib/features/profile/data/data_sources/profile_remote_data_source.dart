@@ -7,9 +7,7 @@ abstract class ProfileRemoteDataSource {
 
   Future<List<CandidateSkillModel>> getCandidateSkills();
 
-  Future<CandidateSkillModel> addCandidateSkill(
-    AddCandidateSkillParams params,
-  );
+  Future<CandidateSkillModel> addCandidateSkill(AddCandidateSkillParams params);
 
   Future<void> removeCandidateSkill(int candidateSkillId);
 }

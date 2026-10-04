@@ -1,4 +1,5 @@
 import 'package:MatchIn/core/extensions/context_extensions.dart';
+import 'package:MatchIn/features/profile/domain/entities/candidate_skill_entity.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/skill_chip.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,8 +12,8 @@ class ManualSkillsCard extends StatelessWidget {
     super.key,
   });
 
-  final List<String> skills;
-  final ValueChanged<String> onRemoveSkill;
+  final List<CandidateSkillEntity> skills;
+  final ValueChanged<int> onRemoveSkill;
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +62,8 @@ class ManualSkillsCard extends StatelessWidget {
             children: skills
                 .map(
                   (skill) => SkillChip(
-                    label: skill,
-                    onRemove: () => onRemoveSkill(skill),
+                    label: skill.name,
+                    onRemove: () => onRemoveSkill(skill.id),
                   ),
                 )
                 .toList(),

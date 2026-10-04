@@ -23,10 +23,7 @@ class ProfileOverviewEditButton extends StatelessWidget {
         ),
         style: OutlinedButton.styleFrom(
           foregroundColor: colors.primary,
-          side: BorderSide(
-            color: colors.primary,
-            width: 1.2,
-          ),
+          side: BorderSide(color: colors.primary, width: 1.2),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.r),
           ),

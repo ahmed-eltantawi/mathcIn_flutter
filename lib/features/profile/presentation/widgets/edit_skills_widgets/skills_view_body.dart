@@ -1,28 +1,18 @@
-import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/add_skill_section.dart';
-import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/cv_skills_card.dart';
-import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/manage_skills_button.dart';
-import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/manual_skills_card.dart';
+import 'package:MatchIn/features/profile/presentation/cubits/skills_cubit.dart';
+import 'package:MatchIn/features/profile/presentation/cubits/skills_state.dart';
+import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/add_skill_form.dart';
+import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/build_skilled_content.dart';
+import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/skills_app_bar.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/skills_profile_card.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:MatchIn/generated/l10n.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SkillsViewBody extends StatelessWidget {
   const SkillsViewBody({super.key});
 
-  static const List<String> _cvSkills = <String>[
-    'Flutter',
-    'Dart',
-    'REST APIs',
-    'Git',
-  ];
-
-  static const List<String> _manualSkills = <String>[
-    'Bloc',
-    'Firebase',
-    'GitHub',
-  ];
-
+  // UI only until a suggestions endpoint/source is available.
   static const List<String> _suggestedSkills = <String>[
     'Testing',
     'CI/CD',
@@ -38,7 +28,7 @@ class SkillsViewBody extends StatelessWidget {
       children: [
         SizedBox(height: 8.h),
 
-        _SkillsAppBar(
+        SkillsAppBar(
           title: locale.skills,
           onBackPressed: () => Navigator.maybePop(context),
         ),
@@ -49,59 +39,33 @@ class SkillsViewBody extends StatelessWidget {
 
         SizedBox(height: 24.h),
 
-        AddSkillSection(
-          suggestions: _suggestedSkills,
-          onAddPressed: () {},
-          onSuggestionPressed: (skill) {},
-        ),
+        const AddSkillForm(suggestions: _suggestedSkills),
 
         SizedBox(height: 24.h),
 
-        CvSkillsCard(skills: _cvSkills, onRemoveSkill: (skill) {}),
+        BlocBuilder<SkillsCubit, SkillsState>(
+          builder: (context, state) {
+            if (state is SkillsLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-        SizedBox(height: 20.h),
+            if (state is SkillsFailure) {
+              return Center(child: Text(state.message));
+            }
 
-        ManualSkillsCard(skills: _manualSkills, onRemoveSkill: (skill) {}),
+            if (state is SkillsSuccess) {
+              return BuildSkillsContent(
+                skills: state.skills,
+                onRemoveSkill: (candidateSkillId) {
+                  context.read<SkillsCubit>().removeSkill(candidateSkillId);
+                },
+              );
+            }
 
-        SizedBox(height: 20.h),
-
-        ManageSkillsButton(onPressed: () {}),
+            return const SizedBox.shrink();
+          },
+        ),
       ],
-    );
-  }
-}
-
-class _SkillsAppBar extends StatelessWidget {
-  const _SkillsAppBar({required this.title, required this.onBackPressed});
-
-  final String title;
-  final VoidCallback onBackPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    final ColorScheme colors = Theme.of(context).colorScheme;
-
-    return SizedBox(
-      height: 56.h,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Align(
-            alignment: AlignmentDirectional.centerStart,
-            child: IconButton(
-              onPressed: onBackPressed,
-              icon: Icon(Icons.arrow_back_ios_new_rounded, size: 22.sp),
-              color: colors.primary,
-              tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-            ),
-          ),
-          Text(
-            title,
-            style: Theme.of(context).textTheme.headlineSmall
-                ?.copyWith(fontWeight: FontWeight.w700, color: colors.primary),
-          ),
-        ],
-      ),
     );
   }
 }

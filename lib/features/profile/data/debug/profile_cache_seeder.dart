@@ -29,7 +29,8 @@ class ProfileCacheSeeder {
         'github_url': 'https://github.com/ahmed',
         'linkedin_url': 'https://linkedin.com/in/ahmed',
         'military_status': 'exempted',
-        'professional_summary': 'Looking for Flutter and Mobile Development opportunities.',
+        'professional_summary':
+            'Looking for Flutter and Mobile Development opportunities.',
       },
     });
 

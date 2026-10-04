@@ -6,20 +6,22 @@ import 'package:MatchIn/generated/l10n.dart';
 
 class AddSkillSection extends StatelessWidget {
   const AddSkillSection({
+    required this.controller,
     required this.suggestions,
     required this.onAddPressed,
     required this.onSuggestionPressed,
     super.key,
   });
 
+  final TextEditingController controller;
   final List<String> suggestions;
   final VoidCallback onAddPressed;
   final ValueChanged<String> onSuggestionPressed;
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final S locale = S.of(context);
+    final theme = Theme.of(context);
+    final locale = S.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,7 +33,7 @@ class AddSkillSection extends StatelessWidget {
           ),
         ),
         SizedBox(height: 12.h),
-        SkillSearchField(onAddPressed: onAddPressed),
+        SkillSearchField(controller: controller, onAddPressed: onAddPressed),
         SizedBox(height: 16.h),
         SkillSuggestions(
           skills: suggestions,

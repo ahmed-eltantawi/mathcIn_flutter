@@ -5,9 +5,7 @@ import 'package:MatchIn/features/profile/domain/repositories/profile_repository.
 import 'package:dartz/dartz.dart';
 
 class AddCandidateSkillUseCase {
-  const AddCandidateSkillUseCase({
-    required this.repository,
-  });
+  const AddCandidateSkillUseCase({required this.repository});
 
   final ProfileRepository repository;
 

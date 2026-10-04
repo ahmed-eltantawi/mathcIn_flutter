@@ -5,20 +5,14 @@ import 'package:MatchIn/features/profile/data/models/candidate_profile_model.dar
 import 'package:MatchIn/features/profile/data/models/candidate_skill_model.dart';
 import 'package:MatchIn/features/profile/domain/entities/add_candidate_skill_params.dart';
 
-class ProfileRemoteDataSourceImpl
-    implements ProfileRemoteDataSource {
-  const ProfileRemoteDataSourceImpl({
-    required this.apiConsumer,
-  });
+class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
+  const ProfileRemoteDataSourceImpl({required this.apiConsumer});
 
   final ApiConsumer apiConsumer;
 
   @override
-  Future<CandidateProfileModel>
-  getCandidateProfile() async {
-    final response = await apiConsumer.get(
-      EndPoint.candidateProfile,
-    );
+  Future<CandidateProfileModel> getCandidateProfile() async {
+    final response = await apiConsumer.get(EndPoint.candidateProfile);
 
     if (response is! Map<String, dynamic>) {
       throw const FormatException(
@@ -29,9 +23,7 @@ class ProfileRemoteDataSourceImpl
     final data = response['data'];
 
     if (data is! Map<String, dynamic>) {
-      throw const FormatException(
-        'Invalid candidate profile data format',
-      );
+      throw const FormatException('Invalid candidate profile data format');
     }
 
     return CandidateProfileModel.fromJson(data);
@@ -39,11 +31,8 @@ class ProfileRemoteDataSourceImpl
 
   // Skills
   @override
-  Future<List<CandidateSkillModel>>
-  getCandidateSkills() async {
-    final response = await apiConsumer.get(
-      EndPoint.candidateSkills,
-    );
+  Future<List<CandidateSkillModel>> getCandidateSkills() async {
+    final response = await apiConsumer.get(EndPoint.candidateSkills);
 
     if (response is! Map<String, dynamic>) {
       throw const FormatException(
@@ -54,16 +43,13 @@ class ProfileRemoteDataSourceImpl
     final data = response['data'];
 
     if (data is! List) {
-      throw const FormatException(
-        'Invalid candidate skills data format',
-      );
+      throw const FormatException('Invalid candidate skills data format');
     }
 
     return data
         .map(
-          (skill) => CandidateSkillModel.fromJson(
-            skill as Map<String, dynamic>,
-          ),
+          (skill) =>
+              CandidateSkillModel.fromJson(skill as Map<String, dynamic>),
         )
         .toList();
   }
@@ -74,35 +60,24 @@ class ProfileRemoteDataSourceImpl
   ) async {
     final response = await apiConsumer.post(
       EndPoint.candidateSkills,
-      data: {
-        'name': params.name,
-        'proficiency_level': params.proficiencyLevel,
-      },
+      data: {'name': params.name},
     );
 
     if (response is! Map<String, dynamic>) {
-      throw const FormatException(
-        'Invalid response format for added skill',
-      );
+      throw const FormatException('Invalid response format for added skill');
     }
 
     final data = response['data'];
 
     if (data is! Map<String, dynamic>) {
-      throw const FormatException(
-        'Invalid added skill data format',
-      );
+      throw const FormatException('Invalid added skill data format');
     }
 
     return CandidateSkillModel.fromJson(data);
   }
 
   @override
-  Future<void> removeCandidateSkill(
-    int candidateSkillId,
-  ) async {
-    await apiConsumer.delete(
-      EndPoint.candidateSkill(candidateSkillId),
-    );
+  Future<void> removeCandidateSkill(int candidateSkillId) async {
+    await apiConsumer.delete(EndPoint.candidateSkill(candidateSkillId));
   }
 }

@@ -38,15 +38,11 @@ class ProfileView extends StatelessWidget {
 
         return cubit;
       },
-      child: const Scaffold(
-        body: SafeArea(child: ProfileViewBody()),
-      ),
+      child: const Scaffold(body: SafeArea(child: ProfileViewBody())),
     );
   }
 
-  Future<void> _seedAndLoadProfile(
-    ProfileCubit cubit,
-  ) async {
+  Future<void> _seedAndLoadProfile(ProfileCubit cubit) async {
     final seeder = ProfileCacheSeeder(
       localDataSource: getIt<ProfileLocalDataSource>(),
     );
