@@ -20,12 +20,9 @@ class ProjectsCubit extends Cubit<ProjectsState> {
 
   final GetProjectsUseCase getProjectsUseCase;
   final GetProjectUseCase getProjectUseCase;
-  final AddCandidateProjectUseCase
-  addCandidateProjectUseCase;
-  final UpdateCandidateProjectUseCase
-  updateCandidateProjectUseCase;
-  final DeleteCandidateProjectUseCase
-  deleteCandidateProjectUseCase;
+  final AddCandidateProjectUseCase addCandidateProjectUseCase;
+  final UpdateCandidateProjectUseCase updateCandidateProjectUseCase;
+  final DeleteCandidateProjectUseCase deleteCandidateProjectUseCase;
 
   List<CandidateProjectEntity> _projects = [];
 
@@ -76,9 +73,7 @@ class ProjectsCubit extends Cubit<ProjectsState> {
     );
   }
 
-  Future<void> addProject(
-    AddCandidateProjectParams params,
-  ) async {
+  Future<void> addProject(AddCandidateProjectParams params) async {
     final result = await addCandidateProjectUseCase(params);
 
     result.fold(
@@ -103,12 +98,8 @@ class ProjectsCubit extends Cubit<ProjectsState> {
     );
   }
 
-  Future<void> updateProject(
-    UpdateCandidateProjectParams params,
-  ) async {
-    final result = await updateCandidateProjectUseCase(
-      params,
-    );
+  Future<void> updateProject(UpdateCandidateProjectParams params) async {
+    final result = await updateCandidateProjectUseCase(params);
 
     result.fold(
       (failure) {
@@ -124,9 +115,8 @@ class ProjectsCubit extends Cubit<ProjectsState> {
       (updatedProject) {
         _projects = _projects
             .map(
-              (project) => project.id == updatedProject.id
-                  ? updatedProject
-                  : project,
+              (project) =>
+                  project.id == updatedProject.id ? updatedProject : project,
             )
             .toList();
 
@@ -139,9 +129,7 @@ class ProjectsCubit extends Cubit<ProjectsState> {
   }
 
   Future<void> deleteProject(int projectId) async {
-    final result = await deleteCandidateProjectUseCase(
-      projectId,
-    );
+    final result = await deleteCandidateProjectUseCase(projectId);
 
     result.fold(
       (failure) {

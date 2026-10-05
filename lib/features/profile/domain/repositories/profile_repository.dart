@@ -4,6 +4,8 @@ import 'package:MatchIn/features/profile/domain/entities/add_candidate_skill_par
 import 'package:MatchIn/features/profile/domain/entities/candidate_profile_entity.dart';
 import 'package:MatchIn/features/profile/domain/entities/candidate_project_entity.dart';
 import 'package:MatchIn/features/profile/domain/entities/candidate_skill_entity.dart';
+import 'package:MatchIn/features/profile/domain/entities/career_preference_entity.dart';
+import 'package:MatchIn/features/profile/domain/entities/save_career_preferences_params.dart';
 import 'package:MatchIn/features/profile/domain/entities/update_candidate_project_params.dart';
 import 'package:dartz/dartz.dart';
 import 'package:MatchIn/features/profile/domain/entities/skill_search_result_entity.dart';
@@ -40,4 +42,11 @@ abstract class ProfileRepository {
   );
 
   Future<Either<Failure, Unit>> deleteCandidateProject(int projectId);
+
+  // Career Preferences
+  Future<Either<Failure, CareerPreferenceEntity?>> getCareerPreferences();
+
+  Future<Either<Failure, CareerPreferenceEntity>> saveCareerPreferences(
+    SaveCareerPreferencesParams params,
+  );
 }

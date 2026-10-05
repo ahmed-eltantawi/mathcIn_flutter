@@ -6,6 +6,8 @@ import 'package:MatchIn/features/profile/data/data_sources/profile_remote_data_s
 import 'package:MatchIn/features/profile/domain/entities/add_candidate_skill_params.dart';
 import 'package:MatchIn/features/profile/domain/entities/candidate_profile_entity.dart';
 import 'package:MatchIn/features/profile/domain/entities/candidate_skill_entity.dart';
+import 'package:MatchIn/features/profile/domain/entities/career_preference_entity.dart';
+import 'package:MatchIn/features/profile/domain/entities/save_career_preferences_params.dart';
 import 'package:MatchIn/features/profile/domain/repositories/profile_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:MatchIn/features/profile/domain/entities/skill_search_result_entity.dart';
@@ -234,6 +236,44 @@ class ProfileRepositoryImpl implements ProfileRepository {
       await remoteDataSource.deleteCandidateProject(projectId);
 
       return const Right(unit);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.errorModel.errorMessage));
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  // career preferences
+  @override
+  Future<Either<Failure, CareerPreferenceEntity?>>
+  getCareerPreferences() async {
+    if (!await networkInfo.isConnected) {
+      return const Left(OfflineFailure());
+    }
+
+    try {
+      final preferences = await remoteDataSource.getCareerPreferences();
+
+      return Right(preferences);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.errorModel.errorMessage));
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, CareerPreferenceEntity>> saveCareerPreferences(
+    SaveCareerPreferencesParams params,
+  ) async {
+    if (!await networkInfo.isConnected) {
+      return const Left(OfflineFailure());
+    }
+
+    try {
+      final preferences = await remoteDataSource.saveCareerPreferences(params);
+
+      return Right(preferences);
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.errorModel.errorMessage));
     } catch (e) {

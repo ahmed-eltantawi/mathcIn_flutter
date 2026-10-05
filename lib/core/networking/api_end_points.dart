@@ -42,6 +42,9 @@ abstract class EndPoint {
 
   static String candidateProject(int projectId) =>
       'candidate/projects/$projectId';
+
+  // career preferences
+  static const String careerPreferences = 'candidate/career-preferences';
 }
 
 ///* ApiKeys: the keys of the api
