@@ -63,10 +63,13 @@ import 'package:MatchIn/features/profile/domain/use_cases/get_cached_candidate_p
 import 'package:MatchIn/features/profile/domain/use_cases/get_candidate_profile_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/get_candidate_projects_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/get_candidate_skills_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/get_career_preferences_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/get_project_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/remove_candidate_skill_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/save_career_preferences_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/search_skills_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/update_candidate_project_use_case.dart';
+import 'package:MatchIn/features/profile/presentation/cubits/career_preferences_cubit.dart';
 import 'package:MatchIn/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:MatchIn/features/profile/presentation/cubits/projects_cubit.dart';
 import 'package:MatchIn/features/profile/presentation/cubits/skills_cubit.dart';
@@ -453,5 +456,20 @@ Future<void> setupServiceLocator() async {
 
   getIt.registerLazySingleton<DeleteCandidateProjectUseCase>(
     () => DeleteCandidateProjectUseCase(repository: getIt()),
+  );
+
+  // career preferences
+  getIt.registerFactory<CareerPreferencesCubit>(
+    () => CareerPreferencesCubit(
+      getCareerPreferencesUseCase: getIt(),
+      saveCareerPreferencesUseCase: getIt(),
+    ),
+  );
+  getIt.registerLazySingleton<GetCareerPreferencesUseCase>(
+    () => GetCareerPreferencesUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<SaveCareerPreferencesUseCase>(
+    () => SaveCareerPreferencesUseCase(repository: getIt()),
   );
 }
