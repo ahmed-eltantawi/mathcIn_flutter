@@ -17,7 +17,8 @@ class SkillsCubit extends Cubit<SkillsState> {
 
   final GetCandidateSkillsUseCase getCandidateSkillsUseCase;
   final AddCandidateSkillUseCase addCandidateSkillUseCase;
-  final RemoveCandidateSkillUseCase removeCandidateSkillUseCase;
+  final RemoveCandidateSkillUseCase
+  removeCandidateSkillUseCase;
   final SearchSkillsUseCase searchSkillsUseCase;
 
   List<CandidateSkillEntity> _skills = [];
@@ -34,7 +35,9 @@ class SkillsCubit extends Cubit<SkillsState> {
       (skills) {
         _skills = skills;
 
-        emit(SkillsSuccess(skills: List.unmodifiable(_skills)));
+        emit(
+          SkillsSuccess(skills: List.unmodifiable(_skills)),
+        );
       },
     );
   }
@@ -54,13 +57,17 @@ class SkillsCubit extends Cubit<SkillsState> {
       (skill) {
         _skills = [skill, ..._skills];
 
-        emit(SkillsSuccess(skills: List.unmodifiable(_skills)));
+        emit(
+          SkillsSuccess(skills: List.unmodifiable(_skills)),
+        );
       },
     );
   }
 
   Future<void> removeSkill(int candidateSkillId) async {
-    final result = await removeCandidateSkillUseCase(candidateSkillId);
+    final result = await removeCandidateSkillUseCase(
+      candidateSkillId,
+    );
 
     result.fold(
       (failure) {
@@ -71,7 +78,9 @@ class SkillsCubit extends Cubit<SkillsState> {
             .where((skill) => skill.id != candidateSkillId)
             .toList();
 
-        emit(SkillsSuccess(skills: List.unmodifiable(_skills)));
+        emit(
+          SkillsSuccess(skills: List.unmodifiable(_skills)),
+        );
       },
     );
   }
@@ -100,6 +109,10 @@ class SkillsCubit extends Cubit<SkillsState> {
   }
 
   void clearSearch() {
-    emit(SkillsSearchCleared(skills: List.unmodifiable(_skills)));
+    emit(
+      SkillsSearchCleared(
+        skills: List.unmodifiable(_skills),
+      ),
+    );
   }
 }

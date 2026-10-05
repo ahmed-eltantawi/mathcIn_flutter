@@ -21,10 +21,7 @@ class ProjectsAppBar extends StatelessWidget {
         children: [
           IconButton(
             onPressed: onBackPressed,
-            icon: Icon(
-              Icons.arrow_back_ios_new_rounded,
-              size: 21.r,
-            ),
+            icon: Icon(Icons.arrow_back_ios_new_rounded, size: 21.r),
           ),
           SizedBox(width: 105.w),
           Expanded(

@@ -20,11 +20,45 @@ class ProjectsCubit extends Cubit<ProjectsState> {
 
   final GetProjectsUseCase getProjectsUseCase;
   final GetProjectUseCase getProjectUseCase;
-  final AddCandidateProjectUseCase addCandidateProjectUseCase;
-  final UpdateCandidateProjectUseCase updateCandidateProjectUseCase;
-  final DeleteCandidateProjectUseCase deleteCandidateProjectUseCase;
+  final AddCandidateProjectUseCase
+  addCandidateProjectUseCase;
+  final UpdateCandidateProjectUseCase
+  updateCandidateProjectUseCase;
+  final DeleteCandidateProjectUseCase
+  deleteCandidateProjectUseCase;
 
   List<CandidateProjectEntity> _projects = [];
+
+  CandidateProjectEntity? _formProject;
+  bool _isFormVisible = false;
+
+  void openAddForm() {
+    _formProject = null;
+    _isFormVisible = true;
+    _emitSuccess();
+  }
+
+  void openEditForm(CandidateProjectEntity project) {
+    _formProject = project;
+    _isFormVisible = true;
+    _emitSuccess();
+  }
+
+  void closeForm() {
+    _formProject = null;
+    _isFormVisible = false;
+    _emitSuccess();
+  }
+
+  void _emitSuccess() {
+    emit(
+      ProjectsSuccess(
+        projects: List.unmodifiable(_projects),
+        formProject: _formProject,
+        isFormVisible: _isFormVisible,
+      ),
+    );
+  }
 
   Future<void> getProjects() async {
     emit(const ProjectsLoading());
@@ -37,13 +71,14 @@ class ProjectsCubit extends Cubit<ProjectsState> {
       },
       (projects) {
         _projects = projects;
-
-        emit(ProjectsSuccess(projects: List.unmodifiable(_projects)));
+        _emitSuccess();
       },
     );
   }
 
-  Future<void> addProject(AddCandidateProjectParams params) async {
+  Future<void> addProject(
+    AddCandidateProjectParams params,
+  ) async {
     final result = await addCandidateProjectUseCase(params);
 
     result.fold(
@@ -52,19 +87,28 @@ class ProjectsCubit extends Cubit<ProjectsState> {
           ProjectsActionFailure(
             projects: List.unmodifiable(_projects),
             message: failure.message,
+            isFormVisible: _isFormVisible,
+            formProject: _formProject,
           ),
         );
       },
       (project) {
         _projects = [project, ..._projects];
 
-        emit(ProjectsSuccess(projects: List.unmodifiable(_projects)));
+        _formProject = null;
+        _isFormVisible = false;
+
+        _emitSuccess();
       },
     );
   }
 
-  Future<void> updateProject(UpdateCandidateProjectParams params) async {
-    final result = await updateCandidateProjectUseCase(params);
+  Future<void> updateProject(
+    UpdateCandidateProjectParams params,
+  ) async {
+    final result = await updateCandidateProjectUseCase(
+      params,
+    );
 
     result.fold(
       (failure) {
@@ -72,24 +116,32 @@ class ProjectsCubit extends Cubit<ProjectsState> {
           ProjectsActionFailure(
             projects: List.unmodifiable(_projects),
             message: failure.message,
+            isFormVisible: _isFormVisible,
+            formProject: _formProject,
           ),
         );
       },
       (updatedProject) {
         _projects = _projects
             .map(
-              (project) =>
-                  project.id == updatedProject.id ? updatedProject : project,
+              (project) => project.id == updatedProject.id
+                  ? updatedProject
+                  : project,
             )
             .toList();
 
-        emit(ProjectsSuccess(projects: List.unmodifiable(_projects)));
+        _formProject = null;
+        _isFormVisible = false;
+
+        _emitSuccess();
       },
     );
   }
 
   Future<void> deleteProject(int projectId) async {
-    final result = await deleteCandidateProjectUseCase(projectId);
+    final result = await deleteCandidateProjectUseCase(
+      projectId,
+    );
 
     result.fold(
       (failure) {
@@ -97,6 +149,8 @@ class ProjectsCubit extends Cubit<ProjectsState> {
           ProjectsActionFailure(
             projects: List.unmodifiable(_projects),
             message: failure.message,
+            isFormVisible: _isFormVisible,
+            formProject: _formProject,
           ),
         );
       },
@@ -105,7 +159,7 @@ class ProjectsCubit extends Cubit<ProjectsState> {
             .where((project) => project.id != projectId)
             .toList();
 
-        emit(ProjectsSuccess(projects: List.unmodifiable(_projects)));
+        _emitSuccess();
       },
     );
   }

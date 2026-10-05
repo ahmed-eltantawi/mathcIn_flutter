@@ -1,11 +1,17 @@
 import 'package:MatchIn/features/profile/domain/entities/add_candidate_project_params.dart';
+import 'package:MatchIn/features/profile/domain/entities/candidate_project_entity.dart';
+import 'package:MatchIn/features/profile/domain/entities/update_candidate_project_params.dart';
 import 'package:MatchIn/features/profile/presentation/cubits/projects_cubit.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_projects_widgets/add_project_details_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProjectForm extends StatefulWidget {
-  const ProjectForm({super.key});
+  const ProjectForm({this.project, super.key});
+
+  final CandidateProjectEntity? project;
+
+  bool get isEditing => project != null;
 
   @override
   State<ProjectForm> createState() => _ProjectFormState();
@@ -26,15 +32,33 @@ class _ProjectFormState extends State<ProjectForm> {
   void initState() {
     super.initState();
 
-    _nameController = TextEditingController();
-    _descriptionController = TextEditingController();
-    _technologyController = TextEditingController();
-    _projectUrlController = TextEditingController();
-    _githubUrlController = TextEditingController();
-    _startDateController = TextEditingController();
-    _endDateController = TextEditingController();
+    final project = widget.project;
 
-    _technologies = ValueNotifier<List<String>>([]);
+    _nameController = TextEditingController(text: project?.name ?? '');
+
+    _descriptionController = TextEditingController(
+      text: project?.description ?? '',
+    );
+
+    _technologyController = TextEditingController();
+
+    _projectUrlController = TextEditingController(
+      text: project?.projectUrl ?? '',
+    );
+
+    _githubUrlController = TextEditingController(
+      text: project?.githubUrl ?? '',
+    );
+
+    _startDateController = TextEditingController(
+      text: project?.startDate ?? '',
+    );
+
+    _endDateController = TextEditingController(text: project?.endDate ?? '');
+
+    _technologies = ValueNotifier<List<String>>(
+      List<String>.from(project?.technologies ?? const <String>[]),
+    );
   }
 
   @override
@@ -58,14 +82,15 @@ class _ProjectFormState extends State<ProjectForm> {
       return;
     }
 
-    if (_technologies.value.contains(technology)) {
+    final alreadyExists = _technologies.value.any(
+      (item) => item.toLowerCase() == technology.toLowerCase(),
+    );
+
+    if (alreadyExists) {
       return;
     }
 
-    _technologies.value = [
-      ..._technologies.value,
-      technology,
-    ];
+    _technologies.value = [..._technologies.value, technology];
 
     _technologyController.clear();
   }
@@ -83,8 +108,34 @@ class _ProjectFormState extends State<ProjectForm> {
       return;
     }
 
+    final project = widget.project;
+
+    if (project == null) {
+      _addProject(name);
+      return;
+    }
+
+    _updateProject(projectId: project.id, name: name);
+  }
+
+  void _addProject(String name) {
     context.read<ProjectsCubit>().addProject(
       AddCandidateProjectParams(
+        name: name,
+        description: _nullableText(_descriptionController),
+        technologies: _technologies.value,
+        projectUrl: _nullableText(_projectUrlController),
+        githubUrl: _nullableText(_githubUrlController),
+        startDate: _nullableText(_startDateController),
+        endDate: _nullableText(_endDateController),
+      ),
+    );
+  }
+
+  void _updateProject({required int projectId, required String name}) {
+    context.read<ProjectsCubit>().updateProject(
+      UpdateCandidateProjectParams(
+        projectId: projectId,
         name: name,
         description: _nullableText(_descriptionController),
         technologies: _technologies.value,
@@ -119,6 +170,10 @@ class _ProjectFormState extends State<ProjectForm> {
           onAddTechnology: _addTechnology,
           onRemoveTechnology: _removeTechnology,
           onSave: _save,
+          isEditing: widget.isEditing,
+          onCancel: () {
+            context.read<ProjectsCubit>().closeForm();
+          },
         );
       },
     );
