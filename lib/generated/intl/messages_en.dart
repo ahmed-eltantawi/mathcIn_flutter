@@ -355,6 +355,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Next: Application questions",
     ),
     "niceToHave": MessageLookupByLibrary.simpleMessage("Nice to have"),
+    "noApplicationsYet": MessageLookupByLibrary.simpleMessage(
+      "No applications yet",
+    ),
     "noConversationsYet": MessageLookupByLibrary.simpleMessage(
       "No conversations yet",
     ),
@@ -368,9 +371,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "noJobsFound": MessageLookupByLibrary.simpleMessage("No jobs found"),
     "noLearningTasks": MessageLookupByLibrary.simpleMessage(
       "No learning tasks defined for this skill yet.",
-    ),
-    "noApplicationsYet": MessageLookupByLibrary.simpleMessage(
-      "No applications yet",
     ),
     "noSavedJobsYet": MessageLookupByLibrary.simpleMessage("No saved jobs yet"),
     "notNow": MessageLookupByLibrary.simpleMessage("Not now"),

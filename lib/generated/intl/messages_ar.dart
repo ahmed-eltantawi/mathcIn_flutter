@@ -349,6 +349,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "التالي: أسئلة التقديم",
     ),
     "niceToHave": MessageLookupByLibrary.simpleMessage("ميزة إضافية"),
+    "noApplicationsYet": MessageLookupByLibrary.simpleMessage(
+      "لا توجد طلبات تقديم بعد",
+    ),
     "noConversationsYet": MessageLookupByLibrary.simpleMessage(
       "لا توجد محادثات بعد",
     ),
@@ -362,9 +365,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "noJobsFound": MessageLookupByLibrary.simpleMessage("لا توجد وظائف متاحة"),
     "noLearningTasks": MessageLookupByLibrary.simpleMessage(
       "لا توجد مهام تعلم محددة لهذه المهارة بعد.",
-    ),
-    "noApplicationsYet": MessageLookupByLibrary.simpleMessage(
-      "لا توجد طلبات تقديم بعد",
     ),
     "noSavedJobsYet": MessageLookupByLibrary.simpleMessage(
       "لا يوجد وظائف متاحة حالياً",
