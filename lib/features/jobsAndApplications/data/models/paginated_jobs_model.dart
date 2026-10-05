@@ -41,10 +41,11 @@ class PaginatedJobsModel {
     };
   }
 
-  PaginatedJobsEntity toEntity() {
+  PaginatedJobsEntity toEntity({bool isFromCache = false}) {
     return PaginatedJobsEntity(
       jobs: data.map((model) => model.toEntity()).toList(),
       pagination: meta?.toEntity(),
+      isFromCache: isFromCache,
     );
   }
 }

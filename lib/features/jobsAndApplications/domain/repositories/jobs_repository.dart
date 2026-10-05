@@ -9,6 +9,15 @@ abstract interface class JobsRepository {
     JobFilterParams? params,
   });
 
+  Future<Either<Failure, PaginatedJobsEntity>> searchJobs({
+    required String query,
+    JobFilterParams? params,
+  });
+
+  Future<Either<Failure, PaginatedJobsEntity>> refreshJobs({
+    JobFilterParams? params,
+  });
+
   Future<Either<Failure, PaginatedJobsEntity?>> getCachedJobs({
     JobFilterParams? params,
   });

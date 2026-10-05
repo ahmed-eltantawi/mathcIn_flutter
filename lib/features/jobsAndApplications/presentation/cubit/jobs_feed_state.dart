@@ -86,12 +86,12 @@ final class JobsFeedOfflineWithCache extends JobsFeedState {
   const JobsFeedOfflineWithCache({
     required this.jobs,
     this.pagination,
-    this.message = 'You are currently offline. Showing cached jobs.',
+    this.message,
   });
 
   final List<JobEntity> jobs;
   final JobPaginationEntity? pagination;
-  final String message;
+  final String? message;
 
   @override
   List<Object?> get props => [jobs, pagination, message];

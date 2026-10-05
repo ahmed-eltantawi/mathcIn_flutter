@@ -6,8 +6,9 @@ import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_filter_
 import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_pagination_entity.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/repositories/jobs_repository.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/apply_for_job_use_case.dart';
-import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_cached_jobs_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_jobs_use_case.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/use_case/refresh_jobs_use_case.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/use_case/search_jobs_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/toggle_save_job_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_cubit.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_state.dart';
@@ -25,6 +26,19 @@ class FakeJobsRepository implements JobsRepository {
 
   @override
   Future<Either<Failure, PaginatedJobsEntity>> getJobs({
+    JobFilterParams? params,
+  }) async =>
+      getResult!;
+
+  @override
+  Future<Either<Failure, PaginatedJobsEntity>> searchJobs({
+    required String query,
+    JobFilterParams? params,
+  }) async =>
+      getResult!;
+
+  @override
+  Future<Either<Failure, PaginatedJobsEntity>> refreshJobs({
     JobFilterParams? params,
   }) async =>
       getResult!;
@@ -86,7 +100,8 @@ PaginatedJobsEntity _makePaginated({
 JobsFeedCubit _makeCubit(FakeJobsRepository repo) {
   return JobsFeedCubit(
     getJobsUseCase: GetJobsUseCase(repository: repo),
-    getCachedJobsUseCase: GetCachedJobsUseCase(repository: repo),
+    searchJobsUseCase: SearchJobsUseCase(repository: repo),
+    refreshJobsUseCase: RefreshJobsUseCase(repository: repo),
     toggleSaveJobUseCase: ToggleSaveJobUseCase(repository: repo),
     applyForJobUseCase: ApplyForJobUseCase(repository: repo),
   );
@@ -134,24 +149,26 @@ void main() {
     );
 
     blocTest<JobsFeedCubit, JobsFeedState>(
-      'shows cached jobs immediately before remote response',
+      'emits [JobsFeedLoading, JobsFeedLoaded] with cached data when repository returns cache',
       build: () {
-        repo.getCachedResult = Right(_makePaginated(jobs: [_makeJob(title: 'Cached Job')]));
-        repo.getResult = Right(_makePaginated(jobs: [_makeJob(title: 'Fresh Job')]));
+        repo.getResult = Right(
+          PaginatedJobsEntity(
+            jobs: [_makeJob(title: 'Cached Job')],
+            isFromCache: true,
+          ),
+        );
         return _makeCubit(repo);
       },
       act: (cubit) => cubit.getJobs(),
       expect: () => [
-        isA<JobsFeedLoaded>().having(
-          (s) => s.jobs.first.title,
-          'cached job title',
-          'Cached Job',
-        ),
-        isA<JobsFeedLoaded>().having(
-          (s) => s.jobs.first.title,
-          'fresh job title',
-          'Fresh Job',
-        ),
+        const JobsFeedLoading(),
+        isA<JobsFeedLoaded>()
+            .having((s) => s.isFromCache, 'isFromCache', isTrue)
+            .having(
+              (s) => s.jobs.first.title,
+              'cached job title',
+              'Cached Job',
+            ),
       ],
     );
   });

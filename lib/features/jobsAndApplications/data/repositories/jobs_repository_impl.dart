@@ -28,29 +28,43 @@ class JobsRepositoryImpl implements JobsRepository {
 
     if (await networkInfo.isConnected) {
       try {
-        final result = await remoteDataSource.getJobs(params: params);
-        await localDataSource.cacheJobs(cacheKey, result);
-        return Right(result.toEntity());
+        final entity = await _fetchAndCacheRemoteJobs(cacheKey, params);
+        return Right(entity);
       } on ServerException catch (e) {
-        final cached = await localDataSource.getCachedJobs(cacheKey);
-        if (cached != null && cached.data.isNotEmpty) {
-          return Right(cached.toEntity());
-        }
+        final cached = await _getFallbackCachedJobs(cacheKey);
+        if (cached != null) return Right(cached);
         return Left(ServerFailure(message: e.errorModel.errorMessage));
       } catch (e) {
-        final cached = await localDataSource.getCachedJobs(cacheKey);
-        if (cached != null && cached.data.isNotEmpty) {
-          return Right(cached.toEntity());
-        }
+        final cached = await _getFallbackCachedJobs(cacheKey);
+        if (cached != null) return Right(cached);
         return Left(ServerFailure(message: e.toString()));
       }
     } else {
-      final cached = await localDataSource.getCachedJobs(cacheKey);
-      if (cached != null && cached.data.isNotEmpty) {
-        return Right(cached.toEntity());
-      }
+      final cached = await _getFallbackCachedJobs(cacheKey);
+      if (cached != null) return Right(cached);
       return const Left(OfflineFailure());
     }
+  }
+
+  @override
+  Future<Either<Failure, PaginatedJobsEntity>> searchJobs({
+    required String query,
+    JobFilterParams? params,
+  }) async {
+    final searchParams = (params ?? const JobFilterParams()).copyWith(
+      search: query,
+      sort: query.isNotEmpty ? 'relevance' : null,
+      page: 1,
+    );
+    return getJobs(params: searchParams);
+  }
+
+  @override
+  Future<Either<Failure, PaginatedJobsEntity>> refreshJobs({
+    JobFilterParams? params,
+  }) async {
+    final refreshParams = (params ?? const JobFilterParams()).copyWith(page: 1);
+    return getJobs(params: refreshParams);
   }
 
   @override
@@ -61,7 +75,7 @@ class JobsRepositoryImpl implements JobsRepository {
       final cacheKey = params?.toCacheKey() ?? 'default';
       final cached = await localDataSource.getCachedJobs(cacheKey);
       if (cached != null) {
-        return Right(cached.toEntity());
+        return Right(cached.toEntity(isFromCache: true));
       }
       return const Right(null);
     } catch (e) {
@@ -103,5 +117,22 @@ class JobsRepositoryImpl implements JobsRepository {
     } else {
       return const Left(OfflineFailure());
     }
+  }
+
+  Future<PaginatedJobsEntity> _fetchAndCacheRemoteJobs(
+    String cacheKey,
+    JobFilterParams? params,
+  ) async {
+    final result = await remoteDataSource.getJobs(params: params);
+    await localDataSource.cacheJobs(cacheKey, result);
+    return result.toEntity(isFromCache: false);
+  }
+
+  Future<PaginatedJobsEntity?> _getFallbackCachedJobs(String cacheKey) async {
+    final cached = await localDataSource.getCachedJobs(cacheKey);
+    if (cached != null && cached.data.isNotEmpty) {
+      return cached.toEntity(isFromCache: true);
+    }
+    return null;
   }
 }

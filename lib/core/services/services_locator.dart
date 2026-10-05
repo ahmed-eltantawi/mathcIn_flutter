@@ -65,6 +65,8 @@ import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_applica
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_cached_applications_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_cached_jobs_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_jobs_use_case.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/use_case/refresh_jobs_use_case.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/use_case/search_jobs_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/toggle_save_job_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/update_application_status_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/withdraw_application_use_case.dart';
@@ -234,6 +236,14 @@ Future<void> setupServiceLocator() async {
     () => GetJobsUseCase(repository: getIt()),
   );
 
+  getIt.registerLazySingleton<SearchJobsUseCase>(
+    () => SearchJobsUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<RefreshJobsUseCase>(
+    () => RefreshJobsUseCase(repository: getIt()),
+  );
+
   getIt.registerLazySingleton<GetCachedJobsUseCase>(
     () => GetCachedJobsUseCase(repository: getIt()),
   );
@@ -249,7 +259,8 @@ Future<void> setupServiceLocator() async {
   getIt.registerLazySingleton<JobsFeedCubit>(
     () => JobsFeedCubit(
       getJobsUseCase: getIt(),
-      getCachedJobsUseCase: getIt(),
+      searchJobsUseCase: getIt(),
+      refreshJobsUseCase: getIt(),
       toggleSaveJobUseCase: getIt(),
       applyForJobUseCase: getIt(),
     ),

@@ -1,23 +1,27 @@
 import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_entity.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_filter_params.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/apply_for_job_use_case.dart';
-import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_cached_jobs_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_jobs_use_case.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/use_case/refresh_jobs_use_case.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/use_case/search_jobs_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/toggle_save_job_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_state.dart';
 
 class JobsFeedCubit extends Cubit<JobsFeedState> {
   JobsFeedCubit({
     required this.getJobsUseCase,
-    required this.getCachedJobsUseCase,
+    required this.searchJobsUseCase,
+    required this.refreshJobsUseCase,
     required this.toggleSaveJobUseCase,
     required this.applyForJobUseCase,
   }) : super(const JobsFeedInitial());
 
   final GetJobsUseCase getJobsUseCase;
-  final GetCachedJobsUseCase getCachedJobsUseCase;
+  final SearchJobsUseCase searchJobsUseCase;
+  final RefreshJobsUseCase refreshJobsUseCase;
   final ToggleSaveJobUseCase toggleSaveJobUseCase;
   final ApplyForJobUseCase applyForJobUseCase;
 
@@ -26,44 +30,46 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
 
   JobFilterParams get currentFilterParams => _currentFilterParams;
 
-  Future<void> getJobs({
-    JobFilterParams? params,
-    bool isRefresh = false,
-  }) async {
+  Future<void> getJobs({JobFilterParams? params}) async {
     if (params != null) {
       _currentFilterParams = params;
     }
 
-    final targetParams = _currentFilterParams;
+    emit(const JobsFeedLoading());
 
-    if (!isRefresh &&
-        (state is JobsFeedInitial || state is JobsFeedLoading)) {
-      final cachedResult = await getCachedJobsUseCase(params: targetParams);
-      cachedResult.fold(
-        (_) {},
-        (cachedData) {
-          if (cachedData != null && cachedData.jobs.isNotEmpty) {
-            emit(
-              JobsFeedLoaded(
-                jobs: cachedData.jobs,
-                pagination: cachedData.pagination,
-                filterParams: targetParams,
-                isFromCache: true,
-              ),
-            );
-          }
-        },
-      );
-    }
+    final result = await getJobsUseCase(params: _currentFilterParams);
+
+    result.fold(
+      (failure) => emit(JobsFeedError(failure.message)),
+      (paginatedEntity) {
+        if (paginatedEntity.jobs.isEmpty) {
+          emit(const JobsFeedEmpty());
+        } else {
+          emit(
+            JobsFeedLoaded(
+              jobs: paginatedEntity.jobs,
+              pagination: paginatedEntity.pagination,
+              filterParams: _currentFilterParams,
+              isFromCache: paginatedEntity.isFromCache,
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  Future<void> refreshJobs() async {
+    final resetParams = _currentFilterParams.copyWith(page: 1);
+    _currentFilterParams = resetParams;
 
     final currentState = state;
-    if (isRefresh && currentState is JobsFeedLoaded) {
+    if (currentState is JobsFeedLoaded) {
       emit(currentState.copyWith(isRefreshing: true));
-    } else if (state is! JobsFeedLoaded) {
+    } else {
       emit(const JobsFeedLoading());
     }
 
-    final result = await getJobsUseCase(params: targetParams);
+    final result = await refreshJobsUseCase(params: resetParams);
 
     result.fold(
       (failure) {
@@ -72,7 +78,6 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
           emit(
             stateOnFailure.copyWith(
               isRefreshing: false,
-              isPaginationLoading: false,
               errorMessage: failure.message,
             ),
           );
@@ -88,13 +93,50 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
             JobsFeedLoaded(
               jobs: paginatedEntity.jobs,
               pagination: paginatedEntity.pagination,
-              filterParams: targetParams,
-              isFromCache: false,
+              filterParams: resetParams,
+              isFromCache: paginatedEntity.isFromCache,
             ),
           );
         }
       },
     );
+  }
+
+  void searchJobs(String query) {
+    _debounceTimer?.cancel();
+    _debounceTimer = Timer(const Duration(milliseconds: 400), () async {
+      final trimmed = query.trim();
+      final newParams = _currentFilterParams.copyWith(
+        search: trimmed.isEmpty ? null : trimmed,
+        sort: trimmed.isNotEmpty ? 'relevance' : null,
+        page: 1,
+      );
+      _currentFilterParams = newParams;
+
+      emit(const JobsFeedLoading());
+
+      final result = trimmed.isEmpty
+          ? await getJobsUseCase(params: newParams)
+          : await searchJobsUseCase(query: trimmed, params: newParams);
+
+      result.fold(
+        (failure) => emit(JobsFeedError(failure.message)),
+        (paginatedEntity) {
+          if (paginatedEntity.jobs.isEmpty) {
+            emit(const JobsFeedEmpty());
+          } else {
+            emit(
+              JobsFeedLoaded(
+                jobs: paginatedEntity.jobs,
+                pagination: paginatedEntity.pagination,
+                filterParams: newParams,
+                isFromCache: paginatedEntity.isFromCache,
+              ),
+            );
+          }
+        },
+      );
+    });
   }
 
   Future<void> loadMoreJobs() async {
@@ -129,30 +171,12 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
             jobs: updatedJobs,
             pagination: paginatedEntity.pagination,
             filterParams: nextParams,
-            isFromCache: false,
+            isFromCache: paginatedEntity.isFromCache,
             isPaginationLoading: false,
           ),
         );
       },
     );
-  }
-
-  Future<void> refreshJobs() async {
-    final resetParams = _currentFilterParams.copyWith(page: 1);
-    await getJobs(params: resetParams, isRefresh: true);
-  }
-
-  void searchJobs(String query) {
-    _debounceTimer?.cancel();
-    _debounceTimer = Timer(const Duration(milliseconds: 400), () {
-      final trimmed = query.trim();
-      final newParams = _currentFilterParams.copyWith(
-        search: trimmed.isEmpty ? null : trimmed,
-        sort: trimmed.isNotEmpty ? 'relevance' : null,
-        page: 1,
-      );
-      getJobs(params: newParams);
-    });
   }
 
   Future<void> setWorkMode(String? workMode) async {
@@ -193,10 +217,13 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
       (failure) {
         emit(currentState.copyWith(errorMessage: failure.message));
       },
-      (updatedJob) {
-        final updatedJobs = currentState.jobs
-            .map((job) => job.id == updatedJob.id ? updatedJob : job)
-            .toList();
+      (_) {
+        final updatedJobs = currentState.jobs.map((job) {
+          if (job.id == jobId) {
+            return job.copyWith(isSaved: !job.isSaved);
+          }
+          return job;
+        }).toList();
         emit(currentState.copyWith(jobs: updatedJobs));
       },
     );
@@ -212,23 +239,35 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
       (failure) {
         emit(currentState.copyWith(errorMessage: failure.message));
       },
-      (updatedJob) {
-        final updatedJobs = currentState.jobs
-            .map((job) => job.id == updatedJob.id ? updatedJob : job)
-            .toList();
+      (_) {
+        final updatedJobs = currentState.jobs.map((job) {
+          if (job.id == jobId) {
+            return job.copyWith(
+              applicationStatus: JobApplicationStatus.pending,
+            );
+          }
+          return job;
+        }).toList();
         emit(currentState.copyWith(jobs: updatedJobs));
       },
     );
+  }
+
+  void resetSearch() {
+    _debounceTimer?.cancel();
+    final hasActiveSearch =
+        _currentFilterParams.search != null &&
+        _currentFilterParams.search!.isNotEmpty;
+    if (!hasActiveSearch) return;
+
+    final resetParams = const JobFilterParams();
+    getJobs(params: resetParams);
   }
 
   JobEntity? getJobById(String jobId) {
     final currentState = state;
 
     if (currentState is JobsFeedLoaded) {
-      for (final job in currentState.jobs) {
-        if (job.id == jobId) return job;
-      }
-    } else if (currentState is JobsFeedOfflineWithCache) {
       for (final job in currentState.jobs) {
         if (job.id == jobId) return job;
       }
