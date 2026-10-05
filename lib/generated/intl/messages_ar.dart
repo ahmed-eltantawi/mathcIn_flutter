@@ -143,6 +143,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "careerPreferencesIntroTitle": MessageLookupByLibrary.simpleMessage(
       "قولنا إنت بتدور على إيه",
     ),
+    "careerPreferencesSavedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تم حفظ التفضيلات المهنية بنجاح",
+    ),
     "careerProfile": MessageLookupByLibrary.simpleMessage("الملف المهني"),
     "change": MessageLookupByLibrary.simpleMessage("تغيير"),
     "changeLanguageLater": MessageLookupByLibrary.simpleMessage(

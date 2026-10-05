@@ -22,16 +22,13 @@ class ProjectsViewBody extends StatelessWidget {
     return BlocConsumer<ProjectsCubit, ProjectsState>(
       listener: (context, state) {
         if (state is ProjectsActionFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(state.message)));
         }
       },
       builder: (context, state) {
         if (state is ProjectsLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (state is ProjectsFailure) {
@@ -40,13 +37,22 @@ class ProjectsViewBody extends StatelessWidget {
 
         final projects = _projectsFromState(state);
 
+        final bool isFormVisible;
+        final CandidateProjectEntity? formProject;
+
+        if (state is ProjectsSuccess) {
+          isFormVisible = state.isFormVisible;
+          formProject = state.formProject;
+        } else if (state is ProjectsActionFailure) {
+          isFormVisible = state.isFormVisible;
+          formProject = state.formProject;
+        } else {
+          isFormVisible = false;
+          formProject = null;
+        }
+
         return ListView(
-          padding: EdgeInsetsDirectional.fromSTEB(
-            16.w,
-            8.h,
-            16.w,
-            32.h,
-          ),
+          padding: EdgeInsetsDirectional.fromSTEB(16.w, 8.h, 16.w, 32.h),
           children: [
             ProjectsAppBar(
               title: locale.projects,
@@ -66,26 +72,22 @@ class ProjectsViewBody extends StatelessWidget {
                 padding: EdgeInsets.only(bottom: 12.h),
                 child: ProjectCard(
                   title: project.name,
-                  date: ProjectDateFormatter.format(
-                    project,
-                  ),
+                  date: ProjectDateFormatter.format(project),
                   description: project.description ?? '',
                   skills: project.technologies,
                   projectUrl: project.projectUrl,
                   githubUrl: project.githubUrl,
                   onEdit: () {
-                    // Edit will be connected next.
+                    context.read<ProjectsCubit>().openEditForm(project);
                   },
                   onDelete: () {
-                    context
-                        .read<ProjectsCubit>()
-                        .deleteProject(project.id);
+                    context.read<ProjectsCubit>().deleteProject(project.id);
                   },
                   onProjectPressed: () {
-                    // Open URL later.
+                    // TODO: Open project URL.
                   },
                   onGithubPressed: () {
-                    // Open URL later.
+                    // TODO: Open GitHub URL.
                   },
                 ),
               ),
@@ -95,22 +97,25 @@ class ProjectsViewBody extends StatelessWidget {
 
             AddProjectButton(
               onPressed: () {
-                // Add form interaction will be connected next.
+                context.read<ProjectsCubit>().openAddForm();
               },
             ),
 
-            SizedBox(height: 20.h),
+            if (isFormVisible) ...[
+              SizedBox(height: 20.h),
 
-            const ProjectForm(),
+              ProjectForm(
+                key: ValueKey(formProject?.id ?? 'new-project'),
+                project: formProject,
+              ),
+            ],
           ],
         );
       },
     );
   }
 
-  List<CandidateProjectEntity> _projectsFromState(
-    ProjectsState state,
-  ) {
+  List<CandidateProjectEntity> _projectsFromState(ProjectsState state) {
     if (state is ProjectsSuccess) {
       return state.projects;
     }
@@ -119,6 +124,6 @@ class ProjectsViewBody extends StatelessWidget {
       return state.projects;
     }
 
-    return const [];
+    return const <CandidateProjectEntity>[];
   }
 }

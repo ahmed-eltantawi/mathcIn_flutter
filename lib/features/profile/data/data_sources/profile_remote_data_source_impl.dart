@@ -4,9 +4,11 @@ import 'package:MatchIn/features/profile/data/data_sources/profile_remote_data_s
 import 'package:MatchIn/features/profile/data/models/candidate_profile_model.dart';
 import 'package:MatchIn/features/profile/data/models/candidate_project_model.dart';
 import 'package:MatchIn/features/profile/data/models/candidate_skill_model.dart';
+import 'package:MatchIn/features/profile/data/models/career_preference_model.dart';
 import 'package:MatchIn/features/profile/data/models/skill_search_result_model.dart';
 import 'package:MatchIn/features/profile/domain/entities/add_candidate_project_params.dart';
 import 'package:MatchIn/features/profile/domain/entities/add_candidate_skill_params.dart';
+import 'package:MatchIn/features/profile/domain/entities/save_career_preferences_params.dart';
 import 'package:MatchIn/features/profile/domain/entities/update_candidate_project_params.dart';
 
 class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
@@ -201,5 +203,75 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   @override
   Future<void> deleteCandidateProject(int projectId) async {
     await apiConsumer.delete(EndPoint.candidateProject(projectId));
+  }
+
+  // career preferences
+
+  @override
+  Future<CareerPreferenceModel?> getCareerPreferences() async {
+    final response = await apiConsumer.get(EndPoint.careerPreferences);
+
+    if (response is! Map<String, dynamic>) {
+      throw const FormatException('Invalid career preferences response format');
+    }
+
+    final data = response['data'];
+
+    if (data == null) {
+      return null;
+    }
+
+    if (data is! Map<String, dynamic>) {
+      throw const FormatException('Invalid career preferences data format');
+    }
+
+    return CareerPreferenceModel.fromJson(data);
+  }
+
+  @override
+  Future<CareerPreferenceModel> saveCareerPreferences(
+    SaveCareerPreferencesParams params,
+  ) async {
+    final response = await apiConsumer.patch(
+      EndPoint.careerPreferences,
+      data: {
+        if (params.targetRole != null) 'target_role': params.targetRole,
+
+        if (params.jobType != null) 'job_type': params.jobType,
+
+        if (params.workMode != null) 'work_mode': params.workMode,
+
+        if (params.preferredCountry != null)
+          'preferred_country': params.preferredCountry,
+
+        if (params.preferredCity != null)
+          'preferred_city': params.preferredCity,
+
+        if (params.experienceLevel != null)
+          'experience_level': params.experienceLevel,
+
+        if (params.careerGoal != null) 'career_goal': params.careerGoal,
+
+        if (params.openToRelocation != null)
+          'open_to_relocation': params.openToRelocation,
+
+        if (params.targetRoles != null) 'target_roles': params.targetRoles,
+
+        if (params.preferredIndustries != null)
+          'preferred_industries': params.preferredIndustries,
+      },
+    );
+
+    if (response is! Map<String, dynamic>) {
+      throw const FormatException('Invalid career preferences response format');
+    }
+
+    final data = response['data'];
+
+    if (data is! Map<String, dynamic>) {
+      throw const FormatException('Invalid career preferences data format');
+    }
+
+    return CareerPreferenceModel.fromJson(data);
   }
 }

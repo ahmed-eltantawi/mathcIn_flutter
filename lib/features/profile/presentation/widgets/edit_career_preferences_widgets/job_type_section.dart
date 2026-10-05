@@ -6,45 +6,36 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class JobTypeSection extends StatelessWidget {
   const JobTypeSection({
-    required this.selectedTypes,
+    required this.selectedType,
     required this.onSelected,
     super.key,
   });
 
-  final Set<String> selectedTypes;
-  final void Function(String value, bool isSelected) onSelected;
+  final String? selectedType;
+  final ValueChanged<String> onSelected;
 
-  static const types = [
-    'Full-time',
-    'Part-time',
-    'Internship',
-    'Contract',
-    'Freelance',
+  static const List<String> types = [
+    'full_time',
+    'part_time',
+    'internship',
+    'contract',
+    'freelance',
   ];
 
   @override
   Widget build(BuildContext context) {
     final locale = S.of(context);
-    final theme = Theme.of(context);
 
     return PreferenceSectionCard(
       title: locale.jobType,
-      trailing: Text(
-        locale.multiSelect,
-        style: theme.textTheme.labelMedium?.copyWith(
-          color: theme.colorScheme.onSurfaceVariant,
-        ),
-      ),
       child: Wrap(
         spacing: 8.w,
         runSpacing: 8.h,
         children: types.map((type) {
-          final selected = selectedTypes.contains(type);
-
           return PreferenceChoiceChip(
             label: _localized(locale, type),
-            isSelected: selected,
-            onPressed: () => onSelected(type, !selected),
+            isSelected: selectedType == type,
+            onPressed: () => onSelected(type),
           );
         }).toList(),
       ),
@@ -53,11 +44,11 @@ class JobTypeSection extends StatelessWidget {
 
   String _localized(S locale, String value) {
     return switch (value) {
-      'Full-time' => locale.fullTime,
-      'Part-time' => locale.partTime,
-      'Internship' => locale.internship,
-      'Contract' => locale.contract,
-      'Freelance' => locale.freelance,
+      'full_time' => locale.fullTime,
+      'part_time' => locale.partTime,
+      'internship' => locale.internship,
+      'contract' => locale.contract,
+      'freelance' => locale.freelance,
       _ => value,
     };
   }

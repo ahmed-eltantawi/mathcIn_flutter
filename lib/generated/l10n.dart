@@ -3426,6 +3426,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Career preferences saved successfully`
+  String get careerPreferencesSavedSuccessfully {
+    return Intl.message(
+      'Career preferences saved successfully',
+      name: 'careerPreferencesSavedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

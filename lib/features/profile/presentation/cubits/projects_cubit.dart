@@ -26,6 +26,37 @@ class ProjectsCubit extends Cubit<ProjectsState> {
 
   List<CandidateProjectEntity> _projects = [];
 
+  CandidateProjectEntity? _formProject;
+  bool _isFormVisible = false;
+
+  void openAddForm() {
+    _formProject = null;
+    _isFormVisible = true;
+    _emitSuccess();
+  }
+
+  void openEditForm(CandidateProjectEntity project) {
+    _formProject = project;
+    _isFormVisible = true;
+    _emitSuccess();
+  }
+
+  void closeForm() {
+    _formProject = null;
+    _isFormVisible = false;
+    _emitSuccess();
+  }
+
+  void _emitSuccess() {
+    emit(
+      ProjectsSuccess(
+        projects: List.unmodifiable(_projects),
+        formProject: _formProject,
+        isFormVisible: _isFormVisible,
+      ),
+    );
+  }
+
   Future<void> getProjects() async {
     emit(const ProjectsLoading());
 
@@ -37,8 +68,7 @@ class ProjectsCubit extends Cubit<ProjectsState> {
       },
       (projects) {
         _projects = projects;
-
-        emit(ProjectsSuccess(projects: List.unmodifiable(_projects)));
+        _emitSuccess();
       },
     );
   }
@@ -52,13 +82,18 @@ class ProjectsCubit extends Cubit<ProjectsState> {
           ProjectsActionFailure(
             projects: List.unmodifiable(_projects),
             message: failure.message,
+            isFormVisible: _isFormVisible,
+            formProject: _formProject,
           ),
         );
       },
       (project) {
         _projects = [project, ..._projects];
 
-        emit(ProjectsSuccess(projects: List.unmodifiable(_projects)));
+        _formProject = null;
+        _isFormVisible = false;
+
+        _emitSuccess();
       },
     );
   }
@@ -72,6 +107,8 @@ class ProjectsCubit extends Cubit<ProjectsState> {
           ProjectsActionFailure(
             projects: List.unmodifiable(_projects),
             message: failure.message,
+            isFormVisible: _isFormVisible,
+            formProject: _formProject,
           ),
         );
       },
@@ -83,7 +120,10 @@ class ProjectsCubit extends Cubit<ProjectsState> {
             )
             .toList();
 
-        emit(ProjectsSuccess(projects: List.unmodifiable(_projects)));
+        _formProject = null;
+        _isFormVisible = false;
+
+        _emitSuccess();
       },
     );
   }
@@ -97,6 +137,8 @@ class ProjectsCubit extends Cubit<ProjectsState> {
           ProjectsActionFailure(
             projects: List.unmodifiable(_projects),
             message: failure.message,
+            isFormVisible: _isFormVisible,
+            formProject: _formProject,
           ),
         );
       },
@@ -105,7 +147,7 @@ class ProjectsCubit extends Cubit<ProjectsState> {
             .where((project) => project.id != projectId)
             .toList();
 
-        emit(ProjectsSuccess(projects: List.unmodifiable(_projects)));
+        _emitSuccess();
       },
     );
   }

@@ -11,9 +11,7 @@ class EditProjectsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => getIt<ProjectsCubit>()..getProjects(),
-      child: const Scaffold(
-        body: SafeArea(child: ProjectsViewBody()),
-      ),
+      child: const Scaffold(body: SafeArea(child: ProjectsViewBody())),
     );
   }
 }
