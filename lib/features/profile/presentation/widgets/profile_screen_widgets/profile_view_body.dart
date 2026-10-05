@@ -24,7 +24,9 @@ class ProfileViewBody extends StatelessWidget {
         BlocBuilder<ProfileCubit, ProfileState>(
           builder: (context, state) {
             if (state is ProfileLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
             }
 
             if (state is ProfileFailure) {
@@ -39,7 +41,9 @@ class ProfileViewBody extends StatelessWidget {
                 name: profile.user.name,
                 avatarUrl: profile.user.avatar,
                 jobTitle: details?.jobTitle ?? '',
-                location: ProfileFormatters.location(details),
+                location: ProfileFormatters.location(
+                  details,
+                ),
                 summary: details?.professionalSummary ?? '',
                 githubUrl: details?.githubUrl,
                 linkedinUrl: details?.linkedinUrl,
@@ -50,7 +54,8 @@ class ProfileViewBody extends StatelessWidget {
           },
         ),
 
-        // Education
+        //const EducationProfileCard(),
+
         // Experience
         TextButton(
           onPressed: () {
@@ -68,7 +73,8 @@ class ProfileViewBody extends StatelessWidget {
 
         TextButton(
           onPressed: () {
-            GoRouter.of(context).push('/profile/careerPref');
+            GoRouter.of(context)
+                .push('/profile/careerPref');
           },
           child: const Text('Edit Career Preferences'),
         ),
