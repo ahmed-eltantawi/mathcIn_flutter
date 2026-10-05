@@ -1,25 +1,29 @@
 import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/skill_search_field.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/skill_suggestions.dart';
+import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:MatchIn/generated/l10n.dart';
 
 class AddSkillSection extends StatelessWidget {
   const AddSkillSection({
+    required this.controller,
     required this.suggestions,
+    required this.onSearchChanged,
     required this.onAddPressed,
     required this.onSuggestionPressed,
     super.key,
   });
 
+  final TextEditingController controller;
   final List<String> suggestions;
+  final ValueChanged<String> onSearchChanged;
   final VoidCallback onAddPressed;
   final ValueChanged<String> onSuggestionPressed;
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final S locale = S.of(context);
+    final theme = Theme.of(context);
+    final locale = S.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,12 +35,18 @@ class AddSkillSection extends StatelessWidget {
           ),
         ),
         SizedBox(height: 12.h),
-        SkillSearchField(onAddPressed: onAddPressed),
-        SizedBox(height: 16.h),
-        SkillSuggestions(
-          skills: suggestions,
-          onSkillPressed: onSuggestionPressed,
+        SkillSearchField(
+          controller: controller,
+          onChanged: onSearchChanged,
+          onAddPressed: onAddPressed,
         ),
+        if (suggestions.isNotEmpty) ...[
+          SizedBox(height: 16.h),
+          SkillSuggestions(
+            skills: suggestions,
+            onSkillPressed: onSuggestionPressed,
+          ),
+        ],
       ],
     );
   }

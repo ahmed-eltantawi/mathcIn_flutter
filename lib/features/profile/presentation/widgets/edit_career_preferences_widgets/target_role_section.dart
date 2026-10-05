@@ -43,25 +43,16 @@ class TargetRoleSection extends StatelessWidget {
             initialValue: targetRole,
             onChanged: onRoleChanged,
             decoration: InputDecoration(
-              prefixIcon: Icon(
-                Icons.search_rounded,
-                size: 21.r,
-              ),
+              prefixIcon: Icon(Icons.search_rounded, size: 21.r),
               suffixIcon: IconButton(
                 onPressed: onClear,
-                icon: Icon(
-                  Icons.cancel_outlined,
-                  size: 20.r,
-                ),
+                icon: Icon(Icons.cancel_outlined, size: 20.r),
               ),
               filled: true,
               fillColor: colors.surfaceContainerHighest,
               enabledBorder: _border(theme),
               border: _border(theme),
-              focusedBorder: _border(
-                theme,
-                color: colors.primary,
-              ),
+              focusedBorder: _border(theme, color: colors.primary),
             ),
           ),
           SizedBox(height: 18.h),
@@ -81,10 +72,8 @@ class TargetRoleSection extends StatelessWidget {
                 .map(
                   (role) => PreferenceChoiceChip(
                     label: role,
-                    isSelected:
-                        role == selectedSuggestedRole,
-                    onPressed: () =>
-                        onSuggestedRolePressed(role),
+                    isSelected: role == selectedSuggestedRole,
+                    onPressed: () => onSuggestedRolePressed(role),
                   ),
                 )
                 .toList(),
@@ -94,16 +83,10 @@ class TargetRoleSection extends StatelessWidget {
     );
   }
 
-  OutlineInputBorder _border(
-    ThemeData theme, {
-    Color? color,
-  }) {
+  OutlineInputBorder _border(ThemeData theme, {Color? color}) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(10.r),
-      borderSide: BorderSide(
-        color: color ?? theme.dividerColor,
-        width: 1,
-      ),
+      borderSide: BorderSide(color: color ?? theme.dividerColor, width: 1),
     );
   }
 }

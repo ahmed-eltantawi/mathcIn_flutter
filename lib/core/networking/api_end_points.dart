@@ -1,7 +1,8 @@
 ///* EndPoints: the endpoints of the api
 abstract class EndPoint {
   //TODO: change these values
-  static const String baseUrl = 'http://10.0.2.2:8000/api/';
+  static const String baseUrl =
+      'https://skillmatch.iptvdemo.serv5group.com/api/';
   static const String login = 'auth/login';
   static const String register = 'auth/register';
   static const String refreshToken = 'auth/refresh-token';
@@ -23,6 +24,24 @@ abstract class EndPoint {
   static const String savedJobs = 'saved-jobs';
   static const String jobs = 'jobs';
   static String saveJob(dynamic jobPostId) => 'jobs/$jobPostId/save';
+
+  // get candidate profile
+  static const String candidateProfile = 'candidate/profile';
+
+  // Candidate Skills
+  static const String candidateSkills = 'candidate/skills';
+
+  static String candidateSkill(int candidateSkillId) =>
+      'candidate/skills/$candidateSkillId';
+
+  // Search Skills
+  static const String searchSkills = 'skills/search';
+
+  // Candidate Projects
+  static const String candidateProjects = 'candidate/projects';
+
+  static String candidateProject(int projectId) =>
+      'candidate/projects/$projectId';
 }
 
 ///* ApiKeys: the keys of the api

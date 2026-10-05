@@ -51,7 +51,7 @@ abstract final class AppRouter {
   }
 
   static final GoRouter router = GoRouter(
-    initialLocation: AppRoutes.kSplashView,
+    initialLocation: AppRoutes.kHomeView,
     redirect: (context, state) {
       if (!getIt.isRegistered<SharedPreferencesService>()) {
         return null;

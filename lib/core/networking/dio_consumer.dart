@@ -122,4 +122,26 @@ class DioConsumer extends ApiConsumer {
       handleDioExceptions(e);
     }
   }
+
+  //? ---------- Patch ----------
+  //? ---------- Patch ----------
+  @override
+  Future patch(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+    dynamic data,
+    bool isFormData = false,
+  }) async {
+    try {
+      final dynamic response = await dio.patch(
+        path,
+        queryParameters: queryParameters,
+        data: isFormData ? FormData.fromMap(data) : data,
+      );
+
+      return response.data;
+    } on DioException catch (e) {
+      handleDioExceptions(e);
+    }
+  }
 }

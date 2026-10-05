@@ -8,14 +8,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AddProjectDetailsCard extends StatelessWidget {
-  const AddProjectDetailsCard({super.key});
+  const AddProjectDetailsCard({
+    required this.nameController,
+    required this.descriptionController,
+    required this.technologyController,
+    required this.projectUrlController,
+    required this.githubUrlController,
+    required this.startDateController,
+    required this.endDateController,
+    required this.technologies,
+    required this.onAddTechnology,
+    required this.onRemoveTechnology,
+    required this.onSave,
+    super.key,
+  });
 
-  static const List<String> _mockTechnologies = [
-    'Flutter',
-    'Node.js',
-    'PostgreSQL',
-  ];
+  final TextEditingController nameController;
+  final TextEditingController descriptionController;
+  final TextEditingController technologyController;
+  final TextEditingController projectUrlController;
+  final TextEditingController githubUrlController;
+  final TextEditingController startDateController;
+  final TextEditingController endDateController;
 
+  final List<String> technologies;
+
+  final VoidCallback onAddTechnology;
+  final ValueChanged<String> onRemoveTechnology;
+  final VoidCallback onSave;
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -76,6 +96,7 @@ class AddProjectDetailsCard extends StatelessWidget {
           ProjectTextField(
             label: locale.projectName,
             hint: locale.projectNameHint,
+            controller: nameController,
           ),
 
           SizedBox(height: 16.h),
@@ -83,6 +104,7 @@ class AddProjectDetailsCard extends StatelessWidget {
           ProjectTextField(
             label: locale.description,
             hint: locale.projectDescriptionHint,
+            controller: descriptionController,
             maxLines: 4,
           ),
 
@@ -98,9 +120,10 @@ class AddProjectDetailsCard extends StatelessWidget {
           SizedBox(height: 16.h),
 
           TechnologiesField(
-            skills: _mockTechnologies,
-            onAdd: () {},
-            onRemove: (_) {},
+            controller: technologyController,
+            skills: technologies,
+            onAdd: onAddTechnology,
+            onRemove: onRemoveTechnology,
           ),
 
           SizedBox(height: 16.h),
@@ -109,6 +132,7 @@ class AddProjectDetailsCard extends StatelessWidget {
             label: locale.projectUrl,
             trailingLabel: locale.optional,
             hint: 'https://myproject.live',
+            controller: projectUrlController,
             prefixIcon: Icons.link_rounded,
             keyboardType: TextInputType.url,
           ),
@@ -121,11 +145,15 @@ class AddProjectDetailsCard extends StatelessWidget {
             hint: 'https://github.com/username/project',
             prefixIcon: Icons.code_rounded,
             keyboardType: TextInputType.url,
+            controller: githubUrlController,
           ),
 
           SizedBox(height: 16.h),
 
-          const ProjectDateFields(),
+          ProjectDateFields(
+            startDateController: startDateController,
+            endDateController: endDateController,
+          ),
 
           SizedBox(height: 16.h),
 
@@ -160,9 +188,7 @@ class AddProjectDetailsCard extends StatelessWidget {
             width: double.infinity,
             height: 52.h,
             child: FilledButton(
-              onPressed: () {
-                // UI only.
-              },
+              onPressed: onSave,
               style: FilledButton.styleFrom(
                 backgroundColor: colors.primary,
                 foregroundColor: colors.onPrimary,

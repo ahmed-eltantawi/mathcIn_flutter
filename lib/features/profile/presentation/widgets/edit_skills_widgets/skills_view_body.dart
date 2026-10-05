@@ -1,128 +1,101 @@
-import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/add_skill_section.dart';
-import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/cv_skills_card.dart';
-import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/manage_skills_button.dart';
-import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/manual_skills_card.dart';
+import 'package:MatchIn/features/profile/domain/entities/candidate_skill_entity.dart';
+import 'package:MatchIn/features/profile/domain/entities/skill_search_result_entity.dart';
+import 'package:MatchIn/features/profile/presentation/cubits/skills_cubit.dart';
+import 'package:MatchIn/features/profile/presentation/cubits/skills_state.dart';
+import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/add_skill_form.dart';
+import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/build_skills_content.dart';
+import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/skills_app_bar.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/skills_profile_card.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:MatchIn/generated/l10n.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SkillsViewBody extends StatelessWidget {
   const SkillsViewBody({super.key});
 
-  static const List<String> _cvSkills = <String>[
-    'Flutter',
-    'Dart',
-    'REST APIs',
-    'Git',
-  ];
-
-  static const List<String> _manualSkills = <String>[
-    'Bloc',
-    'Firebase',
-    'GitHub',
-  ];
-
-  static const List<String> _suggestedSkills = <String>[
-    'Testing',
-    'CI/CD',
-    'Clean Architecture',
-  ];
-
   @override
   Widget build(BuildContext context) {
-    final S locale = S.of(context);
+    final locale = S.of(context);
 
-    return ListView(
-      padding: EdgeInsets.only(
-        left: 16.w,
-        right: 16.w,
-        bottom: 32.h,
-      ),
-      children: [
-        SizedBox(height: 8.h),
+    return BlocConsumer<SkillsCubit, SkillsState>(
+      listener: (context, state) {
+        if (state is SkillsActionFailure) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(state.message)));
+        }
+      },
+      builder: (context, state) {
+        if (state is SkillsLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-        _SkillsAppBar(
-          title: locale.skills,
-          onBackPressed: () => Navigator.maybePop(context),
-        ),
+        if (state is SkillsFailure) {
+          return Center(child: Text(state.message));
+        }
 
-        SizedBox(height: 24.h),
+        final skills = _skillsFromState(state);
+        final suggestions = _suggestionsFromState(state);
 
-        const SkillsProfileCard(),
+        return ListView(
+          padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 32.h),
+          children: [
+            SizedBox(height: 8.h),
 
-        SizedBox(height: 24.h),
+            SkillsAppBar(
+              title: locale.skills,
+              onBackPressed: () {
+                Navigator.maybePop(context);
+              },
+            ),
 
-        AddSkillSection(
-          suggestions: _suggestedSkills,
-          onAddPressed: () {},
-          onSuggestionPressed: (skill) {},
-        ),
+            SizedBox(height: 24.h),
 
-        SizedBox(height: 24.h),
+            const SkillsProfileCard(),
 
-        CvSkillsCard(
-          skills: _cvSkills,
-          onRemoveSkill: (skill) {},
-        ),
+            SizedBox(height: 24.h),
 
-        SizedBox(height: 20.h),
+            AddSkillForm(suggestions: suggestions),
 
-        ManualSkillsCard(
-          skills: _manualSkills,
-          onRemoveSkill: (skill) {},
-        ),
+            SizedBox(height: 24.h),
 
-        SizedBox(height: 20.h),
-
-        ManageSkillsButton(onPressed: () {}),
-      ],
+            BuildSkillsContent(
+              skills: skills,
+              onRemoveSkill: (candidateSkillId) {
+                context.read<SkillsCubit>().removeSkill(candidateSkillId);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
-}
 
-class _SkillsAppBar extends StatelessWidget {
-  const _SkillsAppBar({
-    required this.title,
-    required this.onBackPressed,
-  });
+  List<CandidateSkillEntity> _skillsFromState(SkillsState state) {
+    if (state is SkillsSuccess) {
+      return state.skills;
+    }
 
-  final String title;
-  final VoidCallback onBackPressed;
+    if (state is SkillsSearchSuccess) {
+      return state.skills;
+    }
 
-  @override
-  Widget build(BuildContext context) {
-    final ColorScheme colors = Theme.of(context)
-        .colorScheme;
+    if (state is SkillsSearchCleared) {
+      return state.skills;
+    }
 
-    return SizedBox(
-      height: 56.h,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Align(
-            alignment: AlignmentDirectional.centerStart,
-            child: IconButton(
-              onPressed: onBackPressed,
-              icon: Icon(
-                Icons.arrow_back_ios_new_rounded,
-                size: 22.sp,
-              ),
-              color: colors.primary,
-              tooltip: MaterialLocalizations.of(context)
-                  .backButtonTooltip,
-            ),
-          ),
-          Text(
-            title,
-            style: Theme.of(context).textTheme.headlineSmall
-                ?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: colors.primary,
-                ),
-          ),
-        ],
-      ),
-    );
+    if (state is SkillsActionFailure) {
+      return state.skills;
+    }
+
+    return const [];
+  }
+
+  List<SkillSearchResultEntity> _suggestionsFromState(SkillsState state) {
+    if (state is SkillsSearchSuccess) {
+      return state.suggestions;
+    }
+
+    return const [];
   }
 }

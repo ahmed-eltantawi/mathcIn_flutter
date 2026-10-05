@@ -58,8 +58,7 @@ class PreferredLocationSection extends StatelessWidget {
           Divider(height: 1, color: colors.outlineVariant),
           SizedBox(height: 12.h),
           InkWell(
-            onTap: () =>
-                onOpenToAnywhereChanged(!openToAnywhere),
+            onTap: () => onOpenToAnywhereChanged(!openToAnywhere),
             borderRadius: BorderRadius.circular(8.r),
             child: Row(
               children: [

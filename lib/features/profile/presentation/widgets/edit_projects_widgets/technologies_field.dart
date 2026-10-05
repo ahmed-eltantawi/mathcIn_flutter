@@ -47,22 +47,12 @@ class TechnologiesField extends StatelessWidget {
                     vertical: 12.h,
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(
-                      10.r,
-                    ),
-                    borderSide: BorderSide(
-                      color: theme.dividerColor,
-                      width: 1,
-                    ),
+                    borderRadius: BorderRadius.circular(10.r),
+                    borderSide: BorderSide(color: theme.dividerColor, width: 1),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(
-                      8.r,
-                    ),
-                    borderSide: BorderSide(
-                      color: colors.primary,
-                      width: 1,
-                    ),
+                    borderRadius: BorderRadius.circular(8.r),
+                    borderSide: BorderSide(color: colors.primary, width: 1),
                   ),
                 ),
               ),
@@ -74,9 +64,7 @@ class TechnologiesField extends StatelessWidget {
                 onPressed: onAdd,
                 style: OutlinedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                      8.r,
-                    ),
+                    borderRadius: BorderRadius.circular(8.r),
                   ),
                 ),
                 icon: Icon(Icons.add_rounded, size: 18.r),
