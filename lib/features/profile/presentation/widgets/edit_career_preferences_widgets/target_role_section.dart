@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TargetRoleSection extends StatelessWidget {
   const TargetRoleSection({
-    required this.targetRole,
+    required this.controller,
     required this.suggestedRoles,
     required this.selectedSuggestedRole,
     required this.onRoleChanged,
@@ -15,7 +15,7 @@ class TargetRoleSection extends StatelessWidget {
     super.key,
   });
 
-  final String targetRole;
+  final TextEditingController controller;
   final List<String> suggestedRoles;
   final String? selectedSuggestedRole;
   final ValueChanged<String> onRoleChanged;
@@ -40,7 +40,7 @@ class TargetRoleSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextFormField(
-            initialValue: targetRole,
+            controller: controller,
             onChanged: onRoleChanged,
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.search_rounded, size: 21.r),

@@ -145,6 +145,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "careerPreferencesIntroTitle": MessageLookupByLibrary.simpleMessage(
       "Tell us what you\'re looking for",
     ),
+    "careerPreferencesSavedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "Career preferences saved successfully",
+    ),
     "careerProfile": MessageLookupByLibrary.simpleMessage("Career profile"),
     "change": MessageLookupByLibrary.simpleMessage("Change"),
     "changeLanguageLater": MessageLookupByLibrary.simpleMessage(

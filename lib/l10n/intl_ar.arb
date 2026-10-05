@@ -432,5 +432,6 @@
   "careerGoal": "الهدف المهني",
   "careerGoalHint": "مثال: اكتساب خبرة احترافية في Flutter والمشاركة في تطوير منتجات موبايل مؤثرة.",
   "careerGoalHelper": "قولنا باختصار إيه اللي عايز توصله في الخطوة الجاية.",
-  "savePreferences": "حفظ التفضيلات"
+  "savePreferences": "حفظ التفضيلات",
+  "careerPreferencesSavedSuccessfully": "تم حفظ التفضيلات المهنية بنجاح"
 }

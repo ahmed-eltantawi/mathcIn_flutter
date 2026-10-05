@@ -1,13 +1,12 @@
-import 'package:MatchIn/features/profile/presentation/widgets/edit_career_preferences_widgets/career_goal_section.dart';
-import 'package:MatchIn/features/profile/presentation/widgets/edit_career_preferences_widgets/career_preferences_actions.dart';
+import 'package:MatchIn/features/profile/domain/entities/career_preference_entity.dart';
+import 'package:MatchIn/features/profile/presentation/cubits/career_preferences_cubit.dart';
+import 'package:MatchIn/features/profile/presentation/cubits/career_preferences_state.dart';
+import 'package:MatchIn/features/profile/presentation/widgets/edit_career_preferences_widgets/career_preferences_form.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_career_preferences_widgets/career_preferences_header.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_career_preferences_widgets/career_preferences_intro_card.dart';
-import 'package:MatchIn/features/profile/presentation/widgets/edit_career_preferences_widgets/experience_level_section.dart';
-import 'package:MatchIn/features/profile/presentation/widgets/edit_career_preferences_widgets/job_type_section.dart';
-import 'package:MatchIn/features/profile/presentation/widgets/edit_career_preferences_widgets/preferred_location_section.dart';
-import 'package:MatchIn/features/profile/presentation/widgets/edit_career_preferences_widgets/target_role_section.dart';
-import 'package:MatchIn/features/profile/presentation/widgets/edit_career_preferences_widgets/work_mode_section.dart';
+import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CareerPreferencesViewBody extends StatelessWidget {
@@ -15,77 +14,74 @@ class CareerPreferencesViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: EdgeInsetsDirectional.fromSTEB(16.w, 8.h, 16.w, 32.h),
-      children: [
-        CareerPreferencesHeader(
-          onBackPressed: () => Navigator.maybePop(context),
-          onMenuPressed: () {},
-        ),
-        SizedBox(height: 20.h),
+    final locale = S.of(context);
+    return BlocConsumer<CareerPreferencesCubit, CareerPreferencesState>(
+      listener: (context, state) {
+        if (state is CareerPreferencesActionFailure) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(state.message)));
+        }
 
-        const CareerPreferencesIntroCard(),
+        if (state is CareerPreferencesSaveSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(locale.careerPreferencesSavedSuccessfully)),
+          );
+        }
+      },
+      builder: (context, state) {
+        if (state is CareerPreferencesLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-        SizedBox(height: 16.h),
+        if (state is CareerPreferencesFailure) {
+          return Center(child: Text(state.message));
+        }
 
-        TargetRoleSection(
-          targetRole: 'Flutter Developer',
-          suggestedRoles: const [
-            'Mobile Developer',
-            'Flutter Developer',
-            'Junior Software Engineer',
+        final preferences = _preferencesFromState(state);
+
+        return ListView(
+          padding: EdgeInsetsDirectional.fromSTEB(16.w, 8.h, 16.w, 32.h),
+          children: [
+            CareerPreferencesHeader(
+              onBackPressed: () {
+                Navigator.maybePop(context);
+              },
+              onMenuPressed: () {},
+            ),
+
+            SizedBox(height: 20.h),
+
+            const CareerPreferencesIntroCard(),
+
+            SizedBox(height: 16.h),
+
+            CareerPreferencesForm(
+              key: ValueKey(preferences?.id ?? 'new-preferences'),
+              preferences: preferences,
+            ),
           ],
-          selectedSuggestedRole: 'Flutter Developer',
-          onRoleChanged: (_) {},
-          onClear: () {},
-          onSuggestedRolePressed: (_) {},
-        ),
-
-        SizedBox(height: 16.h),
-
-        ExperienceLevelSection(
-          selectedLevel: 'Entry Level',
-          onSelected: (_) {},
-        ),
-
-        SizedBox(height: 16.h),
-
-        JobTypeSection(
-          selectedTypes: const {'Full-time', 'Internship'},
-          onSelected: (_, _) {},
-        ),
-
-        SizedBox(height: 16.h),
-
-        WorkModeSection(
-          selectedModes: const {'Remote', 'Hybrid'},
-          onSelected: (_, _) {},
-        ),
-
-        SizedBox(height: 16.h),
-
-        PreferredLocationSection(
-          country: 'Egypt',
-          state: 'Cairo',
-          city: 'Cairo & Giza',
-          openToAnywhere: false,
-          onCountryPressed: () {},
-          onStatePressed: () {},
-          onCityPressed: () {},
-          onOpenToAnywhereChanged: (_) {},
-        ),
-
-        SizedBox(height: 16.h),
-
-        const CareerGoalSection(),
-
-        SizedBox(height: 28.h),
-
-        CareerPreferencesActions(
-          onSavePressed: () {},
-          onCancelPressed: () => Navigator.maybePop(context),
-        ),
-      ],
+        );
+      },
     );
+  }
+
+  CareerPreferenceEntity? _preferencesFromState(CareerPreferencesState state) {
+    if (state is CareerPreferencesSuccess) {
+      return state.preferences;
+    }
+
+    if (state is CareerPreferencesSaving) {
+      return state.preferences;
+    }
+
+    if (state is CareerPreferencesSaveSuccess) {
+      return state.preferences;
+    }
+
+    if (state is CareerPreferencesActionFailure) {
+      return state.preferences;
+    }
+
+    return null;
   }
 }

@@ -430,5 +430,6 @@
   "careerGoal": "Career Goal",
   "careerGoalHint": "e.g. Gain professional Flutter experience and contribute to high-impact mobile products.",
   "careerGoalHelper": "Tell us briefly what you want to achieve next.",
-  "savePreferences": "Save Preferences"
+  "savePreferences": "Save Preferences",
+  "careerPreferencesSavedSuccessfully": "Career preferences saved successfully"
 }

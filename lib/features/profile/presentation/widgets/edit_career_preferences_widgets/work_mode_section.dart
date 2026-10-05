@@ -6,39 +6,30 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class WorkModeSection extends StatelessWidget {
   const WorkModeSection({
-    required this.selectedModes,
+    required this.selectedMode,
     required this.onSelected,
     super.key,
   });
 
-  final Set<String> selectedModes;
-  final void Function(String value, bool isSelected) onSelected;
+  final String? selectedMode;
+  final ValueChanged<String> onSelected;
 
-  static const modes = ['Remote', 'Hybrid', 'On-site'];
+  static const List<String> modes = ['remote', 'hybrid', 'on_site'];
 
   @override
   Widget build(BuildContext context) {
     final locale = S.of(context);
-    final theme = Theme.of(context);
 
     return PreferenceSectionCard(
       title: locale.workMode,
-      trailing: Text(
-        locale.flexible,
-        style: theme.textTheme.labelMedium?.copyWith(
-          color: theme.colorScheme.onSurfaceVariant,
-        ),
-      ),
       child: Wrap(
         spacing: 8.w,
         runSpacing: 8.h,
         children: modes.map((mode) {
-          final selected = selectedModes.contains(mode);
-
           return PreferenceChoiceChip(
             label: _localized(locale, mode),
-            isSelected: selected,
-            onPressed: () => onSelected(mode, !selected),
+            isSelected: selectedMode == mode,
+            onPressed: () => onSelected(mode),
           );
         }).toList(),
       ),
@@ -47,9 +38,9 @@ class WorkModeSection extends StatelessWidget {
 
   String _localized(S locale, String value) {
     return switch (value) {
-      'Remote' => locale.remote,
-      'Hybrid' => locale.hybrid,
-      'On-site' => locale.onSite,
+      'remote' => locale.remote,
+      'hybrid' => locale.hybrid,
+      'on_site' => locale.onSite,
       _ => value,
     };
   }
