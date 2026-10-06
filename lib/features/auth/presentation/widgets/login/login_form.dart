@@ -72,60 +72,70 @@ class _LoginFormState extends State<LoginForm> {
               return null;
             },
           ),
-          SizedBox(height: 16.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  ValueListenableBuilder<bool>(
-                    valueListenable: _isKeepSignedIn,
-                    builder: (context, value, child) {
-                      return Switch(
-                        value: value,
-                        activeThumbColor: AppColors.white,
-                        activeTrackColor: AppColors.midnightBlue,
-                        inactiveTrackColor: AppColors.surfaceVariant,
-                        onChanged: (newValue) =>
-                            _isKeepSignedIn.value = newValue,
-                      );
-                    },
-                  ),
-                  SizedBox(width: 8.w),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        locale.keepMeSignedIn,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Text(
-                        locale.onlyOnTrustedDevices,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+          SizedBox(height: 4.h),
+          // 1️⃣ زر نسيت كلمة المرور محاذى لليمين تحت الباسورد مباشرة:
+          Align(
+            alignment: AlignmentDirectional.centerEnd,
+            child: TextButton(
+              onPressed: () {
+                context.push(
+                  AppRoutes.kForgetPasswordView,
+                  extra: _emailController.text.trim(),
+                );
+              },
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
+                minimumSize: Size.zero,
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
-              TextButton(
-                onPressed: () {},
-                style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                child: Text(
-                  locale.forgotPassword,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: AppColors.terracotta,
-                    fontWeight: FontWeight.w600,
-                  ),
+              child: Text(
+                locale.forgotPassword,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: AppColors.terracotta,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: 4.h),
+          Row(
+            children: [
+              ValueListenableBuilder<bool>(
+                valueListenable: _isKeepSignedIn,
+                builder: (context, value, child) {
+                  return Switch(
+                    value: value,
+                    activeThumbColor: AppColors.white,
+                    activeTrackColor: AppColors.midnightBlue,
+                    inactiveTrackColor: AppColors.surfaceVariant,
+                    onChanged: (newValue) => _isKeepSignedIn.value = newValue,
+                  );
+                },
+              ),
+              SizedBox(width: 8.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      locale.keepMeSignedIn,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      locale.onlyOnTrustedDevices,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
-          SizedBox(height: 24.h),
+          SizedBox(height: 12.h),
           BlocConsumer<AuthCubit, AuthState>(
             listener: (context, state) {
               if (state is LoginSuccess) {

@@ -42,6 +42,7 @@ class AuthMockRemoteDataSourceImpl implements AuthRemoteDataSource {
       );
     }
   }
+
   @override
   Future<void> register({
     required String name,
@@ -63,6 +64,7 @@ class AuthMockRemoteDataSourceImpl implements AuthRemoteDataSource {
     return LoginModel(
       accessToken: 'mock_access_token_12345',
       tokenType: 'bearer',
+      expiresIn: 3600,
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:MatchIn/core/errors/exceptions.dart';
 import 'package:MatchIn/core/errors/failures.dart';
 import 'package:MatchIn/core/networking/network_info.dart';
+import 'package:MatchIn/core/services/secure_storage_service.dart';
 import 'package:MatchIn/features/auth/data/data_sources/auth_remote_data_source.dart';
 import 'package:MatchIn/features/auth/data/models/login_model.dart';
 import 'package:MatchIn/features/auth/domain/repositories/auth_repository.dart';
@@ -8,12 +9,14 @@ import 'package:dartz/dartz.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   const AuthRepositoryImpl({
+    required this.secureStorageService,
     required this.remoteDataSource,
     required this.networkInfo,
   });
 
   final AuthRemoteDataSource remoteDataSource;
   final NetworkInfo networkInfo;
+  final SecureStorageService secureStorageService;
 
   @override
   Future<Either<Failure, Unit>> verifyOtp({

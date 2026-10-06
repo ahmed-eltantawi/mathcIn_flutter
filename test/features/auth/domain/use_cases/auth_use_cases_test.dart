@@ -1,4 +1,5 @@
 import 'package:MatchIn/core/networking/network_info.dart';
+import 'package:MatchIn/core/services/secure_storage_service.dart';
 import 'package:MatchIn/features/auth/data/data_sources/auth_mock_remote_data_source_impl.dart';
 import 'package:MatchIn/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:MatchIn/features/auth/domain/use_cases/resend_otp_use_case.dart';
@@ -9,6 +10,28 @@ import 'package:flutter_test/flutter_test.dart';
 class FakeNetworkInfo implements NetworkInfo {
   @override
   Future<bool> get isConnected async => true;
+}
+
+class FakeSecureStorageService implements SecureStorageService {
+  final Map<String, String> _storage = {};
+
+  @override
+  Future<void> saveTokens({
+    required String accessToken,
+    required String refreshToken,
+  }) async {
+    _storage['accessToken'] = accessToken;
+    _storage['refreshToken'] = refreshToken;
+  }
+
+  @override
+  Future<String?> getAccessToken() async => _storage['accessToken'];
+
+  @override
+  Future<String?> getRefreshToken() async => _storage['refreshToken'];
+
+  @override
+  Future<void> deleteTokens() async => _storage.clear();
 }
 
 void main() {
@@ -23,6 +46,7 @@ void main() {
     repository = AuthRepositoryImpl(
       remoteDataSource: mockDataSource,
       networkInfo: FakeNetworkInfo(),
+      secureStorageService: FakeSecureStorageService(),
     );
     verifyOtpUseCase = VerifyOtpUseCase(repository: repository);
     resendOtpUseCase = ResendOtpUseCase(repository: repository);

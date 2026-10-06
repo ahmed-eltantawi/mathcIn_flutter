@@ -8,6 +8,7 @@ import 'package:MatchIn/core/services/file_picker_service.dart';
 import 'package:MatchIn/core/services/secure_storage_service.dart';
 import 'package:MatchIn/core/services/shared_preferences_service.dart';
 import 'package:MatchIn/core/widgets/ads/rewarded_ad_manager.dart';
+import 'package:MatchIn/features/auth/data/data_sources/auth_remote_data_source_impl.dart';
 import 'package:MatchIn/features/home/data/data_sources/home_mock_remote_data_source_impl.dart';
 import 'package:MatchIn/features/home/data/data_sources/home_remote_data_source.dart';
 import 'package:MatchIn/features/home/data/data_sources/repositories/home_repository_impl.dart';
@@ -25,7 +26,6 @@ import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_cached_
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_jobs_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/toggle_save_job_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/cv_cubit.dart';
-import 'package:MatchIn/features/auth/data/data_sources/auth_mock_remote_data_source_impl.dart';
 import 'package:MatchIn/features/auth/data/data_sources/auth_remote_data_source.dart';
 import 'package:MatchIn/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:MatchIn/features/auth/domain/repositories/auth_repository.dart';
@@ -72,23 +72,21 @@ Future<void> setupServiceLocator() async {
   // Main Navigation
   // =========================================================
 
-  getIt.registerLazySingleton<MainNavigationCubit>(
-    () => MainNavigationCubit(),
-  );
+  getIt.registerLazySingleton<MainNavigationCubit>(() => MainNavigationCubit());
 
   // =========================================================
   // Auth Feature
   // =========================================================
 
   getIt.registerLazySingleton<AuthRemoteDataSource>(
-    () => AuthMockRemoteDataSourceImpl(),
-    // () => AuthRemoteDataSourceImpl(apiConsumer: getIt()),
+    () => AuthRemoteDataSourceImpl(apiConsumer: getIt()),
   );
 
   getIt.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(
       remoteDataSource: getIt(),
       networkInfo: getIt(),
+      secureStorageService: getIt(),
     ),
   );
 
@@ -113,17 +111,11 @@ Future<void> setupServiceLocator() async {
   );
 
   getIt.registerFactory<AuthCubit>(
-    () => AuthCubit(
-      loginUseCase: getIt(),
-      registerUseCase: getIt(),
-    ),
+    () => AuthCubit(loginUseCase: getIt(), registerUseCase: getIt()),
   );
 
   getIt.registerFactory<OtpCubit>(
-    () => OtpCubit(
-      verifyOtpUseCase: getIt(),
-      resendOtpUseCase: getIt(),
-    ),
+    () => OtpCubit(verifyOtpUseCase: getIt(), resendOtpUseCase: getIt()),
   );
 
   getIt.registerFactory<ResetPasswordCubit>(
@@ -134,9 +126,7 @@ Future<void> setupServiceLocator() async {
   // Roadmap Feature
   // =========================================================
 
-  getIt.registerLazySingleton<RewardedAdManager>(
-    () => RewardedAdManager(),
-  );
+  getIt.registerLazySingleton<RewardedAdManager>(() => RewardedAdManager());
 
   getIt.registerFactory<RoadmapCubit>(
     () => RoadmapCubit(sharedPreferencesService: getIt()),
@@ -160,9 +150,7 @@ Future<void> setupServiceLocator() async {
   );
 
   getIt.registerLazySingleton<ChatbotLocalDataSource>(
-    () => ChatbotLocalDataSourceImpl(
-      sharedPreferencesHelper: getIt(),
-    ),
+    () => ChatbotLocalDataSourceImpl(sharedPreferencesHelper: getIt()),
   );
 
   getIt.registerLazySingleton<ChatbotRepository>(
@@ -207,9 +195,7 @@ Future<void> setupServiceLocator() async {
   // =========================================================
 
   getIt.registerLazySingleton<JobsLocalDataSource>(
-    () => JobsLocalDataSourceImpl(
-      sharedPreferencesHelper: getIt(),
-    ),
+    () => JobsLocalDataSourceImpl(sharedPreferencesHelper: getIt()),
   );
 
   getIt.registerLazySingleton<JobsRemoteDataSource>(
@@ -274,12 +260,9 @@ Future<void> setupServiceLocator() async {
   // External
   // =========================================================
 
-  final sharedPreferences =
-      await SharedPreferences.getInstance();
+  final sharedPreferences = await SharedPreferences.getInstance();
 
-  getIt.registerLazySingleton<SharedPreferences>(
-    () => sharedPreferences,
-  );
+  getIt.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
 
   // =========================================================
   // Core Storage Helpers
@@ -289,9 +272,7 @@ Future<void> setupServiceLocator() async {
     () => SharedPreferencesHelper(preferences: getIt()),
   );
 
-  getIt.registerLazySingleton<SecureStorageHelper>(
-    () => SecureStorageHelper(),
-  );
+  getIt.registerLazySingleton<SecureStorageHelper>(() => SecureStorageHelper());
 
   // =========================================================
   // Core Services
@@ -305,17 +286,13 @@ Future<void> setupServiceLocator() async {
     () => SecureStorageService(getIt()),
   );
 
-  getIt.registerLazySingleton<FilePickerService>(
-    () => FilePickerService(),
-  );
+  getIt.registerLazySingleton<FilePickerService>(() => FilePickerService());
 
   // =========================================================
   // Networking
   // =========================================================
 
-  getIt.registerLazySingleton<NetworkInfo>(
-    () => NetworkInfoImpl(),
-  );
+  getIt.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl());
 
   getIt.registerLazySingleton<Dio>(() => Dio());
 
@@ -332,9 +309,7 @@ Future<void> setupServiceLocator() async {
   // =========================================================
 
   getIt.registerFactory<CvCubit>(
-    () => CvCubit(
-      filePickerService: getIt<FilePickerService>(),
-    ),
+    () => CvCubit(filePickerService: getIt<FilePickerService>()),
   );
 
   // =========================================================
@@ -342,9 +317,7 @@ Future<void> setupServiceLocator() async {
   // =========================================================
 
   getIt.registerLazySingleton<SavedJobsRemoteDataSource>(
-    () => SavedJobsRemoteDataSourceImpl(
-      apiConsumer: getIt<ApiConsumer>(),
-    ),
+    () => SavedJobsRemoteDataSourceImpl(apiConsumer: getIt<ApiConsumer>()),
   );
 
   getIt.registerLazySingleton<SavedJobsRepository>(
@@ -355,21 +328,15 @@ Future<void> setupServiceLocator() async {
   );
 
   getIt.registerLazySingleton<GetSavedJobsUseCase>(
-    () => GetSavedJobsUseCase(
-      repository: getIt<SavedJobsRepository>(),
-    ),
+    () => GetSavedJobsUseCase(repository: getIt<SavedJobsRepository>()),
   );
 
   getIt.registerLazySingleton<SaveJobUseCase>(
-    () => SaveJobUseCase(
-      repository: getIt<SavedJobsRepository>(),
-    ),
+    () => SaveJobUseCase(repository: getIt<SavedJobsRepository>()),
   );
 
   getIt.registerLazySingleton<UnsaveJobUseCase>(
-    () => UnsaveJobUseCase(
-      repository: getIt<SavedJobsRepository>(),
-    ),
+    () => UnsaveJobUseCase(repository: getIt<SavedJobsRepository>()),
   );
 
   getIt.registerFactory<SavedJobsCubit>(

@@ -25,7 +25,6 @@ class CustomTextField extends StatefulWidget {
   final TextInputType keyboardType;
   final TextInputAction? textInputAction;
 
-
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
 }
@@ -64,7 +63,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (widget.labelText != null) ...[
-          Text(widget.labelText!),
+          Text(
+            widget.labelText!,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
           SizedBox(height: 8.h),
         ],
         TextFormField(
@@ -74,6 +79,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
           validator: widget.validator,
           keyboardType: widget.keyboardType,
           textInputAction: widget.textInputAction,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
           // الفاليديشن اللحظي مش هيشتغل غير بعد ما اليوزر يسيب الحقل لأول مرة
           autovalidateMode: _hasLostFocusOnce
               ? AutovalidateMode.onUserInteraction

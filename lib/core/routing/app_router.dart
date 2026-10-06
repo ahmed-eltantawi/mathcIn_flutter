@@ -16,6 +16,7 @@ import 'package:MatchIn/features/jobsAndApplications/presentation/views/tracking
 import 'package:MatchIn/features/auth/presentation/cubit/otp_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/reset_password_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/pages/create_new_password_view.dart';
+import 'package:MatchIn/features/auth/presentation/pages/forgot_password_view.dart';
 import 'package:MatchIn/features/auth/presentation/pages/login_view.dart';
 import 'package:MatchIn/features/auth/presentation/pages/otp_verification_view.dart';
 import 'package:MatchIn/features/auth/presentation/pages/password_changed_success_view.dart';
@@ -205,13 +206,8 @@ abstract final class AppRouter {
         pageBuilder: (context, state) {
           return _buildTransitionPage(
             state: state,
-            child: BlocProvider(
-              create: (_) => getIt<OtpCubit>(),
-              child: OtpVerificationView(
-                email:
-                    state.extra as String? ??
-                    'user@example.com',
-              ),
+            child: ForgotPasswordView(
+              email: state.extra as String?,
             ),
           );
         },

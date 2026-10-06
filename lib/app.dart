@@ -21,15 +21,9 @@ class MatchIn extends StatelessWidget {
 
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(
-          value: getIt<JobsFeedCubit>()..getJobs(),
-        ),
-        BlocProvider.value(
-          value: getIt<HomeCubit>()..getHomeDashboard(),
-        ),
-        BlocProvider.value(
-          value: getIt<MainNavigationCubit>(),
-        ),
+        BlocProvider.value(value: getIt<JobsFeedCubit>()..getJobs()),
+        BlocProvider.value(value: getIt<HomeCubit>()..getHomeDashboard()),
+        BlocProvider.value(value: getIt<MainNavigationCubit>()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(390, 845),
@@ -48,7 +42,7 @@ class MatchIn extends StatelessWidget {
             ],
             theme: getLightTheme(isArabic: isArabic),
             darkTheme: getDarkTheme(isArabic: isArabic),
-            themeMode: ThemeMode.system,
+            themeMode: ThemeMode.light,
             routerConfig: AppRouter.router,
           );
         },
