@@ -47,6 +47,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "aFewMoreQuestions": MessageLookupByLibrary.simpleMessage(
       "A few more questions",
     ),
+    "academicHistory": MessageLookupByLibrary.simpleMessage("Academic History"),
+    "academicHistoryDescription": MessageLookupByLibrary.simpleMessage(
+      "Keep your education history accurate and up to date.",
+    ),
     "accessYourPathways": MessageLookupByLibrary.simpleMessage(
       "Access your verified career pathways and opportunities.",
     ),
@@ -59,6 +63,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "🎉 Congratulations! You earned +50 XP!",
     ),
     "add": MessageLookupByLibrary.simpleMessage("Add"),
+    "addExperience": MessageLookupByLibrary.simpleMessage("Add experience"),
+    "addNewEducation": MessageLookupByLibrary.simpleMessage(
+      "Add New Education",
+    ),
+    "addNewExperience": MessageLookupByLibrary.simpleMessage(
+      "Add New Experience",
+    ),
     "addNewProject": MessageLookupByLibrary.simpleMessage(" Add New Project"),
     "addNewSkill": MessageLookupByLibrary.simpleMessage("Add New Skill"),
     "addProjectDetails": MessageLookupByLibrary.simpleMessage(
@@ -154,6 +165,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "You can change it later in Settings",
     ),
     "changePassword": MessageLookupByLibrary.simpleMessage("Change Password"),
+    "changePhoto": MessageLookupByLibrary.simpleMessage("Change photo"),
     "characters": MessageLookupByLibrary.simpleMessage("characters"),
     "chatBot": MessageLookupByLibrary.simpleMessage("Chat Bot"),
     "chatHistory": MessageLookupByLibrary.simpleMessage("Chat History"),
@@ -179,6 +191,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "city": MessageLookupByLibrary.simpleMessage("City"),
     "clear": MessageLookupByLibrary.simpleMessage("Clear"),
     "clearAllChats": MessageLookupByLibrary.simpleMessage("Clear All Chats"),
+    "company": MessageLookupByLibrary.simpleMessage("Company"),
+    "companyHint": MessageLookupByLibrary.simpleMessage(
+      "e.g. Studio Craft Ltd.",
+    ),
     "completeRegistration": MessageLookupByLibrary.simpleMessage(
       "Complete Registration",
     ),
@@ -222,6 +238,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "csOrRelated": MessageLookupByLibrary.simpleMessage("CS or related"),
     "currentStatus": MessageLookupByLibrary.simpleMessage("CURRENT STATUS"),
+    "currentlyStudyingHere": MessageLookupByLibrary.simpleMessage(
+      "Currently studying here",
+    ),
+    "currentlyWorkHere": MessageLookupByLibrary.simpleMessage(
+      "I currently work here",
+    ),
     "cv": MessageLookupByLibrary.simpleMessage("CV"),
     "cvAnalysisCompleted": MessageLookupByLibrary.simpleMessage(
       "CV analysis completed",
@@ -239,7 +261,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "cvUploadRequirements": MessageLookupByLibrary.simpleMessage(
       "PDF or DOCX • Max 5 MB",
     ),
+    "dateOfBirth": MessageLookupByLibrary.simpleMessage("Date of birth"),
     "daysAgo": m0,
+    "degree": MessageLookupByLibrary.simpleMessage("Degree"),
+    "degreeHint": MessageLookupByLibrary.simpleMessage(
+      "e.g. Master of Science, Bachelor of Arts",
+    ),
     "delete": MessageLookupByLibrary.simpleMessage("Delete"),
     "deleteChat": MessageLookupByLibrary.simpleMessage("Delete Chat"),
     "description": MessageLookupByLibrary.simpleMessage("Description"),
@@ -253,7 +280,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "emailHint": MessageLookupByLibrary.simpleMessage(
       "Enter your email address",
     ),
+    "employmentType": MessageLookupByLibrary.simpleMessage("Employment type"),
     "endDate": MessageLookupByLibrary.simpleMessage("End Date"),
+    "endYearExpected": MessageLookupByLibrary.simpleMessage(
+      "End year (or expected)",
+    ),
     "english": MessageLookupByLibrary.simpleMessage("English"),
     "enterVerificationCode": MessageLookupByLibrary.simpleMessage(
       "Enter verification code",
@@ -275,6 +306,11 @@ class MessageLookup extends MessageLookupByLibrary {
       "Failed to send message. Please try again.",
     ),
     "fairMatch": MessageLookupByLibrary.simpleMessage("Fair Match"),
+    "female": MessageLookupByLibrary.simpleMessage("Female"),
+    "fieldOfStudy": MessageLookupByLibrary.simpleMessage("Field of Study"),
+    "fieldOfStudyHint": MessageLookupByLibrary.simpleMessage(
+      "e.g. Software Engineering, Information Systems",
+    ),
     "finalConfirmation": MessageLookupByLibrary.simpleMessage(
       "Final Confirmation",
     ),
@@ -302,6 +338,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "fromYourCv": MessageLookupByLibrary.simpleMessage("From your CV"),
     "fullName": MessageLookupByLibrary.simpleMessage("Full Name"),
     "fullTime": MessageLookupByLibrary.simpleMessage("Full-time"),
+    "gender": MessageLookupByLibrary.simpleMessage("Gender"),
     "getExplainableMatch": MessageLookupByLibrary.simpleMessage(
       "Get an explainable match",
     ),
@@ -315,6 +352,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "good": MessageLookupByLibrary.simpleMessage("Good"),
     "goodMatch": MessageLookupByLibrary.simpleMessage("Good Match"),
+    "gpaHint": MessageLookupByLibrary.simpleMessage(
+      "e.g. 3.4 / 4.0 or First Class",
+    ),
+    "gpaOptional": MessageLookupByLibrary.simpleMessage("GPA (Optional)"),
     "greetingUser": m1,
     "helpfulAdvantage": MessageLookupByLibrary.simpleMessage(
       "Helpful advantage",
@@ -330,6 +371,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "I agree to the Terms & Privacy Policy",
     ),
     "inReview": MessageLookupByLibrary.simpleMessage("In Review"),
+    "institutionHint": MessageLookupByLibrary.simpleMessage(
+      "Search or enter institution name",
+    ),
     "internship": MessageLookupByLibrary.simpleMessage("Internship"),
     "interview": MessageLookupByLibrary.simpleMessage("Interview"),
     "invalidVerificationCode": MessageLookupByLibrary.simpleMessage(
@@ -337,6 +381,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "jobDetails": MessageLookupByLibrary.simpleMessage("Job Details"),
     "jobRequirements": MessageLookupByLibrary.simpleMessage("Job requirements"),
+    "jobTitle": MessageLookupByLibrary.simpleMessage("Job title"),
+    "jobTitleHint": MessageLookupByLibrary.simpleMessage(
+      "e.g. Lead Product Designer",
+    ),
     "jobType": MessageLookupByLibrary.simpleMessage("Job type"),
     "jobs": MessageLookupByLibrary.simpleMessage("Jobs"),
     "jobsMatchDescription": MessageLookupByLibrary.simpleMessage(
@@ -366,11 +414,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "light": MessageLookupByLibrary.simpleMessage("Light"),
     "linkedin": MessageLookupByLibrary.simpleMessage("LinkedIn"),
     "loadingAd": MessageLookupByLibrary.simpleMessage("Loading Ad..."),
+    "location": MessageLookupByLibrary.simpleMessage("Location"),
+    "locationHint": MessageLookupByLibrary.simpleMessage(
+      "e.g. London, UK or Cairo, Egypt",
+    ),
     "logOut": MessageLookupByLibrary.simpleMessage("Log Out"),
     "login": MessageLookupByLibrary.simpleMessage("Login"),
     "loginSubtitle": MessageLookupByLibrary.simpleMessage(
       "Access your verified career pathways and opportunities.",
     ),
+    "male": MessageLookupByLibrary.simpleMessage("Male"),
     "manageAllSkills": MessageLookupByLibrary.simpleMessage(
       "Manage all skills",
     ),
@@ -387,6 +440,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Mentioned in job requirements",
     ),
     "midLevel": MessageLookupByLibrary.simpleMessage("Mid-Level"),
+    "militaryStatus": MessageLookupByLibrary.simpleMessage("Military Status"),
     "minutesAgo": m3,
     "monthYearHint": MessageLookupByLibrary.simpleMessage("MM / YYYY"),
     "monthsAgo": m4,
@@ -477,6 +531,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "pendingEmployerScreening": MessageLookupByLibrary.simpleMessage(
       "Pending employer screening",
     ),
+    "personalInformation": MessageLookupByLibrary.simpleMessage(
+      "Personal Information",
+    ),
     "phoneHint": MessageLookupByLibrary.simpleMessage(
       "Enter your phone number",
     ),
@@ -499,6 +556,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "postedTwoDaysAgo": MessageLookupByLibrary.simpleMessage(
       "Posted 2 days ago",
     ),
+    "preferNotToSay": MessageLookupByLibrary.simpleMessage("Prefer not to say"),
     "preferences": MessageLookupByLibrary.simpleMessage("PREFERENCES"),
     "preferred": MessageLookupByLibrary.simpleMessage("Preferred"),
     "preferredLocation": MessageLookupByLibrary.simpleMessage(
@@ -515,6 +573,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "PRIVACY & SUPPORT",
     ),
     "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
+    "professionalInformation": MessageLookupByLibrary.simpleMessage(
+      "Professional Information",
+    ),
+    "professionalLinks": MessageLookupByLibrary.simpleMessage(
+      "Professional Links",
+    ),
     "profile": MessageLookupByLibrary.simpleMessage("Profile"),
     "profileMatchQuality": MessageLookupByLibrary.simpleMessage(
       "Profile Match Quality",
@@ -545,6 +609,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "registerWithGoogle": MessageLookupByLibrary.simpleMessage(
       "Continue with Google",
     ),
+    "relatedSkills": MessageLookupByLibrary.simpleMessage("Related skills"),
+    "relatedSkillsHint": MessageLookupByLibrary.simpleMessage(
+      "Type related skills",
+    ),
     "remote": MessageLookupByLibrary.simpleMessage("Remote"),
     "replaceCv": MessageLookupByLibrary.simpleMessage("Replace CV"),
     "reqAtLeastOneNumber": MessageLookupByLibrary.simpleMessage(
@@ -564,6 +632,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "resendCode": MessageLookupByLibrary.simpleMessage("Resend Code"),
     "resendCodeIn": MessageLookupByLibrary.simpleMessage("Resend code in"),
     "resetPassword": MessageLookupByLibrary.simpleMessage("Reset password"),
+    "responsibilitiesDescription": MessageLookupByLibrary.simpleMessage(
+      "Responsibilities / Description",
+    ),
+    "responsibilitiesHint": MessageLookupByLibrary.simpleMessage(
+      "Outline your primary duties, notable team initiatives, and concrete impact.",
+    ),
     "reviewApplication": MessageLookupByLibrary.simpleMessage(
       "Review Application",
     ),
@@ -599,9 +673,15 @@ class MessageLookup extends MessageLookupByLibrary {
       "Enter your expected gross monthly salary.",
     ),
     "salaryHint": MessageLookupByLibrary.simpleMessage("e.g. 24,000"),
+    "saveChanges": MessageLookupByLibrary.simpleMessage("Save Changes"),
+    "saveEducation": MessageLookupByLibrary.simpleMessage("Save education"),
+    "saveExperience": MessageLookupByLibrary.simpleMessage("Save experience"),
     "savePreferences": MessageLookupByLibrary.simpleMessage("Save Preferences"),
     "saveProject": MessageLookupByLibrary.simpleMessage("Save Project"),
     "savedJobs": MessageLookupByLibrary.simpleMessage("Saved Jobs"),
+    "schoolUniversity": MessageLookupByLibrary.simpleMessage(
+      "School / University",
+    ),
     "searchJobs": MessageLookupByLibrary.simpleMessage(
       "Search jobs, companies, or skills",
     ),
@@ -614,6 +694,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "SkillMatch securely protects your verified credentials and application histories.",
     ),
     "seeAll": MessageLookupByLibrary.simpleMessage("See all"),
+    "select": MessageLookupByLibrary.simpleMessage("Select"),
     "senior": MessageLookupByLibrary.simpleMessage("Senior"),
     "sentCodeToEmail": MessageLookupByLibrary.simpleMessage(
       "We sent a 6-digit code to your email.",
@@ -660,6 +741,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "startFirstConversation": MessageLookupByLibrary.simpleMessage(
       "Start your first conversation below",
     ),
+    "startYear": MessageLookupByLibrary.simpleMessage("Start year"),
     "stateGovernorate": MessageLookupByLibrary.simpleMessage(
       "State / Governorate",
     ),
@@ -756,6 +838,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "verificationCodeLabel": MessageLookupByLibrary.simpleMessage(
       "VERIFICATION CODE",
+    ),
+    "verifiedQualifications": MessageLookupByLibrary.simpleMessage(
+      "Verified Qualifications",
     ),
     "verify": MessageLookupByLibrary.simpleMessage("Verify"),
     "view": MessageLookupByLibrary.simpleMessage("View"),
