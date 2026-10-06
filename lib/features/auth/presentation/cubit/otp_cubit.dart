@@ -2,9 +2,12 @@ import 'dart:async';
 
 import 'package:MatchIn/features/auth/domain/use_cases/resend_otp_use_case.dart';
 import 'package:MatchIn/features/auth/domain/use_cases/verify_otp_use_case.dart';
-import 'package:MatchIn/features/auth/domain/use_cases/verify_password_reset_otp_use_case.dart'; // ضفنا الـ UseCase ده
-import 'package:MatchIn/features/auth/presentation/cubit/otp_state.dart';
+import 'package:MatchIn/features/auth/domain/use_cases/verify_password_reset_otp_use_case.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+part 'otp_state.dart';
 
 /// OTP length expected by the authentication backend.
 const int kOtpLength = 6;
@@ -16,13 +19,12 @@ class OtpCubit extends Cubit<OtpState> {
   OtpCubit({
     required this.verifyOtpUseCase,
     required this.resendOtpUseCase,
-    required this.verifyPasswordResetOtpUseCase, // ضفناه في الـ Constructor
+    required this.verifyPasswordResetOtpUseCase,
   }) : super(const OtpInitial());
 
   final VerifyOtpUseCase verifyOtpUseCase;
   final ResendOtpUseCase resendOtpUseCase;
-  final VerifyPasswordResetOtpUseCase
-  verifyPasswordResetOtpUseCase; // ضفناه هنا
+  final VerifyPasswordResetOtpUseCase verifyPasswordResetOtpUseCase;
 
   //! ===== Timer State =====
 
@@ -30,7 +32,7 @@ class OtpCubit extends Cubit<OtpState> {
   int _secondsRemaining = _kResendCooldownSeconds;
   bool _isVerifying = false;
 
-  // 1. المتغير اللي كان ناقص وعامل الإيرور
+  /// Cached reset token for convenience if accessed directly.
   String? resetToken;
 
   int get secondsRemaining => _secondsRemaining;
@@ -58,14 +60,13 @@ class OtpCubit extends Cubit<OtpState> {
   Future<void> verifyOtp({
     required String email,
     required String otp,
-    bool isPasswordReset = false, // فلاج عشان نحدد إحنا في أي فلو
+    bool isPasswordReset = false,
   }) async {
     if (_isVerifying) return;
     _isVerifying = true;
 
     emit(const OtpLoading());
 
-    // 2. بننده الـ UseCase الصح بناءً على إحنا في تسجيل جديد ولا نسيان باسورد
     if (isPasswordReset) {
       final result = await verifyPasswordResetOtpUseCase(
         email: email,
@@ -77,8 +78,8 @@ class OtpCubit extends Cubit<OtpState> {
           emit(OtpVerificationError(message: failure.message));
         },
         (token) {
-          resetToken = token; // بنخزن التوكن اللي راجع عشان الـ View يشوفه
-          emit(const OtpVerificationSuccess());
+          resetToken = token;
+          emit(OtpVerificationSuccess(resetToken: token));
         },
       );
     } else {

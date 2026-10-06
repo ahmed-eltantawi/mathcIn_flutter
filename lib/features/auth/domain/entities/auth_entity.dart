@@ -1,15 +1,6 @@
-import 'package:MatchIn/features/auth/domain/entities/user_entity.dart';
+import 'package:MatchIn/features/auth/domain/entities/login_entity.dart';
 
-class AuthEntity {
-  const AuthEntity({
-    required this.accessToken,
-    required this.message,
-    required this.refreshToken,
-    this.user,
-  });
+/// Legacy alias for [LoginEntity].
+/// Retained for backwards compatibility across auth sub-modules.
+typedef AuthEntity = LoginEntity;
 
-  final String message;
-  final String accessToken;
-  final String refreshToken;
-  final UserEntity? user;
-}

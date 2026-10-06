@@ -1,15 +1,15 @@
 import 'package:MatchIn/features/splash/presentation/widgets/logo_painter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:MatchIn/core/utils/app_colors.dart';
 import 'package:MatchIn/core/utils/app_constants.dart';
 import 'package:MatchIn/core/utils/app_text_styles.dart';
 
-//gsi lpjh[i hrsl hg;,] h;jv
 class AnimatedLogoWidget extends StatefulWidget {
-  final VoidCallback? onAnimationCompleted;
-
   const AnimatedLogoWidget({super.key, this.onAnimationCompleted});
+
+  final VoidCallback? onAnimationCompleted;
 
   @override
   State<AnimatedLogoWidget> createState() => _AnimatedLogoWidgetState();
@@ -25,6 +25,7 @@ class _AnimatedLogoWidgetState extends State<AnimatedLogoWidget>
   @override
   void initState() {
     super.initState();
+    FlutterNativeSplash.remove();
 
     _controller = AnimationController(
       vsync: this,

@@ -1,6 +1,5 @@
 import 'package:MatchIn/core/utils/app_assets.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/otp_cubit.dart';
-import 'package:MatchIn/features/auth/presentation/cubit/otp_state.dart';
 import 'package:MatchIn/features/auth/presentation/widgets/otp/otp_resend_row.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';

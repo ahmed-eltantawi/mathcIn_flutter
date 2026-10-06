@@ -4,7 +4,6 @@ import 'package:MatchIn/core/services/shared_preferences_service.dart';
 import 'package:MatchIn/core/widgets/custom_app_bar.dart';
 import 'package:MatchIn/core/widgets/custom_snack_bar.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/otp_cubit.dart';
-import 'package:MatchIn/features/auth/presentation/cubit/otp_state.dart';
 import 'package:MatchIn/features/auth/presentation/widgets/otp/otp_back_button.dart';
 import 'package:MatchIn/features/auth/presentation/widgets/otp/otp_header.dart';
 import 'package:MatchIn/features/auth/presentation/widgets/otp/otp_input_card.dart';
@@ -14,16 +13,32 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-class OtpVerificationView extends StatelessWidget {
+class OtpVerificationView extends StatefulWidget {
   const OtpVerificationView({
     super.key,
     this.email = 'user@example.com',
-    this.isPasswordReset =
-        false, // 1. ضفنا الفلاج ده عشان الشاشة تعرف هي في أي فلو
+    this.isPasswordReset = false,
   });
 
   final String email;
-  final bool isPasswordReset; // 2. تعريف الفلاج
+  final bool isPasswordReset;
+
+  @override
+  State<OtpVerificationView> createState() => _OtpVerificationViewState();
+}
+
+class _OtpVerificationViewState extends State<OtpVerificationView> {
+  String? _resetToken;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        context.read<OtpCubit>().startTimer();
+      }
+    });
+  }
 
   void _handleBack(BuildContext context) {
     if (context.canPop()) {
@@ -34,21 +49,18 @@ class OtpVerificationView extends StatelessWidget {
   }
 
   Future<void> _onSuccessAnimationDone(BuildContext context) async {
-    // 3. التوجيه الذكي بناءً على الفلاج
-    if (isPasswordReset) {
-      // لو ده فلو تغيير الباسورد -> نروح لشاشة الباسورد الجديد ونباصي التوكن
-      final cubit = context.read<OtpCubit>();
+    if (widget.isPasswordReset) {
+      final token = _resetToken ?? context.read<OtpCubit>().resetToken ?? '';
       if (context.mounted) {
         context.go(
           AppRoutes.kCreateNewPasswordView,
           extra: {
-            'email': email,
-            'resetToken': cubit.resetToken ?? '', // التوكن اللي راجع من الـ API
+            'email': widget.email,
+            'resetToken': token,
           },
         );
       }
     } else {
-      // لو تسجيل حساب جديد -> نعمل لوجين ونروح الهوم
       await getIt<SharedPreferencesService>().setLoggedIn();
       if (context.mounted) {
         context.go(AppRoutes.kHomeView);
@@ -58,15 +70,11 @@ class OtpVerificationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (context.mounted) {
-        context.read<OtpCubit>().startTimer();
-      }
-    });
-
     return BlocListener<OtpCubit, OtpState>(
       listener: (context, state) {
-        if (state is OtpResendSuccess) {
+        if (state is OtpVerificationSuccess) {
+          _resetToken = state.resetToken;
+        } else if (state is OtpResendSuccess) {
           CustomSnackBar.showSuccess(
             context,
             message: S.of(context).resendCode,
@@ -92,8 +100,8 @@ class OtpVerificationView extends StatelessWidget {
                 const OtpHeader(),
                 SizedBox(height: 24.h),
                 OtpInputCard(
-                  email: email,
-                  isPasswordReset: isPasswordReset,
+                  email: widget.email,
+                  isPasswordReset: widget.isPasswordReset,
                   onSuccessAnimationDone: () =>
                       _onSuccessAnimationDone(context),
                 ),

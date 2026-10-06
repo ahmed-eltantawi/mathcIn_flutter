@@ -1,4 +1,4 @@
-import 'package:MatchIn/features/splash/presentation/widgets/splash_view-body.dart';
+import 'package:MatchIn/features/splash/presentation/widgets/splash_view_body.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:MatchIn/core/routing/app_routes.dart';

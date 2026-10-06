@@ -26,7 +26,7 @@ class PasswordChangedSuccessView extends StatelessWidget {
                 width: 88.w,
                 height: 88.w,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBF3ED),
+                  color: AppColors.successBackground,
                   shape: BoxShape.circle,
                   border: Border.all(
                     color: AppColors.success.withValues(alpha: 0.2),
@@ -46,13 +46,9 @@ class PasswordChangedSuccessView extends StatelessWidget {
               Text(
                 S.of(context).passwordChangedSuccessfully,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'DM Sans',
-                  fontSize: 24.sp,
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w600,
                   color: AppColors.textPrimary,
-                  letterSpacing: -0.6,
-                  height: 32 / 24,
                 ),
               ),
               SizedBox(height: 12.h),
@@ -63,12 +59,8 @@ class PasswordChangedSuccessView extends StatelessWidget {
                 child: Text(
                   S.of(context).passwordChangedSuccessDesc,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSecondary,
-                    height: 23 / 14,
                   ),
                 ),
               ),

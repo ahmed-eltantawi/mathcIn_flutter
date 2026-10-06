@@ -1,3 +1,4 @@
+import 'package:MatchIn/core/services/services_locator.dart';
 import 'package:MatchIn/core/utils/app_colors.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/widgets/login/login_footer.dart';
@@ -7,7 +8,6 @@ import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginView extends StatelessWidget {
@@ -19,7 +19,7 @@ class LoginView extends StatelessWidget {
     final locale = S.of(context);
 
     return BlocProvider(
-      create: (context) => GetIt.instance<AuthCubit>(),
+      create: (context) => getIt<AuthCubit>(),
       child: Scaffold(
         backgroundColor: AppColors.background,
         appBar: AppBar(
@@ -27,7 +27,11 @@ class LoginView extends StatelessWidget {
           elevation: 0,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: AppColors.midnightBlue),
-            onPressed: () => context.pop(),
+            onPressed: () {
+              if (context.canPop()) {
+                context.pop();
+              }
+            },
           ),
           title: Text(
             locale.login,

@@ -62,6 +62,7 @@ abstract final class AppColors {
   static const Color secondary = terracotta;
   static const Color accent = goldenMustard;
   static const Color success = forestGreen;
+  static const Color successBackground = Color(0xFFEBF3ED);
   static const Color error = Color(0xFFD32F2F);
 
   static const Color background = lightBackground;

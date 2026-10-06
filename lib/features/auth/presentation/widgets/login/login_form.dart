@@ -1,4 +1,5 @@
 import 'package:MatchIn/core/widgets/custom_button.dart';
+import 'package:MatchIn/core/widgets/custom_snack_bar.dart';
 import 'package:MatchIn/core/widgets/custom_text_field.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:MatchIn/core/utils/app_colors.dart';
@@ -66,8 +67,9 @@ class _LoginFormState extends State<LoginForm> {
             isPassword: true,
             textInputAction: TextInputAction.done,
             validator: (value) {
-              if (value == null || value.isEmpty)
+              if (value == null || value.isEmpty) {
                 return locale.passwordRequirements;
+              }
               return null;
             },
           ),
@@ -75,44 +77,57 @@ class _LoginFormState extends State<LoginForm> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  ValueListenableBuilder<bool>(
-                    valueListenable: _isKeepSignedIn,
-                    builder: (context, value, child) {
-                      return Switch(
-                        value: value,
-                        activeColor: AppColors.white,
-                        activeTrackColor: AppColors.midnightBlue,
-                        inactiveTrackColor: AppColors.surfaceVariant,
-                        onChanged: (newValue) =>
-                            _isKeepSignedIn.value = newValue,
-                      );
-                    },
-                  ),
-                  SizedBox(width: 8.w),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        locale.keepMeSignedIn,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.w600,
-                        ),
+              Expanded(
+                child: Row(
+                  children: [
+                    ValueListenableBuilder<bool>(
+                      valueListenable: _isKeepSignedIn,
+                      builder: (context, value, child) {
+                        return Switch(
+                          value: value,
+                          activeThumbColor: AppColors.white,
+                          activeTrackColor: AppColors.midnightBlue,
+                          inactiveTrackColor: AppColors.surfaceVariant,
+                          onChanged: (newValue) =>
+                              _isKeepSignedIn.value = newValue,
+                        );
+                      },
+                    ),
+                    SizedBox(width: 8.w),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            locale.keepMeSignedIn,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: AppColors.textPrimary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            locale.onlyOnTrustedDevices,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: AppColors.textSecondary,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            // عشان لو الكلام طويل
+                          ),
+                        ],
                       ),
-                      Text(
-                        locale.onlyOnTrustedDevices,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.push(
+                    AppRoutes.kForgetPasswordView,
+                    extra: _emailController.text.isNotEmpty
+                        ? _emailController.text
+                        : 'user@example.com',
+                  );
+                },
                 style: TextButton.styleFrom(padding: EdgeInsets.zero),
                 child: Text(
                   locale.forgotPassword,
@@ -130,12 +145,7 @@ class _LoginFormState extends State<LoginForm> {
               if (state is LoginSuccess) {
                 context.go(AppRoutes.kHomeView);
               } else if (state is LoginFailure) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.message),
-                    backgroundColor: AppColors.error,
-                  ),
-                );
+                CustomSnackBar.showError(context, message: state.message);
               }
             },
             builder: (context, state) {

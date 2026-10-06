@@ -1,25 +1,31 @@
-import 'package:equatable/equatable.dart';
+part of 'otp_cubit.dart';
 
-abstract class OtpState extends Equatable {
+@immutable
+sealed class OtpState extends Equatable {
   const OtpState();
 
   @override
   List<Object?> get props => [];
 }
 
-class OtpInitial extends OtpState {
+final class OtpInitial extends OtpState {
   const OtpInitial();
 }
 
-class OtpLoading extends OtpState {
+final class OtpLoading extends OtpState {
   const OtpLoading();
 }
 
-class OtpVerificationSuccess extends OtpState {
-  const OtpVerificationSuccess();
+final class OtpVerificationSuccess extends OtpState {
+  const OtpVerificationSuccess({this.resetToken});
+
+  final String? resetToken;
+
+  @override
+  List<Object?> get props => [resetToken];
 }
 
-class OtpVerificationError extends OtpState {
+final class OtpVerificationError extends OtpState {
   const OtpVerificationError({required this.message});
 
   final String message;
@@ -28,11 +34,11 @@ class OtpVerificationError extends OtpState {
   List<Object?> get props => [message];
 }
 
-class OtpResendSuccess extends OtpState {
+final class OtpResendSuccess extends OtpState {
   const OtpResendSuccess();
 }
 
-class OtpResendError extends OtpState {
+final class OtpResendError extends OtpState {
   const OtpResendError({required this.message});
 
   final String message;
@@ -42,7 +48,7 @@ class OtpResendError extends OtpState {
 }
 
 /// Emitted every second while the resend countdown is active.
-class OtpTimerTick extends OtpState {
+final class OtpTimerTick extends OtpState {
   const OtpTimerTick({required this.secondsRemaining});
 
   final int secondsRemaining;
@@ -52,6 +58,7 @@ class OtpTimerTick extends OtpState {
 }
 
 /// Emitted when the countdown reaches zero — resend is now available.
-class OtpResendAvailable extends OtpState {
+final class OtpResendAvailable extends OtpState {
   const OtpResendAvailable();
 }
+

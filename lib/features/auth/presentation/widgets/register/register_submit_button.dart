@@ -1,20 +1,13 @@
 import 'package:MatchIn/core/widgets/custom_button.dart';
+import 'package:MatchIn/core/widgets/custom_snack_bar.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:MatchIn/core/routing/app_routes.dart';
-import 'package:MatchIn/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class RegisterSubmitButton extends StatelessWidget {
-  final GlobalKey<FormState> formKey;
-  final TextEditingController emailController;
-  final TextEditingController nameController;
-  final TextEditingController passwordController;
-  final TextEditingController confirmPasswordController;
-  final ValueNotifier<bool> isTermsAccepted;
-
   const RegisterSubmitButton({
     super.key,
     required this.formKey,
@@ -24,6 +17,13 @@ class RegisterSubmitButton extends StatelessWidget {
     required this.confirmPasswordController,
     required this.isTermsAccepted,
   });
+
+  final GlobalKey<FormState> formKey;
+  final TextEditingController emailController;
+  final TextEditingController nameController;
+  final TextEditingController passwordController;
+  final TextEditingController confirmPasswordController;
+  final ValueNotifier<bool> isTermsAccepted;
 
   @override
   Widget build(BuildContext context) {
@@ -35,12 +35,7 @@ class RegisterSubmitButton extends StatelessWidget {
             extra: emailController.text,
           );
         } else if (state is RegisterFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: AppColors.error,
-            ),
-          );
+          CustomSnackBar.showError(context, message: state.message);
         }
       },
       builder: (context, state) {
@@ -51,20 +46,28 @@ class RegisterSubmitButton extends StatelessWidget {
                 child: CustomButton(
                   text: S.of(context).completeRegistration,
                   onPressed: () {
-                    if (formKey.currentState!.validate() &&
-                        isTermsAccepted.value) {
+                    // 1. ننزل الكيبورد عشان اليوزر يشوف الـ UI براحته
+                    FocusScope.of(context).unfocus();
+
+                    // 2. نشيك على الحقول الأول
+                    final isValid = formKey.currentState?.validate() ?? false;
+
+                    // 3. نشيك على الشروط والأحكام
+                    if (!isTermsAccepted.value) {
+                      CustomSnackBar.showError(
+                        context,
+                        message: S.of(context).termsAndConditions,
+                      );
+                      return; // نوقف الكود هنا وميكملش
+                    }
+
+                    // 4. لو كله تمام (الحقول صح والشروط متوافق عليها)، ننده الـ API
+                    if (isValid) {
                       context.read<AuthCubit>().register(
                         email: emailController.text,
                         name: nameController.text,
                         password: passwordController.text,
                         passwordConfirmation: confirmPasswordController.text,
-                      );
-                    } else if (!isTermsAccepted.value) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(S.of(context).termsAndConditions),
-                          backgroundColor: AppColors.error,
-                        ),
                       );
                     }
                   },
