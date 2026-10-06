@@ -18,7 +18,29 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<void> resendOtp({required String email}) async {
-    await apiConsumer.post(EndPoint.resendEmailOtp, data: {ApiKey.email: email});
+    await apiConsumer.post(
+      EndPoint.resendEmailOtp,
+      data: {ApiKey.email: email},
+    );
+  }
+
+  @override
+  Future<void> forgotPassword({required String email}) async {
+    await apiConsumer.post(
+      EndPoint.forgotPassword,
+      data: {ApiKey.email: email},
+    );
+  }
+
+  @override
+  Future<void> verifyOtpForForgotPassword({
+    required String email,
+    required String otp,
+  }) async {
+    await apiConsumer.post(
+      EndPoint.verifyPasswordResetOtp,
+      data: {ApiKey.email: email, ApiKey.otp: otp},
+    );
   }
 
   @override
@@ -31,6 +53,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       data: {ApiKey.email: email, ApiKey.newPassword: newPassword},
     );
   }
+
   @override
   Future<void> register({
     required String name,
@@ -56,12 +79,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }) async {
     final response = await apiConsumer.post(
       EndPoint.login,
-      data: {
-        ApiKey.email: email,
-        ApiKey.password: password,
-      },
+      data: {ApiKey.email: email, ApiKey.password: password},
     );
-    // هنا السيرفر رد علينا، فبناخد الرد (response) وندخله جوه المودل عشان يتحول لمتغيرات نقدر نستخدمها
     return LoginModel.fromJson(response);
   }
 }

@@ -9,6 +9,7 @@ import 'package:MatchIn/core/services/secure_storage_service.dart';
 import 'package:MatchIn/core/services/shared_preferences_service.dart';
 import 'package:MatchIn/core/widgets/ads/rewarded_ad_manager.dart';
 import 'package:MatchIn/features/auth/data/data_sources/auth_remote_data_source_impl.dart';
+import 'package:MatchIn/features/auth/domain/use_cases/forgot_password_use_case.dart';
 import 'package:MatchIn/features/home/data/data_sources/home_mock_remote_data_source_impl.dart';
 import 'package:MatchIn/features/home/data/data_sources/home_remote_data_source.dart';
 import 'package:MatchIn/features/home/data/data_sources/repositories/home_repository_impl.dart';
@@ -100,6 +101,10 @@ Future<void> setupServiceLocator() async {
 
   getIt.registerLazySingleton<VerifyOtpUseCase>(
     () => VerifyOtpUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<ForgotPasswordUseCase>(
+    () => ForgotPasswordUseCase(repository: getIt()),
   );
 
   getIt.registerLazySingleton<ResendOtpUseCase>(

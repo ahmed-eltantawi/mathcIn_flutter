@@ -27,6 +27,27 @@ class AuthMockRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
+  Future<void> forgotPassword({required String email}) async {
+    await Future.delayed(const Duration(milliseconds: 800));
+  }
+
+  @override
+  Future<void> verifyOtpForForgotPassword({
+    required String email,
+    required String otp,
+  }) async {
+    await Future.delayed(const Duration(milliseconds: 800));
+    if (otp == '000000') {
+      throw ServerException(
+        errorModel: ErrorModel(
+          statusCode: 400,
+          errorMessage: 'Invalid verification code',
+        ),
+      );
+    }
+  }
+
+  @override
   Future<void> resetPassword({
     required String email,
     required String newPassword,

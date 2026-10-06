@@ -1,8 +1,16 @@
 import 'package:MatchIn/features/auth/data/models/login_model.dart';
+
 abstract class AuthRemoteDataSource {
   Future<void> verifyOtp({required String email, required String otp});
 
   Future<void> resendOtp({required String email});
+
+  Future<void> forgotPassword({required String email});
+
+  Future<void> verifyOtpForForgotPassword({
+    required String email,
+    required String otp,
+  });
 
   Future<void> resetPassword({
     required String email,
