@@ -72,6 +72,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "aiAssistant": MessageLookupByLibrary.simpleMessage("AI Assistant"),
     "aiIsTyping": MessageLookupByLibrary.simpleMessage("AI is thinking..."),
     "all": MessageLookupByLibrary.simpleMessage("All"),
+    "allMarkedAsRead": MessageLookupByLibrary.simpleMessage(
+      "All notifications marked as read",
+    ),
     "almostComplete": MessageLookupByLibrary.simpleMessage("Almost complete"),
     "alreadyHaveAccount": MessageLookupByLibrary.simpleMessage(
       "Already have an account?",
@@ -275,6 +278,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "Failed to send message. Please try again.",
     ),
     "fairMatch": MessageLookupByLibrary.simpleMessage("Fair Match"),
+    "filterAll": MessageLookupByLibrary.simpleMessage("All"),
+    "filterUnread": MessageLookupByLibrary.simpleMessage("Unread"),
     "finalConfirmation": MessageLookupByLibrary.simpleMessage(
       "Final Confirmation",
     ),
@@ -366,6 +371,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "light": MessageLookupByLibrary.simpleMessage("Light"),
     "linkedin": MessageLookupByLibrary.simpleMessage("LinkedIn"),
     "loadingAd": MessageLookupByLibrary.simpleMessage("Loading Ad..."),
+    "loadingNotifications": MessageLookupByLibrary.simpleMessage(
+      "Loading notifications...",
+    ),
     "logOut": MessageLookupByLibrary.simpleMessage("Log Out"),
     "login": MessageLookupByLibrary.simpleMessage("Login"),
     "loginSubtitle": MessageLookupByLibrary.simpleMessage(
@@ -374,7 +382,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "manageAllSkills": MessageLookupByLibrary.simpleMessage(
       "Manage all skills",
     ),
+    "markAllAsRead": MessageLookupByLibrary.simpleMessage("Mark all as read"),
     "markAllRead": MessageLookupByLibrary.simpleMessage("Mark all read"),
+    "markAsRead": MessageLookupByLibrary.simpleMessage("Mark as read"),
     "match": MessageLookupByLibrary.simpleMessage("Match"),
     "matchExplanation": MessageLookupByLibrary.simpleMessage(
       "You’re a good fit for this role. Your Flutter and API experience match the core requirements, but testing and CI/CD are important gaps.",
@@ -429,10 +439,23 @@ class MessageLookup extends MessageLookupByLibrary {
     "noLearningTasks": MessageLookupByLibrary.simpleMessage(
       "No learning tasks defined for this skill yet.",
     ),
+    "noNotifications": MessageLookupByLibrary.simpleMessage(
+      "No notifications yet",
+    ),
+    "noNotificationsDesc": MessageLookupByLibrary.simpleMessage(
+      "We\'ll let you know when important updates arrive.",
+    ),
     "noSavedJobsYet": MessageLookupByLibrary.simpleMessage("No saved jobs yet"),
+    "noUnreadNotifications": MessageLookupByLibrary.simpleMessage(
+      "No unread notifications",
+    ),
     "notNow": MessageLookupByLibrary.simpleMessage("Not now"),
     "notes": MessageLookupByLibrary.simpleMessage("Notes"),
+    "notificationMarkedAsRead": MessageLookupByLibrary.simpleMessage(
+      "Notification marked as read",
+    ),
     "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
+    "notificationsTitle": MessageLookupByLibrary.simpleMessage("Notifications"),
     "offer": MessageLookupByLibrary.simpleMessage("Offer"),
     "older": MessageLookupByLibrary.simpleMessage("Older"),
     "onSite": MessageLookupByLibrary.simpleMessage("On-site"),
@@ -628,6 +651,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "setupCareerProfileDesc": MessageLookupByLibrary.simpleMessage(
       "Tell us about your skills and goals to get better recommendations.",
     ),
+    "showingCachedNotifications": MessageLookupByLibrary.simpleMessage(
+      "Showing cached notifications (Offline)",
+    ),
     "signUpWithGoogle": MessageLookupByLibrary.simpleMessage(
       "Sign up with Google",
     ),
@@ -819,17 +845,5 @@ class MessageLookup extends MessageLookupByLibrary {
     "yourMatch": MessageLookupByLibrary.simpleMessage("Your Match"),
     "zeroToTwoYears": MessageLookupByLibrary.simpleMessage("0–2 years"),
     "zeroToTwoYearsExp": MessageLookupByLibrary.simpleMessage("0–2 yrs exp"),
-    "notificationsTitle": MessageLookupByLibrary.simpleMessage("Notifications"),
-    "noNotifications": MessageLookupByLibrary.simpleMessage("No notifications yet"),
-    "noNotificationsDesc": MessageLookupByLibrary.simpleMessage("We'll let you know when important updates arrive."),
-    "noUnreadNotifications": MessageLookupByLibrary.simpleMessage("No unread notifications"),
-    "markAsRead": MessageLookupByLibrary.simpleMessage("Mark as read"),
-    "markAllAsRead": MessageLookupByLibrary.simpleMessage("Mark all as read"),
-    "allMarkedAsRead": MessageLookupByLibrary.simpleMessage("All notifications marked as read"),
-    "notificationMarkedAsRead": MessageLookupByLibrary.simpleMessage("Notification marked as read"),
-    "showingCachedNotifications": MessageLookupByLibrary.simpleMessage("Showing cached notifications (Offline)"),
-    "filterAll": MessageLookupByLibrary.simpleMessage("All"),
-    "filterUnread": MessageLookupByLibrary.simpleMessage("Unread"),
-    "loadingNotifications": MessageLookupByLibrary.simpleMessage("Loading notifications..."),
   };
 }

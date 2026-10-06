@@ -309,10 +309,6 @@ Future<void> setupServiceLocator() async {
   // Profile Feature
   // =========================================================
 
-  getIt.registerLazySingleton<ProfileRemoteDataSource>(
-    () => ProfileRemoteDataSourceImpl(apiConsumer: getIt()),
-  );
-
   getIt.registerLazySingleton<ProfileLocalDataSource>(
     () => ProfileLocalDataSourceImpl(sharedPreferencesHelper: getIt()),
   );
@@ -327,14 +323,6 @@ Future<void> setupServiceLocator() async {
 
   getIt.registerLazySingleton<GetUserProfileUseCase>(
     () => GetUserProfileUseCase(getIt()),
-  );
-
-  getIt.registerFactory<ProfileCubit>(
-    () => ProfileCubit(
-      getUserProfileUseCase: getIt(),
-      getCandidateProfileUseCase: getIt(),
-      getCachedCandidateProfileUseCase: getIt(),
-    ),
   );
 
   // =========================================================
@@ -502,19 +490,6 @@ Future<void> setupServiceLocator() async {
   // Profile Data Sources
   getIt.registerLazySingleton<ProfileRemoteDataSource>(
     () => ProfileRemoteDataSourceImpl(apiConsumer: getIt()),
-  );
-
-  getIt.registerLazySingleton<ProfileLocalDataSource>(
-    () => ProfileLocalDataSourceImpl(sharedPreferencesHelper: getIt()),
-  );
-
-  // Profile Repository
-  getIt.registerLazySingleton<ProfileRepository>(
-    () => ProfileRepositoryImpl(
-      remoteDataSource: getIt(),
-      localDataSource: getIt(),
-      networkInfo: getIt(),
-    ),
   );
 
   // Profile Use Cases and cubit

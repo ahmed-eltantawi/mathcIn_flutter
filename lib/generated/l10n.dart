@@ -1,7 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -3470,7 +3469,7 @@ class S {
   /// `We'll let you know when important updates arrive.`
   String get noNotificationsDesc {
     return Intl.message(
-      "We'll let you know when important updates arrive.",
+      'We\'ll let you know when important updates arrive.',
       name: 'noNotificationsDesc',
       desc: '',
       args: [],
@@ -3489,12 +3488,7 @@ class S {
 
   /// `Mark as read`
   String get markAsRead {
-    return Intl.message(
-      'Mark as read',
-      name: 'markAsRead',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Mark as read', name: 'markAsRead', desc: '', args: []);
   }
 
   /// `Mark all as read`
@@ -3539,22 +3533,12 @@ class S {
 
   /// `All`
   String get filterAll {
-    return Intl.message(
-      'All',
-      name: 'filterAll',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('All', name: 'filterAll', desc: '', args: []);
   }
 
   /// `Unread`
   String get filterUnread {
-    return Intl.message(
-      'Unread',
-      name: 'filterUnread',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Unread', name: 'filterUnread', desc: '', args: []);
   }
 
   /// `Loading notifications...`

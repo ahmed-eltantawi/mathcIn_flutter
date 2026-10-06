@@ -76,6 +76,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "الذكاء الاصطناعي يفكر...",
     ),
     "all": MessageLookupByLibrary.simpleMessage("الكل"),
+    "allMarkedAsRead": MessageLookupByLibrary.simpleMessage(
+      "تم تعيين جميع الإشعارات كمقروءة",
+    ),
     "almostComplete": MessageLookupByLibrary.simpleMessage("شبه مكتمل"),
     "alreadyHaveAccount": MessageLookupByLibrary.simpleMessage(
       "لديك حساب بالفعل؟",
@@ -271,6 +274,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "فشل إرسال الرسالة. الرجاء المحاولة مرة أخرى.",
     ),
     "fairMatch": MessageLookupByLibrary.simpleMessage("تطابق متوسط"),
+    "filterAll": MessageLookupByLibrary.simpleMessage("الكل"),
+    "filterUnread": MessageLookupByLibrary.simpleMessage("غير مقروء"),
     "finalConfirmation": MessageLookupByLibrary.simpleMessage(
       "التأكيد النهائي",
     ),
@@ -362,6 +367,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "light": MessageLookupByLibrary.simpleMessage("فاتح"),
     "linkedin": MessageLookupByLibrary.simpleMessage("LinkedIn"),
     "loadingAd": MessageLookupByLibrary.simpleMessage("جارٍ تحميل الإعلان..."),
+    "loadingNotifications": MessageLookupByLibrary.simpleMessage(
+      "جارٍ تحميل الإشعارات...",
+    ),
     "logOut": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
     "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "loginSubtitle": MessageLookupByLibrary.simpleMessage(
@@ -370,7 +378,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "manageAllSkills": MessageLookupByLibrary.simpleMessage(
       "إدارة كل المهارات",
     ),
+    "markAllAsRead": MessageLookupByLibrary.simpleMessage("تعيين الكل كمقروء"),
     "markAllRead": MessageLookupByLibrary.simpleMessage("تحديد الكل كمقروء"),
+    "markAsRead": MessageLookupByLibrary.simpleMessage("تعيين كمقروء"),
     "match": MessageLookupByLibrary.simpleMessage("توافق"),
     "matchExplanation": MessageLookupByLibrary.simpleMessage(
       "أنت مناسب لهذه الوظيفة. خبرتك في Flutter وواجهات API تتوافق مع المتطلبات الأساسية، لكن الاختبار وCI/CD من المهارات المهمة التي تحتاج إلى تطوير.",
@@ -423,12 +433,25 @@ class MessageLookup extends MessageLookupByLibrary {
     "noLearningTasks": MessageLookupByLibrary.simpleMessage(
       "لا توجد مهام تعلم محددة لهذه المهارة بعد.",
     ),
+    "noNotifications": MessageLookupByLibrary.simpleMessage(
+      "لا توجد إشعارات بعد",
+    ),
+    "noNotificationsDesc": MessageLookupByLibrary.simpleMessage(
+      "سنخطرك عندما تصلك تحديثات جديدة ومهمة.",
+    ),
     "noSavedJobsYet": MessageLookupByLibrary.simpleMessage(
       "لا يوجد وظائف متاحة حالياً",
     ),
+    "noUnreadNotifications": MessageLookupByLibrary.simpleMessage(
+      "لا توجد إشعارات غير مقروءة",
+    ),
     "notNow": MessageLookupByLibrary.simpleMessage("ليس الآن"),
     "notes": MessageLookupByLibrary.simpleMessage("الملاحظات"),
+    "notificationMarkedAsRead": MessageLookupByLibrary.simpleMessage(
+      "تم تعيين الإشعار كمقروء",
+    ),
     "notifications": MessageLookupByLibrary.simpleMessage("الإشعارات"),
+    "notificationsTitle": MessageLookupByLibrary.simpleMessage("الإشعارات"),
     "offer": MessageLookupByLibrary.simpleMessage("العرض"),
     "older": MessageLookupByLibrary.simpleMessage("أقدم"),
     "onSite": MessageLookupByLibrary.simpleMessage("من مقر العمل"),
@@ -620,6 +643,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "setupCareerProfileDesc": MessageLookupByLibrary.simpleMessage(
       "أخبرنا بمهاراتك وأهدافك للحصول على توصيات وظيفية أفضل.",
     ),
+    "showingCachedNotifications": MessageLookupByLibrary.simpleMessage(
+      "عرض الإشعارات المحفوظة (غير متصل)",
+    ),
     "signUpWithGoogle": MessageLookupByLibrary.simpleMessage(
       "التسجيل مع Google",
     ),
@@ -789,17 +815,5 @@ class MessageLookup extends MessageLookupByLibrary {
     "yourMatch": MessageLookupByLibrary.simpleMessage("مدى توافقك"),
     "zeroToTwoYears": MessageLookupByLibrary.simpleMessage("0–2 سنة"),
     "zeroToTwoYearsExp": MessageLookupByLibrary.simpleMessage("خبرة 0–2 سنة"),
-    "notificationsTitle": MessageLookupByLibrary.simpleMessage("الإشعارات"),
-    "noNotifications": MessageLookupByLibrary.simpleMessage("لا توجد إشعارات بعد"),
-    "noNotificationsDesc": MessageLookupByLibrary.simpleMessage("سنخطرك عندما تصلك تحديثات جديدة ومهمة."),
-    "noUnreadNotifications": MessageLookupByLibrary.simpleMessage("لا توجد إشعارات غير مقروءة"),
-    "markAsRead": MessageLookupByLibrary.simpleMessage("تعيين كمقروء"),
-    "markAllAsRead": MessageLookupByLibrary.simpleMessage("تعيين الكل كمقروء"),
-    "allMarkedAsRead": MessageLookupByLibrary.simpleMessage("تم تعيين جميع الإشعارات كمقروءة"),
-    "notificationMarkedAsRead": MessageLookupByLibrary.simpleMessage("تم تعيين الإشعار كمقروء"),
-    "showingCachedNotifications": MessageLookupByLibrary.simpleMessage("عرض الإشعارات المحفوظة (غير متصل)"),
-    "filterAll": MessageLookupByLibrary.simpleMessage("الكل"),
-    "filterUnread": MessageLookupByLibrary.simpleMessage("غير مقروء"),
-    "loadingNotifications": MessageLookupByLibrary.simpleMessage("جارٍ تحميل الإشعارات..."),
   };
 }
