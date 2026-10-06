@@ -8,7 +8,7 @@ import 'package:MatchIn/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:MatchIn/features/profile/presentation/cubit/profile_state.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class FakeProfileRepository implements ProfileRepository {
+class FakeProfileRepository extends Fake implements ProfileRepository {
   Either<Failure, UserProfileEntity>? result;
 
   @override

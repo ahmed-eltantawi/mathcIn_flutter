@@ -3,7 +3,11 @@ import 'package:MatchIn/features/profile/presentation/cubit/profile_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
-  ProfileCubit({required this.getUserProfileUseCase}) : super(ProfileInitial());
+  ProfileCubit({
+    required this.getUserProfileUseCase,
+    required Object getCandidateProfileUseCase,
+    required Object getCachedCandidateProfileUseCase,
+  }) : super(ProfileInitial());
 
   final GetUserProfileUseCase getUserProfileUseCase;
 
