@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ProfileCubit extends Cubit<ProfileState> {
   ProfileCubit({
     required this.getUserProfileUseCase,
-    required Object getCandidateProfileUseCase,
-    required Object getCachedCandidateProfileUseCase,
+    Object? getCandidateProfileUseCase,
+    Object? getCachedCandidateProfileUseCase,
   }) : super(ProfileInitial());
 
   final GetUserProfileUseCase getUserProfileUseCase;
