@@ -1,13 +1,14 @@
 import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:MatchIn/core/extensions/snack_bar_extensions.dart';
 import 'package:MatchIn/core/routing/app_routes.dart';
-import 'package:MatchIn/core/services/services_locator.dart';
 import 'package:MatchIn/core/utils/app_assets.dart';
 import 'package:MatchIn/core/utils/validator.dart';
 import 'package:MatchIn/core/widgets/custom_button.dart';
 import 'package:MatchIn/core/widgets/custom_text_field.dart';
-import 'package:MatchIn/features/auth/domain/use_cases/forgot_password_use_case.dart';
+import 'package:MatchIn/features/auth/presentation/cubit/forgot_password_cubit.dart';
+import 'package:MatchIn/features/auth/presentation/cubit/forgot_password_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
@@ -26,7 +27,6 @@ class ForgotPasswordView extends StatefulWidget {
 class _ForgotPasswordViewState extends State<ForgotPasswordView> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _emailController;
-  bool _isLoading = false;
 
   @override
   void initState() {
@@ -40,26 +40,10 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
     super.dispose();
   }
 
-  Future<void> _onSendCodePressed() async {
+  void _onSendCodePressed() {
     if (_formKey.currentState?.validate() ?? false) {
-      setState(() => _isLoading = true);
       final email = _emailController.text.trim();
-      final result = await getIt<ForgotPasswordUseCase>().call(email: email);
-      if (!mounted) return;
-      setState(() => _isLoading = false);
-
-      result.fold(
-        (failure) {
-          context.showErrorSnackBar(failure.message);
-        },
-        (_) {
-          context.showSuccessSnackBar('Verification code sent to your email');
-          context.push(
-            AppRoutes.kOtpVerificationView,
-            extra: email,
-          );
-        },
-      );
+      context.read<ForgotPasswordCubit>().sendForgotPasswordEmail(email: email);
     }
   }
 
@@ -93,18 +77,35 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
               horizontal: 20.w,
               vertical: 24.h,
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const _ForgotPasswordLogo(imagePath: Assets.appIcon),
-                SizedBox(height: 24.h),
-                _ForgotPasswordCard(
-                  formKey: _formKey,
-                  emailController: _emailController,
-                  isLoading: _isLoading,
-                  onSendCodePressed: _onSendCodePressed,
-                ),
-              ],
+            child: BlocConsumer<ForgotPasswordCubit, ForgotPasswordState>(
+              listener: (context, state) {
+                if (state is ForgotPasswordFailure) {
+                  context.showErrorSnackBar(state.message);
+                } else if (state is ForgotPasswordSuccess) {
+                  context.showSuccessSnackBar(
+                    'Verification code sent to your email',
+                  );
+                  context.push(
+                    AppRoutes.kOtpVerificationView,
+                    extra: _emailController.text.trim(),
+                  );
+                }
+              },
+              builder: (context, state) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const _ForgotPasswordLogo(imagePath: Assets.appIcon),
+                    SizedBox(height: 24.h),
+                    _ForgotPasswordCard(
+                      formKey: _formKey,
+                      emailController: _emailController,
+                      isLoading: state is ForgotPasswordLoading,
+                      onSendCodePressed: _onSendCodePressed,
+                    ),
+                  ],
+                );
+              },
             ),
           ),
         ),
