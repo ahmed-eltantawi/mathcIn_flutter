@@ -124,7 +124,6 @@ class DioConsumer extends ApiConsumer {
   }
 
   //? ---------- Patch ----------
-  //? ---------- Patch ----------
   @override
   Future patch(
     String path, {
@@ -138,7 +137,6 @@ class DioConsumer extends ApiConsumer {
         queryParameters: queryParameters,
         data: isFormData ? FormData.fromMap(data) : data,
       );
-
       return response.data;
     } on DioException catch (e) {
       handleDioExceptions(e);

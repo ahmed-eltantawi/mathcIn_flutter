@@ -1,4 +1,5 @@
 import 'package:MatchIn/core/extensions/context_extensions.dart';
+import 'package:MatchIn/core/utils/app_text_styles.dart';
 import 'package:MatchIn/features/onbording/presentation/widgets/dashed_line_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -114,11 +115,11 @@ class CareerPathHeroWidget extends StatelessWidget {
           SizedBox(height: 6.h),
           Text(
             label,
-            style: TextStyle(
-              fontFamily: 'DM Sans',
-              fontSize: 10.sp,
-              fontWeight: FontWeight.w500,
+            style: AppTextStyles.body12SemiBold(
+              isArabic: false,
               color: context.colors.onSurfaceVariant,
+            ).copyWith(
+              fontSize: 10.sp,
             ),
           ),
         ],

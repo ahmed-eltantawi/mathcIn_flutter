@@ -8,23 +8,6 @@ import 'package:MatchIn/core/services/file_picker_service.dart';
 import 'package:MatchIn/core/services/secure_storage_service.dart';
 import 'package:MatchIn/core/services/shared_preferences_service.dart';
 import 'package:MatchIn/core/widgets/ads/rewarded_ad_manager.dart';
-import 'package:MatchIn/features/home/data/data_sources/home_mock_remote_data_source_impl.dart';
-import 'package:MatchIn/features/home/data/data_sources/home_remote_data_source.dart';
-import 'package:MatchIn/features/home/data/data_sources/repositories/home_repository_impl.dart';
-import 'package:MatchIn/features/home/domain/repositories/home_repository.dart';
-import 'package:MatchIn/features/home/domain/use_cases/get_home_dashboard_use_case.dart';
-import 'package:MatchIn/features/home/presentation/cubit/home_cubit.dart';
-import 'package:MatchIn/features/jobsAndApplications/data/data_sources/jobs_local_data_source.dart';
-import 'package:MatchIn/features/jobsAndApplications/data/data_sources/jobs_local_data_source_impl.dart';
-import 'package:MatchIn/features/jobsAndApplications/data/data_sources/jobs_remote_data_source.dart';
-import 'package:MatchIn/features/jobsAndApplications/data/data_sources/jobs_remote_data_source_impl.dart';
-import 'package:MatchIn/features/jobsAndApplications/data/repositories/jobs_repository_impl.dart';
-import 'package:MatchIn/features/jobsAndApplications/domain/repositories/jobs_repository.dart';
-import 'package:MatchIn/features/jobsAndApplications/domain/use_case/apply_for_job_use_case.dart';
-import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_cached_jobs_use_case.dart';
-import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_jobs_use_case.dart';
-import 'package:MatchIn/features/jobsAndApplications/domain/use_case/toggle_save_job_use_case.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/cv_cubit.dart';
 import 'package:MatchIn/features/auth/data/data_sources/auth_mock_remote_data_source_impl.dart';
 import 'package:MatchIn/features/auth/data/data_sources/auth_remote_data_source.dart';
 import 'package:MatchIn/features/auth/data/repositories/auth_repository_impl.dart';
@@ -49,6 +32,48 @@ import 'package:MatchIn/features/chatbot/domain/use_cases/get_chat_history_use_c
 import 'package:MatchIn/features/chatbot/domain/use_cases/save_chat_use_case.dart';
 import 'package:MatchIn/features/chatbot/domain/use_cases/send_message_use_case.dart';
 import 'package:MatchIn/features/chatbot/presentation/cubit/chatbot_cubit.dart';
+import 'package:MatchIn/features/home/data/data_sources/home_remote_data_source_impl.dart';
+import 'package:MatchIn/features/home/data/data_sources/home_remote_data_source.dart';
+import 'package:MatchIn/features/home/data/repositories/home_repository_impl.dart';
+import 'package:MatchIn/features/home/domain/repositories/home_repository.dart';
+import 'package:MatchIn/features/home/domain/use_cases/get_home_dashboard_use_case.dart';
+import 'package:MatchIn/features/home/presentation/cubit/home_cubit.dart';
+import 'package:MatchIn/features/profile/data/data_sources/profile_local_data_source.dart';
+import 'package:MatchIn/features/profile/data/data_sources/profile_local_data_source_impl.dart';
+import 'package:MatchIn/features/profile/data/data_sources/profile_remote_data_source.dart';
+import 'package:MatchIn/features/profile/data/data_sources/profile_remote_data_source_impl.dart';
+import 'package:MatchIn/features/profile/data/repositories/profile_repository_impl.dart';
+import 'package:MatchIn/features/profile/domain/repositories/profile_repository.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/get_user_profile_use_case.dart';
+import 'package:MatchIn/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:MatchIn/features/jobsAndApplications/data/data_sources/applications_local_data_source.dart';
+import 'package:MatchIn/features/jobsAndApplications/data/data_sources/applications_local_data_source_impl.dart';
+import 'package:MatchIn/features/jobsAndApplications/data/data_sources/applications_remote_data_source.dart';
+import 'package:MatchIn/features/jobsAndApplications/data/data_sources/applications_remote_data_source_impl.dart';
+import 'package:MatchIn/features/jobsAndApplications/data/data_sources/jobs_local_data_source.dart';
+import 'package:MatchIn/features/jobsAndApplications/data/data_sources/jobs_local_data_source_impl.dart';
+import 'package:MatchIn/features/jobsAndApplications/data/data_sources/jobs_remote_data_source.dart';
+import 'package:MatchIn/features/jobsAndApplications/data/data_sources/jobs_remote_data_source_impl.dart';
+import 'package:MatchIn/features/jobsAndApplications/data/repositories/applications_repository_impl.dart';
+import 'package:MatchIn/features/jobsAndApplications/data/repositories/jobs_repository_impl.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/repositories/applications_repository.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/repositories/jobs_repository.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/use_case/apply_for_job_use_case.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/use_case/apply_to_job_use_case.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_application_details_use_case.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_applications_use_case.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_cached_applications_use_case.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_cached_jobs_use_case.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_jobs_use_case.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/use_case/refresh_jobs_use_case.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/use_case/search_jobs_use_case.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/use_case/toggle_save_job_use_case.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/use_case/update_application_status_use_case.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/use_case/withdraw_application_use_case.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/application_details_cubit.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/applications_cubit.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/apply_to_job_cubit.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/cv_cubit.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_cubit.dart';
 import 'package:MatchIn/features/profile/data/data_sources/profile_local_data_source.dart';
 import 'package:MatchIn/features/profile/data/data_sources/profile_local_data_source_impl.dart';
@@ -76,6 +101,8 @@ import 'package:MatchIn/features/profile/presentation/cubits/skills_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/roadmap_cubit/roadmap_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/skill_task_cubit/skill_task_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/treasure_cubit/treasure_cubit.dart';
+import 'package:MatchIn/features/saved/data/data_sources/saved_jobs_local_data_source.dart';
+import 'package:MatchIn/features/saved/data/data_sources/saved_jobs_local_data_source_impl.dart';
 import 'package:MatchIn/features/saved/data/data_sources/saved_jobs_remote_data_source.dart';
 import 'package:MatchIn/features/saved/data/data_sources/saved_jobs_remote_data_source_impl.dart';
 import 'package:MatchIn/features/saved/data/repositories/saved_jobs_repository_impl.dart';
@@ -105,7 +132,6 @@ Future<void> setupServiceLocator() async {
 
   getIt.registerLazySingleton<AuthRemoteDataSource>(
     () => AuthMockRemoteDataSourceImpl(),
-    // () => AuthRemoteDataSourceImpl(apiConsumer: getIt()),
   );
 
   getIt.registerLazySingleton<AuthRepository>(
@@ -179,7 +205,6 @@ Future<void> setupServiceLocator() async {
 
   getIt.registerLazySingleton<ChatbotRemoteDataSource>(
     () => ChatbotMockRemoteDataSourceImpl(),
-    // () => ChatbotRemoteDataSourceImpl(apiConsumer: getIt()),
   );
 
   getIt.registerLazySingleton<ChatbotLocalDataSource>(
@@ -251,6 +276,14 @@ Future<void> setupServiceLocator() async {
     () => GetJobsUseCase(repository: getIt()),
   );
 
+  getIt.registerLazySingleton<SearchJobsUseCase>(
+    () => SearchJobsUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<RefreshJobsUseCase>(
+    () => RefreshJobsUseCase(repository: getIt()),
+  );
+
   getIt.registerLazySingleton<GetCachedJobsUseCase>(
     () => GetCachedJobsUseCase(repository: getIt()),
   );
@@ -266,7 +299,8 @@ Future<void> setupServiceLocator() async {
   getIt.registerLazySingleton<JobsFeedCubit>(
     () => JobsFeedCubit(
       getJobsUseCase: getIt(),
-      getCachedJobsUseCase: getIt(),
+      searchJobsUseCase: getIt(),
+      refreshJobsUseCase: getIt(),
       toggleSaveJobUseCase: getIt(),
       applyForJobUseCase: getIt(),
     ),
@@ -277,8 +311,10 @@ Future<void> setupServiceLocator() async {
   // =========================================================
 
   getIt.registerLazySingleton<HomeRemoteDataSource>(
-    () => HomeMockRemoteDataSourceImpl(),
-    // () => HomeRemoteDataSourceImpl(apiConsumer: getIt()),
+    () => HomeRemoteDataSourceImpl(
+      apiConsumer: getIt(),
+      profileLocalDataSource: getIt(),
+    ),
   );
 
   getIt.registerLazySingleton<HomeRepository>(
@@ -291,6 +327,34 @@ Future<void> setupServiceLocator() async {
 
   getIt.registerLazySingleton<HomeCubit>(
     () => HomeCubit(getHomeDashboardUseCase: getIt()),
+  );
+
+  // =========================================================
+  // Profile Feature
+  // =========================================================
+
+  getIt.registerLazySingleton<ProfileRemoteDataSource>(
+    () => ProfileRemoteDataSourceImpl(getIt()),
+  );
+
+  getIt.registerLazySingleton<ProfileLocalDataSource>(
+    () => ProfileLocalDataSourceImpl(getIt()),
+  );
+
+  getIt.registerLazySingleton<ProfileRepository>(
+    () => ProfileRepositoryImpl(
+      remoteDataSource: getIt(),
+      localDataSource: getIt(),
+      networkInfo: getIt(),
+    ),
+  );
+
+  getIt.registerLazySingleton<GetUserProfileUseCase>(
+    () => GetUserProfileUseCase(getIt()),
+  );
+
+  getIt.registerFactory<ProfileCubit>(
+    () => ProfileCubit(getUserProfileUseCase: getIt()),
   );
 
   // =========================================================
@@ -354,15 +418,85 @@ Future<void> setupServiceLocator() async {
   // Applications Feature
   // =========================================================
 
+  getIt.registerLazySingleton<ApplicationsLocalDataSource>(
+    () => ApplicationsLocalDataSourceImpl(sharedPreferencesHelper: getIt()),
+  );
+
+  getIt.registerLazySingleton<ApplicationsRemoteDataSource>(
+    () => ApplicationsRemoteDataSourceImpl(apiConsumer: getIt<ApiConsumer>()),
+  );
+
+  getIt.registerLazySingleton<ApplicationsRepository>(
+    () => ApplicationsRepositoryImpl(
+      remoteDataSource: getIt<ApplicationsRemoteDataSource>(),
+      localDataSource: getIt<ApplicationsLocalDataSource>(),
+      networkInfo: getIt<NetworkInfo>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<GetApplicationsUseCase>(
+    () => GetApplicationsUseCase(repository: getIt<ApplicationsRepository>()),
+  );
+
+  getIt.registerLazySingleton<GetCachedApplicationsUseCase>(
+    () => GetCachedApplicationsUseCase(
+      repository: getIt<ApplicationsRepository>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<GetApplicationDetailsUseCase>(
+    () => GetApplicationDetailsUseCase(
+      repository: getIt<ApplicationsRepository>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<ApplyToJobUseCase>(
+    () => ApplyToJobUseCase(repository: getIt<ApplicationsRepository>()),
+  );
+
+  getIt.registerLazySingleton<UpdateApplicationStatusUseCase>(
+    () => UpdateApplicationStatusUseCase(
+      repository: getIt<ApplicationsRepository>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<WithdrawApplicationUseCase>(
+    () =>
+        WithdrawApplicationUseCase(repository: getIt<ApplicationsRepository>()),
+  );
+
   getIt.registerFactory<CvCubit>(
     () => CvCubit(
       filePickerService: getIt<FilePickerService>(),
     ),
   );
 
+  getIt.registerFactory<ApplicationsCubit>(
+    () => ApplicationsCubit(
+      getApplicationsUseCase: getIt<GetApplicationsUseCase>(),
+      getCachedApplicationsUseCase: getIt<GetCachedApplicationsUseCase>(),
+    ),
+  );
+
+  getIt.registerFactory<ApplicationDetailsCubit>(
+    () => ApplicationDetailsCubit(
+      getApplicationDetailsUseCase: getIt<GetApplicationDetailsUseCase>(),
+      withdrawApplicationUseCase: getIt<WithdrawApplicationUseCase>(),
+      updateApplicationStatusUseCase: getIt<UpdateApplicationStatusUseCase>(),
+    ),
+  );
+
+  getIt.registerFactory<ApplyToJobCubit>(
+    () => ApplyToJobCubit(applyToJobUseCase: getIt<ApplyToJobUseCase>()),
+  );
+
   // =========================================================
   // Saved Jobs Feature
   // =========================================================
+
+  getIt.registerLazySingleton<SavedJobsLocalDataSource>(
+    () => SavedJobsLocalDataSourceImpl(sharedPreferencesHelper: getIt()),
+  );
 
   getIt.registerLazySingleton<SavedJobsRemoteDataSource>(
     () => SavedJobsRemoteDataSourceImpl(
@@ -373,6 +507,7 @@ Future<void> setupServiceLocator() async {
   getIt.registerLazySingleton<SavedJobsRepository>(
     () => SavedJobsRepositoryImpl(
       remoteDataSource: getIt<SavedJobsRemoteDataSource>(),
+      localDataSource: getIt<SavedJobsLocalDataSource>(),
       networkInfo: getIt<NetworkInfo>(),
     ),
   );

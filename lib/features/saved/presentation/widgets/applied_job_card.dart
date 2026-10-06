@@ -1,23 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:MatchIn/core/extensions/context_extensions.dart';
-import 'package:MatchIn/features/saved/presentation/models/applied_job_ui_model.dart';
+import 'package:MatchIn/core/extensions/date_time_extensions.dart';
+import 'package:MatchIn/generated/l10n.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/entities/application_entity.dart';
+import 'package:MatchIn/features/saved/presentation/models/applied_job_ui_model.dart' as ui_model;
 
 class AppliedJobCard extends StatelessWidget {
   const AppliedJobCard({
     super.key,
-    required this.application,
+    this.application,
+    this.applicationEntity,
     this.onViewApplicationTap,
     this.onCardTap,
   });
 
-  final AppliedJobUiModel application;
+  final ui_model.AppliedJobUiModel? application;
+  final ApplicationEntity? applicationEntity;
   final VoidCallback? onViewApplicationTap;
   final VoidCallback? onCardTap;
 
   @override
   Widget build(BuildContext context) {
-    final isInterview = application.status == ApplicationStatus.interview;
+    final status = _resolveStatus();
+    final isInterview = status == ApplicationStatus.interview;
+
+    final title = applicationEntity?.job?.title ?? application?.title ?? 'Job Position';
+    final company = applicationEntity?.job?.companyName ?? application?.company ?? 'Company';
+    final companyInitials = _getInitials(company);
+    final appliedTime = applicationEntity?.appliedAt != null
+        ? applicationEntity!.appliedAt!.timeAgo(context)
+        : (application?.appliedTime ?? 'Recently');
+    final footerStatus = applicationEntity != null
+        ? '${S.of(context).applicationStatus}: ${_formatStatus(status, context)}'
+        : (application?.footerStatus ?? 'Application submitted');
+
+    final tags = applicationEntity != null
+        ? [
+            if (applicationEntity!.job?.location != null && applicationEntity!.job!.location.isNotEmpty)
+              applicationEntity!.job!.location,
+            if (applicationEntity!.job?.workMode != null && applicationEntity!.job!.workMode.isNotEmpty)
+              applicationEntity!.job!.workMode,
+            if (applicationEntity!.job?.employmentType != null && applicationEntity!.job!.employmentType.isNotEmpty)
+              applicationEntity!.job!.employmentType,
+          ]
+        : (application?.tags ?? []);
 
     return Card(
       margin: EdgeInsets.zero,
@@ -63,19 +90,18 @@ class AppliedJobCard extends StatelessWidget {
                       height: 44.r,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: application.logoBgColor,
+                        color: application?.logoBgColor ?? const Color(0xFFE8F5E9),
                         borderRadius: BorderRadius.circular(10.r),
                         border: Border.all(
-                          color: application.logoTextColor.withValues(
-                            alpha: 0.25,
-                          ),
+                          color: (application?.logoTextColor ?? const Color(0xFF2E7D32))
+                              .withValues(alpha: 0.25),
                           width: 1,
                         ),
                       ),
                       child: Text(
-                        application.companyInitials,
+                        companyInitials,
                         style: context.textTheme.titleMedium?.copyWith(
-                          color: application.logoTextColor,
+                          color: application?.logoTextColor ?? const Color(0xFF2E7D32),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -86,7 +112,7 @@ class AppliedJobCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            application.title,
+                            title,
                             style: context.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.w600,
                             ),
@@ -95,7 +121,7 @@ class AppliedJobCard extends StatelessWidget {
                           ),
                           SizedBox(height: 3.h),
                           Text(
-                            application.company,
+                            company,
                             style: context.textTheme.bodyMedium?.copyWith(
                               color: context.colors.onSurface.withValues(
                                 alpha: 0.65,
@@ -108,23 +134,23 @@ class AppliedJobCard extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: 8.w),
-                    _buildStatusChip(context, application.status),
+                    _buildStatusChip(context, status),
                   ],
                 ),
 
                 SizedBox(height: 12.h),
 
-                // Metadata Tags + Applied Time (Wrap ensures NO horizontal overflow)
+                // Metadata Tags + Applied Time
                 Wrap(
                   spacing: 6.w,
                   runSpacing: 6.h,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
-                    ...application.tags.map((tag) => _buildTag(context, tag)),
+                    ...tags.map((tag) => _buildTag(context, tag)),
                     Padding(
                       padding: EdgeInsets.only(left: 4.w),
                       child: Text(
-                        application.appliedTime,
+                        appliedTime,
                         style: context.textTheme.bodySmall?.copyWith(
                           color: context.colors.onSurface.withValues(
                             alpha: 0.55,
@@ -135,8 +161,7 @@ class AppliedJobCard extends StatelessWidget {
                   ],
                 ),
 
-                // Highlight Note (e.g. Interview scheduled)
-                if (application.highlightNote != null) ...[
+                if (application?.highlightNote != null) ...[
                   SizedBox(height: 12.h),
                   Container(
                     width: double.infinity,
@@ -163,7 +188,7 @@ class AppliedJobCard extends StatelessWidget {
                         SizedBox(width: 8.w),
                         Expanded(
                           child: Text(
-                            application.highlightNote!,
+                            application!.highlightNote!,
                             style: context.textTheme.bodySmall?.copyWith(
                               color: const Color(0xFF8F610E),
                               fontWeight: FontWeight.w500,
@@ -179,14 +204,14 @@ class AppliedJobCard extends StatelessWidget {
                 Divider(height: 1.h, color: context.theme.dividerColor),
                 SizedBox(height: 10.h),
 
-                // Bottom Action Row: footer status + View application
+                // Bottom Action Row
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
                       child: Text(
-                        application.footerStatus,
+                        footerStatus,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: context.textTheme.bodySmall?.copyWith(
@@ -209,7 +234,7 @@ class AppliedJobCard extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              'View Application',
+                              S.of(context).viewApplication,
                               style: context.textTheme.labelLarge?.copyWith(
                                 color: context.colors.primary,
                                 fontWeight: FontWeight.w600,
@@ -235,30 +260,94 @@ class AppliedJobCard extends StatelessWidget {
     );
   }
 
+  ApplicationStatus _resolveStatus() {
+    if (applicationEntity != null) {
+      return applicationEntity!.status;
+    }
+    if (application != null) {
+      switch (application!.status) {
+        case ui_model.ApplicationStatus.applied:
+          return ApplicationStatus.applied;
+        case ui_model.ApplicationStatus.inReview:
+          return ApplicationStatus.inReview;
+        case ui_model.ApplicationStatus.interview:
+          return ApplicationStatus.interview;
+      }
+    }
+    return ApplicationStatus.applied;
+  }
+
+  String _getInitials(String company) {
+    final words = company.trim().split(RegExp(r'\s+')).where((w) => w.isNotEmpty).toList();
+    if (words.isEmpty) return '?';
+    if (words.length == 1) {
+      final w = words.first;
+      return w.substring(0, w.length >= 2 ? 2 : 1).toUpperCase();
+    }
+    return '${words[0][0]}${words[1][0]}'.toUpperCase();
+  }
+
+  String _formatStatus(ApplicationStatus status, BuildContext context) {
+    final s = S.of(context);
+    switch (status) {
+      case ApplicationStatus.applied:
+        return s.applied;
+      case ApplicationStatus.inReview:
+        return s.inReview;
+      case ApplicationStatus.interview:
+        return s.interview;
+      case ApplicationStatus.offer:
+        return s.offer;
+      case ApplicationStatus.rejected:
+        return s.failed;
+      case ApplicationStatus.withdrawn:
+        return s.withdrawApplication;
+      case ApplicationStatus.unknown:
+        return s.applied;
+    }
+  }
+
   Widget _buildStatusChip(BuildContext context, ApplicationStatus status) {
     Color textColor;
     Color bgColor;
     Color borderColor;
-    String label;
+    final label = _formatStatus(status, context);
 
     switch (status) {
       case ApplicationStatus.applied:
         textColor = context.colors.primary;
         bgColor = context.colors.primary.withValues(alpha: 0.10);
         borderColor = context.colors.primary.withValues(alpha: 0.20);
-        label = 'Applied';
         break;
       case ApplicationStatus.inReview:
         textColor = context.colors.secondary;
         bgColor = context.colors.secondary.withValues(alpha: 0.10);
         borderColor = context.colors.secondary.withValues(alpha: 0.20);
-        label = 'In Review';
         break;
       case ApplicationStatus.interview:
         textColor = const Color(0xFFC88A26);
         bgColor = const Color(0xFFC88A26).withValues(alpha: 0.12);
         borderColor = const Color(0xFFC88A26).withValues(alpha: 0.30);
-        label = 'Interview';
+        break;
+      case ApplicationStatus.offer:
+        textColor = const Color(0xFF2E7D32);
+        bgColor = const Color(0xFFE8F5E9);
+        borderColor = const Color(0xFF81C784);
+        break;
+      case ApplicationStatus.rejected:
+        textColor = Colors.redAccent;
+        bgColor = Colors.redAccent.withValues(alpha: 0.10);
+        borderColor = Colors.redAccent.withValues(alpha: 0.20);
+        break;
+      case ApplicationStatus.withdrawn:
+        textColor = Colors.grey;
+        bgColor = Colors.grey.withValues(alpha: 0.12);
+        borderColor = Colors.grey.withValues(alpha: 0.30);
+        break;
+      case ApplicationStatus.unknown:
+        textColor = context.colors.primary;
+        bgColor = context.colors.primary.withValues(alpha: 0.10);
+        borderColor = context.colors.primary.withValues(alpha: 0.20);
         break;
     }
 

@@ -406,6 +406,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "التالي: أسئلة التقديم",
     ),
     "niceToHave": MessageLookupByLibrary.simpleMessage("ميزة إضافية"),
+    "noApplicationsYet": MessageLookupByLibrary.simpleMessage(
+      "لا توجد طلبات تقديم بعد",
+    ),
     "noConversationsYet": MessageLookupByLibrary.simpleMessage(
       "لا توجد محادثات بعد",
     ),

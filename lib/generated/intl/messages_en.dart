@@ -412,6 +412,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Next: Application questions",
     ),
     "niceToHave": MessageLookupByLibrary.simpleMessage("Nice to have"),
+    "noApplicationsYet": MessageLookupByLibrary.simpleMessage(
+      "No applications yet",
+    ),
     "noConversationsYet": MessageLookupByLibrary.simpleMessage(
       "No conversations yet",
     ),

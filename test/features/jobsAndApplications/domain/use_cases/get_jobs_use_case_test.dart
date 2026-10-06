@@ -18,6 +18,21 @@ class FakeJobsRepository implements JobsRepository {
   }
 
   @override
+  Future<Either<Failure, PaginatedJobsEntity>> searchJobs({
+    required String query,
+    JobFilterParams? params,
+  }) async {
+    return resultToReturn!;
+  }
+
+  @override
+  Future<Either<Failure, PaginatedJobsEntity>> refreshJobs({
+    JobFilterParams? params,
+  }) async {
+    return resultToReturn!;
+  }
+
+  @override
   Future<Either<Failure, PaginatedJobsEntity?>> getCachedJobs({
     JobFilterParams? params,
   }) async {

@@ -25,7 +25,14 @@ abstract class EndPoint {
   static const String jobs = 'jobs';
   static String saveJob(dynamic jobPostId) => 'jobs/$jobPostId/save';
 
-  // get candidate profile
+  // Applications
+  static const String applications = 'applications';
+  static String applicationDetails(dynamic id) => 'applications/$id';
+  static String updateApplicationStatus(dynamic id) =>
+      'applications/$id/status';
+  static String withdrawApplication(dynamic id) => 'applications/$id/withdraw';
+
+  // Candidate Profile
   static const String candidateProfile = 'candidate/profile';
 
   // Candidate Skills
@@ -43,13 +50,12 @@ abstract class EndPoint {
   static String candidateProject(int projectId) =>
       'candidate/projects/$projectId';
 
-  // career preferences
+  // Career Preferences
   static const String careerPreferences = 'candidate/career-preferences';
 }
 
 ///* ApiKeys: the keys of the api
 abstract class ApiKey {
-  //TODO: change these values
   static const String statusCode = 'statusCode';
   static const String errorMessage = 'message';
   static const String accessToken = 'access_token';
@@ -79,7 +85,18 @@ abstract class ApiKey {
   static const String isVerifiedCompany = 'is_verified_company';
   static const String requiredSkillIds = 'required_skill_ids[]';
   static const String preferredSkillIds = 'preferred_skill_ids[]';
-  // static const String id = 'id';
+  static const String coverLetter = 'cover_letter';
+  static const String notes = 'notes';
+  static const String status = 'status';
+  static const String appliedAt = 'applied_at';
+  static const String createdAt = 'created_at';
+  static const String updatedAt = 'updated_at';
+  static const String attributes = 'attributes';
+  static const String data = 'data';
+  static const String type = 'type';
+  static const String links = 'links';
+  static const String meta = 'meta';
+  static const String id = 'id';
 }
 
 ///* ApiHeaderKey: the header keys of the api

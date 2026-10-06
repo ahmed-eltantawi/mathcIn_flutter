@@ -3,6 +3,7 @@ import 'package:MatchIn/features/profile/data/models/candidate_project_model.dar
 import 'package:MatchIn/features/profile/data/models/candidate_skill_model.dart';
 import 'package:MatchIn/features/profile/data/models/career_preference_model.dart';
 import 'package:MatchIn/features/profile/data/models/skill_search_result_model.dart';
+import 'package:MatchIn/features/profile/data/models/user_profile_model.dart';
 import 'package:MatchIn/features/profile/domain/entities/add_candidate_project_params.dart';
 import 'package:MatchIn/features/profile/domain/entities/add_candidate_skill_params.dart';
 import 'package:MatchIn/features/profile/domain/entities/save_career_preferences_params.dart';
@@ -10,6 +11,8 @@ import 'package:MatchIn/features/profile/domain/entities/update_candidate_projec
 
 abstract class ProfileRemoteDataSource {
   Future<CandidateProfileModel> getCandidateProfile();
+
+  Future<UserProfileModel> getUserProfile();
 
   // Candidate Skills
   Future<List<CandidateSkillModel>> getCandidateSkills();

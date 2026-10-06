@@ -35,11 +35,13 @@ class PaginatedJobsEntity extends Equatable {
   const PaginatedJobsEntity({
     required this.jobs,
     this.pagination,
+    this.isFromCache = false,
   });
 
   final List<JobEntity> jobs;
   final JobPaginationEntity? pagination;
+  final bool isFromCache;
 
   @override
-  List<Object?> get props => [jobs, pagination];
+  List<Object?> get props => [jobs, pagination, isFromCache];
 }

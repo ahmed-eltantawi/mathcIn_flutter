@@ -3436,6 +3436,16 @@ class S {
       args: [],
     );
   }
+
+  /// `No applications yet`
+  String get noApplicationsYet {
+    return Intl.message(
+      'No applications yet',
+      name: 'noApplicationsYet',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

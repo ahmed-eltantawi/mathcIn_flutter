@@ -3,17 +3,18 @@ import 'package:MatchIn/core/errors/failures.dart';
 import 'package:MatchIn/core/networking/network_info.dart';
 import 'package:MatchIn/features/profile/data/data_sources/profile_local_data_source.dart';
 import 'package:MatchIn/features/profile/data/data_sources/profile_remote_data_source.dart';
+import 'package:MatchIn/features/profile/domain/entities/add_candidate_project_params.dart';
 import 'package:MatchIn/features/profile/domain/entities/add_candidate_skill_params.dart';
 import 'package:MatchIn/features/profile/domain/entities/candidate_profile_entity.dart';
+import 'package:MatchIn/features/profile/domain/entities/candidate_project_entity.dart';
 import 'package:MatchIn/features/profile/domain/entities/candidate_skill_entity.dart';
 import 'package:MatchIn/features/profile/domain/entities/career_preference_entity.dart';
 import 'package:MatchIn/features/profile/domain/entities/save_career_preferences_params.dart';
+import 'package:MatchIn/features/profile/domain/entities/skill_search_result_entity.dart';
+import 'package:MatchIn/features/profile/domain/entities/update_candidate_project_params.dart';
+import 'package:MatchIn/features/profile/domain/entities/user_profile_entity.dart';
 import 'package:MatchIn/features/profile/domain/repositories/profile_repository.dart';
 import 'package:dartz/dartz.dart';
-import 'package:MatchIn/features/profile/domain/entities/skill_search_result_entity.dart';
-import 'package:MatchIn/features/profile/domain/entities/candidate_project_entity.dart';
-import 'package:MatchIn/features/profile/domain/entities/add_candidate_project_params.dart';
-import 'package:MatchIn/features/profile/domain/entities/update_candidate_project_params.dart';
 
 class ProfileRepositoryImpl implements ProfileRepository {
   const ProfileRepositoryImpl({
@@ -278,6 +279,36 @@ class ProfileRepositoryImpl implements ProfileRepository {
       return Left(ServerFailure(message: e.errorModel.errorMessage));
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserProfileEntity>> getUserProfile() async {
+    final isConnected = await networkInfo.isConnected;
+    if (isConnected) {
+      try {
+        final remoteProfile = await remoteDataSource.getUserProfile();
+        await localDataSource.cacheUserProfile(remoteProfile);
+        return Right(remoteProfile.toEntity());
+      } on ServerException catch (e) {
+        final cached = await localDataSource.getCachedUserProfile();
+        if (cached != null) {
+          return Right(cached.toEntity());
+        }
+        return Left(ServerFailure(message: e.errorModel.errorMessage));
+      } catch (e) {
+        final cached = await localDataSource.getCachedUserProfile();
+        if (cached != null) {
+          return Right(cached.toEntity());
+        }
+        return Left(ServerFailure(message: e.toString()));
+      }
+    } else {
+      final cached = await localDataSource.getCachedUserProfile();
+      if (cached != null) {
+        return Right(cached.toEntity());
+      }
+      return const Left(OfflineFailure());
     }
   }
 }

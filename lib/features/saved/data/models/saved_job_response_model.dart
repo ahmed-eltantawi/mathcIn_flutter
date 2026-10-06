@@ -65,4 +65,20 @@ class SavedJobResponseModel extends SavedJobEntity {
       isSaved: (json['is_saved'] as bool?) ?? true,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'company': company,
+      'location': location,
+      'work_mode': workMode,
+      'experience': experience,
+      'job_type': jobType,
+      'posted_date': postedDate,
+      'skills': skills,
+      'match_percentage': matchPercentage,
+      'is_saved': isSaved,
+    };
+  }
 }

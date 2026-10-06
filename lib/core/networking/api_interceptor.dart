@@ -30,10 +30,7 @@ class ApiInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    // get access token from secure storage
     final accessToken = await secureStorageService.getAccessToken();
-
-    // add access token in request header
     options.headers[ApiHeaderKey.authorization] =
         ApiHeaderKey.getAuthorizationValue(accessToken: accessToken);
 

@@ -1,3 +1,4 @@
+import 'package:MatchIn/core/utils/app_text_styles.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,24 +16,17 @@ class CreatePasswordHeader extends StatelessWidget {
       children: [
         Text(
           S.of(context).createNewPassword,
-          style: TextStyle(
-            fontFamily: 'DM Sans',
-            fontSize: 24.sp,
-            fontWeight: FontWeight.w700,
+          style: AppTextStyles.heading24Bold(
+            isArabic: false,
             color: colorScheme.primary,
-            letterSpacing: -0.6,
-            height: 32 / 24,
           ),
         ),
         SizedBox(height: 4.h),
         Text(
           S.of(context).chooseStrongPassword,
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w400,
+          style: AppTextStyles.body14Regular(
+            isArabic: false,
             color: colorScheme.onSurface.withValues(alpha: 0.6),
-            height: 20 / 14,
           ),
         ),
       ],

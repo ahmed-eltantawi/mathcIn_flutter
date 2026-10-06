@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:MatchIn/core/utils/app_colors.dart';
+import 'package:MatchIn/core/utils/app_text_styles.dart';
 
 class SavedSummaryBar extends StatelessWidget {
   const SavedSummaryBar({
@@ -26,12 +27,9 @@ class SavedSummaryBar extends StatelessWidget {
         children: [
           Text(
             countText,
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w500,
+            style: AppTextStyles.body12SemiBold(
+              isArabic: false,
               color: AppColors.textPrimary,
-              height: 16 / 12,
             ),
           ),
           InkWell(
@@ -50,12 +48,9 @@ class SavedSummaryBar extends StatelessWidget {
                   SizedBox(width: 6.w),
                   Text(
                     actionLabel,
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
+                    style: AppTextStyles.body12Regular(
+                      isArabic: false,
                       color: AppColors.textSecondary,
-                      height: 16 / 12,
                     ),
                   ),
                 ],

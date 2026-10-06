@@ -56,7 +56,7 @@ class FakeApiConsumer implements ApiConsumer {
   }
 
   @override
-  Future<dynamic> patch(
+  Future patch(
     String path, {
     Map<String, dynamic>? queryParameters,
     Object? data,
@@ -78,32 +78,30 @@ void main() {
   });
 
   group('JobsRemoteDataSourceImpl Tests', () {
-    test(
-      'getJobs returns PaginatedJobsModel on 200 success',
-      () async {
-        fakeApiConsumer.getResponse = {
-          'data': [
-            {
-              'id': 1,
-              'title': 'Flutter Developer',
-              'job_type': 'job',
-              'work_mode': 'Remote',
-              'employment_type': 'Full-time',
-              'experience_level': 'Senior',
-              'country': 'Egypt',
-              'city': 'Cairo',
-              'published_at': '2026-10-01T07:52:40.272Z',
-              'is_saved': true,
-              'company': {'id': 10, 'name': 'MatchIn Tech'},
-            },
-          ],
-          'meta': {
-            'current_page': 1,
-            'last_page': 5,
-            'per_page': 15,
-            'total': 75,
+    test('getJobs returns PaginatedJobsModel on 200 success', () async {
+      fakeApiConsumer.getResponse = {
+        'data': [
+          {
+            'id': 1,
+            'title': 'Flutter Developer',
+            'job_type': 'job',
+            'work_mode': 'Remote',
+            'employment_type': 'Full-time',
+            'experience_level': 'Senior',
+            'country': 'Egypt',
+            'city': 'Cairo',
+            'published_at': '2026-10-01T07:52:40.272Z',
+            'is_saved': true,
+            'company': {'id': 10, 'name': 'MatchIn Tech'},
           },
-        };
+        ],
+        'meta': {
+          'current_page': 1,
+          'last_page': 5,
+          'per_page': 15,
+          'total': 75,
+        },
+      };
 
         final result = await remoteDataSource.getJobs(
           params: const JobFilterParams(
@@ -120,8 +118,7 @@ void main() {
         expect(result.meta?.currentPage, equals(1));
         expect(result.meta?.lastPage, equals(5));
         expect(result.data.first.isSaved, isTrue);
-      },
-    );
+    });
 
     test('getJobs throws ServerException on 401 unauthenticated', () async {
       fakeApiConsumer.getError = ServerException(
@@ -131,10 +128,7 @@ void main() {
         ),
       );
 
-      expect(
-        () => remoteDataSource.getJobs(),
-        throwsA(isA<ServerException>()),
-      );
+      expect(() => remoteDataSource.getJobs(), throwsA(isA<ServerException>()));
     });
 
     test(
@@ -162,10 +156,7 @@ void main() {
         ),
       );
 
-      expect(
-        () => remoteDataSource.getJobs(),
-        throwsA(isA<ServerException>()),
-      );
+      expect(() => remoteDataSource.getJobs(), throwsA(isA<ServerException>()));
     });
   });
 }

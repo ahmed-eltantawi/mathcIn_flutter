@@ -25,9 +25,7 @@ class JobsRemoteDataSourceImpl implements JobsRemoteDataSource {
 
   @override
   Future<JobEntity> toggleSaveJob(String jobId) async {
-    final response = await apiConsumer.post(
-      EndPoint.saveJob(jobId),
-    );
+    final response = await apiConsumer.post(EndPoint.saveJob(jobId));
 
     if (response is Map<String, dynamic>) {
       final isSaved = response[ApiKey.isSaved] as bool? ?? true;
@@ -66,7 +64,8 @@ class JobsRemoteDataSourceImpl implements JobsRemoteDataSource {
   @override
   Future<JobEntity> applyForJob(String jobId) async {
     final response = await apiConsumer.post(
-      'jobs/$jobId/apply',
+      EndPoint.applications,
+      data: {ApiKey.jobId: int.tryParse(jobId) ?? jobId},
     );
 
     if (response is Map<String, dynamic>) {

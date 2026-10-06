@@ -1,4 +1,5 @@
 import 'package:MatchIn/core/utils/app_colors.dart';
+import 'package:MatchIn/core/utils/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -44,13 +45,15 @@ class PasswordRequirementTile extends StatelessWidget {
           Expanded(
             child: AnimatedDefaultTextStyle(
               duration: const Duration(milliseconds: 250),
-              style: TextStyle(
-                fontFamily: 'Inter',
-                fontSize: 12.sp,
-                fontWeight: isMet ? FontWeight.w500 : FontWeight.w400,
-                color: textColor,
-                height: 16 / 12,
-              ),
+              style: isMet
+                  ? AppTextStyles.body12SemiBold(
+                      isArabic: false,
+                      color: textColor,
+                    )
+                  : AppTextStyles.body12Regular(
+                      isArabic: false,
+                      color: textColor,
+                    ),
               child: Text(text),
             ),
           ),

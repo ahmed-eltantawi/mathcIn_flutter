@@ -1,3 +1,4 @@
+import 'package:MatchIn/core/networking/api_end_points.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_pagination_entity.dart';
 
 class JobPaginationModel {
@@ -14,7 +15,7 @@ class JobPaginationModel {
     return JobPaginationModel(
       currentPage: (json['current_page'] as num?)?.toInt() ?? 1,
       lastPage: (json['last_page'] as num?)?.toInt() ?? 1,
-      perPage: (json['per_page'] as num?)?.toInt() ?? 15,
+      perPage: (json[ApiKey.perPage] as num?)?.toInt() ?? 15,
       total: (json['total'] as num?)?.toInt() ?? 0,
       from: (json['from'] as num?)?.toInt(),
       to: (json['to'] as num?)?.toInt(),
@@ -32,7 +33,7 @@ class JobPaginationModel {
     return {
       'current_page': currentPage,
       'last_page': lastPage,
-      'per_page': perPage,
+      ApiKey.perPage: perPage,
       'total': total,
       'from': from,
       'to': to,
