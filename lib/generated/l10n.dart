@@ -3446,6 +3446,126 @@ class S {
       args: [],
     );
   }
+
+  /// `Notifications`
+  String get notificationsTitle {
+    return Intl.message(
+      'Notifications',
+      name: 'notificationsTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No notifications yet`
+  String get noNotifications {
+    return Intl.message(
+      'No notifications yet',
+      name: 'noNotifications',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We'll let you know when important updates arrive.`
+  String get noNotificationsDesc {
+    return Intl.message(
+      "We'll let you know when important updates arrive.",
+      name: 'noNotificationsDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No unread notifications`
+  String get noUnreadNotifications {
+    return Intl.message(
+      'No unread notifications',
+      name: 'noUnreadNotifications',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mark as read`
+  String get markAsRead {
+    return Intl.message(
+      'Mark as read',
+      name: 'markAsRead',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mark all as read`
+  String get markAllAsRead {
+    return Intl.message(
+      'Mark all as read',
+      name: 'markAllAsRead',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All notifications marked as read`
+  String get allMarkedAsRead {
+    return Intl.message(
+      'All notifications marked as read',
+      name: 'allMarkedAsRead',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notification marked as read`
+  String get notificationMarkedAsRead {
+    return Intl.message(
+      'Notification marked as read',
+      name: 'notificationMarkedAsRead',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Showing cached notifications (Offline)`
+  String get showingCachedNotifications {
+    return Intl.message(
+      'Showing cached notifications (Offline)',
+      name: 'showingCachedNotifications',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All`
+  String get filterAll {
+    return Intl.message(
+      'All',
+      name: 'filterAll',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unread`
+  String get filterUnread {
+    return Intl.message(
+      'Unread',
+      name: 'filterUnread',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Loading notifications...`
+  String get loadingNotifications {
+    return Intl.message(
+      'Loading notifications...',
+      name: 'loadingNotifications',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

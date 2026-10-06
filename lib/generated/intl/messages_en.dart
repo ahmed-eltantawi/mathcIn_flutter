@@ -819,5 +819,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "yourMatch": MessageLookupByLibrary.simpleMessage("Your Match"),
     "zeroToTwoYears": MessageLookupByLibrary.simpleMessage("0–2 years"),
     "zeroToTwoYearsExp": MessageLookupByLibrary.simpleMessage("0–2 yrs exp"),
+    "notificationsTitle": MessageLookupByLibrary.simpleMessage("Notifications"),
+    "noNotifications": MessageLookupByLibrary.simpleMessage("No notifications yet"),
+    "noNotificationsDesc": MessageLookupByLibrary.simpleMessage("We'll let you know when important updates arrive."),
+    "noUnreadNotifications": MessageLookupByLibrary.simpleMessage("No unread notifications"),
+    "markAsRead": MessageLookupByLibrary.simpleMessage("Mark as read"),
+    "markAllAsRead": MessageLookupByLibrary.simpleMessage("Mark all as read"),
+    "allMarkedAsRead": MessageLookupByLibrary.simpleMessage("All notifications marked as read"),
+    "notificationMarkedAsRead": MessageLookupByLibrary.simpleMessage("Notification marked as read"),
+    "showingCachedNotifications": MessageLookupByLibrary.simpleMessage("Showing cached notifications (Offline)"),
+    "filterAll": MessageLookupByLibrary.simpleMessage("All"),
+    "filterUnread": MessageLookupByLibrary.simpleMessage("Unread"),
+    "loadingNotifications": MessageLookupByLibrary.simpleMessage("Loading notifications..."),
   };
 }

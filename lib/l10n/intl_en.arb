@@ -432,5 +432,17 @@
   "careerGoalHelper": "Tell us briefly what you want to achieve next.",
   "savePreferences": "Save Preferences",
   "careerPreferencesSavedSuccessfully": "Career preferences saved successfully",
-  "noApplicationsYet": "No applications yet"
+  "noApplicationsYet": "No applications yet",
+  "notificationsTitle": "Notifications",
+  "noNotifications": "No notifications yet",
+  "noNotificationsDesc": "We'll let you know when important updates arrive.",
+  "noUnreadNotifications": "No unread notifications",
+  "markAsRead": "Mark as read",
+  "markAllAsRead": "Mark all as read",
+  "allMarkedAsRead": "All notifications marked as read",
+  "notificationMarkedAsRead": "Notification marked as read",
+  "showingCachedNotifications": "Showing cached notifications (Offline)",
+  "filterAll": "All",
+  "filterUnread": "Unread",
+  "loadingNotifications": "Loading notifications..."
 }

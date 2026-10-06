@@ -52,6 +52,12 @@ abstract class EndPoint {
 
   // Career Preferences
   static const String careerPreferences = 'candidate/career-preferences';
+
+  // Notifications
+  static const String notifications = 'notifications';
+  static const String notificationsUnreadCount = 'notifications/unread-count';
+  static const String notificationsReadAll = 'notifications/read-all';
+  static String markNotificationAsRead(dynamic id) => 'notifications/$id/read';
 }
 
 ///* ApiKeys: the keys of the api
@@ -97,6 +103,12 @@ abstract class ApiKey {
   static const String links = 'links';
   static const String meta = 'meta';
   static const String id = 'id';
+  static const String isRead = 'is_read';
+  static const String readAt = 'read_at';
+  static const String title = 'title';
+  static const String count = 'count';
+  static const String updatedCount = 'updated_count';
+  static const String unreadOnly = 'unread_only';
 }
 
 ///* ApiHeaderKey: the header keys of the api

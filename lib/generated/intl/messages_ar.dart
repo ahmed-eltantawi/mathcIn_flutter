@@ -789,5 +789,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "yourMatch": MessageLookupByLibrary.simpleMessage("مدى توافقك"),
     "zeroToTwoYears": MessageLookupByLibrary.simpleMessage("0–2 سنة"),
     "zeroToTwoYearsExp": MessageLookupByLibrary.simpleMessage("خبرة 0–2 سنة"),
+    "notificationsTitle": MessageLookupByLibrary.simpleMessage("الإشعارات"),
+    "noNotifications": MessageLookupByLibrary.simpleMessage("لا توجد إشعارات بعد"),
+    "noNotificationsDesc": MessageLookupByLibrary.simpleMessage("سنخطرك عندما تصلك تحديثات جديدة ومهمة."),
+    "noUnreadNotifications": MessageLookupByLibrary.simpleMessage("لا توجد إشعارات غير مقروءة"),
+    "markAsRead": MessageLookupByLibrary.simpleMessage("تعيين كمقروء"),
+    "markAllAsRead": MessageLookupByLibrary.simpleMessage("تعيين الكل كمقروء"),
+    "allMarkedAsRead": MessageLookupByLibrary.simpleMessage("تم تعيين جميع الإشعارات كمقروءة"),
+    "notificationMarkedAsRead": MessageLookupByLibrary.simpleMessage("تم تعيين الإشعار كمقروء"),
+    "showingCachedNotifications": MessageLookupByLibrary.simpleMessage("عرض الإشعارات المحفوظة (غير متصل)"),
+    "filterAll": MessageLookupByLibrary.simpleMessage("الكل"),
+    "filterUnread": MessageLookupByLibrary.simpleMessage("غير مقروء"),
+    "loadingNotifications": MessageLookupByLibrary.simpleMessage("جارٍ تحميل الإشعارات..."),
   };
 }

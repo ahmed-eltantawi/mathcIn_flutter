@@ -7,15 +7,15 @@ abstract class CacheKey {
   static const String userDataKey = 'userDataKey';
   static const String onBoardingViewed = 'onBoardingViewed';
   static const String fcmToken = 'fcmToken';
-  static const String collectedTreasures =
-      'collectedTreasures';
+  static const String collectedTreasures = 'collectedTreasures';
   static const String completedTaskIds = 'completedTaskIds';
   static const String rewardedAdXp = 'rewardedAdXp';
   static const String chatSessions = 'chatSessions';
   static const String chatMessagesPrefix = 'chatMessages_';
   static const String jobsFeedPrefix = 'jobs_feed_';
-  static const String candidateProfile =
-      'candidate_profile';
+  static const String candidateProfile = 'candidate_profile';
+  static const String notificationsPrefix = 'notifications_';
+  static const String unreadNotificationsCount = 'unread_notifications_count';
 }
 
 // TODO Profile Cache:

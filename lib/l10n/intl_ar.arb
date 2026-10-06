@@ -434,5 +434,17 @@
   "careerGoalHelper": "قولنا باختصار إيه اللي عايز توصله في الخطوة الجاية.",
   "savePreferences": "حفظ التفضيلات",
   "careerPreferencesSavedSuccessfully": "تم حفظ التفضيلات المهنية بنجاح",
-  "noApplicationsYet": "لا توجد طلبات تقديم بعد"
+  "noApplicationsYet": "لا توجد طلبات تقديم بعد",
+  "notificationsTitle": "الإشعارات",
+  "noNotifications": "لا توجد إشعارات بعد",
+  "noNotificationsDesc": "سنخطرك عندما تصلك تحديثات جديدة ومهمة.",
+  "noUnreadNotifications": "لا توجد إشعارات غير مقروءة",
+  "markAsRead": "تعيين كمقروء",
+  "markAllAsRead": "تعيين الكل كمقروء",
+  "allMarkedAsRead": "تم تعيين جميع الإشعارات كمقروءة",
+  "notificationMarkedAsRead": "تم تعيين الإشعار كمقروء",
+  "showingCachedNotifications": "عرض الإشعارات المحفوظة (غير متصل)",
+  "filterAll": "الكل",
+  "filterUnread": "غير مقروء",
+  "loadingNotifications": "جارٍ تحميل الإشعارات..."
 }
