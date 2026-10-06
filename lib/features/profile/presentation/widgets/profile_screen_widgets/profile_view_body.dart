@@ -67,12 +67,20 @@ class ProfileViewBody extends StatelessWidget {
                   SizedBox(height: 16.h),
                   EducationProfileCard(
                     educations: const [],
-                    onEdit: () {},
+                    onEdit: () {
+                      context.push(
+                        '/profile/editEducation',
+                      );
+                    },
                   ),
                   SizedBox(height: 16.h),
                   ExperienceProfileCard(
                     experiences: const [],
-                    onEdit: () {},
+                    onEdit: () {
+                      context.push(
+                        '/profile/editExperience',
+                      );
+                    },
                   ),
                   SizedBox(height: 16.h),
                   SkillsProfileCard(

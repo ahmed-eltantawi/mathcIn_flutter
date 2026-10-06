@@ -8,16 +8,20 @@ class EditProfileDropdown extends StatelessWidget {
     required this.items,
     required this.onChanged,
     super.key,
+    this.hintText,
   });
 
   final String label;
   final String? value;
   final Map<String, String> items;
   final ValueChanged<String?> onChanged;
+  final String? hintText;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
+    final hasValue = value != null && items.containsKey(value);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,21 +35,32 @@ class EditProfileDropdown extends StatelessWidget {
         ),
         SizedBox(height: 8.h),
         DropdownButtonFormField<String>(
-          initialValue: value,
+          initialValue: hasValue ? value : null,
+          isExpanded: true,
+          hint: hintText == null ? null : Text(hintText!),
+          icon: const Icon(Icons.keyboard_arrow_down_rounded),
           decoration: InputDecoration(
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 16.w,
+              vertical: 17.h,
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.r),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.r),
+              borderSide: BorderSide(color: theme.dividerColor),
             ),
           ),
           items: items.entries
               .map(
-                (item) => DropdownMenuItem(
-                  value: item.key,
-                  child: Text(item.value),
+                (entry) => DropdownMenuItem<String>(
+                  value: entry.key,
+                  child: Text(entry.value),
                 ),
               )
               .toList(),
-          onChanged: onChanged,
+          onChanged: items.isEmpty ? null : onChanged,
         ),
       ],
     );

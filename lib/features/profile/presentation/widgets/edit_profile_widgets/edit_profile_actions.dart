@@ -20,17 +20,14 @@ class EditProfileActions extends StatelessWidget {
       children: [
         SizedBox(
           width: double.infinity,
-          height: 54.h,
+          height: 56.h,
           child: FilledButton(
             onPressed: onSave,
             child: Text(locale.saveChanges),
           ),
         ),
-        SizedBox(height: 8.h),
-        TextButton(
-          onPressed: onCancel,
-          child: Text(locale.cancel),
-        ),
+        SizedBox(height: 10.h),
+        TextButton(onPressed: onCancel, child: Text(locale.cancel)),
       ],
     );
   }

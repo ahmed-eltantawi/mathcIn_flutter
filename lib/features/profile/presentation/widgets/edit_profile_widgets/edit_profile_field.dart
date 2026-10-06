@@ -9,6 +9,8 @@ class EditProfileField extends StatelessWidget {
     this.hintText,
     this.readOnly = false,
     this.onTap,
+    this.keyboardType,
+    this.prefix,
   });
 
   final String label;
@@ -16,6 +18,8 @@ class EditProfileField extends StatelessWidget {
   final String? hintText;
   final bool readOnly;
   final VoidCallback? onTap;
+  final TextInputType? keyboardType;
+  final Widget? prefix;
 
   @override
   Widget build(BuildContext context) {
@@ -36,10 +40,20 @@ class EditProfileField extends StatelessWidget {
           controller: controller,
           readOnly: readOnly,
           onTap: onTap,
+          keyboardType: keyboardType,
           decoration: InputDecoration(
             hintText: hintText,
+            prefixIcon: prefix,
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 16.w,
+              vertical: 17.h,
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.r),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.r),
+              borderSide: BorderSide(color: theme.dividerColor),
             ),
           ),
         ),

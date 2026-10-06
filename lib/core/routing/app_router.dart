@@ -1,5 +1,8 @@
 import 'package:MatchIn/core/routing/app_routes.dart';
 import 'package:MatchIn/features/profile/presentation/views/edit_career_preferences_view.dart';
+import 'package:MatchIn/features/profile/presentation/views/edit_education_view.dart';
+import 'package:MatchIn/features/profile/presentation/views/edit_experience_view.dart';
+import 'package:MatchIn/features/profile/presentation/views/edit_profile_view.dart';
 import 'package:MatchIn/features/profile/presentation/views/edit_projects_view.dart';
 import 'package:MatchIn/features/profile/presentation/views/edit_skills_view.dart';
 import 'package:MatchIn/features/splash/presentation/pages/splash_view.dart';
@@ -353,6 +356,34 @@ abstract final class AppRouter {
           return _buildTransitionPage(
             state: state,
             child: const EditCareerPreferencesView(),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: AppRoutes.keditProfileView,
+        pageBuilder: (context, state) {
+          return _buildTransitionPage(
+            state: state,
+            child: const EditProfileView(),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.keditEducationView,
+        pageBuilder: (context, state) {
+          return _buildTransitionPage(
+            state: state,
+            child: const EditEducationView(),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.keditExperience,
+        pageBuilder: (context, state) {
+          return _buildTransitionPage(
+            state: state,
+            child: const EditExperienceView(),
           );
         },
       ),
