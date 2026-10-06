@@ -1,4 +1,7 @@
+import 'package:MatchIn/features/profile/presentation/widgets/edit_education_widgets/education_academic_history_card.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_education_widgets/education_form.dart';
+import 'package:MatchIn/features/profile/presentation/widgets/edit_education_widgets/education_management_header.dart';
+import 'package:MatchIn/features/profile/presentation/widgets/edit_education_widgets/education_recruiter_visibility_card.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,32 +12,33 @@ class EditEducationViewBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = S.of(context);
+    final theme = Theme.of(context);
 
     return ListView(
-      padding: EdgeInsets.all(20.r),
+      padding: EdgeInsets.fromLTRB(20.w, 8.h, 20.w, 32.h),
       children: [
+        EducationManagementHeader(onBack: () => Navigator.of(context).pop()),
+        SizedBox(height: 24.h),
+        const EducationAcademicHistoryCard(),
+        SizedBox(height: 28.h),
         Row(
           children: [
-            IconButton(
-              onPressed: () => Navigator.of(context).pop(),
-              icon: const Icon(Icons.arrow_back),
-            ),
             Expanded(
               child: Text(
-                locale.education,
-                textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineSmall
-                    ?.copyWith(fontWeight: FontWeight.w700),
+                locale.verifiedQualifications,
+                style: theme.textTheme.labelLarge?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
-            SizedBox(width: 48.w),
           ],
         ),
-        SizedBox(height: 32.h),
+        SizedBox(height: 14.h),
+
+        // Records will be rendered here after Education domain integration.
         const EducationForm(),
         SizedBox(height: 24.h),
+        const EducationRecruiterVisibilityCard(),
       ],
     );
   }

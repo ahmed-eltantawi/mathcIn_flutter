@@ -3821,6 +3821,116 @@ class S {
       args: [],
     );
   }
+
+  /// `Help`
+  String get help {
+    return Intl.message('Help', name: 'help', desc: '', args: []);
+  }
+
+  /// `Profile synced`
+  String get profileSynced {
+    return Intl.message(
+      'Profile synced',
+      name: 'profileSynced',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Recruiter Visibility`
+  String get recruiterVisibility {
+    return Intl.message(
+      'Recruiter Visibility',
+      name: 'recruiterVisibility',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Candidates with fully detailed academic credentials receive more recruiter visibility on SkillMatch.`
+  String get recruiterVisibilityDescription {
+    return Intl.message(
+      'Candidates with fully detailed academic credentials receive more recruiter visibility on SkillMatch.',
+      name: 'recruiterVisibilityDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Current Records`
+  String get currentRecords {
+    return Intl.message(
+      'Current Records',
+      name: 'currentRecords',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sorted by recent`
+  String get sortedByRecent {
+    return Intl.message(
+      'Sorted by recent',
+      name: 'sortedByRecent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add details about your responsibilities and impact.`
+  String get experienceManagementDescription {
+    return Intl.message(
+      'Add details about your responsibilities and impact.',
+      name: 'experienceManagementDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Section completeness`
+  String get sectionCompleteness {
+    return Intl.message(
+      'Section completeness',
+      name: 'sectionCompleteness',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add more details about your responsibilities and impact. Specific achievements increase recruiter discovery.`
+  String get experienceCompletenessHint {
+    return Intl.message(
+      'Add more details about your responsibilities and impact. Specific achievements increase recruiter discovery.',
+      name: 'experienceCompletenessHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `EDITORIAL SCORE`
+  String get editorialScore {
+    return Intl.message(
+      'EDITORIAL SCORE',
+      name: 'editorialScore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{percentage}% Completed`
+  String completedPercentage(int percentage) {
+    return Intl.message(
+      '$percentage% Completed',
+      name: 'completedPercentage',
+      desc: '',
+      args: [percentage],
+    );
+  }
+
+  /// `Skills:`
+  String get skillsLabel {
+    return Intl.message('Skills:', name: 'skillsLabel', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -476,5 +476,25 @@
 "responsibilitiesHint": "اكتب مسؤولياتك الأساسية وأبرز مساهماتك وتأثيرك.",
 "relatedSkills": "المهارات ذات الصلة",
 "relatedSkillsHint": "اكتب المهارات ذات الصلة",
-"saveExperience": "حفظ الخبرة"
+"saveExperience": "حفظ الخبرة",
+"help": "مساعدة",
+"profileSynced": "تمت مزامنة الملف",
+"recruiterVisibility": "الظهور لمسؤولي التوظيف",
+"recruiterVisibilityDescription": "يساعد اكتمال بياناتك الأكاديمية على زيادة ظهور ملفك لمسؤولي التوظيف على SkillMatch.",
+"currentRecords": "السجلات الحالية",
+"sortedByRecent": "مرتبة حسب الأحدث",
+"experienceManagementDescription": "أضف تفاصيل عن مسؤولياتك وتأثيرك في العمل.",
+"sectionCompleteness": "اكتمال القسم",
+"experienceCompletenessHint": "أضف المزيد من التفاصيل حول مسؤولياتك وتأثيرك. الإنجازات المحددة تساعد على زيادة ظهورك لمسؤولي التوظيف.",
+"editorialScore": "درجة اكتمال المحتوى",
+"completedPercentage": "مكتمل بنسبة {percentage}%",
+"skillsLabel": "المهارات:",
+"@completedPercentage": {
+  "placeholders": {
+    "percentage": {
+      "type": "int"
+    }
+  }
+}
+
 }

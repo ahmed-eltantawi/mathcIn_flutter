@@ -20,7 +20,7 @@ class ExperienceFormActions extends StatelessWidget {
       children: [
         Expanded(
           child: SizedBox(
-            height: 52.h,
+            height: 54.h,
             child: OutlinedButton(
               onPressed: onCancel,
               child: Text(locale.cancel),
@@ -30,7 +30,7 @@ class ExperienceFormActions extends StatelessWidget {
         SizedBox(width: 12.w),
         Expanded(
           child: SizedBox(
-            height: 52.h,
+            height: 54.h,
             child: FilledButton(
               onPressed: onSave,
               child: Text(locale.saveExperience),

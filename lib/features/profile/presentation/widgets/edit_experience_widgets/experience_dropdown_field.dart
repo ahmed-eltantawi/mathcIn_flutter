@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class EducationFormField extends StatelessWidget {
-  const EducationFormField({
+class ExperienceDropdownField extends StatelessWidget {
+  const ExperienceDropdownField({
     required this.label,
-    required this.controller,
+    required this.value,
+    required this.items,
+    required this.onChanged,
     super.key,
-    this.hintText,
-    this.readOnly = false,
-    this.onTap,
   });
 
   final String label;
-  final TextEditingController controller;
-  final String? hintText;
-  final bool readOnly;
-  final VoidCallback? onTap;
+  final String? value;
+  final Map<String, String> items;
+  final ValueChanged<String?> onChanged;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final hasValue = value != null && items.containsKey(value);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,22 +30,25 @@ class EducationFormField extends StatelessWidget {
           ),
         ),
         SizedBox(height: 8.h),
-        TextFormField(
-          controller: controller,
-          readOnly: readOnly,
-          onTap: onTap,
+        DropdownButtonFormField<String>(
+          initialValue: hasValue ? value : null,
+          isExpanded: true,
+          items: items.entries
+              .map(
+                (entry) => DropdownMenuItem(
+                  value: entry.key,
+                  child: Text(entry.value),
+                ),
+              )
+              .toList(),
+          onChanged: items.isEmpty ? null : onChanged,
           decoration: InputDecoration(
-            hintText: hintText,
             contentPadding: EdgeInsets.symmetric(
-              horizontal: 16.w,
+              horizontal: 14.w,
               vertical: 17.h,
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.r),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.r),
-              borderSide: BorderSide(color: theme.dividerColor),
             ),
           ),
         ),

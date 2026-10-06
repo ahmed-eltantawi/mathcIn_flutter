@@ -474,5 +474,25 @@
 "responsibilitiesHint": "Outline your primary duties, notable team initiatives, and concrete impact.",
 "relatedSkills": "Related skills",
 "relatedSkillsHint": "Type related skills",
-"saveExperience": "Save experience"
+"saveExperience": "Save experience",
+"help": "Help",
+"profileSynced": "Profile synced",
+"recruiterVisibility": "Recruiter Visibility",
+"recruiterVisibilityDescription": "Candidates with fully detailed academic credentials receive more recruiter visibility on SkillMatch.",
+"currentRecords": "Current Records",
+"sortedByRecent": "Sorted by recent",
+"experienceManagementDescription": "Add details about your responsibilities and impact.",
+"sectionCompleteness": "Section completeness",
+"experienceCompletenessHint": "Add more details about your responsibilities and impact. Specific achievements increase recruiter discovery.",
+"editorialScore": "EDITORIAL SCORE",
+"completedPercentage": "{percentage}% Completed",
+"skillsLabel": "Skills:",
+"@completedPercentage": {
+  "placeholders": {
+    "percentage": {
+      "type": "int"
+    }
+  }
+}
+
 }
