@@ -45,7 +45,7 @@ import 'package:MatchIn/features/profile/data/data_sources/profile_remote_data_s
 import 'package:MatchIn/features/profile/data/repositories/profile_repository_impl.dart';
 import 'package:MatchIn/features/profile/domain/repositories/profile_repository.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/get_user_profile_use_case.dart';
-import 'package:MatchIn/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:MatchIn/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:MatchIn/features/jobsAndApplications/data/data_sources/applications_local_data_source.dart';
 import 'package:MatchIn/features/jobsAndApplications/data/data_sources/applications_local_data_source_impl.dart';
 import 'package:MatchIn/features/jobsAndApplications/data/data_sources/applications_remote_data_source.dart';
@@ -503,7 +503,6 @@ Future<void> setupServiceLocator() async {
 
   getIt.registerFactory<ProfileCubit>(
     () => ProfileCubit(
-      getUserProfileUseCase: getIt(),
       getCandidateProfileUseCase: getIt(),
       getCachedCandidateProfileUseCase: getIt(),
     ),

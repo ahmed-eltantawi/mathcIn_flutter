@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:MatchIn/app.dart';
 import 'package:MatchIn/core/services/services_locator.dart';
@@ -14,7 +15,7 @@ Future<void> main() async {
   // Initialize Mobile Ads asynchronously in background without blocking startup
   unawaited(
     MobileAds.instance.initialize().catchError((e) {
-      debugPrint('MobileAds init error: $e');
+      log('MobileAds init error: $e');
       return InitializationStatus({});
     }),
   );
