@@ -3,21 +3,34 @@ import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/job_de
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+///* CompanyAvatar — displays a company logo or initials fallback.
+///* Accepts an optional [heroTag] to participate in Hero animations between
+///* the job card in the list and the job details screen.
 class CompanyAvatar extends StatelessWidget {
   const CompanyAvatar({
     super.key,
     required this.companyName,
     this.logoUrl,
+    this.heroTag,
+    this.size,
   });
 
   final String companyName;
   final String? logoUrl;
 
+  /// Optional Hero tag for shared-element transitions.
+  /// Pass `'company_avatar_${job.id}'` from the caller.
+  final String? heroTag;
+
+  /// Override the default 48×48 size when used in the details header.
+  final double? size;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 48.r,
-      height: 48.r,
+    final dimension = size ?? 48.r;
+    final avatar = Container(
+      width: dimension,
+      height: dimension,
       alignment: Alignment.center,
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
@@ -32,13 +45,9 @@ class CompanyAvatar extends StatelessWidget {
           : Image.network(
               logoUrl!,
               fit: BoxFit.cover,
-              // لو الصورة فشلت تحميل، نرجع للـ initials تلقائيًا
               errorBuilder: (context, error, stackTrace) {
-                return InitialsText(
-                  companyName: companyName,
-                );
+                return InitialsText(companyName: companyName);
               },
-              // Loading placeholder بسيط لحد ما الصورة تحمل
               loadingBuilder: (context, child, progress) {
                 if (progress == null) return child;
                 return SizedBox(
@@ -51,6 +60,22 @@ class CompanyAvatar extends StatelessWidget {
                 );
               },
             ),
+    );
+
+    if (heroTag == null) return avatar;
+
+    return Hero(
+      tag: heroTag!,
+      // Keep the border-radius intact during the flight.
+      flightShuttleBuilder: (_, animation, __, ___, ____) => AnimatedBuilder(
+        animation: animation,
+        builder: (ctx, child) => Material(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(12.r),
+          child: avatar,
+        ),
+      ),
+      child: avatar,
     );
   }
 }

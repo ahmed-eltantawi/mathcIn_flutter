@@ -7,6 +7,12 @@ import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_filter_
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_cubit.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_state.dart';
 
+///* JobsFilterSection — horizontal scrollable row of quick-filter chips.
+///*
+///* Root-cause fix: reads [JobsFeedState.filterParams] from the state object
+///* (not from the cubit's private field via a getter). Since [JobsFeedLoading]
+///* now carries [filterParams], the chips update *immediately* on tap — before
+///* the API call returns — because [BlocBuilder] rebuilds on the loading state.
 class JobsFilterSection extends StatelessWidget {
   const JobsFilterSection({super.key});
 
@@ -15,9 +21,14 @@ class JobsFilterSection extends StatelessWidget {
     final l10n = context.l10n;
 
     return BlocBuilder<JobsFeedCubit, JobsFeedState>(
+      buildWhen: (prev, curr) => prev.filterParams != curr.filterParams,
       builder: (context, state) {
         final cubit = context.read<JobsFeedCubit>();
-        final params = cubit.currentFilterParams;
+
+        // Read filter params from the state (which now includes loading state).
+        // Falls back to cubit's current params for states that don't carry them
+        // (e.g. JobsFeedEmpty, JobsFeedError).
+        final params = state.filterParams ?? cubit.currentFilterParams;
 
         final isRemote = params.workMode?.toLowerCase() == 'remote';
         final isInternship =

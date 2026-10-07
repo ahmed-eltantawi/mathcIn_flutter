@@ -6,6 +6,10 @@ import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_paginat
 sealed class JobsFeedState extends Equatable {
   const JobsFeedState();
 
+  ///* Returns the active [JobFilterParams] carried by this state.
+  ///* Subclasses that carry filter context override this getter.
+  JobFilterParams? get filterParams => null;
+
   @override
   List<Object?> get props => [];
 }
@@ -14,8 +18,17 @@ final class JobsFeedInitial extends JobsFeedState {
   const JobsFeedInitial();
 }
 
+///* [JobsFeedLoading] now carries [filterParams] so the filter-chip row can
+///* immediately reflect the pending selection while the API call is in flight.
+///* This is the root-cause fix for the filter UI not updating immediately.
 final class JobsFeedLoading extends JobsFeedState {
-  const JobsFeedLoading();
+  const JobsFeedLoading({this.filterParams});
+
+  @override
+  final JobFilterParams? filterParams;
+
+  @override
+  List<Object?> get props => [filterParams];
 }
 
 final class JobsFeedLoaded extends JobsFeedState {
@@ -31,6 +44,7 @@ final class JobsFeedLoaded extends JobsFeedState {
 
   final List<JobEntity> jobs;
   final JobPaginationEntity? pagination;
+  @override
   final JobFilterParams? filterParams;
   final bool isPaginationLoading;
   final bool isRefreshing;

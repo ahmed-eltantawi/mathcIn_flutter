@@ -31,8 +31,11 @@ class JobCard extends StatelessWidget {
   final VoidCallback? onSave;
 
   bool get _isApplied =>
-      job.applicationStatus !=
-      JobApplicationStatus.notApplied;
+      job.applicationStatus != JobApplicationStatus.notApplied;
+
+  ///* Hero tag scoped to the job's unique ID — guarantees no duplicate tags
+  ///* across the list, even when the same job appears multiple times.
+  String get _heroTag => 'company_avatar_${job.id}';
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +62,7 @@ class JobCard extends StatelessWidget {
                 showShareButton: showShareButton,
                 onShare: onShare,
                 onSave: onSave,
+                heroTag: _heroTag,
               ),
               SizedBox(height: 14.h),
               Wrap(
@@ -69,9 +73,7 @@ class JobCard extends StatelessWidget {
                     label: job.location,
                     icon: Icons.location_on_outlined,
                   ),
-                  JobsInfoJobCard(
-                    label: job.employmentType,
-                  ),
+                  JobsInfoJobCard(label: job.employmentType),
                   JobsInfoJobCard(label: job.workMode),
                   JobsInfoJobCard(
                     label: job.experienceLevel,
@@ -92,22 +94,18 @@ class JobCard extends StatelessWidget {
               SizedBox(height: 14.h),
               Row(
                 children: [
-                  MatchingStatus(
-                    percentage: job.matchPercentage,
-                  ),
+                  MatchingStatus(percentage: job.matchPercentage),
                   const Spacer(),
                   ElevatedButton(
                     onPressed: _isApplied
                         ? null
                         : () => context.push(
-                            AppRoutes.kapplyForRole,
-                            extra: job,
-                          ),
+                              AppRoutes.kapplyForRole,
+                              extra: job,
+                            ),
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(110.w, 42.h),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 18.w,
-                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 18.w),
                     ),
                     child: Text(
                       _isApplied

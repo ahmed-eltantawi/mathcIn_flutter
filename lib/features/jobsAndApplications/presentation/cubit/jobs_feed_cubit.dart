@@ -35,7 +35,10 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
       _currentFilterParams = params;
     }
 
-    emit(const JobsFeedLoading());
+    //! ===== Emit loading with current filter params =====
+    // Passing filterParams ensures the filter-chip BlocBuilder rebuilds
+    // immediately with the selected filter rather than waiting for the API.
+    emit(JobsFeedLoading(filterParams: _currentFilterParams));
 
     final result = await getJobsUseCase(params: _currentFilterParams);
 
@@ -66,7 +69,7 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
     if (currentState is JobsFeedLoaded) {
       emit(currentState.copyWith(isRefreshing: true));
     } else {
-      emit(const JobsFeedLoading());
+      emit(JobsFeedLoading(filterParams: resetParams));
     }
 
     final result = await refreshJobsUseCase(params: resetParams);
@@ -113,7 +116,7 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
       );
       _currentFilterParams = newParams;
 
-      emit(const JobsFeedLoading());
+      emit(JobsFeedLoading(filterParams: newParams));
 
       final result = trimmed.isEmpty
           ? await getJobsUseCase(params: newParams)
