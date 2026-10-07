@@ -55,7 +55,7 @@ class SavedJobsRepositoryImpl implements SavedJobsRepository {
     } else {
       if (localDataSource != null) {
         final cached = await localDataSource!.getCachedSavedJobs(cacheKey);
-        if (cached != null) {
+        if (cached != null && cached.jobs.isNotEmpty) {
           return Right(cached);
         }
       }
@@ -84,6 +84,9 @@ class SavedJobsRepositoryImpl implements SavedJobsRepository {
     if (await networkInfo.isConnected) {
       try {
         final result = await remoteDataSource.unsaveJob(jobPostId: jobPostId);
+        if (localDataSource != null) {
+          await localDataSource!.removeSavedJob(jobPostId);
+        }
         return Right(result.isSaved);
       } on ServerException catch (e) {
         return Left(ServerFailure(message: e.errorModel.errorMessage));

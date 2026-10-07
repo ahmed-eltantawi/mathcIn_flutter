@@ -90,8 +90,9 @@ class JobsRepositoryImpl implements JobsRepository {
 
   @override
   Future<Either<Failure, JobEntity>> toggleSaveJob(
-    String jobId,
-  ) async {
+    String jobId, {
+    bool? currentIsSaved,
+  }) async {
     if (!await networkInfo.isConnected) {
       return const Left(OfflineFailure());
     }
@@ -99,6 +100,7 @@ class JobsRepositoryImpl implements JobsRepository {
     try {
       final job = await remoteDataSource.toggleSaveJob(
         jobId,
+        currentIsSaved: currentIsSaved,
       );
 
       return Right(job);

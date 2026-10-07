@@ -24,25 +24,18 @@ class JobsRemoteDataSourceImpl implements JobsRemoteDataSource {
   }
 
   @override
-  Future<JobEntity> toggleSaveJob(String jobId) async {
-    final response = await apiConsumer.post(EndPoint.saveJob(jobId));
+  Future<JobEntity> toggleSaveJob(String jobId, {bool? currentIsSaved}) async {
+    final response = currentIsSaved == true
+        ? await apiConsumer.delete(EndPoint.saveJob(jobId))
+        : await apiConsumer.post(EndPoint.saveJob(jobId));
 
+    bool isSaved = currentIsSaved != true;
     if (response is Map<String, dynamic>) {
-      final isSaved = response[ApiKey.isSaved] as bool? ?? true;
-      return JobEntity(
-        id: jobId,
-        title: '',
-        companyName: '',
-        location: '',
-        workMode: '',
-        employmentType: '',
-        experienceLevel: '',
-        postedDate: DateTime.now(),
-        skills: const [],
-        matchedSkills: const [],
-        missingSkills: const [],
-        isSaved: isSaved,
-      );
+      if (response['data'] is Map<String, dynamic>) {
+        isSaved = (response['data']['is_saved'] as bool?) ?? isSaved;
+      } else if (response[ApiKey.isSaved] is bool) {
+        isSaved = response[ApiKey.isSaved] as bool;
+      }
     }
 
     return JobEntity(
@@ -57,7 +50,7 @@ class JobsRemoteDataSourceImpl implements JobsRemoteDataSource {
       skills: const [],
       matchedSkills: const [],
       missingSkills: const [],
-      isSaved: true,
+      isSaved: isSaved,
     );
   }
 

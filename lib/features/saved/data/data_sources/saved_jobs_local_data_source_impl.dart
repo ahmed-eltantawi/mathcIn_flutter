@@ -38,4 +38,30 @@ class SavedJobsLocalDataSourceImpl implements SavedJobsLocalDataSource {
     }
     return null;
   }
+
+  @override
+  Future<void> removeSavedJob(int jobPostId) async {
+    // Default page 1 key
+    const primaryKey = 'page_1_per_page_15';
+    final cached = await getCachedSavedJobs(primaryKey);
+    if (cached != null) {
+      final updatedJobs = cached.jobs.where((j) => j.id != jobPostId).toList();
+      final updatedModel = PaginatedSavedJobsModel(
+        jobs: updatedJobs,
+        currentPage: cached.currentPage,
+        lastPage: cached.lastPage,
+        total: cached.total > 0 ? cached.total - 1 : 0,
+        hasMorePages: cached.hasMorePages,
+      );
+      await cacheSavedJobs(primaryKey, updatedModel);
+    }
+  }
+
+  @override
+  Future<void> clearCache() async {
+    // Best-effort clear of primary page
+    await sharedPreferencesHelper.deleteData(
+      key: '${_savedJobsCachePrefix}page_1_per_page_15',
+    );
+  }
 }

@@ -4,4 +4,8 @@ abstract interface class SavedJobsLocalDataSource {
   Future<void> cacheSavedJobs(String key, PaginatedSavedJobsModel savedJobs);
 
   Future<PaginatedSavedJobsModel?> getCachedSavedJobs(String key);
+
+  Future<void> removeSavedJob(int jobPostId);
+
+  Future<void> clearCache();
 }

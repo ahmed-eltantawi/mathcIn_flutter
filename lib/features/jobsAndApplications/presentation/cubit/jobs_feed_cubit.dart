@@ -211,22 +211,44 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
     final currentState = state;
     if (currentState is! JobsFeedLoaded) return;
 
-    final result = await toggleSaveJobUseCase(jobId);
+    final targetJob = currentState.jobs.firstWhere(
+      (job) => job.id == jobId,
+      orElse: () => currentState.jobs.first,
+    );
+    final currentIsSaved = targetJob.isSaved;
+
+    final result = await toggleSaveJobUseCase(
+      jobId,
+      currentIsSaved: currentIsSaved,
+    );
 
     result.fold(
       (failure) {
         emit(currentState.copyWith(errorMessage: failure.message));
       },
-      (_) {
+      (updatedEntity) {
         final updatedJobs = currentState.jobs.map((job) {
           if (job.id == jobId) {
-            return job.copyWith(isSaved: !job.isSaved);
+            return job.copyWith(isSaved: updatedEntity.isSaved);
           }
           return job;
         }).toList();
         emit(currentState.copyWith(jobs: updatedJobs));
       },
     );
+  }
+
+  void updateJobSavedStatus({required String jobId, required bool isSaved}) {
+    final currentState = state;
+    if (currentState is JobsFeedLoaded) {
+      final updatedJobs = currentState.jobs.map((job) {
+        if (job.id == jobId) {
+          return job.copyWith(isSaved: isSaved);
+        }
+        return job;
+      }).toList();
+      emit(currentState.copyWith(jobs: updatedJobs));
+    }
   }
 
   Future<void> applyForJob(String jobId) async {
