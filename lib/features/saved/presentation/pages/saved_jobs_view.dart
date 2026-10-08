@@ -5,10 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:MatchIn/core/routing/app_routes.dart';
 import 'package:MatchIn/core/services/services_locator.dart';
-import 'package:MatchIn/core/utils/app_colors.dart';
-import 'package:MatchIn/core/utils/app_text_styles.dart';
+import 'package:MatchIn/core/widgets/error/app_error.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/job_details_widgets/job_card_widgets/job_card.dart';
 import 'package:MatchIn/features/saved/data/repositories/applied_jobs_repository.dart';
@@ -132,7 +132,6 @@ class _SavedJobsContentState extends State<_SavedJobsContent> {
             }
 
             return Scaffold(
-              backgroundColor: AppColors.background,
               body: SafeArea(
                 child: Column(
                   children: [
@@ -188,33 +187,11 @@ class _SavedJobsContentState extends State<_SavedJobsContent> {
     }
 
     if (state is SavedJobsError) {
-      return Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.error_outline_rounded,
-                size: 48.sp,
-                color: Colors.redAccent,
-              ),
-              SizedBox(height: 12.h),
-              Text(
-                state.message,
-                textAlign: TextAlign.center,
-                style: AppTextStyles.regular14,
-              ),
-              SizedBox(height: 16.h),
-              ElevatedButton(
-                onPressed: () {
-                  context.read<SavedJobsCubit>().fetchSavedJobs();
-                },
-                child: Text(S.of(context).tryAgain),
-              ),
-            ],
-          ),
-        ),
+      return AppErrorWidget(
+        message: state.message,
+        onRetry: () {
+          context.read<SavedJobsCubit>().fetchSavedJobs();
+        },
       );
     }
 
@@ -230,7 +207,9 @@ class _SavedJobsContentState extends State<_SavedJobsContent> {
               Center(
                 child: Text(
                   S.of(context).noSavedJobsYet,
-                  style: AppTextStyles.regular14,
+                  style: context.textTheme.bodyMedium?.copyWith(
+                    color: context.colors.onSurface.withValues(alpha: 0.6),
+                  ),
                 ),
               ),
             ],
@@ -291,33 +270,11 @@ class _SavedJobsContentState extends State<_SavedJobsContent> {
         }
 
         if (state is ApplicationsError) {
-          return Center(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.error_outline_rounded,
-                    size: 48.sp,
-                    color: Colors.redAccent,
-                  ),
-                  SizedBox(height: 12.h),
-                  Text(
-                    state.message,
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.regular14,
-                  ),
-                  SizedBox(height: 16.h),
-                  ElevatedButton(
-                    onPressed: () {
-                      context.read<ApplicationsCubit>().fetchApplications();
-                    },
-                    child: Text(S.of(context).tryAgain),
-                  ),
-                ],
-              ),
-            ),
+          return AppErrorWidget(
+            message: state.message,
+            onRetry: () {
+              context.read<ApplicationsCubit>().fetchApplications();
+            },
           );
         }
 
@@ -333,7 +290,9 @@ class _SavedJobsContentState extends State<_SavedJobsContent> {
                 Center(
                   child: Text(
                     S.of(context).noApplicationsYet,
-                    style: AppTextStyles.regular14,
+                    style: context.textTheme.bodyMedium?.copyWith(
+                      color: context.colors.onSurface.withValues(alpha: 0.6),
+                    ),
                   ),
                 ),
               ],

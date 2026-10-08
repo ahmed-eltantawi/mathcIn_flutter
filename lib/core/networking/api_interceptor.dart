@@ -35,9 +35,8 @@ class ApiInterceptor extends Interceptor {
         ApiHeaderKey.getAuthorizationValue(accessToken: accessToken);
 
     // add app language in request header
-    // AppConstants.languageCode is not available in this project version,
-    // so use a safe fallback language code instead.
-    options.headers[ApiHeaderKey.acceptLanguage] = 'en';
+    options.headers[ApiHeaderKey.acceptLanguage] =
+        sharedPreferencesService.getLanguageCode();
 
     super.onRequest(options, handler);
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:MatchIn/core/extensions/date_time_extensions.dart';
+import 'package:MatchIn/core/utils/app_colors.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/entities/application_entity.dart';
 import 'package:MatchIn/features/saved/presentation/models/applied_job_ui_model.dart' as ui_model;
@@ -54,7 +55,7 @@ class AppliedJobCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12.r),
         side: BorderSide(
           color: isInterview
-              ? const Color(0xFFC88A26).withValues(alpha: 0.35)
+              ? AppColors.amber.withValues(alpha: 0.35)
               : context.theme.dividerColor,
           width: 1,
         ),
@@ -66,7 +67,7 @@ class AppliedJobCard extends StatelessWidget {
               ? LinearGradient(
                   colors: [
                     context.colors.surface,
-                    const Color(0xFFC88A26).withValues(alpha: 0.05),
+                    AppColors.amber.withValues(alpha: 0.05),
                   ],
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
@@ -90,10 +91,12 @@ class AppliedJobCard extends StatelessWidget {
                       height: 44.r,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: application?.logoBgColor ?? const Color(0xFFE8F5E9),
+                        color: application?.logoBgColor ??
+                            context.semanticColors.success.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(10.r),
                         border: Border.all(
-                          color: (application?.logoTextColor ?? const Color(0xFF2E7D32))
+                          color: (application?.logoTextColor ??
+                                  context.semanticColors.success)
                               .withValues(alpha: 0.25),
                           width: 1,
                         ),
@@ -101,7 +104,8 @@ class AppliedJobCard extends StatelessWidget {
                       child: Text(
                         companyInitials,
                         style: context.textTheme.titleMedium?.copyWith(
-                          color: application?.logoTextColor ?? const Color(0xFF2E7D32),
+                          color: application?.logoTextColor ??
+                              context.semanticColors.success,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -170,9 +174,9 @@ class AppliedJobCard extends StatelessWidget {
                       vertical: 8.h,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFC88A26).withValues(alpha: 0.08),
+                      color: AppColors.amber.withValues(alpha: 0.08),
                       border: Border.all(
-                        color: const Color(0xFFC88A26).withValues(alpha: 0.25),
+                        color: AppColors.amber.withValues(alpha: 0.25),
                         width: 1,
                       ),
                       borderRadius: BorderRadius.circular(8.r),
@@ -183,14 +187,14 @@ class AppliedJobCard extends StatelessWidget {
                         Icon(
                           Icons.calendar_today_outlined,
                           size: 16.sp,
-                          color: const Color(0xFFC88A26),
+                          color: AppColors.amber,
                         ),
                         SizedBox(width: 8.w),
                         Expanded(
                           child: Text(
                             application!.highlightNote!,
                             style: context.textTheme.bodySmall?.copyWith(
-                              color: const Color(0xFF8F610E),
+                              color: AppColors.amber,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -325,24 +329,24 @@ class AppliedJobCard extends StatelessWidget {
         borderColor = context.colors.secondary.withValues(alpha: 0.20);
         break;
       case ApplicationStatus.interview:
-        textColor = const Color(0xFFC88A26);
-        bgColor = const Color(0xFFC88A26).withValues(alpha: 0.12);
-        borderColor = const Color(0xFFC88A26).withValues(alpha: 0.30);
+        textColor = AppColors.amber;
+        bgColor = AppColors.amber.withValues(alpha: 0.12);
+        borderColor = AppColors.amber.withValues(alpha: 0.30);
         break;
       case ApplicationStatus.offer:
-        textColor = const Color(0xFF2E7D32);
-        bgColor = const Color(0xFFE8F5E9);
-        borderColor = const Color(0xFF81C784);
+        textColor = context.semanticColors.success;
+        bgColor = context.semanticColors.success.withValues(alpha: 0.12);
+        borderColor = context.semanticColors.success.withValues(alpha: 0.30);
         break;
       case ApplicationStatus.rejected:
-        textColor = Colors.redAccent;
-        bgColor = Colors.redAccent.withValues(alpha: 0.10);
-        borderColor = Colors.redAccent.withValues(alpha: 0.20);
+        textColor = context.colors.error;
+        bgColor = context.colors.error.withValues(alpha: 0.10);
+        borderColor = context.colors.error.withValues(alpha: 0.20);
         break;
       case ApplicationStatus.withdrawn:
-        textColor = Colors.grey;
-        bgColor = Colors.grey.withValues(alpha: 0.12);
-        borderColor = Colors.grey.withValues(alpha: 0.30);
+        textColor = context.colors.onSurface.withValues(alpha: 0.55);
+        bgColor = context.colors.onSurface.withValues(alpha: 0.08);
+        borderColor = context.colors.onSurface.withValues(alpha: 0.20);
         break;
       case ApplicationStatus.unknown:
         textColor = context.colors.primary;

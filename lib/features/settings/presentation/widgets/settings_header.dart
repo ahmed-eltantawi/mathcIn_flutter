@@ -27,10 +27,13 @@ class SettingsHeader extends StatelessWidget {
                 Navigator.of(context).maybePop();
               }
             },
-            icon: Icon(
-              Icons.arrow_back_ios_new_rounded,
-              size: 18.sp,
-              color: colors.onSurface,
+            icon: Transform.flip(
+              flipX: Directionality.of(context) == TextDirection.rtl,
+              child: Icon(
+                Icons.arrow_back_ios_new_rounded,
+                size: 18.sp,
+                color: colors.onSurface,
+              ),
             ),
           ),
           SizedBox(width: 8.w),

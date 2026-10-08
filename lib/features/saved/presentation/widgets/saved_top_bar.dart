@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:MatchIn/core/utils/app_colors.dart';
-import 'package:MatchIn/core/utils/app_text_styles.dart';
+import 'package:MatchIn/core/extensions/context_extensions.dart';
 
 class SavedTopBar extends StatelessWidget {
   const SavedTopBar({
@@ -23,9 +22,9 @@ class SavedTopBar extends StatelessWidget {
         children: [
           Text(
             title,
-            style: AppTextStyles.heading24Bold(
-              isArabic: false,
-              color: AppColors.primary,
+            style: context.textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.w700,
+              color: context.colors.primary,
             ),
           ),
           InkWell(
@@ -41,7 +40,7 @@ class SavedTopBar extends StatelessWidget {
               child: Icon(
                 Icons.search,
                 size: 20.sp,
-                color: AppColors.textPrimary,
+                color: context.colors.onSurface,
               ),
             ),
           ),
