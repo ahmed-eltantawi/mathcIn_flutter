@@ -384,20 +384,20 @@ class S {
     );
   }
 
-  /// `New password`
+  /// `New Password`
   String get newPassword {
     return Intl.message(
-      'New password',
+      'New Password',
       name: 'newPassword',
       desc: '',
       args: [],
     );
   }
 
-  /// `Confirm new password`
+  /// `Confirm New Password`
   String get confirmNewPassword {
     return Intl.message(
-      'Confirm new password',
+      'Confirm New Password',
       name: 'confirmNewPassword',
       desc: '',
       args: [],
@@ -964,6 +964,201 @@ class S {
     return Intl.message(
       '© 2025 SkillMatch. All rights reserved.',
       name: 'copyright',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Arabic`
+  String get arabic {
+    return Intl.message('Arabic', name: 'arabic', desc: '', args: []);
+  }
+
+  /// `Dark`
+  String get dark {
+    return Intl.message('Dark', name: 'dark', desc: '', args: []);
+  }
+
+  /// `System`
+  String get system {
+    return Intl.message('System', name: 'system', desc: '', args: []);
+  }
+
+  /// `Current Password`
+  String get currentPassword {
+    return Intl.message(
+      'Current Password',
+      name: 'currentPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password changed successfully`
+  String get changePasswordSuccess {
+    return Intl.message(
+      'Password changed successfully',
+      name: 'changePasswordSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your new password must be at least 8 characters long and contain uppercase, lowercase, number, and special character.`
+  String get changePasswordDescription {
+    return Intl.message(
+      'Your new password must be at least 8 characters long and contain uppercase, lowercase, number, and special character.',
+      name: 'changePasswordDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Get in touch with us`
+  String get getInTouch {
+    return Intl.message(
+      'Get in touch with us',
+      name: 'getInTouch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email Support`
+  String get contactEmailTitle {
+    return Intl.message(
+      'Email Support',
+      name: 'contactEmailTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone Number`
+  String get contactPhoneTitle {
+    return Intl.message(
+      'Phone Number',
+      name: 'contactPhoneTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Office Location`
+  String get contactAddressTitle {
+    return Intl.message(
+      'Office Location',
+      name: 'contactAddressTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Support Hours`
+  String get contactHoursTitle {
+    return Intl.message(
+      'Support Hours',
+      name: 'contactHoursTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `support@skillmatch.com`
+  String get contactEmailPlaceholder {
+    return Intl.message(
+      'support@skillmatch.com',
+      name: 'contactEmailPlaceholder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `+1 (555) 019-2834`
+  String get contactPhonePlaceholder {
+    return Intl.message(
+      '+1 (555) 019-2834',
+      name: 'contactPhonePlaceholder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `100 Innovation Boulevard, Tech Park, Suite 400`
+  String get contactAddressPlaceholder {
+    return Intl.message(
+      '100 Innovation Boulevard, Tech Park, Suite 400',
+      name: 'contactAddressPlaceholder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Monday - Friday, 9:00 AM - 6:00 PM`
+  String get contactHoursPlaceholder {
+    return Intl.message(
+      'Monday - Friday, 9:00 AM - 6:00 PM',
+      name: 'contactHoursPlaceholder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Connect with us across our social channels to stay updated with opportunities and news.`
+  String get followUsDescription {
+    return Intl.message(
+      'Connect with us across our social channels to stay updated with opportunities and news.',
+      name: 'followUsDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Log Out`
+  String get logOutConfirmationTitle {
+    return Intl.message(
+      'Log Out',
+      name: 'logOutConfirmationTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to log out of your account?`
+  String get logOutConfirmationMessage {
+    return Intl.message(
+      'Are you sure you want to log out of your account?',
+      name: 'logOutConfirmationMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Language`
+  String get selectLanguage {
+    return Intl.message(
+      'Select Language',
+      name: 'selectLanguage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Theme`
+  String get selectTheme {
+    return Intl.message(
+      'Select Theme',
+      name: 'selectTheme',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Copied to clipboard`
+  String get copiedToClipboard {
+    return Intl.message(
+      'Copied to clipboard',
+      name: 'copiedToClipboard',
       desc: '',
       args: [],
     );
@@ -2229,16 +2424,6 @@ class S {
     return Intl.message(
       'What skills should I learn next?',
       name: 'chatSuggestion4',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Copied to clipboard`
-  String get copiedToClipboard {
-    return Intl.message(
-      'Copied to clipboard',
-      name: 'copiedToClipboard',
       desc: '',
       args: [],
     );

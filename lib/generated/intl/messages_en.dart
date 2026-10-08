@@ -117,6 +117,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "applyForRole": MessageLookupByLibrary.simpleMessage("Apply for Role"),
     "applyNow": MessageLookupByLibrary.simpleMessage("Apply Now"),
     "applyingFor": MessageLookupByLibrary.simpleMessage("Applying for"),
+    "arabic": MessageLookupByLibrary.simpleMessage("Arabic"),
     "askAnything": MessageLookupByLibrary.simpleMessage("Ask anything..."),
     "askCareerMentorDescription": MessageLookupByLibrary.simpleMessage(
       "Ask your Career Mentor what to focus on while you wait.",
@@ -157,6 +158,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "You can change it later in Settings",
     ),
     "changePassword": MessageLookupByLibrary.simpleMessage("Change Password"),
+    "changePasswordDescription": MessageLookupByLibrary.simpleMessage(
+      "Your new password must be at least 8 characters long and contain uppercase, lowercase, number, and special character.",
+    ),
+    "changePasswordSuccess": MessageLookupByLibrary.simpleMessage(
+      "Password changed successfully",
+    ),
     "characters": MessageLookupByLibrary.simpleMessage("characters"),
     "chatBot": MessageLookupByLibrary.simpleMessage("Chat Bot"),
     "chatHistory": MessageLookupByLibrary.simpleMessage("Chat History"),
@@ -193,12 +200,30 @@ class MessageLookup extends MessageLookupByLibrary {
       "Are you sure you want to delete this chat? This action cannot be undone.",
     ),
     "confirmNewPassword": MessageLookupByLibrary.simpleMessage(
-      "Confirm new password",
+      "Confirm New Password",
     ),
     "confirmPassword": MessageLookupByLibrary.simpleMessage("Confirm Password"),
     "confirmPasswordHint": MessageLookupByLibrary.simpleMessage(
       "Re-enter your password",
     ),
+    "contactAddressPlaceholder": MessageLookupByLibrary.simpleMessage(
+      "100 Innovation Boulevard, Tech Park, Suite 400",
+    ),
+    "contactAddressTitle": MessageLookupByLibrary.simpleMessage(
+      "Office Location",
+    ),
+    "contactEmailPlaceholder": MessageLookupByLibrary.simpleMessage(
+      "support@skillmatch.com",
+    ),
+    "contactEmailTitle": MessageLookupByLibrary.simpleMessage("Email Support"),
+    "contactHoursPlaceholder": MessageLookupByLibrary.simpleMessage(
+      "Monday - Friday, 9:00 AM - 6:00 PM",
+    ),
+    "contactHoursTitle": MessageLookupByLibrary.simpleMessage("Support Hours"),
+    "contactPhonePlaceholder": MessageLookupByLibrary.simpleMessage(
+      "+1 (555) 019-2834",
+    ),
+    "contactPhoneTitle": MessageLookupByLibrary.simpleMessage("Phone Number"),
     "contactUs": MessageLookupByLibrary.simpleMessage("Contact Us"),
     "continueAsGuest": MessageLookupByLibrary.simpleMessage(
       "Continue as Guest",
@@ -224,6 +249,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Create a new password",
     ),
     "csOrRelated": MessageLookupByLibrary.simpleMessage("CS or related"),
+    "currentPassword": MessageLookupByLibrary.simpleMessage("Current Password"),
     "currentStatus": MessageLookupByLibrary.simpleMessage("CURRENT STATUS"),
     "cv": MessageLookupByLibrary.simpleMessage("CV"),
     "cvAnalysisCompleted": MessageLookupByLibrary.simpleMessage(
@@ -242,6 +268,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "cvUploadRequirements": MessageLookupByLibrary.simpleMessage(
       "PDF or DOCX • Max 5 MB",
     ),
+    "dark": MessageLookupByLibrary.simpleMessage("Dark"),
     "daysAgo": m0,
     "delete": MessageLookupByLibrary.simpleMessage("Delete"),
     "deleteChat": MessageLookupByLibrary.simpleMessage("Delete Chat"),
@@ -294,6 +321,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Focus on 2 high-priority skills",
     ),
     "followUs": MessageLookupByLibrary.simpleMessage("Follow Us"),
+    "followUsDescription": MessageLookupByLibrary.simpleMessage(
+      "Connect with us across our social channels to stay updated with opportunities and news.",
+    ),
     "forgotPassword": MessageLookupByLibrary.simpleMessage("Forgot password?"),
     "foundInCvAndProjects": MessageLookupByLibrary.simpleMessage(
       "Found in your CV and projects",
@@ -313,6 +343,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "getExplainableMatchDesc": MessageLookupByLibrary.simpleMessage(
       "Not just a score — strengths, gaps, and clear next actions.",
     ),
+    "getInTouch": MessageLookupByLibrary.simpleMessage("Get in touch with us"),
     "getStarted": MessageLookupByLibrary.simpleMessage("Get Started"),
     "github": MessageLookupByLibrary.simpleMessage("GitHub"),
     "githubRepositoryUrl": MessageLookupByLibrary.simpleMessage(
@@ -375,6 +406,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "Loading notifications...",
     ),
     "logOut": MessageLookupByLibrary.simpleMessage("Log Out"),
+    "logOutConfirmationMessage": MessageLookupByLibrary.simpleMessage(
+      "Are you sure you want to log out of your account?",
+    ),
+    "logOutConfirmationTitle": MessageLookupByLibrary.simpleMessage("Log Out"),
     "login": MessageLookupByLibrary.simpleMessage("Login"),
     "loginSubtitle": MessageLookupByLibrary.simpleMessage(
       "Access your verified career pathways and opportunities.",
@@ -416,7 +451,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "newJobsMatchProfile": MessageLookupByLibrary.simpleMessage(
       "New jobs match your profile",
     ),
-    "newPassword": MessageLookupByLibrary.simpleMessage("New password"),
+    "newPassword": MessageLookupByLibrary.simpleMessage("New Password"),
     "next": MessageLookupByLibrary.simpleMessage("Next"),
     "nextApplicationQuestions": MessageLookupByLibrary.simpleMessage(
       "Next: Application questions",
@@ -640,6 +675,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "SkillMatch securely protects your verified credentials and application histories.",
     ),
     "seeAll": MessageLookupByLibrary.simpleMessage("See all"),
+    "selectLanguage": MessageLookupByLibrary.simpleMessage("Select Language"),
+    "selectTheme": MessageLookupByLibrary.simpleMessage("Select Theme"),
     "senior": MessageLookupByLibrary.simpleMessage("Senior"),
     "sentCodeToEmail": MessageLookupByLibrary.simpleMessage(
       "We sent a 6-digit code to your email.",
@@ -722,6 +759,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "supportingDocumentOptional": MessageLookupByLibrary.simpleMessage(
       "Supporting Document (Optional)",
     ),
+    "system": MessageLookupByLibrary.simpleMessage("System"),
     "targetRole": MessageLookupByLibrary.simpleMessage("Target role"),
     "tasksCompleted": MessageLookupByLibrary.simpleMessage("Tasks completed"),
     "technicalCultureFitStage": MessageLookupByLibrary.simpleMessage(

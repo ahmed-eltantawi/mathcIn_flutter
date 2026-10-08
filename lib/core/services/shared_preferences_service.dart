@@ -94,4 +94,46 @@ class SharedPreferencesService {
   int getRewardedAdXp() {
     return _sharedPreferencesHelper.getData(key: CacheKey.rewardedAdXp) ?? 0;
   }
+
+  // --- Notifications Preference ---
+  Future<void> setNotificationsEnabled(bool value) async {
+    await _sharedPreferencesHelper.saveData(
+      key: CacheKey.notificationsEnabled,
+      value: value,
+    );
+  }
+
+  bool isNotificationsEnabled() {
+    return _sharedPreferencesHelper.getData(
+          key: CacheKey.notificationsEnabled,
+        ) ??
+        true;
+  }
+
+  // --- Language Preference ---
+  Future<void> saveLanguageCode(String code) async {
+    await _sharedPreferencesHelper.saveData(
+      key: CacheKey.languageCode,
+      value: code,
+    );
+  }
+
+  String getLanguageCode() {
+    return _sharedPreferencesHelper.getString(key: CacheKey.languageCode) ??
+        'en';
+  }
+
+  // --- Theme Mode Preference ---
+  Future<void> saveThemeMode(String themeMode) async {
+    await _sharedPreferencesHelper.saveData(
+      key: CacheKey.themeMode,
+      value: themeMode,
+    );
+  }
+
+  String getThemeMode() {
+    return _sharedPreferencesHelper.getString(key: CacheKey.themeMode) ??
+        'system';
+  }
 }
+

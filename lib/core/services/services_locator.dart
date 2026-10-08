@@ -104,6 +104,22 @@ import 'package:MatchIn/features/saved/domain/use_cases/get_saved_jobs_use_case.
 import 'package:MatchIn/features/saved/domain/use_cases/save_job_use_case.dart';
 import 'package:MatchIn/features/saved/domain/use_cases/unsave_job_use_case.dart';
 import 'package:MatchIn/features/saved/presentation/cubit/saved_jobs_cubit.dart';
+import 'package:MatchIn/features/settings/data/data_sources/settings_local_data_source.dart';
+import 'package:MatchIn/features/settings/data/data_sources/settings_local_data_source_impl.dart';
+import 'package:MatchIn/features/settings/data/data_sources/settings_remote_data_source.dart';
+import 'package:MatchIn/features/settings/data/data_sources/settings_remote_data_source_impl.dart';
+import 'package:MatchIn/features/settings/data/repositories/settings_repository_impl.dart';
+import 'package:MatchIn/features/settings/domain/repositories/settings_repository.dart';
+import 'package:MatchIn/features/settings/domain/use_cases/change_password_use_case.dart';
+import 'package:MatchIn/features/settings/domain/use_cases/get_language_use_case.dart';
+import 'package:MatchIn/features/settings/domain/use_cases/get_notification_preference_use_case.dart';
+import 'package:MatchIn/features/settings/domain/use_cases/get_theme_mode_use_case.dart';
+import 'package:MatchIn/features/settings/domain/use_cases/logout_use_case.dart';
+import 'package:MatchIn/features/settings/domain/use_cases/set_language_use_case.dart';
+import 'package:MatchIn/features/settings/domain/use_cases/set_notification_preference_use_case.dart';
+import 'package:MatchIn/features/settings/domain/use_cases/set_theme_mode_use_case.dart';
+import 'package:MatchIn/features/settings/presentation/cubit/change_password_cubit.dart';
+import 'package:MatchIn/features/settings/presentation/cubit/settings_cubit.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -579,4 +595,76 @@ Future<void> setupServiceLocator() async {
   getIt.registerLazySingleton<SaveCareerPreferencesUseCase>(
     () => SaveCareerPreferencesUseCase(repository: getIt()),
   );
+
+  // =========================================================
+  // Settings Feature
+  // =========================================================
+
+  getIt.registerLazySingleton<SettingsLocalDataSource>(
+    () => SettingsLocalDataSourceImpl(
+      sharedPreferencesService: getIt(),
+      secureStorageService: getIt(),
+      profileLocalDataSource: getIt(),
+    ),
+  );
+
+  getIt.registerLazySingleton<SettingsRemoteDataSource>(
+    () => SettingsRemoteDataSourceImpl(apiConsumer: getIt()),
+  );
+
+  getIt.registerLazySingleton<SettingsRepository>(
+    () => SettingsRepositoryImpl(
+      localDataSource: getIt(),
+      remoteDataSource: getIt(),
+    ),
+  );
+
+  getIt.registerLazySingleton<GetNotificationPreferenceUseCase>(
+    () => GetNotificationPreferenceUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<SetNotificationPreferenceUseCase>(
+    () => SetNotificationPreferenceUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<GetLanguageUseCase>(
+    () => GetLanguageUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<SetLanguageUseCase>(
+    () => SetLanguageUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<GetThemeModeUseCase>(
+    () => GetThemeModeUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<SetThemeModeUseCase>(
+    () => SetThemeModeUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<ChangePasswordUseCase>(
+    () => ChangePasswordUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<LogoutUseCase>(
+    () => LogoutUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<SettingsCubit>(
+    () => SettingsCubit(
+      getNotificationPreferenceUseCase: getIt(),
+      setNotificationPreferenceUseCase: getIt(),
+      getLanguageUseCase: getIt(),
+      setLanguageUseCase: getIt(),
+      getThemeModeUseCase: getIt(),
+      setThemeModeUseCase: getIt(),
+      logoutUseCase: getIt(),
+    ),
+  );
+
+  getIt.registerFactory<ChangePasswordCubit>(
+    () => ChangePasswordCubit(changePasswordUseCase: getIt()),
+  );
 }
+

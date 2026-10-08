@@ -51,4 +51,10 @@ abstract final class AppRoutes {
 
   static const String kChangePasswordView =
       '/changePassword';
+  static const String kPrivacyPolicyView =
+      '/privacyPolicy';
+  static const String kContactUsView =
+      '/contactUs';
+  static const String kFollowUsView =
+      '/followUs';
 }

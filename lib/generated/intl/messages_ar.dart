@@ -117,6 +117,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "applyForRole": MessageLookupByLibrary.simpleMessage("التقديم للوظيفة"),
     "applyNow": MessageLookupByLibrary.simpleMessage("قدّم الآن"),
     "applyingFor": MessageLookupByLibrary.simpleMessage("التقديم على"),
+    "arabic": MessageLookupByLibrary.simpleMessage("العربية"),
     "askAnything": MessageLookupByLibrary.simpleMessage("اسأل أي شيء..."),
     "askCareerMentorDescription": MessageLookupByLibrary.simpleMessage(
       "اسأل مرشدك المهني عما يمكنك التركيز عليه أثناء الانتظار.",
@@ -155,6 +156,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "You can change it later in Settings",
     ),
     "changePassword": MessageLookupByLibrary.simpleMessage("تغيير كلمة المرور"),
+    "changePasswordDescription": MessageLookupByLibrary.simpleMessage(
+      "يجب أن تتكون كلمة المرور الجديدة من 8 أحرف على الأقل وتحتوي على حرف كبير وصغير ورقم ورمز خاص.",
+    ),
+    "changePasswordSuccess": MessageLookupByLibrary.simpleMessage(
+      "تم تغيير كلمة المرور بنجاح",
+    ),
     "characters": MessageLookupByLibrary.simpleMessage("حرف"),
     "chatBot": MessageLookupByLibrary.simpleMessage("المساعد الذكي"),
     "chatHistory": MessageLookupByLibrary.simpleMessage("سجل المحادثات"),
@@ -199,6 +206,24 @@ class MessageLookup extends MessageLookupByLibrary {
     "confirmPasswordHint": MessageLookupByLibrary.simpleMessage(
       "أعد إدخال كلمة المرور",
     ),
+    "contactAddressPlaceholder": MessageLookupByLibrary.simpleMessage(
+      "١٠٠ جادة الابتكار، مجمع التكنولوجيا، جناح ٤٠٠",
+    ),
+    "contactAddressTitle": MessageLookupByLibrary.simpleMessage("مقر المكتب"),
+    "contactEmailPlaceholder": MessageLookupByLibrary.simpleMessage(
+      "support@skillmatch.com",
+    ),
+    "contactEmailTitle": MessageLookupByLibrary.simpleMessage(
+      "الدعم عبر البريد الإلكتروني",
+    ),
+    "contactHoursPlaceholder": MessageLookupByLibrary.simpleMessage(
+      "الاثنين - الجمعة، ٩:٠٠ ص - ٦:٠٠ م",
+    ),
+    "contactHoursTitle": MessageLookupByLibrary.simpleMessage("ساعات العمل"),
+    "contactPhonePlaceholder": MessageLookupByLibrary.simpleMessage(
+      "+1 (555) 019-2834",
+    ),
+    "contactPhoneTitle": MessageLookupByLibrary.simpleMessage("رقم الهاتف"),
     "contactUs": MessageLookupByLibrary.simpleMessage("تواصل معنا"),
     "continueAsGuest": MessageLookupByLibrary.simpleMessage("الدخول كضيف"),
     "continueText": MessageLookupByLibrary.simpleMessage("متابعة"),
@@ -224,6 +249,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "csOrRelated": MessageLookupByLibrary.simpleMessage(
       "علوم حاسب أو مجال ذو صلة",
     ),
+    "currentPassword": MessageLookupByLibrary.simpleMessage(
+      "كلمة المرور الحالية",
+    ),
     "currentStatus": MessageLookupByLibrary.simpleMessage("الحالة الحالية"),
     "cv": MessageLookupByLibrary.simpleMessage("السيرة الذاتية"),
     "cvAnalysisCompleted": MessageLookupByLibrary.simpleMessage(
@@ -242,6 +270,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "cvUploadRequirements": MessageLookupByLibrary.simpleMessage(
       "PDF أو DOCX • بحد أقصى 5 MB",
     ),
+    "dark": MessageLookupByLibrary.simpleMessage("داكن"),
     "daysAgo": m0,
     "delete": MessageLookupByLibrary.simpleMessage("حذف"),
     "deleteChat": MessageLookupByLibrary.simpleMessage("حذف المحادثة"),
@@ -290,6 +319,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "ركز على مهارتين بأولوية عالية",
     ),
     "followUs": MessageLookupByLibrary.simpleMessage("تابعنا"),
+    "followUsDescription": MessageLookupByLibrary.simpleMessage(
+      "تواصل معنا عبر منصات التواصل الاجتماعي لمتابعة كل جديد والاطلاع على الفرص.",
+    ),
     "forgotPassword": MessageLookupByLibrary.simpleMessage("نسيت كلمة المرور؟"),
     "foundInCvAndProjects": MessageLookupByLibrary.simpleMessage(
       "موجودة في سيرتك الذاتية ومشاريعك",
@@ -309,6 +341,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "getExplainableMatchDesc": MessageLookupByLibrary.simpleMessage(
       "ليس مجرد نسبة مئوية — بل نقاط قوة وفجوات وخطوات عمل واضحة.",
     ),
+    "getInTouch": MessageLookupByLibrary.simpleMessage("تواصل معنا"),
     "getStarted": MessageLookupByLibrary.simpleMessage("ابدأ الآن"),
     "github": MessageLookupByLibrary.simpleMessage("GitHub"),
     "githubRepositoryUrl": MessageLookupByLibrary.simpleMessage(
@@ -371,6 +404,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "جارٍ تحميل الإشعارات...",
     ),
     "logOut": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
+    "logOutConfirmationMessage": MessageLookupByLibrary.simpleMessage(
+      "هل أنت متأكد من أنك تريد تسجيل الخروج من حسابك؟",
+    ),
+    "logOutConfirmationTitle": MessageLookupByLibrary.simpleMessage(
+      "تسجيل الخروج",
+    ),
     "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "loginSubtitle": MessageLookupByLibrary.simpleMessage(
       "ادخل على مساراتك المهنية والفرص المتاحة.",
@@ -632,6 +671,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "سكيل ماتش يحمي بياناتك وسجل تقديماتك بأمان.",
     ),
     "seeAll": MessageLookupByLibrary.simpleMessage("عرض الكل"),
+    "selectLanguage": MessageLookupByLibrary.simpleMessage("اختر اللغة"),
+    "selectTheme": MessageLookupByLibrary.simpleMessage("اختر المظهر"),
     "senior": MessageLookupByLibrary.simpleMessage("Senior"),
     "sentCodeToEmail": MessageLookupByLibrary.simpleMessage(
       "لقد أرسلنا رمزاً مكوناً من 6 أرقام إلى بريدك الإلكتروني.",
@@ -700,6 +741,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "supportingDocumentOptional": MessageLookupByLibrary.simpleMessage(
       "مستند داعم (اختياري)",
     ),
+    "system": MessageLookupByLibrary.simpleMessage("تلقائي (النظام)"),
     "targetRole": MessageLookupByLibrary.simpleMessage("الوظيفة المستهدفة"),
     "tasksCompleted": MessageLookupByLibrary.simpleMessage("مهام مكتملة"),
     "technicalCultureFitStage": MessageLookupByLibrary.simpleMessage(

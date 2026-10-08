@@ -24,6 +24,10 @@ import 'package:MatchIn/features/jobsAndApplications/presentation/views/job_deta
 import 'package:MatchIn/features/home/presentation/views/jobs_search_view.dart';
 import 'package:MatchIn/features/home/presentation/views/notifications_view.dart';
 import 'package:MatchIn/features/home/presentation/views/settings_view.dart';
+import 'package:MatchIn/features/settings/presentation/views/change_password_view.dart';
+import 'package:MatchIn/features/settings/presentation/views/contact_us_view.dart';
+import 'package:MatchIn/features/settings/presentation/views/follow_us_view.dart';
+import 'package:MatchIn/features/settings/presentation/views/privacy_policy_view.dart';
 import 'package:MatchIn/features/onbording/presentation/pages/onbording.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -173,6 +177,50 @@ abstract final class AppRouter {
           return _buildTransitionPage(
             state: state,
             child: const SettingsView(),
+          );
+        },
+      ),
+
+      // Change Password
+      GoRoute(
+        path: AppRoutes.kChangePasswordView,
+        pageBuilder: (context, state) {
+          return _buildTransitionPage(
+            state: state,
+            child: const ChangePasswordView(),
+          );
+        },
+      ),
+
+      // Privacy Policy
+      GoRoute(
+        path: AppRoutes.kPrivacyPolicyView,
+        pageBuilder: (context, state) {
+          return _buildTransitionPage(
+            state: state,
+            child: const PrivacyPolicyView(),
+          );
+        },
+      ),
+
+      // Contact Us
+      GoRoute(
+        path: AppRoutes.kContactUsView,
+        pageBuilder: (context, state) {
+          return _buildTransitionPage(
+            state: state,
+            child: const ContactUsView(),
+          );
+        },
+      ),
+
+      // Follow Us
+      GoRoute(
+        path: AppRoutes.kFollowUsView,
+        pageBuilder: (context, state) {
+          return _buildTransitionPage(
+            state: state,
+            child: const FollowUsView(),
           );
         },
       ),
