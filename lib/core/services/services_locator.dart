@@ -120,6 +120,18 @@ import 'package:MatchIn/features/settings/domain/use_cases/set_notification_pref
 import 'package:MatchIn/features/settings/domain/use_cases/set_theme_mode_use_case.dart';
 import 'package:MatchIn/features/settings/presentation/cubit/change_password_cubit.dart';
 import 'package:MatchIn/features/settings/presentation/cubit/settings_cubit.dart';
+import 'package:MatchIn/features/notification/data/datasources/notification_local_data_source.dart';
+import 'package:MatchIn/features/notification/data/datasources/notification_local_data_source_impl.dart';
+import 'package:MatchIn/features/notification/data/datasources/notification_remote_data_source.dart';
+import 'package:MatchIn/features/notification/data/datasources/notification_remote_data_source_impl.dart';
+import 'package:MatchIn/features/notification/data/repositories/notification_repository_impl.dart';
+import 'package:MatchIn/features/notification/domain/repositories/notification_repository.dart';
+import 'package:MatchIn/features/notification/domain/services/notification_service.dart';
+import 'package:MatchIn/features/notification/domain/usecases/get_notifications_use_case.dart';
+import 'package:MatchIn/features/notification/domain/usecases/get_unread_notifications_count_use_case.dart';
+import 'package:MatchIn/features/notification/domain/usecases/mark_all_notifications_as_read_use_case.dart';
+import 'package:MatchIn/features/notification/domain/usecases/mark_notification_as_read_use_case.dart';
+import 'package:MatchIn/features/notification/presentation/cubit/notifications_cubit.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -241,6 +253,57 @@ Future<void> setupServiceLocator() async {
       saveChatUseCase: getIt(),
       deleteChatUseCase: getIt(),
       clearAllChatsUseCase: getIt(),
+    ),
+  );
+
+  // =========================================================
+  // Notifications Feature
+  // =========================================================
+
+  getIt.registerLazySingleton<NotificationService>(
+    () => NotificationService(),
+  );
+
+  getIt.registerLazySingleton<NotificationRemoteDataSource>(
+    () => NotificationRemoteDataSourceImpl(apiConsumer: getIt()),
+  );
+
+  getIt.registerLazySingleton<NotificationLocalDataSource>(
+    () => NotificationLocalDataSourceImpl(sharedPreferencesHelper: getIt()),
+  );
+
+  getIt.registerLazySingleton<NotificationRepository>(
+    () => NotificationRepositoryImpl(
+      remoteDataSource: getIt(),
+      localDataSource: getIt(),
+      networkInfo: getIt(),
+      notificationService: getIt(),
+    ),
+  );
+
+  getIt.registerLazySingleton<GetNotificationsUseCase>(
+    () => GetNotificationsUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<GetUnreadNotificationsCountUseCase>(
+    () => GetUnreadNotificationsCountUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<MarkNotificationAsReadUseCase>(
+    () => MarkNotificationAsReadUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<MarkAllNotificationsAsReadUseCase>(
+    () => MarkAllNotificationsAsReadUseCase(repository: getIt()),
+  );
+
+  getIt.registerFactory<NotificationsCubit>(
+    () => NotificationsCubit(
+      getNotificationsUseCase: getIt(),
+      getUnreadNotificationsCountUseCase: getIt(),
+      markNotificationAsReadUseCase: getIt(),
+      markAllNotificationsAsReadUseCase: getIt(),
+      notificationService: getIt(),
     ),
   );
 

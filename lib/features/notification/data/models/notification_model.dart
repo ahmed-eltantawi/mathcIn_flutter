@@ -14,8 +14,8 @@ class NotificationModel extends NotificationEntity {
   });
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) {
-    final rawIsRead = json[ApiKey.isRead];
-    final readAt = json[ApiKey.readAt]?.toString();
+    final rawIsRead = json[ApiKey.isRead] ?? json['is_read'];
+    final readAt = (json[ApiKey.readAt] ?? json['read_at'])?.toString();
     final bool isRead;
     if (rawIsRead is bool) {
       isRead = rawIsRead;
@@ -25,14 +25,16 @@ class NotificationModel extends NotificationEntity {
       isRead = readAt != null;
     }
 
+    final message = (json['message'] ?? json[ApiKey.errorMessage] ?? json['body'])?.toString() ?? '';
+
     return NotificationModel(
-      id: (json[ApiKey.id] as num?)?.toInt() ?? 0,
-      type: json[ApiKey.type]?.toString() ?? '',
-      title: json[ApiKey.title]?.toString() ?? '',
-      message: json[ApiKey.errorMessage]?.toString() ?? '',
+      id: (json[ApiKey.id] ?? json['id'] as num?)?.toInt() ?? 0,
+      type: (json[ApiKey.type] ?? json['type'])?.toString() ?? '',
+      title: (json[ApiKey.title] ?? json['title'])?.toString() ?? '',
+      message: message,
       readAt: readAt,
       isRead: isRead,
-      createdAt: json[ApiKey.createdAt]?.toString(),
+      createdAt: (json[ApiKey.createdAt] ?? json['created_at'])?.toString(),
       data: json[ApiKey.data] is Map<String, dynamic>
           ? json[ApiKey.data] as Map<String, dynamic>
           : null,
