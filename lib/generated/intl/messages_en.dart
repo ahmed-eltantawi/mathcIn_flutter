@@ -883,5 +883,29 @@ class MessageLookup extends MessageLookupByLibrary {
     "yourMatch": MessageLookupByLibrary.simpleMessage("Your Match"),
     "zeroToTwoYears": MessageLookupByLibrary.simpleMessage("0–2 years"),
     "zeroToTwoYearsExp": MessageLookupByLibrary.simpleMessage("0–2 yrs exp"),
+    "copy": MessageLookupByLibrary.simpleMessage("Copy"),
+    "openMenu": MessageLookupByLibrary.simpleMessage("Open menu"),
+    "sendMessage": MessageLookupByLibrary.simpleMessage("Send message"),
+    "sendingMessage": MessageLookupByLibrary.simpleMessage("Sending message..."),
+    "aiAssistantSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Ask me about jobs, resumes, interviews, or your career.",
+    ),
+    "resumeOptimization": MessageLookupByLibrary.simpleMessage("Resume Optimization"),
+    "resumeOptimizationPrompt": MessageLookupByLibrary.simpleMessage(
+      "How can I optimize my CV for Flutter developer roles?",
+    ),
+    "interviewPrep": MessageLookupByLibrary.simpleMessage("Interview Prep"),
+    "interviewPrepPrompt": MessageLookupByLibrary.simpleMessage(
+      "What are the top technical interview questions for Dart and Flutter?",
+    ),
+    "careerGrowth": MessageLookupByLibrary.simpleMessage("Career Growth"),
+    "careerGrowthPrompt": MessageLookupByLibrary.simpleMessage(
+      "What steps should I take to become a Senior Mobile Architect?",
+    ),
+    "jobFitAnalysis": MessageLookupByLibrary.simpleMessage("Job Fit Analysis"),
+    "jobFitAnalysisPrompt": MessageLookupByLibrary.simpleMessage(
+      "How does MatchIn calculate my job match percentage?",
+    ),
+    "noHistoryYet": MessageLookupByLibrary.simpleMessage("No history yet"),
   };
 }

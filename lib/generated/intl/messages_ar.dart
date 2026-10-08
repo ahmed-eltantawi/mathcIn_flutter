@@ -857,5 +857,29 @@ class MessageLookup extends MessageLookupByLibrary {
     "yourMatch": MessageLookupByLibrary.simpleMessage("مدى توافقك"),
     "zeroToTwoYears": MessageLookupByLibrary.simpleMessage("0–2 سنة"),
     "zeroToTwoYearsExp": MessageLookupByLibrary.simpleMessage("خبرة 0–2 سنة"),
+    "copy": MessageLookupByLibrary.simpleMessage("نسخ"),
+    "openMenu": MessageLookupByLibrary.simpleMessage("فتح القائمة"),
+    "sendMessage": MessageLookupByLibrary.simpleMessage("إرسال رسالة"),
+    "sendingMessage": MessageLookupByLibrary.simpleMessage("جارٍ الإرسال..."),
+    "aiAssistantSubtitle": MessageLookupByLibrary.simpleMessage(
+      "اسألني عن الوظائف، السير الذاتية، المقابلات، أو مسارك المهني.",
+    ),
+    "resumeOptimization": MessageLookupByLibrary.simpleMessage("تحسين السيرة الذاتية"),
+    "resumeOptimizationPrompt": MessageLookupByLibrary.simpleMessage(
+      "كيف يمكنني تحسين سيرتي الذاتية لوظائف مطور فلاتر؟",
+    ),
+    "interviewPrep": MessageLookupByLibrary.simpleMessage("التحضير للمقابلات"),
+    "interviewPrepPrompt": MessageLookupByLibrary.simpleMessage(
+      "ما هي أهم أسئلة المقابلات الفنية لـ Dart و Flutter؟",
+    ),
+    "careerGrowth": MessageLookupByLibrary.simpleMessage("التطوير المهني"),
+    "careerGrowthPrompt": MessageLookupByLibrary.simpleMessage(
+      "ما الخطوات التي يجب اتخاذها لأصبح مهندس تطبيقات أول؟",
+    ),
+    "jobFitAnalysis": MessageLookupByLibrary.simpleMessage("تحليل ملاءمة الوظائف"),
+    "jobFitAnalysisPrompt": MessageLookupByLibrary.simpleMessage(
+      "كيف يحسب ماتش إن نسبة توافق الوظيفة معي؟",
+    ),
+    "noHistoryYet": MessageLookupByLibrary.simpleMessage("لا يوجد سجل بعد"),
   };
 }

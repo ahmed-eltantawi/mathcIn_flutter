@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:MatchIn/core/services/services_locator.dart';
-import 'package:MatchIn/generated/l10n.dart';
 import '../cubit/chatbot_cubit.dart';
 import '../cubit/chatbot_state.dart';
+import '../widgets/ai_chat_composer.dart';
+import '../widgets/ai_chat_empty_state.dart';
 import '../widgets/chat_history_drawer.dart';
-import '../widgets/chat_input_bar.dart';
 import '../widgets/chat_message_bubble.dart';
-import '../widgets/suggested_questions_grid.dart';
 import '../widgets/typing_indicator.dart';
 
 class AiChatView extends StatelessWidget {
@@ -52,41 +53,70 @@ class _AiChatViewBodyState extends State<_AiChatViewBody> {
 
   @override
   Widget build(BuildContext context) {
-    final s = S.of(context);
-    final theme = Theme.of(context);
+    final l10n = context.l10n;
+    final colors = context.colors;
 
     return Scaffold(
+      backgroundColor: colors.surface,
       drawer: const ChatHistoryDrawer(),
       appBar: AppBar(
+        backgroundColor: colors.surface,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        centerTitle: false,
+        leading: Builder(
+          builder: (ctx) {
+            return IconButton(
+              tooltip: l10n.openMenu,
+              icon: Icon(
+                Icons.menu_rounded,
+                size: 24.r,
+                color: colors.onSurface,
+              ),
+              onPressed: () {
+                Scaffold.of(ctx).openDrawer();
+              },
+            );
+          },
+        ),
         title: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              padding: const EdgeInsets.all(6),
+              padding: EdgeInsets.all(6.r),
               decoration: BoxDecoration(
-                color: theme.primaryColor.withValues(alpha: 0.15),
+                color: colors.primary.withValues(alpha: 0.12),
                 shape: BoxShape.circle,
               ),
               child: Icon(
-                Icons.auto_awesome,
-                size: 20,
-                color: theme.primaryColor,
+                Icons.auto_awesome_rounded,
+                size: 18.r,
+                color: colors.primary,
               ),
             ),
-            const SizedBox(width: 8),
+            SizedBox(width: 8.w),
             Text(
-              s.aiAssistant,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              l10n.aiAssistant,
+              style: context.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: colors.onSurface,
+              ),
             ),
           ],
         ),
         actions: [
           IconButton(
-            tooltip: s.newChat,
-            icon: const Icon(Icons.add_comment_outlined),
+            tooltip: l10n.newChat,
+            icon: Icon(
+              Icons.add_comment_outlined,
+              size: 22.r,
+              color: colors.onSurface,
+            ),
             onPressed: () {
               context.read<ChatbotCubit>().initializeChat();
             },
           ),
+          SizedBox(width: 4.w),
         ],
       ),
       body: BlocConsumer<ChatbotCubit, ChatbotState>(
@@ -102,43 +132,14 @@ class _AiChatViewBodyState extends State<_AiChatViewBody> {
             children: [
               Expanded(
                 child: state.messages.isEmpty
-                    ? SingleChildScrollView(
-                        padding: const EdgeInsets.symmetric(vertical: 24.0),
-                        child: Column(
-                          children: [
-                            const SizedBox(height: 20),
-                            Container(
-                              padding: const EdgeInsets.all(20),
-                              decoration: BoxDecoration(
-                                color: theme.primaryColor.withValues(alpha: 0.1),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                Icons.auto_awesome,
-                                size: 56,
-                                color: theme.primaryColor,
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              s.howCanIHelpYouToday,
-                              textAlign: TextAlign.center,
-                              style: theme.textTheme.headlineSmall?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 24),
-                            SuggestedQuestionsGrid(
-                              onSelectQuestion: (prompt) {
-                                cubit.sendMessage(prompt);
-                              },
-                            ),
-                          ],
-                        ),
+                    ? AiChatEmptyState(
+                        onSelectQuestion: (prompt) {
+                          cubit.sendMessage(prompt);
+                        },
                       )
                     : ListView.builder(
                         controller: _scrollController,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        padding: EdgeInsets.symmetric(vertical: 12.h),
                         itemCount:
                             state.messages.length + (state.isGenerating ? 1 : 0),
                         itemBuilder: (context, index) {
@@ -147,34 +148,36 @@ class _AiChatViewBodyState extends State<_AiChatViewBody> {
                             return ChatMessageBubble(message: message);
                           } else {
                             return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 24.0,
-                                vertical: 8.0,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 16.w,
+                                vertical: 8.h,
                               ),
                               child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.all(8),
+                                    padding: EdgeInsets.all(8.r),
                                     decoration: BoxDecoration(
-                                      color: theme.primaryColor.withValues(alpha: 0.15),
+                                      color:
+                                          colors.primary.withValues(alpha: 0.12),
                                       shape: BoxShape.circle,
                                     ),
                                     child: Icon(
-                                      Icons.auto_awesome,
-                                      size: 18,
-                                      color: theme.primaryColor,
+                                      Icons.auto_awesome_rounded,
+                                      size: 16.r,
+                                      color: colors.primary,
                                     ),
                                   ),
-                                  const SizedBox(width: 8),
+                                  SizedBox(width: 8.w),
                                   Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                      vertical: 12,
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 16.w,
+                                      vertical: 12.h,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: theme.colorScheme.surfaceContainerHighest
-                                          .withValues(alpha: 0.5),
-                                      borderRadius: BorderRadius.circular(18),
+                                      color: colors.surfaceContainerHighest
+                                          .withValues(alpha: 0.45),
+                                      borderRadius: BorderRadius.circular(18.r),
                                     ),
                                     child: const TypingIndicator(),
                                   ),
@@ -185,7 +188,7 @@ class _AiChatViewBodyState extends State<_AiChatViewBody> {
                         },
                       ),
               ),
-              ChatInputBar(
+              AiChatComposer(
                 isGenerating: state.isGenerating,
                 onSendMessage: (prompt) {
                   cubit.sendMessage(prompt);

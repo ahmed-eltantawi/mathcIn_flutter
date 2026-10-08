@@ -467,5 +467,19 @@
   "showingCachedNotifications": "Showing cached notifications (Offline)",
   "filterAll": "All",
   "filterUnread": "Unread",
-  "loadingNotifications": "Loading notifications..."
+  "loadingNotifications": "Loading notifications...",
+  "copy": "Copy",
+  "openMenu": "Open menu",
+  "sendMessage": "Send message",
+  "sendingMessage": "Sending message...",
+  "aiAssistantSubtitle": "Ask me about jobs, resumes, interviews, or your career.",
+  "resumeOptimization": "Resume Optimization",
+  "resumeOptimizationPrompt": "How can I optimize my CV for Flutter developer roles?",
+  "interviewPrep": "Interview Prep",
+  "interviewPrepPrompt": "What are the top technical interview questions for Dart and Flutter?",
+  "careerGrowth": "Career Growth",
+  "careerGrowthPrompt": "What steps should I take to become a Senior Mobile Architect?",
+  "jobFitAnalysis": "Job Fit Analysis",
+  "jobFitAnalysisPrompt": "How does MatchIn calculate my job match percentage?",
+  "noHistoryYet": "No history yet"
 }

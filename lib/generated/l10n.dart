@@ -3735,6 +3735,132 @@ class S {
       args: [],
     );
   }
+
+  String get copy {
+    return Intl.message(
+      'Copy',
+      name: 'copy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get openMenu {
+    return Intl.message(
+      'Open menu',
+      name: 'openMenu',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get sendMessage {
+    return Intl.message(
+      'Send message',
+      name: 'sendMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get sendingMessage {
+    return Intl.message(
+      'Sending message...',
+      name: 'sendingMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get aiAssistantSubtitle {
+    return Intl.message(
+      'Ask me about jobs, resumes, interviews, or your career.',
+      name: 'aiAssistantSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get resumeOptimization {
+    return Intl.message(
+      'Resume Optimization',
+      name: 'resumeOptimization',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get resumeOptimizationPrompt {
+    return Intl.message(
+      'How can I optimize my CV for Flutter developer roles?',
+      name: 'resumeOptimizationPrompt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get interviewPrep {
+    return Intl.message(
+      'Interview Prep',
+      name: 'interviewPrep',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get interviewPrepPrompt {
+    return Intl.message(
+      'What are the top technical interview questions for Dart and Flutter?',
+      name: 'interviewPrepPrompt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get careerGrowth {
+    return Intl.message(
+      'Career Growth',
+      name: 'careerGrowth',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get careerGrowthPrompt {
+    return Intl.message(
+      'What steps should I take to become a Senior Mobile Architect?',
+      name: 'careerGrowthPrompt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get jobFitAnalysis {
+    return Intl.message(
+      'Job Fit Analysis',
+      name: 'jobFitAnalysis',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get jobFitAnalysisPrompt {
+    return Intl.message(
+      'How does MatchIn calculate my job match percentage?',
+      name: 'jobFitAnalysisPrompt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get noHistoryYet {
+    return Intl.message(
+      'No history yet',
+      name: 'noHistoryYet',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

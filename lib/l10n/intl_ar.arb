@@ -469,5 +469,19 @@
   "showingCachedNotifications": "عرض الإشعارات المحفوظة (غير متصل)",
   "filterAll": "الكل",
   "filterUnread": "غير مقروء",
-  "loadingNotifications": "جارٍ تحميل الإشعارات..."
+  "loadingNotifications": "جارٍ تحميل الإشعارات...",
+  "copy": "نسخ",
+  "openMenu": "فتح القائمة",
+  "sendMessage": "إرسال رسالة",
+  "sendingMessage": "جارٍ الإرسال...",
+  "aiAssistantSubtitle": "اسألني عن الوظائف، السير الذاتية، المقابلات، أو مسارك المهني.",
+  "resumeOptimization": "تحسين السيرة الذاتية",
+  "resumeOptimizationPrompt": "كيف يمكنني تحسين سيرتي الذاتية لوظائف مطور فلاتر؟",
+  "interviewPrep": "التحضير للمقابلات",
+  "interviewPrepPrompt": "ما هي أهم أسئلة المقابلات الفنية لـ Dart و Flutter؟",
+  "careerGrowth": "التطوير المهني",
+  "careerGrowthPrompt": "ما الخطوات التي يجب اتخاذها لأصبح مهندس تطبيقات أول؟",
+  "jobFitAnalysis": "تحليل ملاءمة الوظائف",
+  "jobFitAnalysisPrompt": "كيف يحسب ماتش إن نسبة توافق الوظيفة معي؟",
+  "noHistoryYet": "لا يوجد سجل بعد"
 }
