@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:MatchIn/core/errors/error_message_resolver.dart';
 import 'package:MatchIn/core/extensions/context_extensions.dart';
 
 /// Standard error display widget with action/retry button.
@@ -23,6 +24,7 @@ class AppErrorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final effectiveTitle = title ?? context.l10n.somethingWentWrong;
     final effectiveRetryText = retryText ?? context.l10n.tryAgain;
+    final effectiveMessage = ErrorMessageResolver.resolve(context, message);
 
     return Center(
       child: Padding(
@@ -47,7 +49,7 @@ class AppErrorWidget extends StatelessWidget {
             ),
             SizedBox(height: 8.h),
             Text(
-              message,
+              effectiveMessage,
               style: context.textTheme.bodyMedium?.copyWith(
                 color: context.colors.onSurface.withValues(alpha: 0.7),
               ),

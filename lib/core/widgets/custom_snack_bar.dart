@@ -1,3 +1,4 @@
+import 'package:MatchIn/core/errors/error_message_resolver.dart';
 import 'package:MatchIn/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,7 +30,7 @@ abstract final class CustomSnackBar {
   }) {
     _show(
       context,
-      message: message,
+      message: ErrorMessageResolver.resolve(context, message),
       backgroundColor: AppColors.mutedRed,
       icon: Icons.error_outline_rounded,
       duration: duration,

@@ -1,7 +1,6 @@
 import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:MatchIn/core/extensions/snack_bar_extensions.dart';
 import 'package:MatchIn/core/services/services_locator.dart';
-import 'package:MatchIn/core/utils/app_colors.dart';
 import 'package:MatchIn/core/widgets/ads/rewarded_ad_manager.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/roadmap_cubit/roadmap_cubit.dart';
 import 'package:flutter/material.dart';
@@ -130,25 +129,21 @@ class _RewardedAdCardState extends State<RewardedAdCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Row(
-                  children: [
-                    Flexible(
-                      child: Text(
-                        context.l10n.watchAdEarnXp,
-                        style: TextStyle(
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.w700,
-                          color: context.colors.onSurface,
-                        ),
-                      ),
-                    ),
-                  ],
+                Text(
+                  context.l10n.watchAdEarnXp,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w700,
+                    color: context.colors.onSurface,
+                  ),
                 ),
                 SizedBox(height: 3.h),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                   decoration: BoxDecoration(
-                    color: AppColors.success.withValues(alpha: 0.15),
+                    color: context.semanticColors.success.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(6.r),
                   ),
                   child: Text(
@@ -156,7 +151,7 @@ class _RewardedAdCardState extends State<RewardedAdCard> {
                     style: TextStyle(
                       fontSize: 11.sp,
                       fontWeight: FontWeight.w800,
-                      color: AppColors.success,
+                      color: context.semanticColors.success,
                     ),
                   ),
                 ),
@@ -167,14 +162,15 @@ class _RewardedAdCardState extends State<RewardedAdCard> {
           SizedBox(width: 8.w),
 
           // Action Button (Watch Ad / Loading / Retry)
-          Flexible(
+          ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 120.w, minWidth: 70.w),
             child: ElevatedButton(
               onPressed: (_isShowingAd || isLoading) ? null : _onWatchAdPressed,
               style: ElevatedButton.styleFrom(
                 backgroundColor: context.colors.primary,
-                foregroundColor: Colors.white,
+                foregroundColor: context.colors.onPrimary,
                 elevation: 2,
-                padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
+                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.r),
                 ),
@@ -203,9 +199,9 @@ class _RewardedAdCardState extends State<RewardedAdCard> {
       return SizedBox(
         width: 16.r,
         height: 16.r,
-        child: const CircularProgressIndicator(
+        child: CircularProgressIndicator(
           strokeWidth: 2,
-          color: Colors.white,
+          color: context.colors.onPrimary,
         ),
       );
     }
@@ -213,27 +209,42 @@ class _RewardedAdCardState extends State<RewardedAdCard> {
     if (isLoading) {
       return Row(
         mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-            width: 14.r,
-            height: 14.r,
-            child: const CircularProgressIndicator(
+            width: 12.r,
+            height: 12.r,
+            child: CircularProgressIndicator(
               strokeWidth: 2,
-              color: Colors.white,
+              color: context.colors.onPrimary,
             ),
           ),
-          SizedBox(width: 6.w),
-          Text(
-            context.l10n.loadingAd,
-            style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w600),
+          SizedBox(width: 4.w),
+          Flexible(
+            child: Text(
+              context.l10n.loadingAd,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 11.sp,
+                fontWeight: FontWeight.w600,
+                color: context.colors.onPrimary,
+              ),
+            ),
           ),
         ],
       );
     }
 
     return Text(
-      isReady ? context.l10n.watchAd : context.l10n.watchAd,
-      style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w700),
+      context.l10n.watchAd,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style: TextStyle(
+        fontSize: 11.5.sp,
+        fontWeight: FontWeight.w700,
+        color: context.colors.onPrimary,
+      ),
     );
   }
 }

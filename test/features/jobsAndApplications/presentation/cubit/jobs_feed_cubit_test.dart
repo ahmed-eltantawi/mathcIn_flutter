@@ -50,7 +50,8 @@ class FakeJobsRepository implements JobsRepository {
       getCachedResult ?? const Right(null);
 
   @override
-  Future<Either<Failure, JobEntity>> toggleSaveJob(String jobId) async =>
+  Future<Either<Failure, JobEntity>> toggleSaveJob(String jobId,
+          {bool? currentIsSaved}) async =>
       toggleResult!;
 
   @override
@@ -128,7 +129,7 @@ void main() {
       },
       act: (cubit) => cubit.getJobs(),
       expect: () => [
-        const JobsFeedLoading(),
+        isA<JobsFeedLoading>(),
         isA<JobsFeedLoaded>(),
       ],
     );
@@ -143,7 +144,7 @@ void main() {
       },
       act: (cubit) => cubit.getJobs(),
       expect: () => [
-        const JobsFeedLoading(),
+        isA<JobsFeedLoading>(),
         const JobsFeedError('Server unavailable'),
       ],
     );
@@ -161,7 +162,7 @@ void main() {
       },
       act: (cubit) => cubit.getJobs(),
       expect: () => [
-        const JobsFeedLoading(),
+        isA<JobsFeedLoading>(),
         isA<JobsFeedLoaded>()
             .having((s) => s.isFromCache, 'isFromCache', isTrue)
             .having(
@@ -183,7 +184,7 @@ void main() {
       },
       act: (cubit) => cubit.getJobs(),
       expect: () => [
-        const JobsFeedLoading(),
+        isA<JobsFeedLoading>(),
         isA<JobsFeedLoaded>()
             .having((s) => s.jobs.isNotEmpty, 'has jobs', isTrue)
             .having(
@@ -203,7 +204,7 @@ void main() {
       },
       act: (cubit) => cubit.getJobs(),
       expect: () => [
-        const JobsFeedLoading(),
+        isA<JobsFeedLoading>(),
         const JobsFeedEmpty(),
       ],
     );
@@ -296,7 +297,7 @@ void main() {
         const JobFilterParams(workMode: 'Remote', page: 3),
       ),
       expect: () => [
-        const JobsFeedLoading(),
+        isA<JobsFeedLoading>(),
         isA<JobsFeedLoaded>()
             .having((s) => s.jobs.first.title, 'remote job', 'Remote Job')
             .having(

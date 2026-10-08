@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:MatchIn/core/errors/error_message_resolver.dart';
 import 'package:MatchIn/core/extensions/context_extensions.dart';
 
 class JobsOfflineBanner extends StatelessWidget {
@@ -9,6 +10,8 @@ class JobsOfflineBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final effectiveMessage = ErrorMessageResolver.resolve(context, message);
+
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
@@ -29,7 +32,7 @@ class JobsOfflineBanner extends StatelessWidget {
           SizedBox(width: 8.w),
           Expanded(
             child: Text(
-              message,
+              effectiveMessage,
               style: context.textTheme.bodySmall?.copyWith(
                 color: context.colors.primary,
               ),

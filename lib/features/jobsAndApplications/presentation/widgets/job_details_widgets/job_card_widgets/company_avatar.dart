@@ -67,7 +67,7 @@ class CompanyAvatar extends StatelessWidget {
     return Hero(
       tag: heroTag!,
       // Keep the border-radius intact during the flight.
-      flightShuttleBuilder: (_, animation, __, ___, ____) => AnimatedBuilder(
+      flightShuttleBuilder: (_, animation, _, _, _) => AnimatedBuilder(
         animation: animation,
         builder: (ctx, child) => Material(
           color: Colors.transparent,

@@ -36,7 +36,7 @@ class FakeJobsRemoteDataSource implements JobsRemoteDataSource {
   }
 
   @override
-  Future<JobEntity> toggleSaveJob(String jobId) async {
+  Future<JobEntity> toggleSaveJob(String jobId, {bool? currentIsSaved}) async {
     throw UnimplementedError();
   }
 }

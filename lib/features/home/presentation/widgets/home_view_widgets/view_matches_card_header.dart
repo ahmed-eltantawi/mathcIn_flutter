@@ -30,6 +30,10 @@ class ViewMatchesCardHeader extends StatelessWidget {
             Assets.iconsAlIcon,
             width: 20.r,
             height: 20.r,
+            colorFilter: ColorFilter.mode(
+              colors.primary,
+              BlendMode.srcIn,
+            ),
           ),
         ),
         SizedBox(width: 8.w),

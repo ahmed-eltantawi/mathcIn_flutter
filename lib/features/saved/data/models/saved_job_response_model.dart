@@ -1,7 +1,6 @@
 import 'package:MatchIn/features/jobsAndApplications/data/models/company_model.dart';
 import 'package:MatchIn/features/jobsAndApplications/data/models/skill_model.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/entities/company_entity.dart';
-import 'package:MatchIn/features/jobsAndApplications/domain/entities/skill_entity.dart';
 import 'package:MatchIn/features/saved/domain/entities/saved_job_entity.dart';
 
 class SavedJobResponseModel extends SavedJobEntity {

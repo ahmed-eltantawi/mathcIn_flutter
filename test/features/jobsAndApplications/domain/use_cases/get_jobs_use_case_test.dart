@@ -45,7 +45,8 @@ class FakeJobsRepository implements JobsRepository {
   }
 
   @override
-  Future<Either<Failure, JobEntity>> toggleSaveJob(String jobId) async {
+  Future<Either<Failure, JobEntity>> toggleSaveJob(String jobId,
+      {bool? currentIsSaved}) async {
     throw UnimplementedError();
   }
 }

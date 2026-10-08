@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:MatchIn/core/extensions/context_extensions.dart';
+import 'package:MatchIn/core/widgets/app_circle_icon_button.dart';
 
 class SavedTopBar extends StatelessWidget {
   const SavedTopBar({
@@ -27,22 +28,11 @@ class SavedTopBar extends StatelessWidget {
               color: context.colors.primary,
             ),
           ),
-          InkWell(
-            onTap: onSearchTap,
-            borderRadius: BorderRadius.circular(9999),
-            child: Container(
-              width: 40.w,
-              height: 40.w,
-              alignment: Alignment.center,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.search,
-                size: 20.sp,
-                color: context.colors.onSurface,
-              ),
-            ),
+          AppCircleIconButton(
+            icon: Icons.search,
+            size: 40.r,
+            iconSize: 20.sp,
+            onTap: onSearchTap ?? () {},
           ),
         ],
       ),

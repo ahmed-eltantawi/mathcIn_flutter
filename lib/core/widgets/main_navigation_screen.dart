@@ -50,8 +50,8 @@ class MainNavigationScreen extends StatelessWidget {
             child: SafeArea(
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                  horizontal: 12.w,
-                  vertical: 8.h,
+                  horizontal: 6.w,
+                  vertical: 6.h,
                 ),
                 child: GNav(
                   selectedIndex: currentIndex,
@@ -62,11 +62,11 @@ class MainNavigationScreen extends StatelessWidget {
                   },
                   mainAxisAlignment:
                       MainAxisAlignment.spaceBetween,
-                  gap: 6.w,
-                  iconSize: 24.r,
+                  gap: 4.w,
+                  iconSize: 22.r,
                   padding: EdgeInsets.symmetric(
-                    horizontal: 12.w,
-                    vertical: 10.h,
+                    horizontal: 8.w,
+                    vertical: 8.h,
                   ),
                   color: colors.onSurface.withValues(
                     alpha: 0.6,
@@ -76,7 +76,7 @@ class MainNavigationScreen extends StatelessWidget {
                       .withValues(alpha: 0.12),
                   textStyle: textTheme.labelMedium
                       ?.copyWith(
-                        fontSize: 13.sp,
+                        fontSize: 11.5.sp,
                         fontWeight: FontWeight.w600,
                         color: colors.primary,
                       ),
