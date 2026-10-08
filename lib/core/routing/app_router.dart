@@ -55,7 +55,7 @@ abstract final class AppRouter {
   }
 
   static final GoRouter router = GoRouter(
-    initialLocation: AppRoutes.kHomeView,
+    initialLocation: AppRoutes.kSplashView,
     redirect: (context, state) {
       if (!getIt.isRegistered<SharedPreferencesService>()) {
         return null;
@@ -63,7 +63,7 @@ abstract final class AppRouter {
 
       final prefs = getIt<SharedPreferencesService>();
       final isOnboarded = prefs.isOnBoardingViewed();
-      final isLoggedIn = prefs.isLoggedIn();
+      final skipAuth = prefs.shouldSkipAuth();
       final location = state.uri.path;
 
       // Splash handles its own navigation via animation callback
@@ -78,9 +78,13 @@ abstract final class AppRouter {
 
       // Onboarded but still on onboarding page → move forward
       if (location == AppRoutes.kOnboardingView) {
-        return isLoggedIn
-            ? AppRoutes.kHomeView
-            : AppRoutes.kRegisterView;
+        return skipAuth ? AppRoutes.kHomeView : AppRoutes.kRegisterView;
+      }
+
+      // Already logged in or guest → never show register/login again
+      if (location == AppRoutes.kRegisterView ||
+          location == AppRoutes.kLoginView) {
+        return skipAuth ? AppRoutes.kHomeView : null;
       }
 
       return null;

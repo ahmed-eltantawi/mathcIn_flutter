@@ -1,3 +1,5 @@
+import 'package:MatchIn/core/services/services_locator.dart';
+import 'package:MatchIn/core/services/shared_preferences_service.dart';
 import 'package:MatchIn/core/widgets/custom_button.dart';
 import 'package:MatchIn/core/widgets/custom_text_field.dart';
 import 'package:MatchIn/generated/l10n.dart';
@@ -127,9 +129,14 @@ class _LoginFormState extends State<LoginForm> {
           ),
           SizedBox(height: 24.h),
           BlocConsumer<AuthCubit, AuthState>(
-            listener: (context, state) {
+            listener: (context, state) async {
               if (state is LoginSuccess) {
-                context.go(AppRoutes.kHomeView);
+                final prefs = getIt<SharedPreferencesService>();
+                await prefs.setLoggedIn(true);
+                await prefs.setGuest(false);
+                if (context.mounted) {
+                  context.go(AppRoutes.kHomeView);
+                }
               } else if (state is LoginFailure) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(

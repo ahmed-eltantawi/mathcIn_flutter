@@ -23,6 +23,25 @@ class SharedPreferencesService {
     await _sharedPreferencesHelper.deleteData(key: CacheKey.id);
     await _sharedPreferencesHelper.deleteData(key: CacheKey.userDataKey);
     await _sharedPreferencesHelper.deleteData(key: CacheKey.isLoggedIn);
+    await _sharedPreferencesHelper.deleteData(key: CacheKey.isGuest);
+  }
+
+  // --- Guest mode: "Continue as Guest" skips auth on next app opens ---
+  Future<void> setGuest(bool value) async {
+    await _sharedPreferencesHelper.saveData(
+      key: CacheKey.isGuest,
+      value: value,
+    );
+  }
+
+  bool isGuest() {
+    return _sharedPreferencesHelper.getData(key: CacheKey.isGuest) ?? false;
+  }
+
+  /// True when the user logged in OR continued as guest,
+  /// i.e. auth screens (register/login) must be skipped.
+  bool shouldSkipAuth() {
+    return isLoggedIn() || isGuest();
   }
 
   // --- This methods are used to save and get data about onboarding status ---

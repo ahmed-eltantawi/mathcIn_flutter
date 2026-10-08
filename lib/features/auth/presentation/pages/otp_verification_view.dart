@@ -95,7 +95,9 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
       setState(() => _showSuccessLottie = true);
       await Future.delayed(const Duration(seconds: 1));
       if (mounted) {
-        await getIt<SharedPreferencesService>().setLoggedIn(true);
+        final prefs = getIt<SharedPreferencesService>();
+        await prefs.setLoggedIn(true);
+        await prefs.setGuest(false);
         if (mounted) {
           context.go(AppRoutes.kHomeView);
         }
