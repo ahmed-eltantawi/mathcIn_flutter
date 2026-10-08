@@ -70,6 +70,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "addedManually": MessageLookupByLibrary.simpleMessage("Added manually"),
     "aiAssistant": MessageLookupByLibrary.simpleMessage("AI Assistant"),
+    "aiAssistantSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Ask me about jobs, resumes, interviews, or your career.",
+    ),
     "aiIsTyping": MessageLookupByLibrary.simpleMessage("AI is thinking..."),
     "all": MessageLookupByLibrary.simpleMessage("All"),
     "allMarkedAsRead": MessageLookupByLibrary.simpleMessage(
@@ -139,6 +142,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "careerGoalHint": MessageLookupByLibrary.simpleMessage(
       "e.g. Gain professional Flutter experience and contribute to high-impact mobile products.",
+    ),
+    "careerGrowth": MessageLookupByLibrary.simpleMessage("Career Growth"),
+    "careerGrowthPrompt": MessageLookupByLibrary.simpleMessage(
+      "What steps should I take to become a Senior Mobile Architect?",
     ),
     "careerPreferences": MessageLookupByLibrary.simpleMessage(
       "Career Preferences",
@@ -236,6 +243,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "copiedToClipboard": MessageLookupByLibrary.simpleMessage(
       "Copied to clipboard",
     ),
+    "copy": MessageLookupByLibrary.simpleMessage("Copy"),
     "copyright": MessageLookupByLibrary.simpleMessage(
       "© 2025 SkillMatch. All rights reserved.",
     ),
@@ -368,10 +376,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "inReview": MessageLookupByLibrary.simpleMessage("In Review"),
     "internship": MessageLookupByLibrary.simpleMessage("Internship"),
     "interview": MessageLookupByLibrary.simpleMessage("Interview"),
+    "interviewPrep": MessageLookupByLibrary.simpleMessage("Interview Prep"),
+    "interviewPrepPrompt": MessageLookupByLibrary.simpleMessage(
+      "What are the top technical interview questions for Dart and Flutter?",
+    ),
     "invalidVerificationCode": MessageLookupByLibrary.simpleMessage(
       "Invalid verification code",
     ),
     "jobDetails": MessageLookupByLibrary.simpleMessage("Job Details"),
+    "jobFitAnalysis": MessageLookupByLibrary.simpleMessage("Job Fit Analysis"),
+    "jobFitAnalysisPrompt": MessageLookupByLibrary.simpleMessage(
+      "How does MatchIn calculate my job match percentage?",
+    ),
     "jobRequirements": MessageLookupByLibrary.simpleMessage("Job requirements"),
     "jobType": MessageLookupByLibrary.simpleMessage("Job type"),
     "jobs": MessageLookupByLibrary.simpleMessage("Jobs"),
@@ -467,6 +483,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "No cover note added",
     ),
     "noFileSelected": MessageLookupByLibrary.simpleMessage("No file selected"),
+    "noHistoryYet": MessageLookupByLibrary.simpleMessage("No history yet"),
     "noInternetConnection": MessageLookupByLibrary.simpleMessage(
       "No internet connection",
     ),
@@ -507,6 +524,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "onlyOnTrustedDevices": MessageLookupByLibrary.simpleMessage(
       "Only on trusted devices",
     ),
+    "openMenu": MessageLookupByLibrary.simpleMessage("Open menu"),
     "openToOpportunitiesAnywhere": MessageLookupByLibrary.simpleMessage(
       "I’m open to opportunities anywhere",
     ),
@@ -625,6 +643,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "resendCode": MessageLookupByLibrary.simpleMessage("Resend Code"),
     "resendCodeIn": MessageLookupByLibrary.simpleMessage("Resend code in"),
     "resetPassword": MessageLookupByLibrary.simpleMessage("Reset password"),
+    "resumeOptimization": MessageLookupByLibrary.simpleMessage(
+      "Resume Optimization",
+    ),
+    "resumeOptimizationPrompt": MessageLookupByLibrary.simpleMessage(
+      "How can I optimize my CV for Flutter developer roles?",
+    ),
     "reviewApplication": MessageLookupByLibrary.simpleMessage(
       "Review Application",
     ),
@@ -677,6 +701,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "seeAll": MessageLookupByLibrary.simpleMessage("See all"),
     "selectLanguage": MessageLookupByLibrary.simpleMessage("Select Language"),
     "selectTheme": MessageLookupByLibrary.simpleMessage("Select Theme"),
+    "sendMessage": MessageLookupByLibrary.simpleMessage("Send message"),
+    "sendingMessage": MessageLookupByLibrary.simpleMessage(
+      "Sending message...",
+    ),
     "senior": MessageLookupByLibrary.simpleMessage("Senior"),
     "sentCodeToEmail": MessageLookupByLibrary.simpleMessage(
       "We sent a 6-digit code to your email.",
@@ -883,29 +911,5 @@ class MessageLookup extends MessageLookupByLibrary {
     "yourMatch": MessageLookupByLibrary.simpleMessage("Your Match"),
     "zeroToTwoYears": MessageLookupByLibrary.simpleMessage("0–2 years"),
     "zeroToTwoYearsExp": MessageLookupByLibrary.simpleMessage("0–2 yrs exp"),
-    "copy": MessageLookupByLibrary.simpleMessage("Copy"),
-    "openMenu": MessageLookupByLibrary.simpleMessage("Open menu"),
-    "sendMessage": MessageLookupByLibrary.simpleMessage("Send message"),
-    "sendingMessage": MessageLookupByLibrary.simpleMessage("Sending message..."),
-    "aiAssistantSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Ask me about jobs, resumes, interviews, or your career.",
-    ),
-    "resumeOptimization": MessageLookupByLibrary.simpleMessage("Resume Optimization"),
-    "resumeOptimizationPrompt": MessageLookupByLibrary.simpleMessage(
-      "How can I optimize my CV for Flutter developer roles?",
-    ),
-    "interviewPrep": MessageLookupByLibrary.simpleMessage("Interview Prep"),
-    "interviewPrepPrompt": MessageLookupByLibrary.simpleMessage(
-      "What are the top technical interview questions for Dart and Flutter?",
-    ),
-    "careerGrowth": MessageLookupByLibrary.simpleMessage("Career Growth"),
-    "careerGrowthPrompt": MessageLookupByLibrary.simpleMessage(
-      "What steps should I take to become a Senior Mobile Architect?",
-    ),
-    "jobFitAnalysis": MessageLookupByLibrary.simpleMessage("Job Fit Analysis"),
-    "jobFitAnalysisPrompt": MessageLookupByLibrary.simpleMessage(
-      "How does MatchIn calculate my job match percentage?",
-    ),
-    "noHistoryYet": MessageLookupByLibrary.simpleMessage("No history yet"),
   };
 }

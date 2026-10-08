@@ -72,6 +72,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "addedManually": MessageLookupByLibrary.simpleMessage("تمت إضافتها يدويًا"),
     "aiAssistant": MessageLookupByLibrary.simpleMessage("المساعد الذكي"),
+    "aiAssistantSubtitle": MessageLookupByLibrary.simpleMessage(
+      "اسألني عن الوظائف، السير الذاتية، المقابلات، أو مسارك المهني.",
+    ),
     "aiIsTyping": MessageLookupByLibrary.simpleMessage(
       "الذكاء الاصطناعي يفكر...",
     ),
@@ -139,6 +142,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "careerGoalHint": MessageLookupByLibrary.simpleMessage(
       "مثال: اكتساب خبرة احترافية في Flutter والمشاركة في تطوير منتجات موبايل مؤثرة.",
+    ),
+    "careerGrowth": MessageLookupByLibrary.simpleMessage("التطوير المهني"),
+    "careerGrowthPrompt": MessageLookupByLibrary.simpleMessage(
+      "ما الخطوات التي يجب اتخاذها لأصبح مهندس تطبيقات أول؟",
     ),
     "careerPreferences": MessageLookupByLibrary.simpleMessage("تفضيلات مهنية"),
     "careerPreferencesIntroDescription": MessageLookupByLibrary.simpleMessage(
@@ -234,6 +241,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "copiedToClipboard": MessageLookupByLibrary.simpleMessage(
       "تم النسخ إلى الحافظة",
     ),
+    "copy": MessageLookupByLibrary.simpleMessage("نسخ"),
     "copyright": MessageLookupByLibrary.simpleMessage(
       "© 2025 SkillMatch. جميع الحقوق محفوظة.",
     ),
@@ -366,10 +374,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "inReview": MessageLookupByLibrary.simpleMessage("قيد المراجعة"),
     "internship": MessageLookupByLibrary.simpleMessage("تدريب"),
     "interview": MessageLookupByLibrary.simpleMessage("المقابلة"),
+    "interviewPrep": MessageLookupByLibrary.simpleMessage("التحضير للمقابلات"),
+    "interviewPrepPrompt": MessageLookupByLibrary.simpleMessage(
+      "ما هي أهم أسئلة المقابلات الفنية لـ Dart و Flutter؟",
+    ),
     "invalidVerificationCode": MessageLookupByLibrary.simpleMessage(
       "رمز التحقق غير صحيح",
     ),
     "jobDetails": MessageLookupByLibrary.simpleMessage("تفاصيل الوظيفة"),
+    "jobFitAnalysis": MessageLookupByLibrary.simpleMessage(
+      "تحليل ملاءمة الوظائف",
+    ),
+    "jobFitAnalysisPrompt": MessageLookupByLibrary.simpleMessage(
+      "كيف يحسب ماتش إن نسبة توافق الوظيفة معي؟",
+    ),
     "jobRequirements": MessageLookupByLibrary.simpleMessage("متطلبات الوظيفة"),
     "jobType": MessageLookupByLibrary.simpleMessage("نوع الوظيفة"),
     "jobs": MessageLookupByLibrary.simpleMessage("الوظائف"),
@@ -465,6 +483,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "لم تتم إضافة رسالة تعريفية",
     ),
     "noFileSelected": MessageLookupByLibrary.simpleMessage("لم يتم اختيار ملف"),
+    "noHistoryYet": MessageLookupByLibrary.simpleMessage("لا يوجد سجل بعد"),
     "noInternetConnection": MessageLookupByLibrary.simpleMessage(
       "لا يوجد اتصال بالإنترنت",
     ),
@@ -507,6 +526,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "onlyOnTrustedDevices": MessageLookupByLibrary.simpleMessage(
       "على الأجهزة الموثوقة فقط",
     ),
+    "openMenu": MessageLookupByLibrary.simpleMessage("فتح القائمة"),
     "openToOpportunitiesAnywhere": MessageLookupByLibrary.simpleMessage(
       "مستعد لفرص في أي مكان",
     ),
@@ -621,6 +641,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "resetPassword": MessageLookupByLibrary.simpleMessage(
       "إعادة تعيين كلمة المرور",
     ),
+    "resumeOptimization": MessageLookupByLibrary.simpleMessage(
+      "تحسين السيرة الذاتية",
+    ),
+    "resumeOptimizationPrompt": MessageLookupByLibrary.simpleMessage(
+      "كيف يمكنني تحسين سيرتي الذاتية لوظائف مطور فلاتر؟",
+    ),
     "reviewApplication": MessageLookupByLibrary.simpleMessage("مراجعة الطلب"),
     "reviewBeforeSubmission": MessageLookupByLibrary.simpleMessage(
       "ستراجع جميع التفاصيل قبل الإرسال النهائي.",
@@ -673,6 +699,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "seeAll": MessageLookupByLibrary.simpleMessage("عرض الكل"),
     "selectLanguage": MessageLookupByLibrary.simpleMessage("اختر اللغة"),
     "selectTheme": MessageLookupByLibrary.simpleMessage("اختر المظهر"),
+    "sendMessage": MessageLookupByLibrary.simpleMessage("إرسال رسالة"),
+    "sendingMessage": MessageLookupByLibrary.simpleMessage("جارٍ الإرسال..."),
     "senior": MessageLookupByLibrary.simpleMessage("Senior"),
     "sentCodeToEmail": MessageLookupByLibrary.simpleMessage(
       "لقد أرسلنا رمزاً مكوناً من 6 أرقام إلى بريدك الإلكتروني.",
@@ -857,29 +885,5 @@ class MessageLookup extends MessageLookupByLibrary {
     "yourMatch": MessageLookupByLibrary.simpleMessage("مدى توافقك"),
     "zeroToTwoYears": MessageLookupByLibrary.simpleMessage("0–2 سنة"),
     "zeroToTwoYearsExp": MessageLookupByLibrary.simpleMessage("خبرة 0–2 سنة"),
-    "copy": MessageLookupByLibrary.simpleMessage("نسخ"),
-    "openMenu": MessageLookupByLibrary.simpleMessage("فتح القائمة"),
-    "sendMessage": MessageLookupByLibrary.simpleMessage("إرسال رسالة"),
-    "sendingMessage": MessageLookupByLibrary.simpleMessage("جارٍ الإرسال..."),
-    "aiAssistantSubtitle": MessageLookupByLibrary.simpleMessage(
-      "اسألني عن الوظائف، السير الذاتية، المقابلات، أو مسارك المهني.",
-    ),
-    "resumeOptimization": MessageLookupByLibrary.simpleMessage("تحسين السيرة الذاتية"),
-    "resumeOptimizationPrompt": MessageLookupByLibrary.simpleMessage(
-      "كيف يمكنني تحسين سيرتي الذاتية لوظائف مطور فلاتر؟",
-    ),
-    "interviewPrep": MessageLookupByLibrary.simpleMessage("التحضير للمقابلات"),
-    "interviewPrepPrompt": MessageLookupByLibrary.simpleMessage(
-      "ما هي أهم أسئلة المقابلات الفنية لـ Dart و Flutter؟",
-    ),
-    "careerGrowth": MessageLookupByLibrary.simpleMessage("التطوير المهني"),
-    "careerGrowthPrompt": MessageLookupByLibrary.simpleMessage(
-      "ما الخطوات التي يجب اتخاذها لأصبح مهندس تطبيقات أول؟",
-    ),
-    "jobFitAnalysis": MessageLookupByLibrary.simpleMessage("تحليل ملاءمة الوظائف"),
-    "jobFitAnalysisPrompt": MessageLookupByLibrary.simpleMessage(
-      "كيف يحسب ماتش إن نسبة توافق الوظيفة معي؟",
-    ),
-    "noHistoryYet": MessageLookupByLibrary.simpleMessage("لا يوجد سجل بعد"),
   };
 }

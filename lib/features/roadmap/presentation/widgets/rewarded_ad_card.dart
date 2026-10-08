@@ -23,7 +23,20 @@ class _RewardedAdCardState extends State<RewardedAdCard> {
   void initState() {
     super.initState();
     _rewardedAdManager = getIt<RewardedAdManager>();
+    _rewardedAdManager.addListener(_onAdStateChanged);
     _rewardedAdManager.loadAd();
+  }
+
+  void _onAdStateChanged() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  @override
+  void dispose() {
+    _rewardedAdManager.removeListener(_onAdStateChanged);
+    super.dispose();
   }
 
   void _onWatchAdPressed() {

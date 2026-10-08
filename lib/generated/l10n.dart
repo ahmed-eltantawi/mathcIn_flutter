@@ -3736,24 +3736,17 @@ class S {
     );
   }
 
+  /// `Copy`
   String get copy {
-    return Intl.message(
-      'Copy',
-      name: 'copy',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Copy', name: 'copy', desc: '', args: []);
   }
 
+  /// `Open menu`
   String get openMenu {
-    return Intl.message(
-      'Open menu',
-      name: 'openMenu',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Open menu', name: 'openMenu', desc: '', args: []);
   }
 
+  /// `Send message`
   String get sendMessage {
     return Intl.message(
       'Send message',
@@ -3763,6 +3756,7 @@ class S {
     );
   }
 
+  /// `Sending message...`
   String get sendingMessage {
     return Intl.message(
       'Sending message...',
@@ -3772,6 +3766,7 @@ class S {
     );
   }
 
+  /// `Ask me about jobs, resumes, interviews, or your career.`
   String get aiAssistantSubtitle {
     return Intl.message(
       'Ask me about jobs, resumes, interviews, or your career.',
@@ -3781,6 +3776,7 @@ class S {
     );
   }
 
+  /// `Resume Optimization`
   String get resumeOptimization {
     return Intl.message(
       'Resume Optimization',
@@ -3790,6 +3786,7 @@ class S {
     );
   }
 
+  /// `How can I optimize my CV for Flutter developer roles?`
   String get resumeOptimizationPrompt {
     return Intl.message(
       'How can I optimize my CV for Flutter developer roles?',
@@ -3799,6 +3796,7 @@ class S {
     );
   }
 
+  /// `Interview Prep`
   String get interviewPrep {
     return Intl.message(
       'Interview Prep',
@@ -3808,6 +3806,7 @@ class S {
     );
   }
 
+  /// `What are the top technical interview questions for Dart and Flutter?`
   String get interviewPrepPrompt {
     return Intl.message(
       'What are the top technical interview questions for Dart and Flutter?',
@@ -3817,6 +3816,7 @@ class S {
     );
   }
 
+  /// `Career Growth`
   String get careerGrowth {
     return Intl.message(
       'Career Growth',
@@ -3826,6 +3826,7 @@ class S {
     );
   }
 
+  /// `What steps should I take to become a Senior Mobile Architect?`
   String get careerGrowthPrompt {
     return Intl.message(
       'What steps should I take to become a Senior Mobile Architect?',
@@ -3835,6 +3836,7 @@ class S {
     );
   }
 
+  /// `Job Fit Analysis`
   String get jobFitAnalysis {
     return Intl.message(
       'Job Fit Analysis',
@@ -3844,6 +3846,7 @@ class S {
     );
   }
 
+  /// `How does MatchIn calculate my job match percentage?`
   String get jobFitAnalysisPrompt {
     return Intl.message(
       'How does MatchIn calculate my job match percentage?',
@@ -3853,6 +3856,7 @@ class S {
     );
   }
 
+  /// `No history yet`
   String get noHistoryYet {
     return Intl.message(
       'No history yet',
