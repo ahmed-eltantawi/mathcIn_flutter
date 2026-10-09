@@ -1,327 +1,244 @@
 <div dir="rtl">
 
-# 🔁 خطوات تنفيذ أي Feature جديدة
-> الـ `core/` جاهز ✅ — ركّز هنا فقط على الـ Feature Pipeline
->
-> **المثال المستخدم في الشرح:** Feature اسمها **"الحقيبة"** 👜 (`bag`)
+# 📘 الدليل المعماري الشامل لبناء الميزات (Clean Architecture Master Playbook)
+> **المرجع الشامل لكل حالات التطوير في Flutter (BLoC / Cubit + GetIt)**
+> مصمم ليكون شجرة قرارات ومفاهيم واضحة (لو كذا ... إذن كذا) تغنيك عن أي مصدر خارجي.
 
 ---
 
-## 🗂️ هيكل الـ Feature
+## 📑 الفهرس السريع
+1. [المسار الأول: إنشاء Feature جديدة بالكامل من الصفر](#1-المسار-الأول-إنشاء-feature-جديدة-بالكامل-من-الصفر)
+2. [المسار الثاني: إضافة Action / زر جديد داخل Feature موجودة مسبقاً](#2-المسار-الثاني-إضافة-action--زر-جديد-داخل-feature-موجودة-مسبقاً)
+3. [دليل التعامل مع أنواع البيانات المختلفة (Response Scenarios)](#3-دليل-التعامل-مع-أنواع-البيانات-المختلفة-response-scenarios)
+4. [مسار الـ Offline-First (كاش محلي + سيرفر معاً)](#4-مسار-الـ-offline-first-كاش-محلي--سيرفر-معاً)
+5. [شجرة القرارات والقواعد المعمارية الصارمة (Decision Tree)](#5-شجرة-القرارات-والقواعد-المعمارية-الصارمة-decision-tree)
+
+---
+
+## 1. المسار الأول: إنشاء Feature جديدة بالكامل من الصفر
+
+تُطبق هذه الخطوات فقط عند إضافة ميزة جديدة تماماً لم تكن موجودة في المشروع (مثل إضافة ميزة `bag` أو `orders` أو `notifications`).
 
 ```
-lib/features/bag/
+lib/features/{feature_name}/
 ├── data/
-│   ├── data_sources/
-│   │   ├── bag_remote_data_source.dart           ← Abstract
-│   │   ├── bag_remote_data_source_impl.dart      ← Real API
-│   │   └── bag_mock_remote_data_source_impl.dart ← Offline Testing
-│   ├── models/
-│   │   └── bag_model.dart                        ← JSON → Object
-│   └── repositories/
-│       └── bag_repository_impl.dart              ← Exception → Failure
+│   ├── data_sources/      ← Remote / Mock / Local Data Sources
+│   ├── models/            ← JSON Deserialization (يمتد من Entity)
+│   └── repositories/      ← تطبيق الـ Interface وتحويل Exceptions إلى Failures
 ├── domain/
-│   ├── entities/
-│   │   └── bag_entity.dart                       ← Pure Dart
-│   ├── repositories/
-│   │   └── bag_repository.dart                   ← Abstract Contract
-│   └── use_cases/
-│       └── get_bag_use_case.dart                 ← واحد لكل Action
+│   ├── entities/          ← كائنات بيزنس نقية (Pure Dart)
+│   ├── repositories/      ← عقد الواجهة التجريدي (Abstract Contract)
+│   └── use_cases/         ← فئات صغيرة، كل فئة تؤدي وظيفة واحدة
 └── presentation/
-    ├── cubit/
-    │   ├── bag_cubit.dart
-    │   └── bag_state.dart
-    ├── pages/
-    │   └── bag_view.dart
-    └── widgets/
-        └── bag/
+    ├── cubit/             ← منطق إدارة الحالة (Logic + States)
+    ├── pages/             ← شاشات العرض الكاملة (Views)
+    └── widgets/           ← مكونات الواجهة المقتطعة الفرعية
 ```
+
+### 🔁 الخطوات الـ 8 بالتسلسل الإلزامي:
+
+| # | الطبقة | ما تفعله بالضبط | القاعدة الذهبية |
+|---|---|---|---|
+| **1** | **Data Source** | إنشاء ملف `abstract` يحدد العمليات، ثم تطبيق `RemoteDataSourceImpl` مع `MockDataSourceImpl` لاختبار الـ Offline. | استخدام `EndPoint.xxx` و `ApiKey.xxx` دائماً وتجنب الـ Strings المباشرة. |
+| **2** | **Model** | إنشاء `Model` يرث من الـ `Entity`، يحتوي فقط على `fromJson` لتحويل الـ Map القادمة من السيرفر. | إذا كان الـ Endpoint لا يرجع بيانات (مجرد تأكيد نجاح)، **لا تنشئ Model**. |
+| **3** | **Entity** | إنشاء كائن Dart نقي يرث من `Equatable` يمثل البيانات المطلوبة في واجهة المستخدم فقط. | لا تضع أي دوال JSON أو استيراد لمكتبات خارجية أو Flutter داخل الـ Entity. |
+| **4** | **Repository** | 1. تعريف `Abstract Repository` في الـ `domain` يرجع `Future<Either<Failure, T>>`.<br>2. تطبيق `RepositoryImpl` في الـ `data` لاصطياد الـ `Exceptions` وتحويلها لـ `Failures`. | هذا هو المكان الوحيد في التطبيق المسموح فيه بـ `try/catch` للـ Network Exceptions. |
+| **5** | **UseCase** | إنشاء Class لكل عملية بمفردها يحتوي على دالة `call()`. | مسؤولية واحدة لكل UseCase (Single Responsibility). |
+| **6** | **Service Locator (DI)** | تسجيل العناصر في `services_locator.dart`: الـ DataSource والـ Repository والـ UseCase كـ `LazySingleton`، والـ Cubit كـ `Factory`. | نسجل دائماً بالنوع التجريدي: `registerLazySingleton<RepoInterface>(() => RepoImpl(...))`. |
+| **7** | **Cubit & States** | إنشاء `State` بصيغة `sealed class` تشمل (Initial, Loading, Success/Loaded, Failure). والـ Cubit يستدعي الـ UseCase فقط ويُطلق (emits) الحالات. | ممنوع تماماً وجود `BuildContext`، Navigation، أو SnackBar داخل الـ Cubit. |
+| **8** | **UI & Router** | 1. ربط المسار في `app_router.dart` وتوفير الـ Cubit عبر `BlocProvider`.<br>2. كتابة الـ View مع `BlocConsumer` (الـ Listener للـ SnackBar والـ Navigation، والـ Builder للرسم). | الـ UI لا يستدعي UseCase أو Repository مباشرة، يتعامل فقط مع `context.read<Cubit>()`. |
 
 ---
 
-## ✅ الـ Checklist — 8 خطوات بالترتيب
+## 2. المسار الثاني: إضافة Action / زر جديد داخل Feature موجودة مسبقاً
+
+> 💡 **مثال واقعي:** ميزة الـ `auth` موجودة بالفعل، وتريد إضافة عملية **"نسيت كلمة المرور"** أو **"تغيير الصورة الشخصية"**.
+
+هنا لا نبني مجلدات جديدة ولا نعيد كتابة الكود القائم! إليك جدول ما نعدله وما ننشئه:
+
+### 📋 مصفوفة التعديل والإضافة:
+
+| الملف المستهدف | الإجراء المطلوب | هل ننشئ ملفاً جديداً أم نعدل قائماً؟ |
+|---|---|---|
+| `data_sources/{f}_remote_data_source.dart` | إضافة دالة الـ Contract الجديدة فقط. | **تعديل** على الملف القائم. |
+| `data_sources/{f}_remote_data_source_impl.dart` | كتابة استدعاء الـ API الجديد. | **تعديل** على الملف القائم. |
+| `data_sources/{f}_mock_remote_data_source_impl.dart` | محاكاة الاستجابة لاختبار الـ Offline. | **تعديل** على الملف القائم. |
+| `models/` & `entities/` | **إنشاء ملفات جديدة فقط** إذا كانت العملية ترجع نوع بيانات جديد مختلف كلياً. أما إذا كانت ترجع نفس البيانات القديمة أو لا ترجع داتا، **لا تنشئ شيئاً**. | **حسب نوع البيانات**. |
+| `domain/repositories/{f}_repository.dart` | إضافة دالة الـ Contract للعملية الجديدة. | **تعديل** على الملف القائم. |
+| `data/repositories/{f}_repository_impl.dart` | تطبيق الدالة وتغليفها بـ `try/catch` لتحويل الـ Exceptions. | **تعديل** على الملف القائم. |
+| `domain/use_cases/` | إنشاء UseCase مخصص ومستقل للعملية الجديدة (مثل `ForgotPasswordUseCase`). | **ملف جديد** دائماً. |
+| `services_locator.dart` | تسجيل الـ UseCase الجديد والـ Cubit (إن وجد). | **تعديل** على الملف القائم. |
+| `cubit/` | راجع [قاعدة اختيار الـ Cubit](#1-قرار-الـ-cubit-cubit-جديد-أم-دالة-في-الـ-cubit-القديم) لتحديد هل تضيف دالة في نفس الـ Cubit أم تنشئ Cubit منفصل. | **حسب شجرة القرارات**. |
+| `presentation/pages/` | إنشاء شاشة جديدة للـ Action إن كانت تتطلب واجهة مستقلة، أو زر جديد في الواجهة الحالية. | **حسب التصميم**. |
 
 ---
 
-### 1️⃣ Data Sources
+## 3. دليل التعامل مع أنواع البيانات المختلفة (Response Scenarios)
 
-**`bag_remote_data_source.dart`** ← العقد (Abstract)
-```dart
-abstract class BagRemoteDataSource {
-  Future<BagModel> getBag({required int userId});
-}
-```
+### 🟢 الحالة الأولى: عمليات بدون بيانات راجعة (Action-Only / Void)
+> **أمثلة:** Forgot Password، Logout، Delete Item، Change Password، Like Post.
 
-**`bag_remote_data_source_impl.dart`** ← Real API
-```dart
-class BagRemoteDataSourceImpl implements BagRemoteDataSource {
-  const BagRemoteDataSourceImpl({required ApiConsumer apiConsumer})
-      : _apiConsumer = apiConsumer;
+- **الـ DataSource:** ترجع `Future<void>`.
+- **الـ Model:** ❌ **لا يوجد Model نهائياً**.
+- **الـ Entity:** ❌ **لا يوجد Entity نهائياً**.
+- **الـ Repository:** يرجع `Future<Either<Failure, Unit>>` (نستخدم `unit` من مكتبة `dartz` لتمثيل النجاح الفارغ).
+- **الـ UseCase:** يرجع `Future<Either<Failure, Unit>>`.
+- **الـ Cubit State:** تكون حالة النجاح فارغة: `final class ActionSuccess extends MyState {}`.
 
-  final ApiConsumer _apiConsumer;
+---
 
-  @override
-  Future<BagModel> getBag({required int userId}) async {
-    final response = await _apiConsumer.get(
-      EndPoint.getBag,                       // ← من EndPoint مش String
-      queryParameters: {ApiKey.userId: userId}, // ← من ApiKey مش String
-    );
-    return BagModel.fromJson(response as Map<String, dynamic>);
+### 🔵 الحالة الثانية: كائن مفرد (Single Object)
+> **أمثلة:** User Profile، Product Details، Cart Details، Order Summary.
+
+- **الـ Entity:** كائن يمثل البيانات المطلوبة في الـ UI فقط (`UserEntity`).
+- **الـ Model:** يرث من الـ Entity ويحتوي على `fromJson` فقط (`UserModel extends UserEntity`).
+- **الـ DataSource:** يرجع الـ Model (`Future<UserModel>`).
+- **الـ Repository:** يرجع الـ Entity (`Future<Either<Failure, UserEntity>>`).
+- **الـ Cubit State:** تحمل الـ Entity داخلها:
+  ```dart
+  final class UserLoaded extends UserState {
+    const UserLoaded({required this.user});
+    final UserEntity user;
   }
-}
-```
-
-**`bag_mock_remote_data_source_impl.dart`** ← Mock (Offline)
-```dart
-class BagMockRemoteDataSourceImpl implements BagRemoteDataSource {
-  const BagMockRemoteDataSourceImpl();
-
-  @override
-  Future<BagModel> getBag({required int userId}) async {
-    await Future.delayed(const Duration(seconds: 1));
-    return const BagModel(id: 1, name: 'حقيبة تجريبية', itemCount: 5);
-  }
-}
-```
+  ```
 
 ---
 
-### 2️⃣ Model (تحويل JSON → Object)
+### 🟣 الحالة الثالثة: قائمة بيانات مع تحميل تدريجي (List & Pagination)
+> **أمثلة:** قائمة المنتجات، الإشعارات، سجل المعاملات، نتائج البحث.
 
-**`data/models/bag_model.dart`**
-```dart
-class BagModel extends BagEntity {
-  const BagModel({
-    required super.id,
-    required super.name,
-    required super.itemCount,
-  });
-
-  factory BagModel.fromJson(Map<String, dynamic> json) => BagModel(
-        id: json[ApiKey.id] as int,
-        name: json[ApiKey.name] as String,
-        itemCount: json[ApiKey.itemCount] as int,
-      );
-}
-```
-> لو الـ Response `void` (مثل حذف حقيبة) → **مفيش Model خالص**
-
----
-
-### 3️⃣ Entity (Pure Dart — لا JSON، لا Flutter)
-
-**`domain/entities/bag_entity.dart`**
-```dart
-class BagEntity extends Equatable {
-  const BagEntity({
-    required this.id,
-    required this.name,
-    required this.itemCount,
-  });
-
-  final int id;
-  final String name;
-  final int itemCount;
-
-  @override
-  List<Object?> get props => [id, name, itemCount];
-}
-```
-
----
-
-### 4️⃣ Repository
-
-**`domain/repositories/bag_repository.dart`** ← Interface
-```dart
-abstract class BagRepository {
-  Future<Either<Failure, BagEntity>> getBag({required int userId});
-  //                          ↑ لو void استخدم Unit بدل BagEntity
-}
-```
-
-**`data/repositories/bag_repository_impl.dart`** ← Implementation
-```dart
-class BagRepositoryImpl implements BagRepository {
-  const BagRepositoryImpl({required BagRemoteDataSource remoteDataSource})
-      : _remoteDataSource = remoteDataSource;
-
-  final BagRemoteDataSource _remoteDataSource;
-
-  @override
-  Future<Either<Failure, BagEntity>> getBag({required int userId}) async {
-    try {
-      final bag = await _remoteDataSource.getBag(userId: userId);
-      return right(bag);
-    } on ServerException catch (e) {
-      return left(ServerFailure(message: e.errorModel.errorMessage));
-    } on OfflineException {
-      return left(const OfflineFailure());
+- **الـ Entity:** يمثل العنصر الواحد في القائمة (`ProductEntity`).
+- **الـ Model:** يمثل العنصر الواحد وتحويله من JSON (`ProductModel extends ProductEntity`).
+- **الـ DataSource:** ترجع `Future<List<ProductModel>>` وتأخذ معاملات الترقيم:
+  ```dart
+  Future<List<ProductModel>> getProducts({required int page, required int limit});
+  ```
+- **الـ Repository & UseCase:** يرجعان `Future<Either<Failure, List<ProductEntity>>>`.
+- **الـ Cubit & State (إدارة الـ Pagination):**
+  - **الـ State:** يجب أن تحتفظ بالقائمة الحالية وعلم لمعرفة هل انتهت البيانات:
+    ```dart
+    final class ProductsLoaded extends ProductsState {
+      const ProductsLoaded({
+        required this.products,
+        this.hasReachedMax = false,
+        this.isLoadingMore = false,
+      });
+      final List<ProductEntity> products;
+      final bool hasReachedMax;
+      final bool isLoadingMore;
     }
-  }
-}
-```
-> هنا **فقط** بتتحوّل الـ Exception لـ Failure
-
----
-
-### 5️⃣ UseCase (واحد لكل Action)
-
-**`domain/use_cases/get_bag_use_case.dart`**
-```dart
-class GetBagUseCase {
-  const GetBagUseCase({required BagRepository repository})
-      : _repository = repository;
-
-  final BagRepository _repository;
-
-  Future<Either<Failure, BagEntity>> call({required int userId}) =>
-      _repository.getBag(userId: userId);
-}
-```
-> لو في Feature بيها كذا Action → كذا UseCase منفصل:
-> `GetBagUseCase`, `AddItemToBagUseCase`, `ClearBagUseCase`
-
----
-
-### 6️⃣ تسجيل الـ DI في `services_locator.dart`
-
-```dart
-// ─── Bag Feature ─────────────────────────────────────
-// Cubit → registerFactory دايماً
-getIt.registerFactory<BagCubit>(
-  () => BagCubit(getBagUseCase: getIt()),
-);
-
-// UseCase → registerLazySingleton
-getIt.registerLazySingleton<GetBagUseCase>(
-  () => GetBagUseCase(repository: getIt()),
-);
-
-// Repository → سجّل الـ Abstract مش الـ Concrete
-getIt.registerLazySingleton<BagRepository>(
-  () => BagRepositoryImpl(remoteDataSource: getIt()),
-);
-
-// DataSource → سجّل الـ Abstract مش الـ Concrete
-getIt.registerLazySingleton<BagRemoteDataSource>(
-  () => BagRemoteDataSourceImpl(apiConsumer: getIt()),
-  // () => BagMockRemoteDataSourceImpl(), ← للتجربة Offline
-);
-```
-
----
-
-### 7️⃣ State + Cubit
-
-**`presentation/cubit/bag_state.dart`**
-```dart
-sealed class BagState {}
-
-final class BagInitial extends BagState {}
-final class BagLoading extends BagState {}
-
-final class BagLoaded extends BagState {
-  BagLoaded({required this.bag});
-  final BagEntity bag;
-}
-
-final class BagFailure extends BagState {
-  BagFailure({required this.errorMessage});
-  final String errorMessage;
-}
-```
-
-**`presentation/cubit/bag_cubit.dart`**
-```dart
-class BagCubit extends Cubit<BagState> {
-  BagCubit({required GetBagUseCase getBagUseCase})
-      : _getBagUseCase = getBagUseCase,
-        super(BagInitial());
-
-  final GetBagUseCase _getBagUseCase;
-
-  Future<void> loadBag({required int userId}) async {
-    emit(BagLoading());
-    final result = await _getBagUseCase(userId: userId);
+    ```
+  - **الـ Cubit Logic:** عند طلب الصفحة التالية، لا نحذف القديم بل ندمجه:
+    ```dart
+    final currentProducts = (state as ProductsLoaded).products;
+    emit(ProductsLoaded(products: currentProducts, isLoadingMore: true));
+    final result = await getProductsUseCase(page: nextPage);
     result.fold(
-      (failure) => emit(BagFailure(errorMessage: failure.message)),
-      (bag) => emit(BagLoaded(bag: bag)),
+      (failure) => emit(ProductsError(failure.message)),
+      (newProducts) {
+        emit(ProductsLoaded(
+          products: currentProducts + newProducts,
+          hasReachedMax: newProducts.isEmpty,
+          isLoadingMore: false,
+        ));
+      },
     );
+    ```
+
+---
+
+## 4. مسار الـ Offline-First (كاش محلي + سيرفر معاً)
+
+عندما يتطلب التطبيق العمل في وضع عدم الاتصال وتخزين البيانات محلياً:
+
+```
+[UI / View]
+     ↓ (طلب البيانات)
+[Cubit]
+     ↓
+[UseCase]
+     ↓
+[RepositoryImpl] ────→ 1. قراءة الكاش أولاً (LocalDataSource) ──→ إرجاع الكاش للعرض فوراً
+     │
+     └──→ 2. طلب السيرفر في الخلفية (RemoteDataSource)
+               ↓
+          3. نجح؟ ──→ تحديث الكاش المحلي (LocalDataSource.save)
+               ↓
+          4. إرجاع البيانات الأحدث للـ UI
+```
+
+### 🛠️ قواعد تنفيذ الـ Offline-First:
+
+1. **وجود اثنين DataSources:**
+   - `RemoteDataSource`: يتصل بـ DioConsumer.
+   - `LocalDataSource`: يتصل بـ SharedPreferencesService أو Hive/Isar.
+2. **الـ Repository هو المنسق الذكي (Orchestrator):**
+   - الـ UseCase والـ Cubit لا يعلمان من أين تأتي البيانات.
+   - إذا كان الجهاز غير متصل بالإنترنت (`NetworkInfo.isConnected == false`): يقرأ الـ Repository من `LocalDataSource` مباشرة.
+   - إذا كان الكاش فارغاً والجهاز أوفلاين: يرجع `left(EmptyCacheFailure())`.
+   - عند توفر الإنترنت: يجلب من السيرفر، يحدّث الكاش المحلي، ثم يرجع النتيجة للـ Domain.
+
+---
+
+## 5. شجرة القرارات والقواعد المعمارية الصارمة (Decision Tree)
+
+---
+
+### 1️⃣ قرار الـ Cubit: (Cubit جديد أم دالة في الـ Cubit القديم؟)
+
+| الحالة | القرار | السبب المعماري |
+|---|---|---|
+| **شاشة مستقلة تماماً بدورة حياة منفصلة** (مثل صفحة Forgot Password مقارنة بـ Login). | **Cubit مستقل وجديد** | حتى لا تظل حالات الشاشة القديمة معلقة في الذاكرة، ولمنع تداخل الـ Loading والـ Error بين الشاشات. |
+| **عملية فرعية داخل نفس الشاشة** (مثل الضغط على زر "تفعيل الحساب" أو "تبديل اللغة" في نفس الإعدادات). | **دالة داخل نفس الـ Cubit** | الشاشة تعرض نفس السياق وتتشارك دورة الحياة ذاتها. |
+| **ميزة يتم فتحها في BottomSheet أو Dialog مؤقت.** | **Cubit مستقل بـ Scope مخصص** | حتى يُنشأ الكيوبت عند فتح الـ Dialog ويُغلق (Dispose) فور إغلاقه. |
+
+---
+
+### 2️⃣ تنظيم مدخلات الـ API (الـ Parameters):
+
+* **لو المعاملات 1 أو 2 فقط** (مثل `id`، `email`):
+  ← مررها كـ **Named Parameters** عادية في الدوال:
+  ```dart
+  Future<void> call({required String email});
+  ```
+* **لو المعاملات 3 أو أكثر** (مثل تسجيل حساب جديد: الاسم، الإيميل، الباسورد، الهاتف، المدينة...):
+  ← اجمعها في **Class مخصص للبيانات (Params / RequestModel)** في الـ Domain:
+  ```dart
+  class RegisterParams extends Equatable {
+    const RegisterParams({required this.email, required this.password, ...});
   }
-}
-```
-> الـ Cubit لا يعرف عن الـ UI إطلاقاً — لا Navigation، لا SnackBar، لا BuildContext
+  ```
+  > **الفائدة:** لو طلب الباك إند إضافة حقل جديد مستقبلاً، تعدل الـ Class فقط بدون كسر واجهات الدوال في كل الطبقات.
 
 ---
 
-### 8️⃣ Router + View
+### 3️⃣ مكان التحقق من صحة البيانات (Validation):
 
-**في `app_router.dart`:**
-```dart
-GoRoute(
-  path: AppRoutes.kBagView,
-  builder: (context, state) => BlocProvider(
-    create: (_) => getIt<BagCubit>(),
-    child: const BagView(),
-  ),
-),
 ```
-
-**في `bag_view.dart`:**
-```dart
-BlocConsumer<BagCubit, BagState>(
-  listener: (context, state) {
-    // Side Effects فقط: Navigation, SnackBar, Dialog
-    if (state is BagFailure) {
-      context.showErrorSnackBar(state.errorMessage);
-    }
-  },
-  builder: (context, state) {
-    // UI فقط
-    return switch (state) {
-      BagLoading() => const CircularProgressIndicator(),
-      BagLoaded()  => BagContent(bag: state.bag),
-      BagFailure() => const SizedBox.shrink(),
-      BagInitial() => const SizedBox.shrink(),
-    };
-  },
-)
+أين تضع كود التحقق من المدخلات؟
+ │
+ ├── 1. في واجهة المستخدم (UI / FormKey / validator):
+ │    └── للتحقق اللحظي والشكل (هل الإيميل يحتوي على @؟ هل الباسورد أطول من 8 خانات؟ هل الحقل فارغ؟).
+ │
+ ├── 2. في الـ Cubit / Bloc:
+ │    └── لتحقق الحالة التفاعلية (مثل تفعيل/تعطيل زر الإرسال بناءً على صحة جميع الحقول معاً).
+ │
+ └── 3. في الـ Domain / UseCase (أو Entity):
+      └── لقواعد البيزنس الصارمة المستقلة عن الواجهة (مثل: "لا يمكن سحب رصيد أكبر من المتاح"، أو "عمر المستخدم يجب أن يتجاوز 18 سنة").
 ```
 
 ---
 
-## 🔁 تدفق البيانات
+## 🛑 جدول المحظورات الذي لا يُكسر (Never Violate)
 
-```
-[View] onPressed / initState
-  ↓ context.read<BagCubit>().loadBag(userId: id)
-[Cubit] emit(BagLoading) → GetBagUseCase.call()
-  ↓
-[UseCase] → BagRepository.getBag()
-  ↓
-[RepositoryImpl] → BagRemoteDataSource.getBag() → catch Exception → Either
-  ↓
-[DataSourceImpl] → HTTP GET Request → BagModel.fromJson()
-  ↑↑↑ الرد يصعد بنفس الترتيب
-[Cubit] result.fold → emit(BagLoaded) أو emit(BagFailure)
-  ↓
-[View] listener (SnackBar) + builder (يعرض الحقيبة أو شاشة الخطأ)
-```
-
----
-
-## 🚨 القواعد الذهبية
-
-| ❌ غلط | ✅ صح |
+| ❌ محظور تماماً | ✅ البديل الصحيح |
 |---|---|
-| `'bag/get'` | `EndPoint.getBag` |
-| `{'user_id': id}` | `{ApiKey.userId: id}` |
-| `registerLazySingleton<BagCubit>` | `registerFactory<BagCubit>` |
-| `getIt<BagCubit>()` داخل الـ Widget | `context.read<BagCubit>().loadBag(...)` |
-| `Navigator.push(...)` | `context.push(AppRoutes.kBagView)` |
-| `Colors.blue` | `context.colors.primary` |
-| `../../features/bag/...` | `package:MatchIn/features/bag/...` |
-| `print(...)` | ❌ ممنوع تماماً |
+| استدعاء `getIt<Cubit>()` داخل شجرة الـ Widgets. | توفير الكيوبت عبر `BlocProvider` في الراوتر والوصول له بـ `context.read<Cubit>()`. |
+| استدعاء الـ `UseCase` أو `Repository` مباشرة من واجهة المستخدم. | التعامل عبر الـ `Cubit` فقط. |
+| وضع `BuildContext` أو `Navigator` أو `SnackBar` داخل الـ Cubit. | إطلاق State في الكيوبت، والتعامل مع الـ Navigation والـ SnackBar في `BlocListener` / `BlocConsumer`. |
+| استخدام نصوص برمجية صلبة للروابط ومفاتيح الـ JSON (Hardcoding). | استخدام `EndPoint.xxx` و `ApiKey.xxx` المركزية. |
+| تسجيل الـ Cubit كـ `LazySingleton`. | تسجيل الـ Cubits دائماً كـ `registerFactory`. |
+| استخدام المسارات النسبية (Relative imports مثل `../../`). | استخدام Package Imports فقط (`package:MatchIn/...`). |
+| استخدام دوال `print(...)`. | تجنب الطباعة أو استخدام أدوات اللوج المخصصة. |
 
 </div>
