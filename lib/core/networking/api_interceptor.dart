@@ -164,13 +164,19 @@ class ApiInterceptor extends Interceptor {
     return normalizedPath;
   }
 
-  /// clear local auth data and logout user
+  /// clear local auth data and logout user.
+  /// Guest mode has no session: a 401 must not wipe the guest flag
+  /// (otherwise "Continue as Guest" stops working after home fires API
+  /// calls without a token) and must not broadcast a logout event.
   Future<void> _performLogout() async {
+    final isGuest = sharedPreferencesService.isGuest();
     await sharedPreferencesService.clearAuthData();
 
     await secureStorageService.deleteTokens();
 
-    AuthEventBus.instance.addEvent(AuthEvent.logout);
+    if (!isGuest) {
+      AuthEventBus.instance.addEvent(AuthEvent.logout);
+    }
   }
 }
 

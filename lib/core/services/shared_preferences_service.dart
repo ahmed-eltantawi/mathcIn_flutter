@@ -19,11 +19,13 @@ class SharedPreferencesService {
     return _sharedPreferencesHelper.getData(key: CacheKey.isLoggedIn) ?? false;
   }
 
+  /// Clears only the logged-in session. Guest flag is intentionally kept
+  /// so a 401 auto-logout (interceptor) can't wipe "Continue as Guest".
+  /// Explicit logout clears guest separately (see Settings logout).
   Future<void> clearAuthData() async {
     await _sharedPreferencesHelper.deleteData(key: CacheKey.id);
     await _sharedPreferencesHelper.deleteData(key: CacheKey.userDataKey);
     await _sharedPreferencesHelper.deleteData(key: CacheKey.isLoggedIn);
-    await _sharedPreferencesHelper.deleteData(key: CacheKey.isGuest);
   }
 
   // --- Guest mode: "Continue as Guest" skips auth on next app opens ---
@@ -35,7 +37,7 @@ class SharedPreferencesService {
   }
 
   bool isGuest() {
-    return _sharedPreferencesHelper.getData(key: CacheKey.isGuest) ?? false;
+    return _sharedPreferencesHelper.getBool(key: CacheKey.isGuest) ?? false;
   }
 
   /// True when the user logged in OR continued as guest,

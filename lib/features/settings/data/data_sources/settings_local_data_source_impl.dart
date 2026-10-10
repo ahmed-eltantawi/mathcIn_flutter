@@ -49,6 +49,8 @@ class SettingsLocalDataSourceImpl implements SettingsLocalDataSource {
   Future<void> logout() async {
     // 1. Clear session keys from SharedPreferences (isLoggedIn, id, userDataKey)
     await sharedPreferencesService.clearAuthData();
+    // 1b. Explicit logout also exits guest mode so auth shows again.
+    await sharedPreferencesService.setGuest(false);
 
     // 2. Clear JWT tokens from FlutterSecureStorage
     await secureStorageService.deleteTokens();

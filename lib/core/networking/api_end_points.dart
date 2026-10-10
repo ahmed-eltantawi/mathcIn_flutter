@@ -2,7 +2,7 @@
 abstract class EndPoint {
   //TODO: change these values
   static const String baseUrl =
-      'https://skillmatch.iptvdemo.serv5group.com/api/';
+      'https://nuke-borough-shoppers-lodging.trycloudflare.com/api';
   static const String login = 'auth/login';
   static const String register = 'auth/register';
   static const String refreshToken = 'auth/refresh-token';
