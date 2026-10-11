@@ -189,6 +189,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "followUs": MessageLookupByLibrary.simpleMessage("تابعنا"),
         "forgotPassword":
             MessageLookupByLibrary.simpleMessage("نسيت كلمة المرور؟"),
+        "forgotPasswordSubtitle": MessageLookupByLibrary.simpleMessage(
+            "أدخل بريدك الإلكتروني وسنرسل لك رمزاً لإعادة تعيين كلمة المرور."),
+        "forgotPasswordTitle":
+            MessageLookupByLibrary.simpleMessage("نسيت كلمة المرور"),
         "foundInCvAndProjects": MessageLookupByLibrary.simpleMessage(
             "موجودة في سيرتك الذاتية ومشاريعك"),
         "foundInYourSkills":
@@ -394,6 +398,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "secureProtectionText": MessageLookupByLibrary.simpleMessage(
             "يحمي SkillMatch بياناتك وتاريخ تقديمك بشكل آمن."),
         "seeAll": MessageLookupByLibrary.simpleMessage("عرض الكل"),
+        "sendResetCode":
+            MessageLookupByLibrary.simpleMessage("إرسال رمز إعادة التعيين"),
         "sentCodeToEmail": MessageLookupByLibrary.simpleMessage(
             "لقد أرسلنا رمزاً مكوناً من 6 أرقام إلى بريدك الإلكتروني."),
         "settings": MessageLookupByLibrary.simpleMessage("الإعدادات"),

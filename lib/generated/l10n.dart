@@ -2920,6 +2920,36 @@ class S {
     );
   }
 
+  /// `Forgot Password`
+  String get forgotPasswordTitle {
+    return Intl.message(
+      'Forgot Password',
+      name: 'forgotPasswordTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your email address and we'll send you a code to reset your password.`
+  String get forgotPasswordSubtitle {
+    return Intl.message(
+      'Enter your email address and we\'ll send you a code to reset your password.',
+      name: 'forgotPasswordSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send Reset Code`
+  String get sendResetCode {
+    return Intl.message(
+      'Send Reset Code',
+      name: 'sendResetCode',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `or`
   String get or {
     return Intl.message(

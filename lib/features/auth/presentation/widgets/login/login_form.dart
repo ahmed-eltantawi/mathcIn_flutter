@@ -123,9 +123,9 @@ class _LoginFormState extends State<LoginForm> {
                 onPressed: () {
                   context.push(
                     AppRoutes.kForgetPasswordView,
-                    extra: _emailController.text.isNotEmpty
-                        ? _emailController.text
-                        : 'user@example.com',
+                    extra: _emailController.text.trim().isNotEmpty
+                        ? _emailController.text.trim()
+                        : null,
                   );
                 },
                 style: TextButton.styleFrom(padding: EdgeInsets.zero),

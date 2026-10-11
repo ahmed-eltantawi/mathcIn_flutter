@@ -19,6 +19,7 @@ import 'package:MatchIn/features/auth/domain/use_cases/reset_password_use_case.d
 import 'package:MatchIn/features/auth/domain/use_cases/verify_otp_use_case.dart';
 import 'package:MatchIn/features/auth/domain/use_cases/verify_password_reset_otp_use_case.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:MatchIn/features/auth/presentation/cubit/forgot_password_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/otp_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/reset_password_cubit.dart';
 import 'package:MatchIn/features/chatbot/data/data_sources/chatbot_local_data_source.dart';
@@ -113,6 +114,10 @@ Future<void> setupServiceLocator() async {
 
   getIt.registerFactory<ResetPasswordCubit>(
     () => ResetPasswordCubit(resetPasswordUseCase: getIt()),
+  );
+
+  getIt.registerFactory<ForgotPasswordCubit>(
+    () => ForgotPasswordCubit(forgotPasswordUseCase: getIt()),
   );
 
   // =========================================================

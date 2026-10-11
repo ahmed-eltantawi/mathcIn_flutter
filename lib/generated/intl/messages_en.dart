@@ -187,6 +187,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "followUs": MessageLookupByLibrary.simpleMessage("Follow Us"),
         "forgotPassword":
             MessageLookupByLibrary.simpleMessage("Forgot password?"),
+        "forgotPasswordSubtitle": MessageLookupByLibrary.simpleMessage(
+            "Enter your email address and we'll send you a code to reset your password."),
+        "forgotPasswordTitle":
+            MessageLookupByLibrary.simpleMessage("Forgot Password"),
         "foundInCvAndProjects": MessageLookupByLibrary.simpleMessage(
             "Found in your CV and projects"),
         "foundInYourSkills":
@@ -391,6 +395,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "secureProtectionText": MessageLookupByLibrary.simpleMessage(
             "SkillMatch securely protects your data and application history."),
         "seeAll": MessageLookupByLibrary.simpleMessage("See all"),
+        "sendResetCode":
+            MessageLookupByLibrary.simpleMessage("Send Reset Code"),
         "sentCodeToEmail": MessageLookupByLibrary.simpleMessage(
             "We sent a 6-digit code to your email."),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),

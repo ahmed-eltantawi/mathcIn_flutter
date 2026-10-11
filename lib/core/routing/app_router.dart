@@ -9,9 +9,11 @@ import 'package:MatchIn/features/jobsAndApplications/presentation/views/applicat
 import 'package:MatchIn/features/jobsAndApplications/presentation/views/apply_for_role_view.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/views/review_application_view.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/views/tracking_application_view.dart';
+import 'package:MatchIn/features/auth/presentation/cubit/forgot_password_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/otp_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/reset_password_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/pages/create_new_password_view.dart';
+import 'package:MatchIn/features/auth/presentation/pages/forgot_password_view.dart';
 import 'package:MatchIn/features/auth/presentation/pages/login_view.dart';
 import 'package:MatchIn/features/auth/presentation/pages/otp_verification_view.dart';
 import 'package:MatchIn/features/auth/presentation/pages/password_changed_success_view.dart';
@@ -181,13 +183,17 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kForgetPasswordView,
         pageBuilder: (context, state) {
+          final initialEmail =
+              state.extra is String ? state.extra as String : null;
+
           return _buildTransitionPage(
             state: state,
             child: BlocProvider(
-              create: (_) => getIt<OtpCubit>(),
-              child: OtpVerificationView(
-                email: state.extra as String? ?? 'user@example.com',
-                isPasswordReset: true,
+              create: (_) => getIt<ForgotPasswordCubit>(),
+              child: ForgotPasswordView(
+                initialEmail: initialEmail != 'user@example.com'
+                    ? initialEmail
+                    : null,
               ),
             ),
           );
@@ -197,12 +203,26 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kOtpVerificationView,
         pageBuilder: (context, state) {
+          // --- Supports both String (registration) and Map (forgot-password) ---
+          final extra = state.extra;
+          final String email;
+          final bool isPasswordReset;
+
+          if (extra is Map<String, dynamic>) {
+            email = extra['email'] as String? ?? '';
+            isPasswordReset = extra['isPasswordReset'] as bool? ?? false;
+          } else {
+            email = extra as String? ?? '';
+            isPasswordReset = false;
+          }
+
           return _buildTransitionPage(
             state: state,
             child: BlocProvider(
               create: (_) => getIt<OtpCubit>(),
               child: OtpVerificationView(
-                email: state.extra as String? ?? 'user@example.com',
+                email: email,
+                isPasswordReset: isPasswordReset,
               ),
             ),
           );

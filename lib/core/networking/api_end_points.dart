@@ -1,7 +1,7 @@
 ///* EndPoints: the endpoints of the api
 abstract class EndPoint {
   //TODO: change these values
-  static const String baseUrl = 'http://10.0.2.2:8000/api/';
+  static const String baseUrl = 'http://127.0.0.1:8000/api/';
   static const String login = 'auth/login';
   static const String register = 'auth/register';
   static const String refreshToken = 'auth/refresh-token';
