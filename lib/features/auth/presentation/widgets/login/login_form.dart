@@ -1,14 +1,18 @@
-import 'package:MatchIn/core/widgets/custom_button.dart';
-import 'package:MatchIn/core/widgets/custom_text_field.dart';
-import 'package:MatchIn/generated/l10n.dart';
+import 'package:MatchIn/core/extensions/snack_bar_extensions.dart';
+import 'package:MatchIn/core/routing/app_routes.dart';
+import 'package:MatchIn/core/services/services_locator.dart';
+import 'package:MatchIn/core/services/secure_storage_service.dart';
+import 'package:MatchIn/core/services/shared_preferences_service.dart';
 import 'package:MatchIn/core/utils/app_colors.dart';
 import 'package:MatchIn/core/utils/validator.dart';
+import 'package:MatchIn/core/widgets/custom_button.dart';
+import 'package:MatchIn/core/widgets/custom_text_field.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:MatchIn/core/routing/app_routes.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -137,16 +141,16 @@ class _LoginFormState extends State<LoginForm> {
           ),
           SizedBox(height: 12.h),
           BlocConsumer<AuthCubit, AuthState>(
-            listener: (context, state) {
+            listener: (context, state) async {
               if (state is LoginSuccess) {
-                context.go(AppRoutes.kHomeView);
-              } else if (state is LoginFailure) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.message),
-                    backgroundColor: AppColors.error,
-                  ),
+                await getIt<SecureStorageService>().saveTokens(
+                  accessToken: state.loginModel.accessToken,
+                  refreshToken: state.loginModel.refreshToken ?? '',
                 );
+                await getIt<SharedPreferencesService>().setLoggedIn(true);
+                if (context.mounted) context.go(AppRoutes.kHomeView);
+              } else if (state is LoginFailure) {
+                context.showErrorSnackBar(state.message);
               }
             },
             builder: (context, state) {

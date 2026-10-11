@@ -1,8 +1,8 @@
+import 'package:MatchIn/core/extensions/snack_bar_extensions.dart';
 import 'package:MatchIn/core/widgets/custom_button.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:MatchIn/core/routing/app_routes.dart';
-import 'package:MatchIn/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -35,12 +35,7 @@ class RegisterSubmitButton extends StatelessWidget {
             extra: emailController.text.trim(),
           );
         } else if (state is RegisterFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: AppColors.error,
-            ),
-          );
+          context.showErrorSnackBar(state.message);
         }
       },
       builder: (context, state) {
@@ -60,12 +55,7 @@ class RegisterSubmitButton extends StatelessWidget {
                         passwordConfirmation: confirmPasswordController.text,
                       );
                     } else if (!isTermsAccepted.value) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(S.of(context).termsAndConditions),
-                          backgroundColor: AppColors.error,
-                        ),
-                      );
+                      context.showErrorSnackBar(S.of(context).termsAndConditions);
                     }
                   },
                 ),

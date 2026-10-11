@@ -1,29 +1,55 @@
-
-
 part of 'auth_cubit.dart';
 
+abstract class AuthState extends Equatable {
+  const AuthState();
 
-abstract class AuthState {}
+  @override
+  List<Object?> get props => [];
+}
 
-class AuthInitial extends AuthState {}
+class AuthInitial extends AuthState {
+  const AuthInitial();
+}
 
-class LoginLoading extends AuthState {}
+//! ===== Login States =====
+
+class LoginLoading extends AuthState {
+  const LoginLoading();
+}
 
 class LoginSuccess extends AuthState {
-  LoginSuccess({required this.loginModel});
+  const LoginSuccess({required this.loginModel});
+
   final LoginModel loginModel;
+
+  @override
+  List<Object?> get props => [loginModel];
 }
 
 class LoginFailure extends AuthState {
-  LoginFailure({required this.message});
+  const LoginFailure({required this.message});
+
   final String message;
+
+  @override
+  List<Object?> get props => [message];
 }
 
-class RegisterLoading extends AuthState {}
+//! ===== Register States =====
 
-class RegisterSuccess extends AuthState {}
+class RegisterLoading extends AuthState {
+  const RegisterLoading();
+}
+
+class RegisterSuccess extends AuthState {
+  const RegisterSuccess();
+}
 
 class RegisterFailure extends AuthState {
-  RegisterFailure({required this.message});
+  const RegisterFailure({required this.message});
+
   final String message;
+
+  @override
+  List<Object?> get props => [message];
 }

@@ -1,0 +1,15 @@
+import 'package:MatchIn/core/errors/failures.dart';
+import 'package:MatchIn/features/auth/domain/repositories/auth_repository.dart';
+import 'package:dartz/dartz.dart';
+
+class VerifyOtpForForgotPasswordUseCase {
+  const VerifyOtpForForgotPasswordUseCase({required this.repository});
+
+  final AuthRepository repository;
+
+  Future<Either<Failure, Unit>> call({
+    required String email,
+    required String otp,
+  }) =>
+      repository.verifyOtpForForgotPassword(email: email, otp: otp);
+}

@@ -32,6 +32,7 @@ abstract class ApiKey {
   static const String statusCode = 'statusCode';
   static const String errorMessage = 'message';
   static const String accessToken = 'access_token';
+  static const String tokenType = 'token_type';
   static const String refreshToken = 'refresh_token';
   static const String email = 'email';
   static const String otp = 'otp';

@@ -36,6 +36,7 @@ import 'package:MatchIn/features/auth/domain/use_cases/register_use_case.dart';
 import 'package:MatchIn/features/auth/domain/use_cases/resend_otp_use_case.dart';
 import 'package:MatchIn/features/auth/domain/use_cases/reset_password_use_case.dart';
 import 'package:MatchIn/features/auth/domain/use_cases/verify_otp_use_case.dart';
+import 'package:MatchIn/features/auth/domain/use_cases/verify_otp_for_forgot_password_use_case.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/otp_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/reset_password_cubit.dart';
@@ -124,8 +125,16 @@ Future<void> setupServiceLocator() async {
     () => AuthCubit(loginUseCase: getIt(), registerUseCase: getIt()),
   );
 
+  getIt.registerLazySingleton<VerifyOtpForForgotPasswordUseCase>(
+    () => VerifyOtpForForgotPasswordUseCase(repository: getIt()),
+  );
+
   getIt.registerFactory<OtpCubit>(
-    () => OtpCubit(verifyOtpUseCase: getIt(), resendOtpUseCase: getIt()),
+    () => OtpCubit(
+      verifyOtpUseCase: getIt(),
+      verifyOtpForForgotPasswordUseCase: getIt(),
+      resendOtpUseCase: getIt(),
+    ),
   );
 
   getIt.registerFactory<ResetPasswordCubit>(

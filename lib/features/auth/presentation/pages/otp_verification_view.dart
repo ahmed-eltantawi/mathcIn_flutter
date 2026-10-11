@@ -92,7 +92,11 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
   void _onCompleted(String code) {
     if (_isVerifying) return; // prevent duplicate requests
     _isVerifying = true;
-    context.read<OtpCubit>().verifyOtp(email: widget.email, otp: code);
+    context.read<OtpCubit>().verifyOtp(
+      email: widget.email,
+      otp: code,
+      purpose: widget.purpose,
+    );
   }
 
   // -- Navigation after success Lottie plays ------------------------------

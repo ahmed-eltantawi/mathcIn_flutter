@@ -1,4 +1,5 @@
 import 'package:MatchIn/core/routing/app_routes.dart';
+import 'package:MatchIn/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/forgot_password_cubit.dart';
 import 'package:MatchIn/features/profile/presentation/views/edit_career_preferences_view.dart';
 import 'package:MatchIn/features/profile/presentation/views/edit_projects_view.dart';
@@ -171,7 +172,10 @@ abstract final class AppRouter {
         pageBuilder: (context, state) {
           return _buildTransitionPage(
             state: state,
-            child: const RegisterView(),
+            child: BlocProvider(
+              create: (_) => getIt<AuthCubit>(),
+              child: const RegisterView(),
+            ),
           );
         },
       ),
@@ -180,7 +184,27 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kLoginView,
         pageBuilder: (context, state) {
-          return _buildTransitionPage(state: state, child: const LoginView());
+          return _buildTransitionPage(
+            state: state,
+            child: BlocProvider(
+              create: (_) => getIt<AuthCubit>(),
+              child: const LoginView(),
+            ),
+          );
+        },
+      ),
+
+      // Register
+      GoRoute(
+        path: AppRoutes.kRegisterView,
+        pageBuilder: (context, state) {
+          return _buildTransitionPage(
+            state: state,
+            child: BlocProvider(
+              create: (_) => getIt<AuthCubit>(),
+              child: const RegisterView(),
+            ),
+          );
         },
       ),
 
@@ -188,28 +212,36 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kForgetPasswordView,
         pageBuilder: (context, state) {
+          final email = state.extra is String ? state.extra as String : null;
           return _buildTransitionPage(
             state: state,
             child: BlocProvider(
               create: (_) => getIt<ForgotPasswordCubit>(),
-              child: ForgotPasswordView(email: state.extra as String?),
+              child: ForgotPasswordView(email: email),
             ),
           );
         },
       ),
 
-      // OTP (after Register)
+      // OTP (after Register / Forgot Password)
       GoRoute(
         path: AppRoutes.kOtpVerificationView,
         pageBuilder: (context, state) {
-          final args = state.extra as Map<String, dynamic>?;
-          final email =
-              (args?['email'] as String?) ??
-              (state.extra is String
-                  ? state.extra as String
-                  : 'user@example.com');
-          final purpose =
-              (args?['purpose'] as OtpPurpose?) ?? OtpPurpose.register;
+          final extra = state.extra;
+          final String email;
+          final OtpPurpose purpose;
+
+          if (extra is Map<String, dynamic>) {
+            email = (extra['email'] as String?) ?? 'user@example.com';
+            purpose = (extra['purpose'] as OtpPurpose?) ?? OtpPurpose.register;
+          } else if (extra is String) {
+            email = extra;
+            purpose = OtpPurpose.register;
+          } else {
+            email = 'user@example.com';
+            purpose = OtpPurpose.register;
+          }
+
           return _buildTransitionPage(
             state: state,
             child: BlocProvider(
@@ -224,13 +256,14 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kCreateNewPasswordView,
         pageBuilder: (context, state) {
+          final email = state.extra is String
+              ? state.extra as String
+              : 'user@example.com';
           return _buildTransitionPage(
             state: state,
             child: BlocProvider(
               create: (_) => getIt<ResetPasswordCubit>(),
-              child: CreateNewPasswordView(
-                email: state.extra as String? ?? 'user@example.com',
-              ),
+              child: CreateNewPasswordView(email: email),
             ),
           );
         },
