@@ -111,7 +111,9 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
       switch (widget.purpose) {
         case OtpPurpose.register:
           // OTP verified after registration → mark logged in and go home
-          await getIt<SharedPreferencesService>().setLoggedIn(true);
+          final prefs = getIt<SharedPreferencesService>();
+          await prefs.setLoggedIn(true);
+          await prefs.setGuest(false);
           if (mounted) context.go(AppRoutes.kHomeView);
         case OtpPurpose.forgotPassword:
           // OTP verified after forgot-password → go to create new password

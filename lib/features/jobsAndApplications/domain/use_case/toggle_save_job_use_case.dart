@@ -8,7 +8,7 @@ class ToggleSaveJobUseCase {
 
   final JobsRepository repository;
 
-  Future<Either<Failure, JobEntity>> call(String jobId) {
-    return repository.toggleSaveJob(jobId);
+  Future<Either<Failure, JobEntity>> call(String jobId, {bool? currentIsSaved}) {
+    return repository.toggleSaveJob(jobId, currentIsSaved: currentIsSaved);
   }
 }

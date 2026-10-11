@@ -4,10 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:MatchIn/generated/l10n.dart';
 
 class ManageSkillsButton extends StatelessWidget {
-  const ManageSkillsButton({
-    required this.onPressed,
-    super.key,
-  });
+  const ManageSkillsButton({required this.onPressed, super.key});
 
   final VoidCallback onPressed;
 
@@ -24,9 +21,7 @@ class ManageSkillsButton extends StatelessWidget {
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
           foregroundColor: colors.primary,
-          side: BorderSide(
-            color: context.theme.dividerColor,
-          ),
+          side: BorderSide(color: context.theme.dividerColor),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.r),
           ),

@@ -17,10 +17,7 @@ class CareerPreferencesIntroCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: colors.surface,
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(
-          color: context.theme.dividerColor,
-          width: 1,
-        ),
+        border: Border.all(color: context.theme.dividerColor, width: 1),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,19 +43,17 @@ class CareerPreferencesIntroCard extends StatelessWidget {
               children: [
                 Text(
                   locale.careerPreferencesIntroTitle,
-                  style: theme.textTheme.titleMedium
-                      ?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
                 SizedBox(height: 4.h),
                 Text(
                   locale.careerPreferencesIntroDescription,
-                  style: theme.textTheme.bodyMedium
-                      ?.copyWith(
-                        color: colors.onSurfaceVariant,
-                        height: 1.4,
-                      ),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: colors.onSurfaceVariant,
+                    height: 1.4,
+                  ),
                 ),
               ],
             ),

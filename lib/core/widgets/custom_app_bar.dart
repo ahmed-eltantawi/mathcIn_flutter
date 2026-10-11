@@ -95,10 +95,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 Navigator.maybePop(context);
               }
             },
-        icon: Icon(
-          Icons.arrow_back_ios_new_rounded,
-          size: 18.sp,
-          color: colorScheme.onSurface,
+        icon: Transform.flip(
+          flipX: Directionality.of(context) == TextDirection.rtl,
+          child: Icon(
+            Icons.arrow_back_ios_new_rounded,
+            size: 18.sp,
+            color: colorScheme.onSurface,
+          ),
         ),
         splashRadius: 20.r,
         padding: EdgeInsets.zero,

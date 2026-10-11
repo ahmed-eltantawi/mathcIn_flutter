@@ -1,3 +1,4 @@
+import 'package:MatchIn/core/utils/app_text_styles.dart';
 import 'package:MatchIn/features/auth/presentation/widgets/password_requirement_tile.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
@@ -35,10 +36,8 @@ class PasswordRequirementsSection extends StatelessWidget {
         children: [
           Text(
             S.of(context).passwordRequirements,
-            style: TextStyle(
-              fontFamily: 'DM Sans',
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w600,
+            style: AppTextStyles.body14SemiBold(
+              isArabic: false,
               color: theme.colorScheme.onSurface,
             ),
           ),

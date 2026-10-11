@@ -1,6 +1,6 @@
+import 'package:MatchIn/core/utils/app_text_styles.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CreatePasswordBackButton extends StatelessWidget {
   const CreatePasswordBackButton({
@@ -19,10 +19,8 @@ class CreatePasswordBackButton extends StatelessWidget {
         onPressed: onPressed,
         child: Text(
           S.of(context).backToLogin,
-          style: TextStyle(
-            fontFamily: 'DM Sans',
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w600,
+          style: AppTextStyles.body14SemiBold(
+            isArabic: false,
             color: theme.colorScheme.secondary,
           ),
         ),

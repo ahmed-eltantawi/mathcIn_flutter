@@ -1,5 +1,6 @@
 import 'package:MatchIn/core/routing/app_routes.dart';
 import 'package:MatchIn/core/utils/app_colors.dart';
+import 'package:MatchIn/core/utils/app_text_styles.dart';
 import 'package:MatchIn/core/widgets/custom_button.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
@@ -46,13 +47,9 @@ class PasswordChangedSuccessView extends StatelessWidget {
               Text(
                 S.of(context).passwordChangedSuccessfully,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'DM Sans',
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.w600,
+                style: AppTextStyles.heading24Bold(
+                  isArabic: false,
                   color: AppColors.textPrimary,
-                  letterSpacing: -0.6,
-                  height: 32 / 24,
                 ),
               ),
               SizedBox(height: 12.h),
@@ -63,12 +60,9 @@ class PasswordChangedSuccessView extends StatelessWidget {
                 child: Text(
                   S.of(context).passwordChangedSuccessDesc,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
+                  style: AppTextStyles.body14Regular(
+                    isArabic: false,
                     color: AppColors.textSecondary,
-                    height: 23 / 14,
                   ),
                 ),
               ),

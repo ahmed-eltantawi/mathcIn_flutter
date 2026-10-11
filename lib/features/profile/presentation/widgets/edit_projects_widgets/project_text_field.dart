@@ -69,26 +69,17 @@ class ProjectTextField extends StatelessWidget {
             ),
             border: _border(theme),
             enabledBorder: _border(theme),
-            focusedBorder: _border(
-              theme,
-              color: colors.primary,
-            ),
+            focusedBorder: _border(theme, color: colors.primary),
           ),
         ),
       ],
     );
   }
 
-  OutlineInputBorder _border(
-    ThemeData theme, {
-    Color? color,
-  }) {
+  OutlineInputBorder _border(ThemeData theme, {Color? color}) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(10.r),
-      borderSide: BorderSide(
-        color: color ?? theme.dividerColor,
-        width: 1,
-      ),
+      borderSide: BorderSide(color: color ?? theme.dividerColor, width: 1),
     );
   }
 }

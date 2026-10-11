@@ -1,4 +1,6 @@
 import 'package:MatchIn/core/routing/app_routes.dart';
+import 'package:MatchIn/core/services/services_locator.dart';
+import 'package:MatchIn/core/services/shared_preferences_service.dart';
 import 'package:MatchIn/core/widgets/social_login_button.dart';
 import 'package:MatchIn/core/utils/app_colors.dart';
 import 'package:MatchIn/generated/l10n.dart';
@@ -68,7 +70,12 @@ class RegisterFooter extends StatelessWidget {
           width: double.infinity,
           height: 56.h,
           child: OutlinedButton.icon(
-            onPressed: () => context.go(AppRoutes.kHomeView),
+            onPressed: () async {
+              await getIt<SharedPreferencesService>().setGuest(true);
+              if (context.mounted) {
+                context.go(AppRoutes.kHomeView);
+              }
+            },
             icon: Icon(
               Icons.explore_outlined,
               size: 22.sp,

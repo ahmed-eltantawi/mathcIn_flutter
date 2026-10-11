@@ -1,4 +1,4 @@
-import 'dart:async';
+import 'dart:developer';
 
 import 'package:MatchIn/app.dart';
 import 'package:MatchIn/core/services/services_locator.dart';
@@ -11,13 +11,14 @@ Future<void> main() async {
   // Initialize core dependencies
   await setupServiceLocator();
 
-  // Initialize Mobile Ads asynchronously in background without blocking startup
-  unawaited(
-    MobileAds.instance.initialize().catchError((e) {
-      debugPrint('MobileAds init error: $e');
-      return InitializationStatus({});
-    }),
-  );
+  // Initialize Mobile Ads before runApp so RewardedAd.load() in the
+  // roadmap feature never races an uninitialized SDK (which caused
+  // "Watch Ad" taps to silently do nothing / show "Ad Not Available").
+  try {
+    await MobileAds.instance.initialize();
+  } catch (e) {
+    log('MobileAds init error: $e');
+  }
 
   // Run the app
   runApp(const MatchIn());

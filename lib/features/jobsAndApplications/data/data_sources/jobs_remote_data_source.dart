@@ -5,7 +5,7 @@ import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_filter_
 abstract class JobsRemoteDataSource {
   Future<PaginatedJobsModel> getJobs({JobFilterParams? params});
 
-  Future<JobEntity> toggleSaveJob(String jobId);
+  Future<JobEntity> toggleSaveJob(String jobId, {bool? currentIsSaved});
 
   Future<JobEntity> applyForJob(String jobId);
 }

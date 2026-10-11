@@ -24,11 +24,44 @@ abstract class EndPoint {
   static const String savedJobs = 'saved-jobs';
   static const String jobs = 'jobs';
   static String saveJob(dynamic jobPostId) => 'jobs/$jobPostId/save';
+
+  // Applications
+  static const String applications = 'applications';
+  static String applicationDetails(dynamic id) => 'applications/$id';
+  static String updateApplicationStatus(dynamic id) =>
+      'applications/$id/status';
+  static String withdrawApplication(dynamic id) => 'applications/$id/withdraw';
+
+  // Candidate Profile
+  static const String candidateProfile = 'candidate/profile';
+
+  // Candidate Skills
+  static const String candidateSkills = 'candidate/skills';
+
+  static String candidateSkill(int candidateSkillId) =>
+      'candidate/skills/$candidateSkillId';
+
+  // Search Skills
+  static const String searchSkills = 'skills/search';
+
+  // Candidate Projects
+  static const String candidateProjects = 'candidate/projects';
+
+  static String candidateProject(int projectId) =>
+      'candidate/projects/$projectId';
+
+  // Career Preferences
+  static const String careerPreferences = 'candidate/career-preferences';
+
+  // Notifications
+  static const String notifications = 'notifications';
+  static const String notificationsUnreadCount = 'notifications/unread-count';
+  static const String notificationsReadAll = 'notifications/read-all';
+  static String markNotificationAsRead(dynamic id) => 'notifications/$id/read';
 }
 
 ///* ApiKeys: the keys of the api
 abstract class ApiKey {
-  //TODO: change these values
   static const String statusCode = 'statusCode';
   static const String errorMessage = 'message';
   static const String accessToken = 'access_token';
@@ -59,7 +92,24 @@ abstract class ApiKey {
   static const String isVerifiedCompany = 'is_verified_company';
   static const String requiredSkillIds = 'required_skill_ids[]';
   static const String preferredSkillIds = 'preferred_skill_ids[]';
-  // static const String id = 'id';
+  static const String coverLetter = 'cover_letter';
+  static const String notes = 'notes';
+  static const String status = 'status';
+  static const String appliedAt = 'applied_at';
+  static const String createdAt = 'created_at';
+  static const String updatedAt = 'updated_at';
+  static const String attributes = 'attributes';
+  static const String data = 'data';
+  static const String type = 'type';
+  static const String links = 'links';
+  static const String meta = 'meta';
+  static const String id = 'id';
+  static const String isRead = 'is_read';
+  static const String readAt = 'read_at';
+  static const String title = 'title';
+  static const String count = 'count';
+  static const String updatedCount = 'updated_count';
+  static const String unreadOnly = 'unread_only';
 }
 
 ///* ApiHeaderKey: the header keys of the api

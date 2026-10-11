@@ -2,11 +2,7 @@ import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-enum ProfileMatchQuality {
-  needsImprovement,
-  good,
-  excellent,
-}
+enum ProfileMatchQuality { needsImprovement, good, excellent }
 
 class ProfileMatchQualityRow extends StatelessWidget {
   const ProfileMatchQualityRow({
@@ -26,10 +22,7 @@ class ProfileMatchQualityRow extends StatelessWidget {
     final data = _getVisualData(locale);
 
     if (compact) {
-      return _QualityBadge(
-        label: data.label,
-        color: data.color,
-      );
+      return _QualityBadge(label: data.label, color: data.color);
     }
 
     return Row(
@@ -72,10 +65,7 @@ class ProfileMatchQualityRow extends StatelessWidget {
 }
 
 class _QualityBadge extends StatelessWidget {
-  const _QualityBadge({
-    required this.label,
-    required this.color,
-  });
+  const _QualityBadge({required this.label, required this.color});
 
   final String label;
   final Color color;
@@ -85,17 +75,11 @@ class _QualityBadge extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: 10.w,
-        vertical: 6.h,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(100.r),
-        border: Border.all(
-          color: color.withValues(alpha: 0.30),
-          width: 1,
-        ),
+        border: Border.all(color: color.withValues(alpha: 0.30), width: 1),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -103,10 +87,7 @@ class _QualityBadge extends StatelessWidget {
           Container(
             width: 7.r,
             height: 7.r,
-            decoration: BoxDecoration(
-              color: color,
-              shape: BoxShape.circle,
-            ),
+            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
           ),
           SizedBox(width: 7.w),
           Text(
@@ -125,10 +106,7 @@ class _QualityBadge extends StatelessWidget {
 }
 
 class _QualityVisualData {
-  const _QualityVisualData({
-    required this.label,
-    required this.color,
-  });
+  const _QualityVisualData({required this.label, required this.color});
 
   final String label;
   final Color color;

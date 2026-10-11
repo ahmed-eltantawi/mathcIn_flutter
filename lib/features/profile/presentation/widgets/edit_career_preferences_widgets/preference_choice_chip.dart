@@ -25,19 +25,12 @@ class PreferenceChoiceChip extends StatelessWidget {
       borderRadius: BorderRadius.circular(100.r),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 150),
-        padding: EdgeInsets.symmetric(
-          horizontal: 13.w,
-          vertical: 8.h,
-        ),
+        padding: EdgeInsets.symmetric(horizontal: 13.w, vertical: 8.h),
         decoration: BoxDecoration(
-          color: isSelected
-              ? colors.primary
-              : colors.surfaceContainerHighest,
+          color: isSelected ? colors.primary : colors.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(100.r),
           border: Border.all(
-            color: isSelected
-                ? colors.primary
-                : theme.dividerColor,
+            color: isSelected ? colors.primary : theme.dividerColor,
             width: 1,
           ),
         ),
@@ -45,19 +38,13 @@ class PreferenceChoiceChip extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             if (isSelected && showCheck) ...[
-              Icon(
-                Icons.check_rounded,
-                size: 16.r,
-                color: colors.onPrimary,
-              ),
+              Icon(Icons.check_rounded, size: 16.r, color: colors.onPrimary),
               SizedBox(width: 5.w),
             ],
             Text(
               label,
               style: theme.textTheme.labelMedium?.copyWith(
-                color: isSelected
-                    ? colors.onPrimary
-                    : colors.onSurface,
+                color: isSelected ? colors.onPrimary : colors.onSurface,
                 fontWeight: FontWeight.w600,
               ),
             ),

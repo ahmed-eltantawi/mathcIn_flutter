@@ -50,4 +50,18 @@ class PaginatedSavedJobsModel extends PaginatedSavedJobsEntity {
       hasMorePages: hasMorePages,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'data': jobs
+          .whereType<SavedJobResponseModel>()
+          .map((j) => j.toJson())
+          .toList(),
+      'meta': {
+        'current_page': currentPage,
+        'last_page': lastPage,
+        'total': total,
+      },
+    };
+  }
 }

@@ -1,5 +1,5 @@
 ///* API consumer is an abstract class used to consume the api requests
-/// has four methods: get, post, put, delete
+/// has five methods: get, post, put, patch, delete
 /// each method takes a path, query parameters, data, and isFormData
 abstract class ApiConsumer {
   //! ===== get =====
@@ -20,6 +20,14 @@ abstract class ApiConsumer {
 
   //! ===== put =====
   Future<dynamic> put(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+    Object? data,
+    bool isFormData = false,
+  });
+
+  //! ===== patch =====
+  Future<dynamic> patch(
     String path, {
     Map<String, dynamic>? queryParameters,
     Object? data,

@@ -13,6 +13,8 @@ class JobCardHeader extends StatelessWidget {
     required this.showShareButton,
     required this.onSave,
     this.onShare,
+    this.heroTag,
+    this.avatarSize,
   });
 
   final String title;
@@ -20,9 +22,14 @@ class JobCardHeader extends StatelessWidget {
   final String? companyLogoUrl;
   final bool isSaved;
   final bool showShareButton;
-
   final VoidCallback? onShare;
   final VoidCallback? onSave;
+
+  /// Hero tag forwarded to [CompanyAvatar].
+  final String? heroTag;
+
+  /// Optional override for the avatar size (used in details header).
+  final double? avatarSize;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +39,8 @@ class JobCardHeader extends StatelessWidget {
         CompanyAvatar(
           companyName: companyName,
           logoUrl: companyLogoUrl,
+          heroTag: heroTag,
+          size: avatarSize,
         ),
         SizedBox(width: 12.w),
         Expanded(
@@ -42,11 +51,9 @@ class JobCardHeader extends StatelessWidget {
                 companyName,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: context.textTheme.bodyMedium
-                    ?.copyWith(
-                      color: context.colors.onSurface
-                          .withValues(alpha: 0.6),
-                    ),
+                style: context.textTheme.bodyMedium?.copyWith(
+                  color: context.colors.onSurface.withValues(alpha: 0.6),
+                ),
               ),
               SizedBox(height: 3.h),
               Text(
@@ -73,9 +80,7 @@ class JobCardHeader extends StatelessWidget {
                 : Icons.bookmark_border_rounded,
             color: isSaved
                 ? context.colors.secondary
-                : context.colors.onSurface.withValues(
-                    alpha: 0.6,
-                  ),
+                : context.colors.onSurface.withValues(alpha: 0.6),
           ),
         ),
       ],

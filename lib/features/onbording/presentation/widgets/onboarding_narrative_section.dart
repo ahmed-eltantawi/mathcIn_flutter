@@ -1,4 +1,5 @@
 import 'package:MatchIn/core/extensions/context_extensions.dart';
+import 'package:MatchIn/core/utils/app_text_styles.dart';
 import 'package:MatchIn/features/onbording/presentation/widgets/onboarding_action_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,24 +28,21 @@ class OnboardingNarrativeSection extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyle(
-            fontFamily: 'DM Sans',
-            fontSize: titleFontSize ?? 24.sp,
-            fontWeight: FontWeight.w700,
+          style: AppTextStyles.heading24Bold(
+            isArabic: false,
             color: context.colors.onSurface,
-            letterSpacing: -0.6,
-            height: 30 / 24,
+          ).copyWith(
+            fontSize: titleFontSize ?? 24.sp,
           ),
         ),
         SizedBox(height: 8.h),
         Text(
           subtitle,
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w400,
+          style: AppTextStyles.body14Regular(
+            isArabic: false,
             color: context.colors.onSurfaceVariant,
-            height: 26 / 16,
+          ).copyWith(
+            fontSize: 16.sp,
           ),
         ),
         SizedBox(height: 24.h),

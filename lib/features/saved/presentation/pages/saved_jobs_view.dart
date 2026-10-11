@@ -1,11 +1,15 @@
+import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/applications_cubit.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/applications_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:MatchIn/core/routing/app_routes.dart';
 import 'package:MatchIn/core/services/services_locator.dart';
-import 'package:MatchIn/core/utils/app_colors.dart';
+import 'package:MatchIn/core/widgets/error/app_error.dart';
+import 'package:MatchIn/generated/l10n.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/job_details_widgets/job_card_widgets/job_card.dart';
 import 'package:MatchIn/features/saved/data/repositories/applied_jobs_repository.dart';
 import 'package:MatchIn/features/saved/domain/entities/saved_job_entity.dart';
@@ -23,8 +27,15 @@ class SavedJobsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<SavedJobsCubit>(
-      create: (_) => getIt<SavedJobsCubit>()..fetchSavedJobs(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<SavedJobsCubit>(
+          create: (_) => getIt<SavedJobsCubit>()..fetchSavedJobs(),
+        ),
+        BlocProvider<ApplicationsCubit>(
+          create: (_) => getIt<ApplicationsCubit>()..fetchApplications(),
+        ),
+      ],
       child: const _SavedJobsContent(),
     );
   }
@@ -89,8 +100,11 @@ class _SavedJobsContentState extends State<_SavedJobsContent> {
   }
 
   String _getInitials(String company) {
-    final words =
-        company.trim().split(RegExp(r'\s+')).where((w) => w.isNotEmpty).toList();
+    final words = company
+        .trim()
+        .split(RegExp(r'\s+'))
+        .where((w) => w.isNotEmpty)
+        .toList();
     if (words.isEmpty) return '?';
     if (words.length == 1) {
       final w = words.first;
@@ -103,9 +117,8 @@ class _SavedJobsContentState extends State<_SavedJobsContent> {
   Widget build(BuildContext context) {
     final isSavedTab = _activeTab == SavedTabType.saved;
 
-    return ValueListenableBuilder<List<AppliedJobUiModel>>(
-      valueListenable: AppliedJobsRepository.instance.appliedJobsNotifier,
-      builder: (context, appliedJobs, _) {
+    return BlocBuilder<ApplicationsCubit, ApplicationsState>(
+      builder: (context, appState) {
         return BlocBuilder<SavedJobsCubit, SavedJobsState>(
           builder: (context, savedState) {
             int savedCount = 0;
@@ -113,14 +126,20 @@ class _SavedJobsContentState extends State<_SavedJobsContent> {
               savedCount = savedState.jobs.length;
             }
 
+            int appCount = 0;
+            if (appState is ApplicationsLoaded) {
+              appCount = appState.total;
+            }
+
             return Scaffold(
-              backgroundColor: AppColors.background,
               body: SafeArea(
                 child: Column(
                   children: [
                     // Top App Bar
                     SavedTopBar(
-                      title: isSavedTab ? 'Saved Jobs' : 'Applications',
+                      title: isSavedTab
+                          ? S.of(context).savedJobs
+                          : S.of(context).applications,
                       onSearchTap: () {
                         context.push(AppRoutes.kJobsSearchView);
                       },
@@ -135,12 +154,12 @@ class _SavedJobsContentState extends State<_SavedJobsContent> {
                     // Summary Bar
                     SavedSummaryBar(
                       countText: isSavedTab
-                          ? '$savedCount saved opportunities'
-                          : '${appliedJobs.length} applications',
-                      actionLabel:
-                          isSavedTab ? 'Recently saved' : 'All statuses',
-                      actionIcon:
-                          isSavedTab ? Icons.sort : Icons.filter_list,
+                          ? '$savedCount ${S.of(context).opportunities}'
+                          : '$appCount ${S.of(context).applications}',
+                      actionLabel: isSavedTab
+                          ? S.of(context).mostRelevant
+                          : S.of(context).all,
+                      actionIcon: isSavedTab ? Icons.sort : Icons.filter_list,
                       onActionTap: () {
                         // Future sort/filter integration
                       },
@@ -150,7 +169,7 @@ class _SavedJobsContentState extends State<_SavedJobsContent> {
                     Expanded(
                       child: isSavedTab
                           ? _buildSavedJobsList(savedState)
-                          : _buildAppliedJobsList(appliedJobs),
+                          : _buildAppliedJobsList(),
                     ),
                   ],
                 ),
@@ -164,43 +183,15 @@ class _SavedJobsContentState extends State<_SavedJobsContent> {
 
   Widget _buildSavedJobsList(SavedJobsState state) {
     if (state is SavedJobsLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     }
 
     if (state is SavedJobsError) {
-      return Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.error_outline_rounded,
-                size: 48.sp,
-                color: Colors.redAccent,
-              ),
-              SizedBox(height: 12.h),
-              Text(
-                state.message,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 14.sp,
-                  color: AppColors.textSecondary,
-                ),
-              ),
-              SizedBox(height: 16.h),
-              ElevatedButton(
-                onPressed: () {
-                  context.read<SavedJobsCubit>().fetchSavedJobs();
-                },
-                child: const Text('Retry'),
-              ),
-            ],
-          ),
-        ),
+      return AppErrorWidget(
+        message: state.message,
+        onRetry: () {
+          context.read<SavedJobsCubit>().fetchSavedJobs();
+        },
       );
     }
 
@@ -215,11 +206,9 @@ class _SavedJobsContentState extends State<_SavedJobsContent> {
               SizedBox(height: 120.h),
               Center(
                 child: Text(
-                  'No saved jobs yet',
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 14.sp,
-                    color: AppColors.textSecondary,
+                  S.of(context).noSavedJobsYet,
+                  style: context.textTheme.bodyMedium?.copyWith(
+                    color: context.colors.onSurface.withValues(alpha: 0.6),
                   ),
                 ),
               ),
@@ -273,47 +262,101 @@ class _SavedJobsContentState extends State<_SavedJobsContent> {
     return const SizedBox.shrink();
   }
 
-  Widget _buildAppliedJobsList(List<AppliedJobUiModel> appliedJobs) {
-    if (appliedJobs.isEmpty) {
-      return Center(
-        child: Text(
-          'No applications yet',
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 14.sp,
-            color: AppColors.textSecondary,
-          ),
-        ),
-      );
-    }
+  Widget _buildAppliedJobsList() {
+    return BlocBuilder<ApplicationsCubit, ApplicationsState>(
+      builder: (context, state) {
+        if (state is ApplicationsLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-    return AnimationLimiter(
-      child: ListView.separated(
-        padding: EdgeInsets.fromLTRB(16.w, 4.h, 16.w, 24.h),
-        itemCount: appliedJobs.length,
-        separatorBuilder: (context, index) => SizedBox(height: 12.h),
-        itemBuilder: (context, index) {
-          final application = appliedJobs[index];
-          return AnimationConfiguration.staggeredList(
-            position: index,
-            duration: const Duration(milliseconds: 375),
-            child: SlideAnimation(
-              verticalOffset: 50.0,
-              child: FadeInAnimation(
-                child: AppliedJobCard(
-                  application: application,
-                  onCardTap: () {
-                    context.push(AppRoutes.ktrackingApplication);
-                  },
-                  onViewApplicationTap: () {
-                    context.push(AppRoutes.ktrackingApplication);
-                  },
+        if (state is ApplicationsError) {
+          return AppErrorWidget(
+            message: state.message,
+            onRetry: () {
+              context.read<ApplicationsCubit>().fetchApplications();
+            },
+          );
+        }
+
+        if (state is ApplicationsEmpty) {
+          return RefreshIndicator(
+            onRefresh: () => context
+                .read<ApplicationsCubit>()
+                .fetchApplications(isRefresh: true),
+            child: ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              children: [
+                SizedBox(height: 120.h),
+                Center(
+                  child: Text(
+                    S.of(context).noApplicationsYet,
+                    style: context.textTheme.bodyMedium?.copyWith(
+                      color: context.colors.onSurface.withValues(alpha: 0.6),
+                    ),
+                  ),
                 ),
+              ],
+            ),
+          );
+        }
+
+        if (state is ApplicationsLoaded) {
+          return RefreshIndicator(
+            onRefresh: () => context
+                .read<ApplicationsCubit>()
+                .fetchApplications(isRefresh: true),
+            child: AnimationLimiter(
+              child: ListView.separated(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.fromLTRB(16.w, 4.h, 16.w, 24.h),
+                itemCount:
+                    state.applications.length + (state.isLoadingMore ? 1 : 0),
+                separatorBuilder: (context, index) => SizedBox(height: 12.h),
+                itemBuilder: (context, index) {
+                  if (index == state.applications.length) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(vertical: 16.h),
+                      child: const Center(child: CircularProgressIndicator()),
+                    );
+                  }
+
+                  final application = state.applications[index];
+                  return AnimationConfiguration.staggeredList(
+                    position: index,
+                    duration: const Duration(milliseconds: 375),
+                    child: SlideAnimation(
+                      verticalOffset: 50.0,
+                      child: FadeInAnimation(
+                        child: AppliedJobCard(
+                          applicationEntity: application,
+                          onCardTap: () {
+                            if (application.job != null) {
+                              context.push(
+                                AppRoutes.ktrackingApplication,
+                                extra: application.job,
+                              );
+                            }
+                          },
+                          onViewApplicationTap: () {
+                            if (application.job != null) {
+                              context.push(
+                                AppRoutes.ktrackingApplication,
+                                extra: application.job,
+                              );
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
           );
-        },
-      ),
+        }
+
+        return const SizedBox.shrink();
+      },
     );
   }
 }

@@ -26,10 +26,7 @@ class CareerPreferencesHeader extends StatelessWidget {
             alignment: AlignmentDirectional.centerStart,
             child: IconButton(
               onPressed: onBackPressed,
-              icon: Icon(
-                Icons.arrow_back_ios_new_rounded,
-                size: 21.r,
-              ),
+              icon: Icon(Icons.arrow_back_ios_new_rounded, size: 21.r),
             ),
           ),
           Padding(
@@ -49,10 +46,7 @@ class CareerPreferencesHeader extends StatelessWidget {
             alignment: AlignmentDirectional.centerEnd,
             child: IconButton(
               onPressed: onMenuPressed,
-              icon: Icon(
-                Icons.more_vert_rounded,
-                size: 23.r,
-              ),
+              icon: Icon(Icons.more_vert_rounded, size: 23.r),
             ),
           ),
         ],

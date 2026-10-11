@@ -38,19 +38,11 @@ class PreferenceDropdownField extends StatelessWidget {
             decoration: BoxDecoration(
               color: colors.surface,
               borderRadius: BorderRadius.circular(10.r),
-              border: Border.all(
-                color: colors.outlineVariant,
-                width: 1,
-              ),
+              border: Border.all(color: colors.outlineVariant, width: 1),
             ),
             child: Row(
               children: [
-                Expanded(
-                  child: Text(
-                    value,
-                    style: theme.textTheme.bodyMedium,
-                  ),
-                ),
+                Expanded(child: Text(value, style: theme.textTheme.bodyMedium)),
                 Icon(
                   Icons.keyboard_arrow_down_rounded,
                   color: colors.onSurfaceVariant,

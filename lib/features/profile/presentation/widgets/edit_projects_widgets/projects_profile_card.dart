@@ -18,10 +18,7 @@ class ProjectsProfileCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: colors.surface,
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(
-          color: context.theme.dividerColor,
-          width: 1,
-        ),
+        border: Border.all(color: context.theme.dividerColor, width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,18 +44,16 @@ class ProjectsProfileCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   locale.projects,
-                  style: theme.textTheme.titleLarge
-                      ?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
 
               SizedBox(width: 8.w),
 
               const ProfileMatchQualityRow(
-                quality:
-                    ProfileMatchQuality.needsImprovement,
+                quality: ProfileMatchQuality.needsImprovement,
                 compact: true,
               ),
             ],

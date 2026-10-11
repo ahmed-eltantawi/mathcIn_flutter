@@ -1,4 +1,5 @@
 import 'package:MatchIn/core/extensions/context_extensions.dart';
+import 'package:MatchIn/core/utils/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -28,13 +29,9 @@ class OnboardingTopBar extends StatelessWidget {
           // Brand Wordmark
           Text(
             'Matchin',
-            style: TextStyle(
-              fontFamily: 'DM Sans',
-              fontSize: 18.sp,
-              fontWeight: FontWeight.w700,
+            style: AppTextStyles.heading18Bold(
+              isArabic: false,
               color: context.colors.primary,
-              letterSpacing: -0.45,
-              height: 24 / 18,
             ),
           ),
 
@@ -50,12 +47,9 @@ class OnboardingTopBar extends StatelessWidget {
               ),
               child: Text(
                 isLastPage ? context.l10n.notNow : context.l10n.skip,
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
+                style: AppTextStyles.body14SemiBold(
+                  isArabic: false,
                   color: context.colors.secondary,
-                  height: 20 / 14,
                 ),
               ),
             ),

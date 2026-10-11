@@ -11,15 +11,15 @@ class ExperienceLevelSection extends StatelessWidget {
     super.key,
   });
 
-  final String selectedLevel;
+  final String? selectedLevel;
   final ValueChanged<String> onSelected;
 
-  static const levels = [
-    'Student',
-    'Entry Level',
-    'Junior',
-    'Mid-Level',
-    'Senior',
+  static const List<String> levels = [
+    'student',
+    'entry_level',
+    'junior',
+    'mid_level',
+    'senior',
   ];
 
   @override
@@ -31,26 +31,24 @@ class ExperienceLevelSection extends StatelessWidget {
       child: Wrap(
         spacing: 8.w,
         runSpacing: 8.h,
-        children: levels
-            .map(
-              (level) => PreferenceChoiceChip(
-                label: _localizedLevel(locale, level),
-                isSelected: level == selectedLevel,
-                onPressed: () => onSelected(level),
-              ),
-            )
-            .toList(),
+        children: levels.map((level) {
+          return PreferenceChoiceChip(
+            label: _localizedLevel(locale, level),
+            isSelected: selectedLevel == level,
+            onPressed: () => onSelected(level),
+          );
+        }).toList(),
       ),
     );
   }
 
   String _localizedLevel(S locale, String value) {
     return switch (value) {
-      'Student' => locale.student,
-      'Entry Level' => locale.entryLevel,
-      'Junior' => locale.junior,
-      'Mid-Level' => locale.midLevel,
-      'Senior' => locale.senior,
+      'student' => locale.student,
+      'entry_level' => locale.entryLevel,
+      'junior' => locale.junior,
+      'mid_level' => locale.midLevel,
+      'senior' => locale.senior,
       _ => value,
     };
   }

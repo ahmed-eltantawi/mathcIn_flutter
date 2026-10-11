@@ -147,7 +147,9 @@ class _LoginFormState extends State<LoginForm> {
                   accessToken: state.loginModel.accessToken,
                   refreshToken: state.loginModel.refreshToken ?? '',
                 );
-                await getIt<SharedPreferencesService>().setLoggedIn(true);
+                final prefs = getIt<SharedPreferencesService>();
+                await prefs.setLoggedIn(true);
+                await prefs.setGuest(false);
                 if (context.mounted) context.go(AppRoutes.kHomeView);
               } else if (state is LoginFailure) {
                 context.showErrorSnackBar(state.message);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:MatchIn/core/utils/app_colors.dart';
+import 'package:MatchIn/core/extensions/context_extensions.dart';
+import 'package:MatchIn/generated/l10n.dart';
 import 'package:MatchIn/features/saved/presentation/models/saved_tab_type.dart';
 
 class SavedSegmentedTab extends StatelessWidget {
@@ -21,9 +22,9 @@ class SavedSegmentedTab extends StatelessWidget {
         height: 46.h,
         padding: EdgeInsets.all(4.w),
         decoration: BoxDecoration(
-          color: const Color(0xFFEBE7DF),
+          color: context.colors.surfaceContainerHighest,
           border: Border.all(
-            color: AppColors.border,
+            color: context.colors.outline.withValues(alpha: 0.2),
             width: 1,
           ),
           borderRadius: BorderRadius.circular(12.r),
@@ -32,7 +33,8 @@ class SavedSegmentedTab extends StatelessWidget {
           children: [
             Expanded(
               child: _buildTabItem(
-                title: 'Saved',
+                context: context,
+                title: S.of(context).savedJobs,
                 isSelected: activeTab == SavedTabType.saved,
                 onTap: () => onTabChanged(SavedTabType.saved),
               ),
@@ -40,7 +42,8 @@ class SavedSegmentedTab extends StatelessWidget {
             SizedBox(width: 4.w),
             Expanded(
               child: _buildTabItem(
-                title: 'Applied',
+                context: context,
+                title: S.of(context).applications,
                 isSelected: activeTab == SavedTabType.applied,
                 onTap: () => onTabChanged(SavedTabType.applied),
               ),
@@ -52,6 +55,7 @@ class SavedSegmentedTab extends StatelessWidget {
   }
 
   Widget _buildTabItem({
+    required BuildContext context,
     required String title,
     required bool isSelected,
     required VoidCallback onTap,
@@ -63,12 +67,12 @@ class SavedSegmentedTab extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primary : Colors.transparent,
+          color: isSelected ? context.colors.primary : Colors.transparent,
           borderRadius: BorderRadius.circular(8.r),
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.05),
+                    color: context.colors.shadow.withValues(alpha: 0.05),
                     blurRadius: 2,
                     offset: const Offset(0, 1),
                   ),
@@ -77,12 +81,11 @@ class SavedSegmentedTab extends StatelessWidget {
         ),
         child: Text(
           title,
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 14.sp,
-            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-            color: isSelected ? Colors.white : AppColors.textSecondary,
-            height: 20 / 14,
+          style: context.textTheme.bodyMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+            color: isSelected
+                ? context.colors.onPrimary
+                : context.colors.onSurfaceVariant,
           ),
         ),
       ),

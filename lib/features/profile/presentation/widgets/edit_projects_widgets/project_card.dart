@@ -38,18 +38,14 @@ class ProjectCard extends StatelessWidget {
     final colors = theme.colorScheme;
     final locale = S.of(context);
 
-    final hasLinks =
-        projectUrl != null || githubUrl != null;
+    final hasLinks = projectUrl != null || githubUrl != null;
 
     return Container(
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
         color: colors.surface,
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(
-          color: context.theme.dividerColor,
-          width: 1,
-        ),
+        border: Border.all(color: context.theme.dividerColor, width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,31 +55,25 @@ class ProjectCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       title,
-                      style: theme.textTheme.titleLarge
-                          ?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                     SizedBox(height: 3.h),
                     Text(
                       date,
-                      style: theme.textTheme.bodySmall
-                          ?.copyWith(
-                            color: colors.onSurfaceVariant,
-                          ),
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: colors.onSurfaceVariant,
+                      ),
                     ),
                   ],
                 ),
               ),
-              _ProjectIconButton(
-                icon: Icons.edit_outlined,
-                onPressed: onEdit,
-              ),
+              _ProjectIconButton(icon: Icons.edit_outlined, onPressed: onEdit),
               SizedBox(width: 4.w),
               _ProjectIconButton(
                 icon: Icons.delete_outline_rounded,
@@ -96,9 +86,7 @@ class ProjectCard extends StatelessWidget {
 
           Text(
             description,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              height: 1.45,
-            ),
+            style: theme.textTheme.bodyMedium?.copyWith(height: 1.45),
           ),
 
           SizedBox(height: 12.h),
@@ -107,19 +95,14 @@ class ProjectCard extends StatelessWidget {
             spacing: 6.w,
             runSpacing: 7.h,
             children: skills
-                .map(
-                  (skill) => ProjectSkillChip(label: skill),
-                )
+                .map((skill) => ProjectSkillChip(label: skill))
                 .toList(),
           ),
 
           if (hasLinks) ...[
             SizedBox(height: 14.h),
 
-            Divider(
-              height: 1,
-              color: context.theme.dividerColor,
-            ),
+            Divider(height: 1, color: context.theme.dividerColor),
 
             SizedBox(height: 10.h),
 
@@ -149,10 +132,7 @@ class ProjectCard extends StatelessWidget {
 }
 
 class _ProjectIconButton extends StatelessWidget {
-  const _ProjectIconButton({
-    required this.icon,
-    this.onPressed,
-  });
+  const _ProjectIconButton({required this.icon, this.onPressed});
 
   final IconData icon;
   final VoidCallback? onPressed;
@@ -170,11 +150,7 @@ class _ProjectIconButton extends StatelessWidget {
 }
 
 class _ProjectLink extends StatelessWidget {
-  const _ProjectLink({
-    required this.icon,
-    required this.label,
-    this.onPressed,
-  });
+  const _ProjectLink({required this.icon, required this.label, this.onPressed});
 
   final IconData icon;
   final String label;

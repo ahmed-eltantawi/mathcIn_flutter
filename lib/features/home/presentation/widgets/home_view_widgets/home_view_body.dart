@@ -1,4 +1,5 @@
 import 'package:MatchIn/core/routing/app_routes.dart';
+import 'package:MatchIn/core/widgets/error/app_error.dart';
 import 'package:MatchIn/features/home/presentation/cubit/home_cubit.dart';
 import 'package:MatchIn/features/home/presentation/cubit/home_state.dart';
 import 'package:MatchIn/features/home/presentation/widgets/home_view_widgets/home_card_view_matches_jobs.dart';
@@ -25,11 +26,9 @@ class HomeViewBody extends StatelessWidget {
             return switch (state) {
               HomeInitial() ||
               HomeLoading() => const HomeInicatorHeader(),
-              HomeError(:final message) => Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 16.w,
-                ),
-                child: Text(message),
+              HomeError(:final message) => AppErrorWidget(
+                message: message,
+                onRetry: () => context.read<HomeCubit>().getHomeDashboard(),
               ),
               HomeLoaded(:final dashboard) => HomeHeader(
                 userName: dashboard.userName,

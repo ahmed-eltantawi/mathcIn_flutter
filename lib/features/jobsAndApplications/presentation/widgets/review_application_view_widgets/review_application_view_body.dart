@@ -1,11 +1,14 @@
+import 'package:MatchIn/core/extensions/snack_bar_extensions.dart';
 import 'package:MatchIn/core/routing/app_routes.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_entity.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/apply_to_job_cubit.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/apply_to_job_state.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_cubit.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/apply_header.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/review_application_view_widgets/user_info.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/review_cv_card.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/review_application_view_widgets/review_info_card.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/review_application_view_widgets/review_job_card.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/review_application_view_widgets/user_info.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/review_cv_card.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/review_questions_card.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
@@ -20,211 +23,224 @@ class ReviewApplicationViewBody extends StatelessWidget {
   });
 
   final JobEntity job;
+
   @override
   Widget build(BuildContext context) {
     final s = S.of(context);
     final theme = Theme.of(context);
 
-    return Column(
-      children: [
-        ApplyHeader(
-          title: s.reviewApplication,
-          currentStep: 3,
-          totalSteps: 3,
-        ),
+    return BlocConsumer<ApplyToJobCubit, ApplyToJobState>(
+      listener: (context, state) {
+        if (state is ApplyToJobFailure) {
+          context.showErrorSnackBar(state.message);
+        } else if (state is ApplyToJobSuccess) {
+          context.showSuccessSnackBar('Application submitted successfully.');
+          context.read<JobsFeedCubit>().applyForJob(job.id);
+          context.push(
+            AppRoutes.kapplicationSubmitted,
+            extra: job,
+          );
+        }
+      },
+      builder: (context, state) {
+        final isSubmitting = state is ApplyToJobSubmitting;
 
-        Expanded(
-          child: ListView(
-            padding: EdgeInsets.symmetric(
-              horizontal: 16.w,
-              vertical: 18.h,
+        return Column(
+          children: [
+            ApplyHeader(
+              title: s.reviewApplication,
+              currentStep: 3,
+              totalSteps: 3,
             ),
-            children: [
-              Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16.w,
+                  vertical: 18.h,
+                ),
                 children: [
-                  Row(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10.w,
-                          vertical: 5.h,
-                        ),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.secondary
-                              .withValues(alpha: 0.15),
-                          borderRadius:
-                              BorderRadius.circular(20.r),
-                        ),
-                        child: Text(
-                          s.stepThreeOfThree,
-                          style: theme.textTheme.labelMedium
-                              ?.copyWith(
-                                color: theme
-                                    .colorScheme
-                                    .secondary,
+                      Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10.w,
+                              vertical: 5.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.secondary
+                                  .withValues(alpha: 0.15),
+                              borderRadius: BorderRadius.circular(20.r),
+                            ),
+                            child: Text(
+                              s.stepThreeOfThree,
+                              style: theme.textTheme.labelMedium?.copyWith(
+                                color: theme.colorScheme.secondary,
                                 fontWeight: FontWeight.w700,
                               ),
-                        ),
+                            ),
+                          ),
+                          SizedBox(width: 8.w),
+                          Text(
+                            '• ${s.finalConfirmation}',
+                            style: theme.textTheme.bodyMedium,
+                          ),
+                        ],
                       ),
-                      SizedBox(width: 8.w),
+                      SizedBox(height: 14.h),
                       Text(
-                        '• ${s.finalConfirmation}',
-                        style: theme.textTheme.bodyMedium,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 14.h),
-                  Text(
-                    s.reviewBeforeSubmitting,
-                    style: theme.textTheme.headlineMedium
-                        ?.copyWith(
+                        s.reviewBeforeSubmitting,
+                        style: theme.textTheme.headlineMedium?.copyWith(
                           color: theme.colorScheme.primary,
                           fontWeight: FontWeight.w700,
                         ),
-                  ),
-                  SizedBox(height: 6.h),
-                  Text(
-                    s.reviewBeforeSubmittingDescription,
-                    style: theme.textTheme.bodyMedium
-                        ?.copyWith(
+                      ),
+                      SizedBox(height: 6.h),
+                      Text(
+                        s.reviewBeforeSubmittingDescription,
+                        style: theme.textTheme.bodyMedium?.copyWith(
                           height: 1.5,
                           color: theme.colorScheme.onSurface
                               .withValues(alpha: 0.7),
                         ),
-                  ),
-                  SizedBox(height: 22.h),
+                      ),
+                      SizedBox(height: 22.h),
 
-                  ReviewJobCard(job: job),
-                  SizedBox(height: 16.h),
+                      ReviewJobCard(job: job),
+                      SizedBox(height: 16.h),
 
-                  ReviewInfoCard(
-                    title: s.yourInformation,
-                    actionLabel: s.edit,
+                      ReviewInfoCard(
+                        title: s.yourInformation,
+                        actionLabel: s.edit,
+                        job: job,
+                        child: const UserInformation(),
+                      ),
 
-                    job: job,
-                    child: const UserInformation(),
-                  ),
+                      SizedBox(height: 16.h),
 
-                  SizedBox(height: 16.h),
+                      ReviewInfoCard(
+                        title: s.cv,
+                        actionLabel: s.change,
+                        job: job,
+                        child: const ReviewCvCard(),
+                      ),
 
-                  ReviewInfoCard(
-                    title: s.cv,
-                    actionLabel: s.change,
-                    job: job,
-                    child: const ReviewCvCard(),
-                  ),
+                      SizedBox(height: 16.h),
 
-                  SizedBox(height: 16.h),
-
-                  ReviewInfoCard(
-                    title: s.coverNote,
-                    actionLabel: s.edit,
-
-                    job: job,
-                    child: Text(
-                      s.noCoverNoteAdded,
-                      style: theme.textTheme.bodyMedium
-                          ?.copyWith(
+                      ReviewInfoCard(
+                        title: s.coverNote,
+                        actionLabel: s.edit,
+                        job: job,
+                        child: Text(
+                          s.noCoverNoteAdded,
+                          style: theme.textTheme.bodyMedium?.copyWith(
                             fontStyle: FontStyle.italic,
-                            color: theme
-                                .colorScheme
-                                .onSurface
+                            color: theme.colorScheme.onSurface
                                 .withValues(alpha: 0.55),
                           ),
-                    ),
-                  ),
-
-                  SizedBox(height: 16.h),
-
-                  ReviewInfoCard(
-                    title: s.applicationQuestions,
-                    actionLabel: s.edit,
-                    job: job,
-                    child: const ReviewQuestionsCard(),
-                  ),
-
-                  SizedBox(height: 24.h),
-
-                  Row(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
-                    children: [
-                      Icon(
-                        Icons.verified_user_outlined,
-                        size: 20.sp,
-                        color: theme.colorScheme.onSurface
-                            .withValues(alpha: 0.6),
+                        ),
                       ),
-                      SizedBox(width: 8.w),
-                      Expanded(
-                        child: Text(
-                          s.submissionConfirmationNotice,
-                          style: theme.textTheme.bodySmall
-                              ?.copyWith(
-                                color: theme
-                                    .colorScheme
-                                    .onSurface
+
+                      SizedBox(height: 16.h),
+
+                      ReviewInfoCard(
+                        title: s.applicationQuestions,
+                        actionLabel: s.edit,
+                        job: job,
+                        child: const ReviewQuestionsCard(),
+                      ),
+
+                      SizedBox(height: 24.h),
+
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Icon(
+                            Icons.verified_user_outlined,
+                            size: 20.sp,
+                            color: theme.colorScheme.onSurface
+                                .withValues(alpha: 0.6),
+                          ),
+                          SizedBox(width: 8.w),
+                          Expanded(
+                            child: Text(
+                              s.submissionConfirmationNotice,
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.colorScheme.onSurface
                                     .withValues(alpha: 0.7),
                               ),
-                        ),
+                            ),
+                          ),
+                        ],
                       ),
+
+                      SizedBox(height: 18.h),
                     ],
                   ),
-
-                  SizedBox(height: 18.h),
-                ],
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  color: theme.scaffoldBackgroundColor,
-                  border: Border(
-                    top: BorderSide(
-                      color: theme.dividerColor,
-                    ),
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          await context
-                              .read<JobsFeedCubit>()
-                              .applyForJob(job.id);
-
-                          if (!context.mounted) return;
-
-                          context.push(
-                            AppRoutes.kapplicationSubmitted,
-                            extra: job,
-                          );
-                        },
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(s.submitApplication),
-                            SizedBox(width: 8.w),
-                            const Icon(Icons.send_outlined),
-                          ],
+                  Container(
+                    decoration: BoxDecoration(
+                      color: theme.scaffoldBackgroundColor,
+                      border: Border(
+                        top: BorderSide(
+                          color: theme.dividerColor,
                         ),
                       ),
                     ),
-                    TextButton(
-                      onPressed: () {
-                        context.pop();
-                      },
-                      child: Text(s.back),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: isSubmitting
+                                ? null
+                                : () {
+                                    final jobIdInt =
+                                        int.tryParse(job.id) ?? 1;
+                                    context
+                                        .read<ApplyToJobCubit>()
+                                        .submitApplication(
+                                          jobId: jobIdInt,
+                                          coverLetter:
+                                              'I am excited to apply for this role.',
+                                        );
+                                  },
+                            child: isSubmitting
+                                ? SizedBox(
+                                    height: 20.r,
+                                    width: 20.r,
+                                    child: const CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(s.submitApplication),
+                                      SizedBox(width: 8.w),
+                                      const Icon(Icons.send_outlined),
+                                    ],
+                                  ),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: isSubmitting
+                              ? null
+                              : () {
+                                  context.pop();
+                                },
+                          child: Text(s.back),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-      ],
+            ),
+          ],
+        );
+      },
     );
   }
 }

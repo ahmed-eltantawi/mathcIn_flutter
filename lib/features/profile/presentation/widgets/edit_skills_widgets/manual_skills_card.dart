@@ -1,4 +1,5 @@
 import 'package:MatchIn/core/extensions/context_extensions.dart';
+import 'package:MatchIn/features/profile/domain/entities/candidate_skill_entity.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/skill_chip.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,8 +12,8 @@ class ManualSkillsCard extends StatelessWidget {
     super.key,
   });
 
-  final List<String> skills;
-  final ValueChanged<String> onRemoveSkill;
+  final List<CandidateSkillEntity> skills;
+  final ValueChanged<int> onRemoveSkill;
 
   @override
   Widget build(BuildContext context) {
@@ -25,29 +26,22 @@ class ManualSkillsCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: colors.surface,
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(
-          color: context.theme.dividerColor,
-        ),
+        border: Border.all(color: context.theme.dividerColor),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Icon(
-                Icons.edit_note_rounded,
-                size: 26.r,
-                color: colors.primary,
-              ),
+              Icon(Icons.edit_note_rounded, size: 26.r, color: colors.primary),
               SizedBox(width: 10.w),
               Expanded(
                 child: Text(
                   locale.addedManually,
-                  style: theme.textTheme.titleLarge
-                      ?.copyWith(
-                        color: colors.primary,
-                        fontWeight: FontWeight.w500,
-                      ),
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    color: colors.primary,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
               Text(
@@ -60,10 +54,7 @@ class ManualSkillsCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 14.h),
-          Divider(
-            height: 1,
-            color: context.theme.dividerColor,
-          ),
+          Divider(height: 1, color: context.theme.dividerColor),
           SizedBox(height: 16.h),
           Wrap(
             spacing: 10.w,
@@ -71,8 +62,8 @@ class ManualSkillsCard extends StatelessWidget {
             children: skills
                 .map(
                   (skill) => SkillChip(
-                    label: skill,
-                    onRemove: () => onRemoveSkill(skill),
+                    label: skill.name,
+                    onRemove: () => onRemoveSkill(skill.id),
                   ),
                 )
                 .toList(),

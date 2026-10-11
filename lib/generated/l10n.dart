@@ -450,20 +450,20 @@ class S {
     );
   }
 
-  /// `New password`
+  /// `New Password`
   String get newPassword {
     return Intl.message(
-      'New password',
+      'New Password',
       name: 'newPassword',
       desc: '',
       args: [],
     );
   }
 
-  /// `Confirm new password`
+  /// `Confirm New Password`
   String get confirmNewPassword {
     return Intl.message(
-      'Confirm new password',
+      'Confirm New Password',
       name: 'confirmNewPassword',
       desc: '',
       args: [],
@@ -1175,6 +1175,201 @@ class S {
     return Intl.message(
       '© 2025 SkillMatch. All rights reserved.',
       name: 'copyright',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Arabic`
+  String get arabic {
+    return Intl.message('Arabic', name: 'arabic', desc: '', args: []);
+  }
+
+  /// `Dark`
+  String get dark {
+    return Intl.message('Dark', name: 'dark', desc: '', args: []);
+  }
+
+  /// `System`
+  String get system {
+    return Intl.message('System', name: 'system', desc: '', args: []);
+  }
+
+  /// `Current Password`
+  String get currentPassword {
+    return Intl.message(
+      'Current Password',
+      name: 'currentPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password changed successfully`
+  String get changePasswordSuccess {
+    return Intl.message(
+      'Password changed successfully',
+      name: 'changePasswordSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your new password must be at least 8 characters long and contain uppercase, lowercase, number, and special character.`
+  String get changePasswordDescription {
+    return Intl.message(
+      'Your new password must be at least 8 characters long and contain uppercase, lowercase, number, and special character.',
+      name: 'changePasswordDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Get in touch with us`
+  String get getInTouch {
+    return Intl.message(
+      'Get in touch with us',
+      name: 'getInTouch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email Support`
+  String get contactEmailTitle {
+    return Intl.message(
+      'Email Support',
+      name: 'contactEmailTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone Number`
+  String get contactPhoneTitle {
+    return Intl.message(
+      'Phone Number',
+      name: 'contactPhoneTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Office Location`
+  String get contactAddressTitle {
+    return Intl.message(
+      'Office Location',
+      name: 'contactAddressTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Support Hours`
+  String get contactHoursTitle {
+    return Intl.message(
+      'Support Hours',
+      name: 'contactHoursTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `support@skillmatch.com`
+  String get contactEmailPlaceholder {
+    return Intl.message(
+      'support@skillmatch.com',
+      name: 'contactEmailPlaceholder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `+1 (555) 019-2834`
+  String get contactPhonePlaceholder {
+    return Intl.message(
+      '+1 (555) 019-2834',
+      name: 'contactPhonePlaceholder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `100 Innovation Boulevard, Tech Park, Suite 400`
+  String get contactAddressPlaceholder {
+    return Intl.message(
+      '100 Innovation Boulevard, Tech Park, Suite 400',
+      name: 'contactAddressPlaceholder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Monday - Friday, 9:00 AM - 6:00 PM`
+  String get contactHoursPlaceholder {
+    return Intl.message(
+      'Monday - Friday, 9:00 AM - 6:00 PM',
+      name: 'contactHoursPlaceholder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Connect with us across our social channels to stay updated with opportunities and news.`
+  String get followUsDescription {
+    return Intl.message(
+      'Connect with us across our social channels to stay updated with opportunities and news.',
+      name: 'followUsDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Log Out`
+  String get logOutConfirmationTitle {
+    return Intl.message(
+      'Log Out',
+      name: 'logOutConfirmationTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to log out of your account?`
+  String get logOutConfirmationMessage {
+    return Intl.message(
+      'Are you sure you want to log out of your account?',
+      name: 'logOutConfirmationMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Language`
+  String get selectLanguage {
+    return Intl.message(
+      'Select Language',
+      name: 'selectLanguage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Theme`
+  String get selectTheme {
+    return Intl.message(
+      'Select Theme',
+      name: 'selectTheme',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Copied to clipboard`
+  String get copiedToClipboard {
+    return Intl.message(
+      'Copied to clipboard',
+      name: 'copiedToClipboard',
       desc: '',
       args: [],
     );
@@ -2690,16 +2885,6 @@ class S {
     );
   }
 
-  /// `Copied to clipboard`
-  String get copiedToClipboard {
-    return Intl.message(
-      'Copied to clipboard',
-      name: 'copiedToClipboard',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Suggested Questions`
   String get suggestedQuestions {
     return Intl.message(
@@ -4107,6 +4292,261 @@ class S {
     return Intl.message(
       'Save Preferences',
       name: 'savePreferences',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Career preferences saved successfully`
+  String get careerPreferencesSavedSuccessfully {
+    return Intl.message(
+      'Career preferences saved successfully',
+      name: 'careerPreferencesSavedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No applications yet`
+  String get noApplicationsYet {
+    return Intl.message(
+      'No applications yet',
+      name: 'noApplicationsYet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notifications`
+  String get notificationsTitle {
+    return Intl.message(
+      'Notifications',
+      name: 'notificationsTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No notifications yet`
+  String get noNotifications {
+    return Intl.message(
+      'No notifications yet',
+      name: 'noNotifications',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We'll let you know when important updates arrive.`
+  String get noNotificationsDesc {
+    return Intl.message(
+      'We\'ll let you know when important updates arrive.',
+      name: 'noNotificationsDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No unread notifications`
+  String get noUnreadNotifications {
+    return Intl.message(
+      'No unread notifications',
+      name: 'noUnreadNotifications',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mark as read`
+  String get markAsRead {
+    return Intl.message('Mark as read', name: 'markAsRead', desc: '', args: []);
+  }
+
+  /// `Mark all as read`
+  String get markAllAsRead {
+    return Intl.message(
+      'Mark all as read',
+      name: 'markAllAsRead',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All notifications marked as read`
+  String get allMarkedAsRead {
+    return Intl.message(
+      'All notifications marked as read',
+      name: 'allMarkedAsRead',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notification marked as read`
+  String get notificationMarkedAsRead {
+    return Intl.message(
+      'Notification marked as read',
+      name: 'notificationMarkedAsRead',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Showing cached notifications (Offline)`
+  String get showingCachedNotifications {
+    return Intl.message(
+      'Showing cached notifications (Offline)',
+      name: 'showingCachedNotifications',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All`
+  String get filterAll {
+    return Intl.message('All', name: 'filterAll', desc: '', args: []);
+  }
+
+  /// `Unread`
+  String get filterUnread {
+    return Intl.message('Unread', name: 'filterUnread', desc: '', args: []);
+  }
+
+  /// `Loading notifications...`
+  String get loadingNotifications {
+    return Intl.message(
+      'Loading notifications...',
+      name: 'loadingNotifications',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Copy`
+  String get copy {
+    return Intl.message('Copy', name: 'copy', desc: '', args: []);
+  }
+
+  /// `Open menu`
+  String get openMenu {
+    return Intl.message('Open menu', name: 'openMenu', desc: '', args: []);
+  }
+
+  /// `Send message`
+  String get sendMessage {
+    return Intl.message(
+      'Send message',
+      name: 'sendMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sending message...`
+  String get sendingMessage {
+    return Intl.message(
+      'Sending message...',
+      name: 'sendingMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ask me about jobs, resumes, interviews, or your career.`
+  String get aiAssistantSubtitle {
+    return Intl.message(
+      'Ask me about jobs, resumes, interviews, or your career.',
+      name: 'aiAssistantSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Resume Optimization`
+  String get resumeOptimization {
+    return Intl.message(
+      'Resume Optimization',
+      name: 'resumeOptimization',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `How can I optimize my CV for Flutter developer roles?`
+  String get resumeOptimizationPrompt {
+    return Intl.message(
+      'How can I optimize my CV for Flutter developer roles?',
+      name: 'resumeOptimizationPrompt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Interview Prep`
+  String get interviewPrep {
+    return Intl.message(
+      'Interview Prep',
+      name: 'interviewPrep',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `What are the top technical interview questions for Dart and Flutter?`
+  String get interviewPrepPrompt {
+    return Intl.message(
+      'What are the top technical interview questions for Dart and Flutter?',
+      name: 'interviewPrepPrompt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Career Growth`
+  String get careerGrowth {
+    return Intl.message(
+      'Career Growth',
+      name: 'careerGrowth',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `What steps should I take to become a Senior Mobile Architect?`
+  String get careerGrowthPrompt {
+    return Intl.message(
+      'What steps should I take to become a Senior Mobile Architect?',
+      name: 'careerGrowthPrompt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Job Fit Analysis`
+  String get jobFitAnalysis {
+    return Intl.message(
+      'Job Fit Analysis',
+      name: 'jobFitAnalysis',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `How does MatchIn calculate my job match percentage?`
+  String get jobFitAnalysisPrompt {
+    return Intl.message(
+      'How does MatchIn calculate my job match percentage?',
+      name: 'jobFitAnalysisPrompt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No history yet`
+  String get noHistoryYet {
+    return Intl.message(
+      'No history yet',
+      name: 'noHistoryYet',
       desc: '',
       args: [],
     );

@@ -4,11 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CareerGoalSection extends StatelessWidget {
-  const CareerGoalSection({
-    this.controller,
-    this.onChanged,
-    super.key,
-  });
+  const CareerGoalSection({this.controller, this.onChanged, super.key});
 
   final TextEditingController? controller;
   final ValueChanged<String>? onChanged;
@@ -42,10 +38,7 @@ class CareerGoalSection extends StatelessWidget {
               contentPadding: EdgeInsets.all(14.r),
               border: _border(theme),
               enabledBorder: _border(theme),
-              focusedBorder: _border(
-                theme,
-                color: colors.primary,
-              ),
+              focusedBorder: _border(theme, color: colors.primary),
             ),
           ),
           SizedBox(height: 10.h),
@@ -60,16 +53,10 @@ class CareerGoalSection extends StatelessWidget {
     );
   }
 
-  OutlineInputBorder _border(
-    ThemeData theme, {
-    Color? color,
-  }) {
+  OutlineInputBorder _border(ThemeData theme, {Color? color}) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(10.r),
-      borderSide: BorderSide(
-        color: color ?? theme.dividerColor,
-        width: 1,
-      ),
+      borderSide: BorderSide(color: color ?? theme.dividerColor, width: 1),
     );
   }
 }

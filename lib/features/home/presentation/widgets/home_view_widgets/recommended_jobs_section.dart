@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:MatchIn/core/routing/app_routes.dart';
-import 'package:MatchIn/core/widgets/loading/app_loading.dart';
 import 'package:MatchIn/core/widgets/app_empty.dart';
 import 'package:MatchIn/core/widgets/error/app_error.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_cubit.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_state.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/job_details_widgets/job_card_widgets/job_card.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/job_details_widgets/job_card_widgets/animated_job_card_list.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/job_details_widgets/job_card_widgets/job_card_shimmer.dart';
 import 'package:go_router/go_router.dart';
 
 class RecommendedJobsSection extends StatelessWidget {
@@ -41,39 +41,26 @@ class RecommendedJobsSection extends StatelessWidget {
             builder: (context, state) {
               return switch (state) {
                 JobsFeedInitial() || JobsFeedLoading() =>
-                  const AppLoadingWidget(),
+                  const JobFeedShimmerList(count: 3),
                 JobsFeedError(:final message) =>
-                  AppErrorWidget(message: message),
-                JobsFeedEmpty() => const AppEmptyWidget(
-                  message: '',
+                  AppErrorWidget(
+                    message: message,
+                    onRetry: () => context.read<JobsFeedCubit>().getJobs(),
+                  ),
+                JobsFeedEmpty() => AppEmptyWidget(
+                  message: context.l10n.noJobsFound,
                 ),
-                JobsFeedLoaded(:final jobs) => Column(
-                  children: [
-                    for (final job in jobs) ...[
-                      JobCard(
-                        job: job,
-                        showShareButton: true,
-                        onSave: () => context
-                            .read<JobsFeedCubit>()
-                            .toggleSaveJob(job.id),
-                      ),
-                      SizedBox(height: 12.h),
-                    ],
-                  ],
+                JobsFeedLoaded(:final jobs) => AnimatedJobCardList(
+                  jobs: jobs.take(3).toList(),
+                  showShareButton: true,
+                  onSave: (id) =>
+                      context.read<JobsFeedCubit>().toggleSaveJob(id),
                 ),
-                JobsFeedOfflineWithCache(:final jobs) => Column(
-                  children: [
-                    for (final job in jobs) ...[
-                      JobCard(
-                        job: job,
-                        showShareButton: true,
-                        onSave: () => context
-                            .read<JobsFeedCubit>()
-                            .toggleSaveJob(job.id),
-                      ),
-                      SizedBox(height: 12.h),
-                    ],
-                  ],
+                JobsFeedOfflineWithCache(:final jobs) => AnimatedJobCardList(
+                  jobs: jobs.take(3).toList(),
+                  showShareButton: true,
+                  onSave: (id) =>
+                      context.read<JobsFeedCubit>().toggleSaveJob(id),
                 ),
               };
             },

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:MatchIn/core/utils/app_colors.dart';
+import 'package:MatchIn/core/extensions/context_extensions.dart';
 
 class SavedSummaryBar extends StatelessWidget {
   const SavedSummaryBar({
@@ -26,12 +26,9 @@ class SavedSummaryBar extends StatelessWidget {
         children: [
           Text(
             countText,
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w500,
-              color: AppColors.textPrimary,
-              height: 16 / 12,
+            style: context.textTheme.labelMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: context.colors.onSurface,
             ),
           ),
           InkWell(
@@ -45,17 +42,13 @@ class SavedSummaryBar extends StatelessWidget {
                   Icon(
                     actionIcon,
                     size: 14.sp,
-                    color: AppColors.textSecondary,
+                    color: context.colors.onSurfaceVariant,
                   ),
                   SizedBox(width: 6.w),
                   Text(
                     actionLabel,
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.textSecondary,
-                      height: 16 / 12,
+                    style: context.textTheme.bodySmall?.copyWith(
+                      color: context.colors.onSurfaceVariant,
                     ),
                   ),
                 ],

@@ -30,17 +30,14 @@ class ApiInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    // get access token from secure storage
     final accessToken = await secureStorageService.getAccessToken();
-
-    // add access token in request header
     options.headers[ApiHeaderKey.authorization] =
         ApiHeaderKey.getAuthorizationValue(accessToken: accessToken);
 
     // add app language in request header
-    // AppConstants.languageCode is not available in this project version,
-    // so use a safe fallback language code instead.
-    options.headers[ApiHeaderKey.acceptLanguage] = 'en';
+    final langCode = sharedPreferencesService.getLanguageCode();
+    options.headers[ApiHeaderKey.acceptLanguage] =
+        langCode.toLowerCase().startsWith('ar') ? 'ar-EG' : 'en-US';
 
     super.onRequest(options, handler);
   }
@@ -167,13 +164,19 @@ class ApiInterceptor extends Interceptor {
     return normalizedPath;
   }
 
-  /// clear local auth data and logout user
+  /// clear local auth data and logout user.
+  /// Guest mode has no session: a 401 must not wipe the guest flag
+  /// (otherwise "Continue as Guest" stops working after home fires API
+  /// calls without a token) and must not broadcast a logout event.
   Future<void> _performLogout() async {
+    final isGuest = sharedPreferencesService.isGuest();
     await sharedPreferencesService.clearAuthData();
 
     await secureStorageService.deleteTokens();
 
-    AuthEventBus.instance.addEvent(AuthEvent.logout);
+    if (!isGuest) {
+      AuthEventBus.instance.addEvent(AuthEvent.logout);
+    }
   }
 }
 

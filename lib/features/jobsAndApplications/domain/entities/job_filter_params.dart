@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:MatchIn/core/networking/api_end_points.dart';
 
 class JobFilterParams extends Equatable {
   const JobFilterParams({
@@ -42,52 +43,52 @@ class JobFilterParams extends Equatable {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     if (search != null && search!.trim().isNotEmpty) {
-      map['search'] = search!.trim();
+      map[ApiKey.search] = search!.trim();
     }
     if (sort != null && sort!.isNotEmpty) {
-      map['sort'] = sort;
+      map[ApiKey.sort] = sort;
     }
     if (companyId != null) {
-      map['company_id'] = companyId;
+      map[ApiKey.companyId] = companyId;
     }
     if (jobType != null && jobType!.isNotEmpty) {
-      map['job_type'] = jobType;
+      map[ApiKey.jobType] = jobType;
     }
     if (workMode != null && workMode!.isNotEmpty) {
-      map['work_mode'] = workMode;
+      map[ApiKey.workMode] = workMode;
     }
     if (employmentType != null && employmentType!.isNotEmpty) {
-      map['employment_type'] = employmentType;
+      map[ApiKey.employmentType] = employmentType;
     }
     if (experienceLevel != null && experienceLevel!.isNotEmpty) {
-      map['experience_level'] = experienceLevel;
+      map[ApiKey.experienceLevel] = experienceLevel;
     }
     if (country != null && country!.isNotEmpty) {
-      map['country'] = country;
+      map[ApiKey.country] = country;
     }
     if (state != null && state!.isNotEmpty) {
-      map['state'] = state;
+      map[ApiKey.state] = state;
     }
     if (city != null && city!.isNotEmpty) {
-      map['city'] = city;
+      map[ApiKey.city] = city;
     }
     if (source != null && source!.isNotEmpty) {
-      map['source'] = source;
+      map[ApiKey.source] = source;
     }
     if (applicationMethod != null && applicationMethod!.isNotEmpty) {
-      map['application_method'] = applicationMethod;
+      map[ApiKey.applicationMethod] = applicationMethod;
     }
     if (isVerifiedCompany != null) {
-      map['is_verified_company'] = isVerifiedCompany;
+      map[ApiKey.isVerifiedCompany] = isVerifiedCompany;
     }
     if (requiredSkillIds != null && requiredSkillIds!.isNotEmpty) {
-      map['required_skill_ids[]'] = requiredSkillIds;
+      map[ApiKey.requiredSkillIds] = requiredSkillIds;
     }
     if (preferredSkillIds != null && preferredSkillIds!.isNotEmpty) {
-      map['preferred_skill_ids[]'] = preferredSkillIds;
+      map[ApiKey.preferredSkillIds] = preferredSkillIds;
     }
-    map['page'] = page;
-    map['per_page'] = perPage;
+    map[ApiKey.page] = page;
+    map[ApiKey.perPage] = perPage;
     return map;
   }
 
@@ -95,6 +96,9 @@ class JobFilterParams extends Equatable {
     final buffer = StringBuffer('default');
     if (search != null && search!.trim().isNotEmpty) {
       buffer.write('_search_${search!.trim().toLowerCase()}');
+    }
+    if (sort != null && sort!.isNotEmpty) {
+      buffer.write('_sort_${sort!}');
     }
     if (jobType != null && jobType!.isNotEmpty) {
       buffer.write('_jt_${jobType!}');
@@ -116,6 +120,21 @@ class JobFilterParams extends Equatable {
     }
     if (city != null && city!.isNotEmpty) {
       buffer.write('_ci_${city!}');
+    }
+    if (source != null && source!.isNotEmpty) {
+      buffer.write('_so_${source!}');
+    }
+    if (applicationMethod != null && applicationMethod!.isNotEmpty) {
+      buffer.write('_am_${applicationMethod!}');
+    }
+    if (isVerifiedCompany != null) {
+      buffer.write('_vc_$isVerifiedCompany');
+    }
+    if (requiredSkillIds != null && requiredSkillIds!.isNotEmpty) {
+      buffer.write('_rs_${requiredSkillIds!.join(',')}');
+    }
+    if (preferredSkillIds != null && preferredSkillIds!.isNotEmpty) {
+      buffer.write('_ps_${preferredSkillIds!.join(',')}');
     }
     if (companyId != null) {
       buffer.write('_cid_$companyId');
