@@ -5,7 +5,7 @@ class SettingsState extends Equatable {
   const SettingsState({
     this.isNotificationsEnabled = true,
     this.languageCode = 'en',
-    this.themeMode = ThemeMode.system,
+    this.themeMode = ThemeMode.light,
     this.isLoading = false,
     this.isLoggedOut = false,
     this.errorMessage,

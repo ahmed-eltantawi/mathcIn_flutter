@@ -58,14 +58,14 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: context.colors.primary,
+            color: context.colors.onSurface,
           ),
           onPressed: () => context.pop(),
         ),
         title: Text(
           context.l10n.forgotPassword,
           style: context.textTheme.titleLarge?.copyWith(
-            color: context.colors.primary,
+            color: context.colors.onSurface,
             fontWeight: FontWeight.bold,
           ),
         ),

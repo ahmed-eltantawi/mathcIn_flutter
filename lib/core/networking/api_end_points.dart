@@ -2,7 +2,7 @@
 abstract class EndPoint {
   //TODO: change these values
   static const String baseUrl =
-      'https://marcus-confidence-principles-hit.trycloudflare.com/api/';
+      'https://similarly-postposted-filled-row.trycloudflare.com/api/';
   static const String login = 'auth/login';
   static const String register = 'auth/register';
   static const String refreshToken = 'auth/refresh-token';

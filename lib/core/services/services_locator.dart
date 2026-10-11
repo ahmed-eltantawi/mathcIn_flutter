@@ -11,23 +11,6 @@ import 'package:MatchIn/core/widgets/ads/rewarded_ad_manager.dart';
 import 'package:MatchIn/features/auth/data/data_sources/auth_remote_data_source_impl.dart';
 import 'package:MatchIn/features/auth/domain/use_cases/forgot_password_use_case.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/forgot_password_cubit.dart';
-import 'package:MatchIn/features/home/data/data_sources/home_mock_remote_data_source_impl.dart';
-import 'package:MatchIn/features/home/data/data_sources/home_remote_data_source.dart';
-import 'package:MatchIn/features/home/data/data_sources/repositories/home_repository_impl.dart';
-import 'package:MatchIn/features/home/domain/repositories/home_repository.dart';
-import 'package:MatchIn/features/home/domain/use_cases/get_home_dashboard_use_case.dart';
-import 'package:MatchIn/features/home/presentation/cubit/home_cubit.dart';
-import 'package:MatchIn/features/jobsAndApplications/data/data_sources/jobs_local_data_source.dart';
-import 'package:MatchIn/features/jobsAndApplications/data/data_sources/jobs_local_data_source_impl.dart';
-import 'package:MatchIn/features/jobsAndApplications/data/data_sources/jobs_remote_data_source.dart';
-import 'package:MatchIn/features/jobsAndApplications/data/data_sources/jobs_remote_data_source_impl.dart';
-import 'package:MatchIn/features/jobsAndApplications/data/repositories/jobs_repository_impl.dart';
-import 'package:MatchIn/features/jobsAndApplications/domain/repositories/jobs_repository.dart';
-import 'package:MatchIn/features/jobsAndApplications/domain/use_case/apply_for_job_use_case.dart';
-import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_cached_jobs_use_case.dart';
-import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_jobs_use_case.dart';
-import 'package:MatchIn/features/jobsAndApplications/domain/use_case/toggle_save_job_use_case.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/cv_cubit.dart';
 import 'package:MatchIn/features/auth/data/data_sources/auth_remote_data_source.dart';
 import 'package:MatchIn/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:MatchIn/features/auth/domain/repositories/auth_repository.dart';
@@ -498,6 +481,8 @@ Future<void> setupServiceLocator() async {
 
   getIt.registerFactory<CvCubit>(
     () => CvCubit(filePickerService: getIt<FilePickerService>()),
+  );
+
   getIt.registerLazySingleton<ApplicationsLocalDataSource>(
     () => ApplicationsLocalDataSourceImpl(sharedPreferencesHelper: getIt()),
   );
@@ -543,10 +528,6 @@ Future<void> setupServiceLocator() async {
   getIt.registerLazySingleton<WithdrawApplicationUseCase>(
     () =>
         WithdrawApplicationUseCase(repository: getIt<ApplicationsRepository>()),
-  );
-
-  getIt.registerFactory<CvCubit>(
-    () => CvCubit(filePickerService: getIt<FilePickerService>()),
   );
 
   getIt.registerFactory<ApplicationsCubit>(

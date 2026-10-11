@@ -44,7 +44,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     );
 
     final themeModeStr = themeResult.fold(
-      (_) => 'system',
+      (_) => 'light',
       (value) => value,
     );
 

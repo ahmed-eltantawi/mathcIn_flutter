@@ -1182,17 +1182,32 @@ class S {
 
   /// `Arabic`
   String get arabic {
-    return Intl.message('Arabic', name: 'arabic', desc: '', args: []);
+    return Intl.message(
+      'Arabic',
+      name: 'arabic',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Dark`
   String get dark {
-    return Intl.message('Dark', name: 'dark', desc: '', args: []);
+    return Intl.message(
+      'Dark',
+      name: 'dark',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `System`
   String get system {
-    return Intl.message('System', name: 'system', desc: '', args: []);
+    return Intl.message(
+      'System',
+      name: 'system',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Current Password`
@@ -4359,7 +4374,12 @@ class S {
 
   /// `Mark as read`
   String get markAsRead {
-    return Intl.message('Mark as read', name: 'markAsRead', desc: '', args: []);
+    return Intl.message(
+      'Mark as read',
+      name: 'markAsRead',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Mark all as read`
@@ -4404,12 +4424,22 @@ class S {
 
   /// `All`
   String get filterAll {
-    return Intl.message('All', name: 'filterAll', desc: '', args: []);
+    return Intl.message(
+      'All',
+      name: 'filterAll',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Unread`
   String get filterUnread {
-    return Intl.message('Unread', name: 'filterUnread', desc: '', args: []);
+    return Intl.message(
+      'Unread',
+      name: 'filterUnread',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Loading notifications...`
@@ -4424,12 +4454,22 @@ class S {
 
   /// `Copy`
   String get copy {
-    return Intl.message('Copy', name: 'copy', desc: '', args: []);
+    return Intl.message(
+      'Copy',
+      name: 'copy',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Open menu`
   String get openMenu {
-    return Intl.message('Open menu', name: 'openMenu', desc: '', args: []);
+    return Intl.message(
+      'Open menu',
+      name: 'openMenu',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Send message`

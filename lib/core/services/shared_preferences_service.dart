@@ -154,7 +154,7 @@ class SharedPreferencesService {
 
   String getThemeMode() {
     return _sharedPreferencesHelper.getString(key: CacheKey.themeMode) ??
-        'system';
+        'light';
   }
 }
 
