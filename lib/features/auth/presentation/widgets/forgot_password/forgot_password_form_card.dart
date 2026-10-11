@@ -1,16 +1,21 @@
+import 'package:flutter/material.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:MatchIn/core/utils/validator.dart';
 import 'package:MatchIn/core/widgets/custom_button.dart';
 import 'package:MatchIn/core/widgets/custom_text_field.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/forgot_password_cubit.dart';
-import 'package:MatchIn/generated/l10n.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // StatefulWidget that encapsulates the TextEditingController and FormState
 // away from the Cubit and the StatelessWidget parent view
 class ForgotPasswordFormCard extends StatefulWidget {
-  const ForgotPasswordFormCard({super.key, this.initialEmail});
+  const ForgotPasswordFormCard({
+    super.key,
+    this.initialEmail,
+  });
 
   final String? initialEmail;
 
@@ -45,14 +50,14 @@ class _ForgotPasswordFormCardState extends State<ForgotPasswordFormCard> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final locale = S.of(context);
+    final theme = context.theme;
+    final locale = context.l10n;
 
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
+        color: context.colors.surface,
         borderRadius: BorderRadius.circular(12.r),
         border: Border.all(color: theme.dividerColor, width: 1),
       ),

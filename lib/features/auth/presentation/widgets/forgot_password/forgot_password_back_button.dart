@@ -1,6 +1,8 @@
-import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'package:MatchIn/core/extensions/context_extensions.dart';
 
 class ForgotPasswordBackButton extends StatelessWidget {
   const ForgotPasswordBackButton({
@@ -12,18 +14,16 @@ class ForgotPasswordBackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Center(
       child: TextButton(
         onPressed: onPressed,
         child: Text(
-          S.of(context).backToLogin,
+          context.l10n.backToLogin,
           style: TextStyle(
             fontFamily: 'DM Sans',
             fontSize: 14.sp,
             fontWeight: FontWeight.w600,
-            color: theme.colorScheme.secondary,
+            color: context.colors.secondary,
           ),
         ),
       ),

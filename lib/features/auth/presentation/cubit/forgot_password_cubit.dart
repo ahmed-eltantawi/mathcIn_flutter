@@ -1,7 +1,9 @@
-import 'package:MatchIn/features/auth/domain/use_cases/forgot_password_use_case.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:MatchIn/features/auth/domain/use_cases/forgot_password_use_case.dart';
 
 part 'forgot_password_state.dart';
 

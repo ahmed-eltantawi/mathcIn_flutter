@@ -1,3 +1,7 @@
+import 'package:dio/dio.dart';
+import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:MatchIn/core/cache/secure_storage_helper.dart';
 import 'package:MatchIn/core/cache/shared_preferences_helper.dart';
 import 'package:MatchIn/core/networking/api_consumer.dart';
@@ -47,9 +51,6 @@ import 'package:MatchIn/features/saved/domain/use_cases/get_saved_jobs_use_case.
 import 'package:MatchIn/features/saved/domain/use_cases/save_job_use_case.dart';
 import 'package:MatchIn/features/saved/domain/use_cases/unsave_job_use_case.dart';
 import 'package:MatchIn/features/saved/presentation/cubit/saved_jobs_cubit.dart';
-import 'package:dio/dio.dart';
-import 'package:get_it/get_it.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 final getIt = GetIt.instance;
 

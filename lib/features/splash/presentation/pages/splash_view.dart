@@ -1,20 +1,38 @@
-import 'package:MatchIn/features/splash/presentation/widgets/splash_view_body.dart';
 import 'package:flutter/material.dart';
+
 import 'package:go_router/go_router.dart';
+
+import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:MatchIn/core/routing/app_routes.dart';
-import 'package:MatchIn/core/utils/app_colors.dart';
+import 'package:MatchIn/core/services/services_locator.dart';
+import 'package:MatchIn/core/services/shared_preferences_service.dart';
+import 'package:MatchIn/features/splash/presentation/widgets/splash_view_body.dart';
 
 class SplashView extends StatelessWidget {
   const SplashView({super.key});
 
+  void _handleNavigation(BuildContext context) {
+    if (!context.mounted) return;
+
+    final prefs = getIt<SharedPreferencesService>();
+    final isOnboarded = prefs.isOnBoardingViewed();
+    final isLoggedIn = prefs.isLoggedIn();
+
+    if (!isOnboarded) {
+      context.go(AppRoutes.kOnboardingView);
+    } else if (isLoggedIn) {
+      context.go(AppRoutes.kHomeView);
+    } else {
+      context.go(AppRoutes.kLoginView);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.theme.scaffoldBackgroundColor,
       body: SplashViewBody(
-        onAnimationCompleted: () {
-          context.go(AppRoutes.kOnboardingView);
-        },
+        onAnimationCompleted: () => _handleNavigation(context),
       ),
     );
   }

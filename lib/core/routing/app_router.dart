@@ -1,14 +1,12 @@
+import 'package:flutter/material.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+
 import 'package:MatchIn/core/routing/app_routes.dart';
-import 'package:MatchIn/features/splash/presentation/pages/splash_view.dart';
 import 'package:MatchIn/core/services/services_locator.dart';
-import 'package:MatchIn/core/services/shared_preferences_service.dart';
 import 'package:MatchIn/core/widgets/app_web_view.dart';
 import 'package:MatchIn/core/widgets/main_navigation_screen.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/views/application_questions_view.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/views/application_submitted_view.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/views/apply_for_role_view.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/views/review_application_view.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/views/tracking_application_view.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/forgot_password_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/otp_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/reset_password_cubit.dart';
@@ -18,14 +16,17 @@ import 'package:MatchIn/features/auth/presentation/pages/login_view.dart';
 import 'package:MatchIn/features/auth/presentation/pages/otp_verification_view.dart';
 import 'package:MatchIn/features/auth/presentation/pages/password_changed_success_view.dart';
 import 'package:MatchIn/features/auth/presentation/pages/register_view.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/views/job_details_view.dart';
 import 'package:MatchIn/features/home/presentation/views/jobs_search_view.dart';
 import 'package:MatchIn/features/home/presentation/views/notifications_view.dart';
 import 'package:MatchIn/features/home/presentation/views/settings_view.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/views/application_questions_view.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/views/application_submitted_view.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/views/apply_for_role_view.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/views/job_details_view.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/views/review_application_view.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/views/tracking_application_view.dart';
 import 'package:MatchIn/features/onbording/presentation/pages/onbording.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
+import 'package:MatchIn/features/splash/presentation/pages/splash_view.dart';
 
 abstract final class AppRouter {
   AppRouter._();
@@ -45,33 +46,6 @@ abstract final class AppRouter {
 
   static final GoRouter router = GoRouter(
     initialLocation: AppRoutes.kSplashView,
-    redirect: (context, state) {
-      if (!getIt.isRegistered<SharedPreferencesService>()) {
-        return null;
-      }
-
-      final prefs = getIt<SharedPreferencesService>();
-      final isOnboarded = prefs.isOnBoardingViewed();
-      final isLoggedIn = prefs.isLoggedIn();
-      final location = state.uri.path;
-
-      // Splash handles its own navigation via animation callback
-      if (location == AppRoutes.kSplashView) return null;
-
-      // Not onboarded → stay on onboarding if already there, else redirect
-      if (!isOnboarded) {
-        return location == AppRoutes.kOnboardingView
-            ? null
-            : AppRoutes.kOnboardingView;
-      }
-
-      // Onboarded but still on onboarding page → move forward
-      if (location == AppRoutes.kOnboardingView) {
-        return isLoggedIn ? AppRoutes.kHomeView : AppRoutes.kRegisterView;
-      }
-
-      return null;
-    },
     routes: [
       // Splash / Root
       GoRoute(
