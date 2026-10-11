@@ -15,7 +15,7 @@ class ResetPasswordCubit extends Cubit<ResetPasswordState> {
     emit(const ResetPasswordLoading());
 
     final result = await resetPasswordUseCase(
-      email: email,
+      email: email.trim(),
       newPassword: newPassword,
     );
 

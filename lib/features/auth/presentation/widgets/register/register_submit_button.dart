@@ -32,7 +32,7 @@ class RegisterSubmitButton extends StatelessWidget {
         if (state is RegisterSuccess) {
           context.push(
             AppRoutes.kOtpVerificationView,
-            extra: emailController.text,
+            extra: emailController.text.trim(),
           );
         } else if (state is RegisterFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -54,8 +54,8 @@ class RegisterSubmitButton extends StatelessWidget {
                     if (formKey.currentState!.validate() &&
                         isTermsAccepted.value) {
                       context.read<AuthCubit>().register(
-                        email: emailController.text,
-                        name: nameController.text,
+                        email: emailController.text.trim(),
+                        name: nameController.text.trim(),
                         password: passwordController.text,
                         passwordConfirmation: confirmPasswordController.text,
                       );

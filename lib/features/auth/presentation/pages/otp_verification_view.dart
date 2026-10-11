@@ -20,10 +20,18 @@ import 'package:otp_animated_fields/otp_animated_fields.dart';
 /// OTP length expected by the authentication backend.
 const int _kOtpLength = 6;
 
+/// Determines what action to take after OTP is verified successfully.
+enum OtpPurpose { register, forgotPassword }
+
 class OtpVerificationView extends StatefulWidget {
-  const OtpVerificationView({super.key, this.email = 'user@example.com'});
+  const OtpVerificationView({
+    super.key,
+    this.email = 'user@example.com',
+    this.purpose = OtpPurpose.register,
+  });
 
   final String email;
+  final OtpPurpose purpose;
 
   @override
   State<OtpVerificationView> createState() => _OtpVerificationViewState();
@@ -94,15 +102,25 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
       // Replace OTP fields with success Lottie inside the card, then navigate.
       setState(() => _showSuccessLottie = true);
       await Future.delayed(const Duration(seconds: 1));
-      if (mounted) {
-        await getIt<SharedPreferencesService>().setLoggedIn(true);
-        if (mounted) {
-          context.go(AppRoutes.kHomeView);
-        }
+      if (!mounted) return;
+
+      switch (widget.purpose) {
+        case OtpPurpose.register:
+          // OTP verified after registration → mark logged in and go home
+          await getIt<SharedPreferencesService>().setLoggedIn(true);
+          if (mounted) context.go(AppRoutes.kHomeView);
+        case OtpPurpose.forgotPassword:
+          // OTP verified after forgot-password → go to create new password
+          if (mounted) {
+            context.pushReplacement(
+              AppRoutes.kCreateNewPasswordView,
+              extra: widget.email,
+            );
+          }
       }
     }
     if (status == OtpStatus.idle) {
-      // Returned to idle after error � allow re-verification
+      // Returned to idle after error — allow re-verification
       setState(() => _isVerifying = false);
     }
   }

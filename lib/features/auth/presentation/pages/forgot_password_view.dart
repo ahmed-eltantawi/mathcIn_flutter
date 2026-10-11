@@ -7,6 +7,7 @@ import 'package:MatchIn/core/widgets/custom_button.dart';
 import 'package:MatchIn/core/widgets/custom_text_field.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/forgot_password_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/forgot_password_state.dart';
+import 'package:MatchIn/features/auth/presentation/pages/otp_verification_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -87,7 +88,10 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                   );
                   context.push(
                     AppRoutes.kOtpVerificationView,
-                    extra: _emailController.text.trim(),
+                    extra: <String, dynamic>{
+                      'email': _emailController.text.trim(),
+                      'purpose': OtpPurpose.forgotPassword,
+                    },
                   );
                 }
               },

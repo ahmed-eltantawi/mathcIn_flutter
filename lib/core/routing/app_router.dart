@@ -15,11 +15,11 @@ import 'package:MatchIn/features/jobsAndApplications/presentation/views/apply_fo
 import 'package:MatchIn/features/jobsAndApplications/presentation/views/review_application_view.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/views/tracking_application_view.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/otp_cubit.dart';
+import 'package:MatchIn/features/auth/presentation/pages/otp_verification_view.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/reset_password_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/pages/create_new_password_view.dart';
 import 'package:MatchIn/features/auth/presentation/pages/forgot_password_view.dart';
 import 'package:MatchIn/features/auth/presentation/pages/login_view.dart';
-import 'package:MatchIn/features/auth/presentation/pages/otp_verification_view.dart';
 import 'package:MatchIn/features/auth/presentation/pages/password_changed_success_view.dart';
 import 'package:MatchIn/features/auth/presentation/pages/register_view.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/views/job_details_view.dart';
@@ -198,17 +198,23 @@ abstract final class AppRouter {
         },
       ),
 
-      // OTP
+      // OTP (after Register)
       GoRoute(
         path: AppRoutes.kOtpVerificationView,
         pageBuilder: (context, state) {
+          final args = state.extra as Map<String, dynamic>?;
+          final email =
+              (args?['email'] as String?) ??
+              (state.extra is String
+                  ? state.extra as String
+                  : 'user@example.com');
+          final purpose =
+              (args?['purpose'] as OtpPurpose?) ?? OtpPurpose.register;
           return _buildTransitionPage(
             state: state,
             child: BlocProvider(
               create: (_) => getIt<OtpCubit>(),
-              child: OtpVerificationView(
-                email: state.extra as String? ?? 'user@example.com',
-              ),
+              child: OtpVerificationView(email: email, purpose: purpose),
             ),
           );
         },

@@ -13,7 +13,10 @@ class OtpCubit extends Cubit<OtpState> {
   Future<void> verifyOtp({required String email, required String otp}) async {
     emit(const OtpLoading());
 
-    final result = await verifyOtpUseCase(email: email, otp: otp);
+    final result = await verifyOtpUseCase(
+      email: email.trim(),
+      otp: otp.trim(),
+    );
 
     result.fold(
       (failure) => emit(OtpVerificationError(message: failure.message)),
@@ -22,7 +25,7 @@ class OtpCubit extends Cubit<OtpState> {
   }
 
   Future<void> resendOtp({required String email}) async {
-    final result = await resendOtpUseCase(email: email);
+    final result = await resendOtpUseCase(email: email.trim());
 
     result.fold(
       (failure) => emit(OtpResendError(message: failure.message)),
