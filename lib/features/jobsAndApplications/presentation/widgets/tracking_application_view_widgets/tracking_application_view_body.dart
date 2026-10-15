@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:MatchIn/core/extensions/snack_bar_extensions.dart';
-import 'package:MatchIn/core/routing/app_routes.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/entities/application_entity.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_entity.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/application_details_cubit.dart';
@@ -8,14 +10,11 @@ import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/applic
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/application_timeline_card.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/career_help_card.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/current_status_card.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/job_details_widgets/job_card_widgets/job_card.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/tracking_application_view_widgets/application_details_card.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/tracking_application_view_widgets/tracking_job_card.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/tracking_header.dart';
 import 'package:MatchIn/generated/l10n.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 
 class TrackingApplicationViewBody extends StatelessWidget {
   const TrackingApplicationViewBody({
@@ -104,9 +103,10 @@ class TrackingApplicationViewBody extends StatelessWidget {
                   children: [
                     TrackingJobCard(
                       onViewJob: () {
-                        context.push(
-                          AppRoutes.kJobDetailsView,
-                          extra: currentApp?.job ?? job,
+                        JobCard.navigateToJobDetails(
+                          context,
+                          job: currentApp?.job ?? job,
+                          heroPrefix: 'tracking',
                         );
                       },
                       job: currentApp?.job ?? job,

@@ -73,7 +73,7 @@ class NotificationRepositoryImpl implements NotificationRepository {
             );
           }
         }
-        return Left(ServerFailure(message: e.errorModel.errorMessage));
+        return Left(ServerFailure(message: e.errorModel.errorMessage, fieldErrors: e.errorModel.fieldErrors));
       } catch (e) {
         if (page == 1) {
           final cached = await localDataSource.getCachedNotifications(

@@ -1,11 +1,18 @@
 ///* EndPoints: the endpoints of the api
 abstract class EndPoint {
-  //TODO: change these values
-  static const String baseUrl =
-      'https://similarly-postposted-filled-row.trycloudflare.com/api/';
+  static const String baseUrl = 'https://iptvdemo.serv5group.com/api/';
+
+  // --- Runtime-resolved API base URL. Firebase Firestore is the only
+  // --- source of truth; there is intentionally no hardcoded fallback.
+  // --- Empty means unresolved: it is assigned a validated URL by the
+  // --- service locator at startup (valid cache) and by AppInitializer
+  // --- on Firebase refreshes. Dio refuses to send requests while empty,
+  // --- so no call ever goes to an obsolete backend. ---
+
   static const String login = 'auth/login';
   static const String register = 'auth/register';
-  static const String refreshToken = 'auth/refresh-token';
+  static const String refreshToken = 'auth/refresh';
+  static const String logout = 'auth/logout';
 
   // Email Verification
   static const String verifyEmailOtp = 'auth/verify-email-otp';
@@ -21,8 +28,18 @@ abstract class EndPoint {
   static const String currentUser = 'auth/me';
 
   static const String chatMessage = 'chatbot/chat';
+
+  // AI Mentor / Chatbot
+  static const String mentorContextPreview = 'mentor/context-preview';
+  static const String mentorConversations = 'mentor/conversations';
+  static String mentorConversationDetails(dynamic conversationId) =>
+      'mentor/conversations/$conversationId';
+  static String mentorConversationMessages(dynamic conversationId) =>
+      'mentor/conversations/$conversationId/messages';
   static const String savedJobs = 'saved-jobs';
   static const String jobs = 'jobs';
+  static String jobDetails(dynamic jobPostId) => 'jobs/$jobPostId';
+
   static String saveJob(dynamic jobPostId) => 'jobs/$jobPostId/save';
 
   // Applications
@@ -32,6 +49,7 @@ abstract class EndPoint {
       'applications/$id/status';
   static String withdrawApplication(dynamic id) => 'applications/$id/withdraw';
 
+  static String applicationNotes(dynamic id) => 'applications/$id/notes';
   // Candidate Profile
   static const String candidateProfile = 'candidate/profile';
 
@@ -50,8 +68,33 @@ abstract class EndPoint {
   static String candidateProject(int projectId) =>
       'candidate/projects/$projectId';
 
+  // Candidate Educations
+  static const String candidateEducations = 'candidate/educations';
+
+  static String candidateEducation(int educationId) =>
+      'candidate/educations/$educationId';
+
+  // Candidate Experiences
+  static const String candidateExperiences = 'candidate/experiences';
+
+  static String candidateExperience(int experienceId) =>
+      'candidate/experiences/$experienceId';
+
+  // CV Upload
+  static const String cvUpload = 'cv/upload';
+
   // Career Preferences
   static const String careerPreferences = 'candidate/career-preferences';
+
+  // Roadmaps
+  static const String roadmaps = 'roadmaps';
+
+  static String roadmapDetails(int roadmapId) => 'roadmaps/$roadmapId';
+
+  static String roadmapRefresh(int roadmapId) => 'roadmaps/$roadmapId/refresh';
+
+  static String roadmapTaskComplete(int roadmapTaskId) =>
+      'roadmap-tasks/$roadmapTaskId/complete';
 
   // Notifications
   static const String notifications = 'notifications';
@@ -65,19 +108,23 @@ abstract class ApiKey {
   static const String statusCode = 'statusCode';
   static const String errorMessage = 'message';
   static const String accessToken = 'access_token';
-  static const String tokenType = 'token_type';
   static const String refreshToken = 'refresh_token';
   static const String email = 'email';
   static const String otp = 'otp';
   static const String newPassword = 'new_password';
   static const String name = 'name';
+  static const String role = 'role';
   static const String password = 'password';
   static const String passwordConfirmation = 'password_confirmation';
   static const String page = 'page';
   static const String perPage = 'per_page';
   static const String jobId = 'job_id';
+  static const String jobPostId = 'job_post_id';
+  static const String cvDocumentId = 'cv_document_id';
   static const String isSaved = 'is_saved';
   static const String search = 'search';
+  // Skills taxonomy autocomplete uses `q` (live-verified: `search=` → 422).
+  static const String skillsQuery = 'q';
   static const String sort = 'sort';
   static const String companyId = 'company_id';
   static const String jobType = 'job_type';
@@ -94,6 +141,7 @@ abstract class ApiKey {
   static const String preferredSkillIds = 'preferred_skill_ids[]';
   static const String coverLetter = 'cover_letter';
   static const String notes = 'notes';
+  static const String reason = 'reason';
   static const String status = 'status';
   static const String appliedAt = 'applied_at';
   static const String createdAt = 'created_at';
@@ -110,12 +158,17 @@ abstract class ApiKey {
   static const String count = 'count';
   static const String updatedCount = 'updated_count';
   static const String unreadOnly = 'unread_only';
+  static const String contextMode = 'context_mode';
+  static const String suggestedActions = 'suggested_actions';
+  static const String userMessage = 'user_message';
+  static const String mentorReply = 'mentor_reply';
+  static const String isArchived = 'is_archived';
 }
 
 ///* ApiHeaderKey: the header keys of the api
 abstract class ApiHeaderKey {
   static const String authorization = 'Authorization';
-  static const String bearer = 'Bearer ';
+  static const String bearer = 'Bearer';
   static const String acceptLanguage = 'Accept-Language';
   static const String accept = 'Accept';
   static const String contentType = 'Content-Type';

@@ -104,6 +104,11 @@ class SavedJobResponseModel extends SavedJobEntity {
         (json['created_at'] as String?) ??
         DateTime.now().toIso8601String();
 
+    final matchObj = json['match'];
+    final nestedMatch = matchObj is Map<String, dynamic>
+        ? (matchObj['match_score'] as num?)?.toInt()
+        : null;
+
     return SavedJobResponseModel(
       id: (json['id'] as num?)?.toInt() ??
           (json['job_id'] as num?)?.toInt() ??
@@ -129,7 +134,8 @@ class SavedJobResponseModel extends SavedJobEntity {
       requiredSkills: reqSkillModels?.map((s) => s.toEntity()).toList(),
       preferredSkills: prefSkillModels?.map((s) => s.toEntity()).toList(),
       isExpired: (json['is_expired'] as bool?) ?? false,
-      matchPercentage: (json['match_percentage'] as num?)?.toInt() ??
+      matchPercentage: nestedMatch ??
+          (json['match_percentage'] as num?)?.toInt() ??
           (json['matchPercentage'] as num?)?.toInt(),
       isSaved: (json['is_saved'] as bool?) ?? true,
     );

@@ -68,6 +68,14 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
     );
   }
 
+  void _handleBack() {
+    if (context.canPop()) {
+      context.pop();
+    } else {
+      context.go(AppRoutes.kLoginView);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ResetPasswordCubit, ResetPasswordState>(
@@ -81,35 +89,46 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
       builder: (context, state) {
         final isLoading = state is ResetPasswordLoading;
 
-        return Scaffold(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          appBar: CustomAppBar(title: S.of(context).createNewPassword),
-          body: SafeArea(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const CreatePasswordHeader(),
-                  SizedBox(height: 24.h),
-                  CreatePasswordFormCard(
-                    passwordController: _passwordController,
-                    confirmPasswordController: _confirmPasswordController,
-                    hasMinLength: _hasMinLength,
-                    hasNumber: _hasNumber,
-                    hasSpecialChar: _hasSpecialChar,
-                  ),
-                  SizedBox(height: 24.h),
-                  CustomButton(
-                    text: S.of(context).resetPassword,
-                    onPressed: _onSubmit,
-                    isLoading: isLoading,
-                  ),
-                  SizedBox(height: 12.h),
-                  CreatePasswordBackButton(
-                    onPressed: () => context.go(AppRoutes.kLoginView),
-                  ),
-                ],
+        return PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, _) {
+            if (!didPop) {
+              _handleBack();
+            }
+          },
+          child: Scaffold(
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            appBar: CustomAppBar(
+              title: S.of(context).createNewPassword,
+              onBack: _handleBack,
+            ),
+            body: SafeArea(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const CreatePasswordHeader(),
+                    SizedBox(height: 24.h),
+                    CreatePasswordFormCard(
+                      passwordController: _passwordController,
+                      confirmPasswordController: _confirmPasswordController,
+                      hasMinLength: _hasMinLength,
+                      hasNumber: _hasNumber,
+                      hasSpecialChar: _hasSpecialChar,
+                    ),
+                    SizedBox(height: 24.h),
+                    CustomButton(
+                      text: S.of(context).resetPassword,
+                      onPressed: _onSubmit,
+                      isLoading: isLoading,
+                    ),
+                    SizedBox(height: 12.h),
+                    CreatePasswordBackButton(
+                      onPressed: () => context.go(AppRoutes.kLoginView),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

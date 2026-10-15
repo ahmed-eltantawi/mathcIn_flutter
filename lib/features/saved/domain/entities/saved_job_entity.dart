@@ -98,6 +98,7 @@ class SavedJobEntity extends Equatable {
       requiredSkills: requiredSkills,
       preferredSkills: preferredSkills,
       isExpired: isExpired,
+      websiteUrl: companyEntity?.website,
     );
   }
 

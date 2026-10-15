@@ -3,14 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CareerPreferencesHeader extends StatelessWidget {
-  const CareerPreferencesHeader({
-    required this.onBackPressed,
-    required this.onMenuPressed,
-    super.key,
-  });
+  const CareerPreferencesHeader({required this.onBackPressed, super.key});
 
   final VoidCallback onBackPressed;
-  final VoidCallback onMenuPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +35,6 @@ class CareerPreferencesHeader extends StatelessWidget {
                 color: theme.colorScheme.primary,
                 fontWeight: FontWeight.w700,
               ),
-            ),
-          ),
-          Align(
-            alignment: AlignmentDirectional.centerEnd,
-            child: IconButton(
-              onPressed: onMenuPressed,
-              icon: Icon(Icons.more_vert_rounded, size: 23.r),
             ),
           ),
         ],

@@ -1,3 +1,4 @@
+import 'package:MatchIn/features/profile/data/models/json_parsing.dart';
 import 'package:MatchIn/features/profile/domain/entities/candidate_profile_details_entity.dart';
 
 class CandidateProfileDetailsModel extends CandidateProfileDetailsEntity {
@@ -16,18 +17,24 @@ class CandidateProfileDetailsModel extends CandidateProfileDetailsEntity {
   });
 
   factory CandidateProfileDetailsModel.fromJson(Map<String, dynamic> json) {
+    final id = JsonParsing.parseId(json['id']);
+    if (id == null) {
+      throw const FormatException('Invalid candidate profile: missing id');
+    }
     return CandidateProfileDetailsModel(
-      id: json['id'] as int,
-      dateOfBirth: json['date_of_birth'] as String?,
-      gender: json['gender'] as String?,
-      jobTitle: json['job_title'] as String?,
-      country: json['country'] as String?,
-      state: json['state'] as String?,
-      city: json['city'] as String?,
-      githubUrl: json['github_url'] as String?,
-      linkedinUrl: json['linkedin_url'] as String?,
-      militaryStatus: json['military_status'] as String?,
-      professionalSummary: json['professional_summary'] as String?,
+      id: id,
+      dateOfBirth: JsonParsing.parseString(json['date_of_birth']),
+      gender: JsonParsing.parseString(json['gender']),
+      jobTitle: JsonParsing.parseString(json['job_title']),
+      country: JsonParsing.parseString(json['country']),
+      state: JsonParsing.parseString(json['state']),
+      city: JsonParsing.parseString(json['city']),
+      githubUrl: JsonParsing.parseString(json['github_url']),
+      linkedinUrl: JsonParsing.parseString(json['linkedin_url']),
+      militaryStatus: JsonParsing.parseString(json['military_status']),
+      professionalSummary: JsonParsing.parseString(
+        json['professional_summary'],
+      ),
     );
   }
 

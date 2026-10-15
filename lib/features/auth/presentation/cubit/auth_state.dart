@@ -1,55 +1,43 @@
+
+
 part of 'auth_cubit.dart';
 
-abstract class AuthState extends Equatable {
-  const AuthState();
 
-  @override
-  List<Object?> get props => [];
-}
+abstract class AuthState {}
 
-class AuthInitial extends AuthState {
-  const AuthInitial();
-}
+class AuthInitial extends AuthState {}
 
-//! ===== Login States =====
-
-class LoginLoading extends AuthState {
-  const LoginLoading();
-}
+class LoginLoading extends AuthState {}
 
 class LoginSuccess extends AuthState {
-  const LoginSuccess({required this.loginModel});
-
+  LoginSuccess({required this.loginModel});
   final LoginModel loginModel;
-
-  @override
-  List<Object?> get props => [loginModel];
 }
 
 class LoginFailure extends AuthState {
-  const LoginFailure({required this.message});
-
+  LoginFailure({required this.message});
   final String message;
-
-  @override
-  List<Object?> get props => [message];
 }
 
-//! ===== Register States =====
+class RegisterLoading extends AuthState {}
 
-class RegisterLoading extends AuthState {
-  const RegisterLoading();
-}
-
-class RegisterSuccess extends AuthState {
-  const RegisterSuccess();
-}
+class RegisterSuccess extends AuthState {}
 
 class RegisterFailure extends AuthState {
-  const RegisterFailure({required this.message});
-
+  RegisterFailure({required this.message});
   final String message;
-
-  @override
-  List<Object?> get props => [message];
 }
+
+class GoogleSignInLoading extends AuthState {}
+
+class GoogleSignInSuccess extends AuthState {
+  GoogleSignInSuccess({required this.loginModel});
+  final LoginModel loginModel;
+}
+
+class GoogleSignInFailure extends AuthState {
+  GoogleSignInFailure({required this.message});
+  final String message;
+}
+
+class GoogleSignInCancelled extends AuthState {}

@@ -1,6 +1,7 @@
 import 'package:MatchIn/core/errors/error_model.dart';
 import 'package:MatchIn/core/errors/exceptions.dart';
 import 'package:MatchIn/core/networking/api_consumer.dart';
+import 'package:MatchIn/core/networking/api_end_points.dart';
 import 'package:MatchIn/features/settings/data/data_sources/settings_remote_data_source.dart';
 
 class SettingsRemoteDataSourceImpl implements SettingsRemoteDataSource {
@@ -18,10 +19,15 @@ class SettingsRemoteDataSourceImpl implements SettingsRemoteDataSource {
     // change-password endpoint (EndPoint only provides forgot-password/reset-password).
     // In accordance with project instructions, we do not invent endpoints.
     throw ServerException(
-      errorModel: ErrorModel(
+      errorModel: const ErrorModel(
         statusCode: 501,
         errorMessage: 'Change password endpoint is not provided by the backend.',
       ),
     );
+  }
+
+  @override
+  Future<void> logout() async {
+    await apiConsumer.post(EndPoint.logout);
   }
 }

@@ -60,44 +60,4 @@ class AppliedJobUiModel {
       highlightNote: highlightNote ?? this.highlightNote,
     );
   }
-
-  static final List<AppliedJobUiModel> dummyAppliedJobs = [
-    const AppliedJobUiModel(
-      id: 'app_1',
-      title: 'Senior Product Designer',
-      company: 'Spotify',
-      companyInitials: 'SP',
-      logoBgColor: Color(0xFFE8F5E9),
-      logoTextColor: Color(0xFF2E7D32),
-      tags: ['Stockholm', 'Hybrid', 'Full-time'],
-      appliedTime: 'Applied 2 days ago',
-      footerStatus: 'Application viewed by recruiter',
-      status: ApplicationStatus.interview,
-      highlightNote: 'Interview scheduled for tomorrow at 2:00 PM',
-    ),
-    const AppliedJobUiModel(
-      id: 'app_2',
-      title: 'Junior Flutter Developer',
-      company: 'TechNova',
-      companyInitials: 'TN',
-      logoBgColor: Color(0xFFEDE7F6),
-      logoTextColor: Color(0xFF512DA8),
-      tags: ['Cairo', 'Hybrid', 'Full-time'],
-      appliedTime: 'Applied 4 days ago',
-      footerStatus: 'Under review by hiring team',
-      status: ApplicationStatus.inReview,
-    ),
-    const AppliedJobUiModel(
-      id: 'app_3',
-      title: 'Mobile Developer Intern',
-      company: 'CodeHub',
-      companyInitials: 'CH',
-      logoBgColor: Color(0xFFFBE9E7),
-      logoTextColor: Color(0xFFD84315),
-      tags: ['Remote', 'Internship'],
-      appliedTime: 'Applied 1 week ago',
-      footerStatus: 'Application submitted',
-      status: ApplicationStatus.applied,
-    ),
-  ];
 }

@@ -14,6 +14,10 @@ class WorkModeSection extends StatelessWidget {
   final String? selectedMode;
   final ValueChanged<String> onSelected;
 
+  // TODO(career-preferences-backend):
+  // Support multi-select Job Type and Work Mode
+  // after the backend introduces and documents
+  // array-based request/response contracts.
   static const List<String> modes = ['remote', 'hybrid', 'on_site'];
 
   @override

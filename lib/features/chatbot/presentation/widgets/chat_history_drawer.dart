@@ -38,16 +38,62 @@ class ChatHistoryDrawer extends StatelessWidget {
       }
     }
 
-    // Remove empty groups
     grouped.removeWhere((key, value) => value.isEmpty);
     return grouped;
+  }
+
+  void _showRenameDialog(BuildContext context, ChatEntity chat) {
+    final s = context.l10n;
+    final colors = context.colors;
+    final textController = TextEditingController(text: chat.title);
+
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: colors.surface,
+        title: Text(
+          s.editTitle,
+          style: TextStyle(color: colors.onSurface),
+        ),
+        content: TextField(
+          controller: textController,
+          autofocus: true,
+          decoration: InputDecoration(
+            hintText: s.enterNewTitle,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(s.cancel),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: colors.primary,
+              foregroundColor: colors.onPrimary,
+            ),
+            onPressed: () {
+              final newTitle = textController.text.trim();
+              if (newTitle.isNotEmpty) {
+                Navigator.pop(ctx);
+                context.read<ChatbotCubit>().updateChatTitle(chat.id, newTitle);
+              }
+            },
+            child: Text(s.save),
+          ),
+        ],
+      ),
+    );
   }
 
   void _showDeleteConfirmDialog(BuildContext context, ChatEntity chat) {
     final s = context.l10n;
     final colors = context.colors;
 
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: colors.surface,
@@ -84,7 +130,7 @@ class ChatHistoryDrawer extends StatelessWidget {
     final s = context.l10n;
     final colors = context.colors;
 
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: colors.surface,
@@ -191,14 +237,27 @@ class ChatHistoryDrawer extends StatelessWidget {
             Expanded(
               child: BlocBuilder<ChatbotCubit, ChatbotState>(
                 builder: (context, state) {
+                  if (state.isLoadingHistory && state.chatHistory.isEmpty) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.2.w,
+                        color: colors.primary,
+                      ),
+                    );
+                  }
+
                   final grouped = _groupChats(context, state.chatHistory);
 
                   if (state.chatHistory.isEmpty) {
                     return Center(
-                      child: Text(
-                        s.noHistoryYet,
-                        style: context.textTheme.bodyMedium?.copyWith(
-                          color: colors.onSurfaceVariant,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 24.w),
+                        child: Text(
+                          s.noHistoryYet,
+                          textAlign: TextAlign.center,
+                          style: context.textTheme.bodyMedium?.copyWith(
+                            color: colors.onSurfaceVariant,
+                          ),
                         ),
                       ),
                     );
@@ -262,20 +321,34 @@ class ChatHistoryDrawer extends StatelessWidget {
                                       : colors.onSurface,
                                 ),
                               ),
-                              trailing: IconButton(
-                                icon: Icon(
-                                  Icons.delete_outline_rounded,
-                                  size: 18.r,
-                                  color: colors.onSurfaceVariant,
-                                ),
-                                onPressed: () =>
-                                    _showDeleteConfirmDialog(context, chat),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    tooltip: s.editTitle,
+                                    icon: Icon(
+                                      Icons.edit_outlined,
+                                      size: 16.r,
+                                      color: colors.onSurfaceVariant,
+                                    ),
+                                    onPressed: () =>
+                                        _showRenameDialog(context, chat),
+                                  ),
+                                  IconButton(
+                                    tooltip: s.deleteChat,
+                                    icon: Icon(
+                                      Icons.delete_outline_rounded,
+                                      size: 16.r,
+                                      color: colors.onSurfaceVariant,
+                                    ),
+                                    onPressed: () =>
+                                        _showDeleteConfirmDialog(context, chat),
+                                  ),
+                                ],
                               ),
                               onTap: () {
                                 Navigator.pop(context);
-                                context.read<ChatbotCubit>().selectChat(
-                                  chat.id,
-                                );
+                                context.read<ChatbotCubit>().selectChat(chat.id);
                               },
                             );
                           }),

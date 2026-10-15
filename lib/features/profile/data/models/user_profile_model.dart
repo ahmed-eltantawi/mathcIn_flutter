@@ -18,9 +18,19 @@ class UserProfileModel {
   });
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) {
-    final data = (json['data'] is Map<String, dynamic>)
-        ? json['data'] as Map<String, dynamic>
-        : json;
+    // Live `GET /auth/me` wraps the user in a `user` object; accept both
+    // the wrapped shape and legacy top-level / `data` shapes.
+    Map<String, dynamic> data;
+    if (json['user'] is Map<String, dynamic>) {
+      data = json['user'] as Map<String, dynamic>;
+    } else if (json['data'] is Map<String, dynamic>) {
+      final nested = json['data'] as Map<String, dynamic>;
+      data = nested['user'] is Map<String, dynamic>
+          ? nested['user'] as Map<String, dynamic>
+          : nested;
+    } else {
+      data = json;
+    }
 
     final locationVal =
         data['location']?.toString() ??
@@ -34,27 +44,23 @@ class UserProfileModel {
       name: data['name']?.toString() ?? '',
       email: data['email']?.toString() ?? '',
       jobTitle:
-          data['job_title']?.toString() ??
-          data['title']?.toString() ??
-          'Flutter Developer',
-      location: locationVal.isNotEmpty ? locationVal : 'Egypt',
+          data['job_title']?.toString() ?? data['title']?.toString() ?? '',
+      location: locationVal,
       avatarUrl: data['avatar_url']?.toString() ?? data['avatar']?.toString(),
       phone: data['phone']?.toString(),
       universityName:
           data['university_name']?.toString() ??
           data['university']?.toString() ??
-          'Tanta University',
-      degree: data['degree']?.toString() ?? 'Bachelor of Computer Science',
-      years: data['years']?.toString() ?? '2021 - 2025',
+          '',
+      degree: data['degree']?.toString() ?? '',
+      years: data['years']?.toString() ?? '',
       experienceJobTitle:
           data['experience_job_title']?.toString() ??
           data['job_title']?.toString() ??
-          'Junior Flutter Developer',
+          '',
       companyName:
-          data['company_name']?.toString() ??
-          data['company']?.toString() ??
-          'MatchIn',
-      duration: data['duration']?.toString() ?? '2026 - Present',
+          data['company_name']?.toString() ?? data['company']?.toString() ?? '',
+      duration: data['duration']?.toString() ?? '',
     );
   }
 

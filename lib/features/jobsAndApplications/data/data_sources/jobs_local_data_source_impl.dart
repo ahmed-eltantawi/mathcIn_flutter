@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:MatchIn/core/cache/cache_key.dart';
 import 'package:MatchIn/core/cache/shared_preferences_helper.dart';
 import 'package:MatchIn/features/jobsAndApplications/data/data_sources/jobs_local_data_source.dart';
+import 'package:MatchIn/features/jobsAndApplications/data/models/job_model.dart';
 import 'package:MatchIn/features/jobsAndApplications/data/models/paginated_jobs_model.dart';
 
 class JobsLocalDataSourceImpl implements JobsLocalDataSource {
@@ -41,5 +42,17 @@ class JobsLocalDataSourceImpl implements JobsLocalDataSource {
   @override
   Future<void> clearCachedJobs(String cacheKey) async {
     await sharedPreferencesHelper.deleteData(key: _fullKey(cacheKey));
+  }
+
+  @override
+  Future<JobModel?> findCachedJobById(String jobId) async {
+    // Scan the default feed cache (most likely to hold the job). Keeps the
+    // lookup cheap instead of deserializing every per-filter cache entry.
+    final cached = await getCachedJobs('default');
+    if (cached == null) return null;
+    for (final job in cached.data) {
+      if (job.id.toString() == jobId) return job;
+    }
+    return null;
   }
 }

@@ -11,5 +11,5 @@ class VerifyOtpForForgotPasswordUseCase {
     required String email,
     required String otp,
   }) =>
-      repository.verifyOtpForForgotPassword(email: email, otp: otp);
+      repository.verifyPasswordResetOtp(email: email, otp: otp);
 }

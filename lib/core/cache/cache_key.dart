@@ -15,11 +15,15 @@ abstract class CacheKey {
   static const String chatMessagesPrefix = 'chatMessages_';
   static const String jobsFeedPrefix = 'jobs_feed_';
   static const String candidateProfile = 'candidate_profile';
+  static const String pendingCv = 'pendingCv';
+  static const String cachedCvFile = 'cachedCvFile';
+  static const String cvUploadMarker = 'cvUploadMarker';
   static const String notificationsPrefix = 'notifications_';
   static const String unreadNotificationsCount = 'unread_notifications_count';
   static const String notificationsEnabled = 'notifications_enabled';
   static const String languageCode = 'language_code';
   static const String themeMode = 'theme_mode';
+  static const String apiBaseUrl = 'apiBaseUrl';
 }
 
 // TODO Profile Cache:

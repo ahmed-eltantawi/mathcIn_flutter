@@ -1,5 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:MatchIn/core/extensions/snack_bar_extensions.dart';
+import 'package:MatchIn/core/functions/require_auth.dart';
 import 'package:MatchIn/core/routing/app_routes.dart';
+import 'package:MatchIn/core/services/services_locator.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_entity.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/apply_to_job_cubit.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/apply_to_job_state.dart';
@@ -8,21 +14,56 @@ import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/apply_
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/review_application_view_widgets/review_info_card.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/review_application_view_widgets/review_job_card.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/review_application_view_widgets/user_info.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/review_cover_note_card.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/review_cv_card.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/review_questions_card.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/get_cached_candidate_profile_use_case.dart';
 import 'package:MatchIn/generated/l10n.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 
-class ReviewApplicationViewBody extends StatelessWidget {
+class ReviewApplicationViewBody extends StatefulWidget {
   const ReviewApplicationViewBody({
     super.key,
     required this.job,
+    this.coverLetter,
+    this.cvFileName,
+    this.cvFileSize,
   });
 
   final JobEntity job;
+  final String? coverLetter;
+  final String? cvFileName;
+  final String? cvFileSize;
+
+  @override
+  State<ReviewApplicationViewBody> createState() =>
+      _ReviewApplicationViewBodyState();
+}
+
+class _ReviewApplicationViewBodyState extends State<ReviewApplicationViewBody> {
+  int? _cvDocumentId;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCandidateProfileCvId();
+  }
+
+  Future<void> _loadCandidateProfileCvId() async {
+    try {
+      final result = await getIt<GetCachedCandidateProfileUseCase>()();
+      if (!mounted) return;
+      result.fold(
+        (_) {},
+        (profile) {
+          if (profile?.cvDocument?.id != null) {
+            setState(() {
+              _cvDocumentId = profile!.cvDocument!.id;
+            });
+          }
+        },
+      );
+    } catch (_) {}
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +75,11 @@ class ReviewApplicationViewBody extends StatelessWidget {
         if (state is ApplyToJobFailure) {
           context.showErrorSnackBar(state.message);
         } else if (state is ApplyToJobSuccess) {
-          context.showSuccessSnackBar('Application submitted successfully.');
-          context.read<JobsFeedCubit>().applyForJob(job.id);
+          context.showSuccessSnackBar(s.applicationSubmittedSuccessfully);
+          context.read<JobsFeedCubit>().applyForJob(widget.job.id);
           context.push(
             AppRoutes.kapplicationSubmitted,
-            extra: job,
+            extra: widget.job,
           );
         }
       },
@@ -108,13 +149,13 @@ class ReviewApplicationViewBody extends StatelessWidget {
                       ),
                       SizedBox(height: 22.h),
 
-                      ReviewJobCard(job: job),
+                      ReviewJobCard(job: widget.job),
                       SizedBox(height: 16.h),
 
                       ReviewInfoCard(
                         title: s.yourInformation,
                         actionLabel: s.edit,
-                        job: job,
+                        job: widget.job,
                         child: const UserInformation(),
                       ),
 
@@ -123,8 +164,11 @@ class ReviewApplicationViewBody extends StatelessWidget {
                       ReviewInfoCard(
                         title: s.cv,
                         actionLabel: s.change,
-                        job: job,
-                        child: const ReviewCvCard(),
+                        job: widget.job,
+                        child: ReviewCvCard(
+                          fileName: widget.cvFileName,
+                          fileSize: widget.cvFileSize,
+                        ),
                       ),
 
                       SizedBox(height: 16.h),
@@ -132,14 +176,9 @@ class ReviewApplicationViewBody extends StatelessWidget {
                       ReviewInfoCard(
                         title: s.coverNote,
                         actionLabel: s.edit,
-                        job: job,
-                        child: Text(
-                          s.noCoverNoteAdded,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            fontStyle: FontStyle.italic,
-                            color: theme.colorScheme.onSurface
-                                .withValues(alpha: 0.55),
-                          ),
+                        job: widget.job,
+                        child: ReviewCoverNoteCard(
+                          coverNote: widget.coverLetter,
                         ),
                       ),
 
@@ -148,7 +187,7 @@ class ReviewApplicationViewBody extends StatelessWidget {
                       ReviewInfoCard(
                         title: s.applicationQuestions,
                         actionLabel: s.edit,
-                        job: job,
+                        job: widget.job,
                         child: const ReviewQuestionsCard(),
                       ),
 
@@ -196,14 +235,47 @@ class ReviewApplicationViewBody extends StatelessWidget {
                             onPressed: isSubmitting
                                 ? null
                                 : () {
+                                    if (!requireAuth(context)) return;
+                                    // External listings are applied on the
+                                    // employer's website, never through the
+                                    // in-app applications endpoint.
+                                    if (widget.job.isExternalApply) {
+                                      final website =
+                                          widget.job.websiteUrl?.trim() ?? '';
+                                      final uri = Uri.tryParse(website);
+                                      final isValid = uri != null &&
+                                          uri.isAbsolute &&
+                                          (uri.scheme == 'http' ||
+                                              uri.scheme == 'https');
+                                      if (!isValid) {
+                                        context.showErrorSnackBar(
+                                          s.shareJobLinkUnavailable,
+                                        );
+                                        return;
+                                      }
+                                      context.push(
+                                        AppRoutes.kWebView,
+                                        extra: <String, dynamic>{
+                                          'url': website,
+                                          'title': widget.job.title,
+                                        },
+                                      );
+                                      return;
+                                    }
                                     final jobIdInt =
-                                        int.tryParse(job.id) ?? 1;
+                                        int.tryParse(widget.job.id);
+                                    if (jobIdInt == null || jobIdInt <= 0) {
+                                      context.showErrorSnackBar(
+                                        s.invalidJobId,
+                                      );
+                                      return;
+                                    }
                                     context
                                         .read<ApplyToJobCubit>()
                                         .submitApplication(
                                           jobId: jobIdInt,
-                                          coverLetter:
-                                              'I am excited to apply for this role.',
+                                          cvDocumentId: _cvDocumentId,
+                                          coverLetter: widget.coverLetter,
                                         );
                                   },
                             child: isSubmitting

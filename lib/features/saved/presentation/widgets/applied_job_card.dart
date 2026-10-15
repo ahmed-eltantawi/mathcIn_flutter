@@ -296,6 +296,7 @@ class AppliedJobCard extends StatelessWidget {
     switch (status) {
       case ApplicationStatus.applied:
         return s.applied;
+      case ApplicationStatus.underReview:
       case ApplicationStatus.inReview:
         return s.inReview;
       case ApplicationStatus.interview:
@@ -323,6 +324,7 @@ class AppliedJobCard extends StatelessWidget {
         bgColor = context.colors.primary.withValues(alpha: 0.10);
         borderColor = context.colors.primary.withValues(alpha: 0.20);
         break;
+      case ApplicationStatus.underReview:
       case ApplicationStatus.inReview:
         textColor = context.colors.secondary;
         bgColor = context.colors.secondary.withValues(alpha: 0.10);

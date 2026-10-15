@@ -9,7 +9,7 @@ class AddCandidateProjectUseCase {
 
   final ProfileRepository repository;
 
-  Future<Either<Failure, CandidateProjectEntity>> call(
+  Future<Either<Failure, CandidateProjectEntity?>> call(
     AddCandidateProjectParams params,
   ) {
     return repository.addCandidateProject(params);

@@ -7,7 +7,7 @@ class ForgotPasswordUseCase {
 
   final AuthRepository repository;
 
-  Future<Either<Failure, Unit>> call({required String email}) {
-    return repository.forgotPassword(email: email);
+  Future<Either<Failure, Unit>> call({required String email}) async {
+    return await repository.forgotPassword(email: email);
   }
 }

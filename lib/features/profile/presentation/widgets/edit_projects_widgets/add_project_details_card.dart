@@ -21,6 +21,9 @@ class AddProjectDetailsCard extends StatelessWidget {
     required this.onSave,
     required this.isEditing,
     required this.onCancel,
+    this.isSaving = false,
+    this.onStartDateTap,
+    this.onEndDateTap,
     super.key,
   });
 
@@ -40,6 +43,9 @@ class AddProjectDetailsCard extends StatelessWidget {
   final VoidCallback onSave;
 
   final bool isEditing;
+  final bool isSaving;
+  final VoidCallback? onStartDateTap;
+  final VoidCallback? onEndDateTap;
 
   @override
   Widget build(BuildContext context) {
@@ -61,25 +67,28 @@ class AddProjectDetailsCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  locale.addProjectDetails,
+                  isEditing
+                      ? locale.editProjectDetails
+                      : locale.addProjectDetails,
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
                 ),
               ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-                decoration: BoxDecoration(
-                  color: colors.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(5.r),
-                ),
-                child: Text(
-                  locale.draft,
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: colors.onSurfaceVariant,
+              if (!isEditing)
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                  decoration: BoxDecoration(
+                    color: colors.surfaceContainerHighest,
+                    borderRadius: BorderRadius.circular(5.r),
+                  ),
+                  child: Text(
+                    locale.draft,
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: colors.onSurfaceVariant,
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
 
@@ -149,6 +158,8 @@ class AddProjectDetailsCard extends StatelessWidget {
           ProjectDateFields(
             startDateController: startDateController,
             endDateController: endDateController,
+            onStartDateTap: onStartDateTap,
+            onEndDateTap: onEndDateTap,
           ),
 
           SizedBox(height: 22.h),
@@ -157,7 +168,7 @@ class AddProjectDetailsCard extends StatelessWidget {
             width: double.infinity,
             height: 52.h,
             child: FilledButton(
-              onPressed: onSave,
+              onPressed: isSaving ? null : onSave,
               style: FilledButton.styleFrom(
                 backgroundColor: colors.primary,
                 foregroundColor: colors.onPrimary,
@@ -165,20 +176,29 @@ class AddProjectDetailsCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10.r),
                 ),
               ),
-              child: Text(
-                locale.saveProject,
-                style: theme.textTheme.labelLarge?.copyWith(
-                  color: colors.onPrimary,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              child: isSaving
+                  ? SizedBox(
+                      width: 24.r,
+                      height: 24.r,
+                      child: const CircularProgressIndicator(strokeWidth: 2.5),
+                    )
+                  : Text(
+                      locale.saveProject,
+                      style: theme.textTheme.labelLarge?.copyWith(
+                        color: colors.onPrimary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
             ),
           ),
 
           SizedBox(height: 10.h),
 
           Center(
-            child: TextButton(onPressed: onCancel, child: Text(locale.cancel)),
+            child: TextButton(
+              onPressed: isSaving ? null : onCancel,
+              child: Text(locale.cancel),
+            ),
           ),
         ],
       ),

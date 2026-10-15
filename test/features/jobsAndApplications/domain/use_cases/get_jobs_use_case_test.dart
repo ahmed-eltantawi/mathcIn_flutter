@@ -49,6 +49,11 @@ class FakeJobsRepository implements JobsRepository {
       {bool? currentIsSaved}) async {
     throw UnimplementedError();
   }
+
+  @override
+  Future<Either<Failure, JobEntity>> getJobDetails(String jobId) async {
+    throw UnimplementedError();
+  }
 }
 
 void main() {

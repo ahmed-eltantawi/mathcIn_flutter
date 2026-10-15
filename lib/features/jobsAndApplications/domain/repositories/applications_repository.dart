@@ -21,7 +21,9 @@ abstract interface class ApplicationsRepository {
 
   Future<Either<Failure, ApplicationEntity>> applyToJob({
     required int jobId,
+    int? cvDocumentId,
     String? coverLetter,
+    String? notes,
   });
 
   Future<Either<Failure, ApplicationEntity>> updateApplicationStatus({
@@ -33,4 +35,9 @@ abstract interface class ApplicationsRepository {
   Future<Either<Failure, ApplicationEntity>> withdrawApplication(
     String applicationId,
   );
+
+  Future<Either<Failure, ApplicationEntity>> updateApplicationNotes({
+    required String applicationId,
+    required String notes,
+  });
 }

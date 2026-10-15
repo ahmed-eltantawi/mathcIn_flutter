@@ -13,7 +13,7 @@ class AuthMockRemoteDataSourceImpl implements AuthRemoteDataSource {
     // Simulated error for testing invalid OTP:
     if (otp == '000000') {
       throw ServerException(
-        errorModel: ErrorModel(
+        errorModel: const ErrorModel(
           statusCode: 400,
           errorMessage: 'Invalid verification code',
         ),
@@ -28,18 +28,19 @@ class AuthMockRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<void> forgotPassword({required String email}) async {
-    await Future.delayed(const Duration(milliseconds: 800));
+    await Future.delayed(const Duration(milliseconds: 500));
   }
 
   @override
-  Future<void> verifyOtpForForgotPassword({
+  Future<void> verifyPasswordResetOtp({
     required String email,
     required String otp,
   }) async {
     await Future.delayed(const Duration(milliseconds: 800));
+
     if (otp == '000000') {
       throw ServerException(
-        errorModel: ErrorModel(
+        errorModel: const ErrorModel(
           statusCode: 400,
           errorMessage: 'Invalid verification code',
         ),
@@ -56,14 +57,13 @@ class AuthMockRemoteDataSourceImpl implements AuthRemoteDataSource {
 
     if (newPassword.length < 8) {
       throw ServerException(
-        errorModel: ErrorModel(
+        errorModel: const ErrorModel(
           statusCode: 400,
           errorMessage: 'Password must be at least 8 characters',
         ),
       );
     }
   }
-
   @override
   Future<void> register({
     required String name,
@@ -82,10 +82,23 @@ class AuthMockRemoteDataSourceImpl implements AuthRemoteDataSource {
   }) async {
     await Future.delayed(const Duration(milliseconds: 800));
     // بنرجع داتا وهميه تمشي الحال ف التيست
-    return LoginModel(
+    return const LoginModel(
       accessToken: 'mock_access_token_12345',
       tokenType: 'bearer',
-      expiresIn: 3600,
+    );
+  }
+
+  @override
+  Future<LoginModel> loginWithGoogle({required String idToken}) async {
+    await Future.delayed(const Duration(milliseconds: 800));
+    // --- Mirrors the real data source: no mock success is returned because
+    // --- the backend provides no Google login endpoint to emulate.
+    throw ServerException(
+      errorModel: const ErrorModel(
+        statusCode: 501,
+        errorMessage:
+            'Google sign-in is not supported by the backend yet. Missing endpoint: a server route exchanging the Google ID token for app tokens.',
+      ),
     );
   }
 }

@@ -12,7 +12,9 @@ abstract class ApplicationsRemoteDataSource {
 
   Future<ApplicationModel> applyToJob({
     required int jobId,
+    int? cvDocumentId,
     String? coverLetter,
+    String? notes,
   });
 
   Future<ApplicationModel> updateApplicationStatus({
@@ -22,4 +24,11 @@ abstract class ApplicationsRemoteDataSource {
   });
 
   Future<ApplicationModel> withdrawApplication(String applicationId);
+
+  /// Candidate updates personal notes on their own application.
+  /// Request/response shapes are unverified against live (write op).
+  Future<ApplicationModel> updateApplicationNotes({
+    required String applicationId,
+    required String notes,
+  });
 }

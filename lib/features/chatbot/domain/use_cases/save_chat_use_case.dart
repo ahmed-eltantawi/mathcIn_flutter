@@ -9,6 +9,10 @@ class SaveChatUseCase {
   final ChatbotRepository repository;
 
   Future<Either<Failure, Unit>> call(ChatEntity chat) {
-    return repository.saveChatSession(chat);
+    return repository.updateConversation(
+      conversationId: chat.id,
+      title: chat.title,
+      isArchived: chat.isArchived,
+    );
   }
 }

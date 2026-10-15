@@ -42,7 +42,7 @@ class SavedJobsRepositoryImpl implements SavedJobsRepository {
             return Right(cached);
           }
         }
-        return Left(ServerFailure(message: e.errorModel.errorMessage));
+        return Left(ServerFailure(message: e.errorModel.errorMessage, fieldErrors: e.errorModel.fieldErrors));
       } catch (e) {
         if (localDataSource != null) {
           final cached = await localDataSource!.getCachedSavedJobs(cacheKey);
@@ -70,7 +70,7 @@ class SavedJobsRepositoryImpl implements SavedJobsRepository {
         final result = await remoteDataSource.saveJob(jobPostId: jobPostId);
         return Right(result.isSaved);
       } on ServerException catch (e) {
-        return Left(ServerFailure(message: e.errorModel.errorMessage));
+        return Left(ServerFailure(message: e.errorModel.errorMessage, fieldErrors: e.errorModel.fieldErrors));
       } catch (e) {
         return Left(ServerFailure(message: e.toString()));
       }
@@ -89,7 +89,7 @@ class SavedJobsRepositoryImpl implements SavedJobsRepository {
         }
         return Right(result.isSaved);
       } on ServerException catch (e) {
-        return Left(ServerFailure(message: e.errorModel.errorMessage));
+        return Left(ServerFailure(message: e.errorModel.errorMessage, fieldErrors: e.errorModel.fieldErrors));
       } catch (e) {
         return Left(ServerFailure(message: e.toString()));
       }

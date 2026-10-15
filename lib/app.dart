@@ -1,3 +1,4 @@
+import 'package:MatchIn/core/networking/connectivity_cubit.dart';
 import 'package:MatchIn/core/routing/app_router.dart';
 import 'package:MatchIn/core/routing/cubit/main_navigation_cubit.dart';
 import 'package:MatchIn/core/services/services_locator.dart';
@@ -30,6 +31,9 @@ class MatchIn extends StatelessWidget {
         ),
         BlocProvider.value(
           value: getIt<MainNavigationCubit>(),
+        ),
+        BlocProvider.value(
+          value: getIt<ConnectivityCubit>(),
         ),
       ],
       child: BlocBuilder<SettingsCubit, SettingsState>(

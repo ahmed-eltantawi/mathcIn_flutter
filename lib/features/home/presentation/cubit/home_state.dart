@@ -17,12 +17,13 @@ final class HomeLoading extends HomeState {
 }
 
 final class HomeLoaded extends HomeState {
-  const HomeLoaded(this.dashboard);
+  const HomeLoaded(this.dashboard, {this.isRefreshing = false});
 
   final HomeDashboardEntity dashboard;
+  final bool isRefreshing;
 
   @override
-  List<Object?> get props => [dashboard];
+  List<Object?> get props => [dashboard, isRefreshing];
 }
 
 final class HomeError extends HomeState {

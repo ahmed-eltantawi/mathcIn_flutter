@@ -122,7 +122,7 @@ void main() {
 
     test('getJobs throws ServerException on 401 unauthenticated', () async {
       fakeApiConsumer.getError = ServerException(
-        errorModel: ErrorModel(
+        errorModel: const ErrorModel(
           statusCode: 401,
           errorMessage: 'Unauthenticated.',
         ),
@@ -135,7 +135,7 @@ void main() {
       'getJobs throws ServerException on 403 forbidden',
       () async {
         fakeApiConsumer.getError = ServerException(
-          errorModel: ErrorModel(
+          errorModel: const ErrorModel(
             statusCode: 403,
             errorMessage: 'Your account is inactive.',
           ),
@@ -150,7 +150,7 @@ void main() {
 
     test('getJobs throws ServerException on 422 validation error', () async {
       fakeApiConsumer.getError = ServerException(
-        errorModel: ErrorModel(
+        errorModel: const ErrorModel(
           statusCode: 422,
           errorMessage: 'The given data was invalid.',
         ),

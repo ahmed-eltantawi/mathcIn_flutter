@@ -45,6 +45,8 @@ class SharedPreferencesHelper {
 
   bool containsKey({required String key}) => preferences.containsKey(key);
 
+  Set<String> getKeys() => preferences.getKeys();
+
   //! ─── Delete ──────────────────────────────────────────────────────────────
 
   Future<bool> deleteData({required String key}) => preferences.remove(key);

@@ -25,7 +25,10 @@ ErrorModel _extractErrorModel(DioException e) {
   final data = response?.data;
 
   if (data is Map<String, dynamic>) {
-    return ErrorModel.fromJson(data, statusCode: response?.statusCode);
+    return ErrorModel.fromJson(
+      data,
+      defaultStatusCode: response?.statusCode ?? 0,
+    );
   }
 
   return _fallbackErrorModel(

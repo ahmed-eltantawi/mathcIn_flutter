@@ -10,8 +10,15 @@ class ApplyToJobUseCase {
 
   Future<Either<Failure, ApplicationEntity>> call({
     required int jobId,
+    int? cvDocumentId,
     String? coverLetter,
+    String? notes,
   }) {
-    return repository.applyToJob(jobId: jobId, coverLetter: coverLetter);
+    return repository.applyToJob(
+      jobId: jobId,
+      cvDocumentId: cvDocumentId,
+      coverLetter: coverLetter,
+      notes: notes,
+    );
   }
 }

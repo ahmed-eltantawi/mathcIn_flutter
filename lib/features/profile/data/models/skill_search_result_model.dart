@@ -5,8 +5,8 @@ class SkillSearchResultModel extends SkillSearchResultEntity {
 
   factory SkillSearchResultModel.fromJson(Map<String, dynamic> json) {
     return SkillSearchResultModel(
-      id: json['id'] as int,
-      name: json['name'] as String,
+      id: (json['id'] as num?)?.toInt() ?? 0,
+      name: json['name']?.toString() ?? '',
     );
   }
 }

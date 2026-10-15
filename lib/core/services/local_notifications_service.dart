@@ -1,97 +1,146 @@
-// import 'dart:async';
-// import 'dart:convert';
+import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
 
-// import 'package:dio/dio.dart';
-// import 'package:firebase_messaging/firebase_messaging.dart';
-// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-// /// [LocalNotificationService] is a class that handles local notifications
-// /// It will show a basic notification with an optional image
-// class LocalNotificationService {
-//   static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-//       FlutterLocalNotificationsPlugin();
+///* [LocalNotificationService] renders push messages while the app is open.
+///* Firebase does not display anything automatically in the foreground, so
+///* FCM messages are re-surfaced here through a single Android channel.
+///* Taps are forwarded as payload strings through [onTap]; navigation
+///* decisions stay in [PushNotificationsService].
+class LocalNotificationService {
+  LocalNotificationService._();
 
-//   static final StreamController<NotificationResponse> streamController =
-//       StreamController<NotificationResponse>.broadcast();
+  static final FlutterLocalNotificationsPlugin _plugin =
+      FlutterLocalNotificationsPlugin();
 
-//   // A single, reusable [Dio] instance for downloading notification images.
-//   static final _imageDio = Dio();
+  static final StreamController<String?> _tapController =
+      StreamController<String?>.broadcast();
 
-//   ///! =========== handle notification taps ===========
-//   static void onTap(NotificationResponse notificationResponse) {
-//     streamController.add(notificationResponse);
+  static Stream<String?> get onTap => _tapController.stream;
 
-//     //TODO: handle notification navigation from here
-//     // Navigator.push(context, route);
-//   }
+  static bool _initialized = false;
 
-//   ///!=========== initialize the local notification plugin ===========
-//   static Future<void> init() async {
-//     const InitializationSettings settings = InitializationSettings(
-//       android: AndroidInitializationSettings('@mipmap/ic_launcher'),
-//       iOS: DarwinInitializationSettings(),
-//     );
+  //! ===== Channel =====
+  static const String channelId = 'matchin_default';
+  static const String channelName = 'MatchIn notifications';
+  static const String channelDescription = 'MatchIn push notifications';
 
-//     // initialize the local notification plugin and handle notification taps
-//     await flutterLocalNotificationsPlugin.initialize(
-//       settings: settings,
-//       onDidReceiveNotificationResponse: onTap,
-//       onDidReceiveBackgroundNotificationResponse: onTap,
-//     );
-//   }
+  ///! =========== initialize the local notification plugin ===========
+  static Future<void> init() async {
+    if (_initialized) {
+      return;
+    }
 
-//   ///! ======== show a basic notification with an optional image ========
-//   static Future<void> showBasicNotification(RemoteMessage message) async {
-//     final String? imageUrl = message.notification?.android?.imageUrl;
+    try {
+      const settings = InitializationSettings(
+        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+        iOS: DarwinInitializationSettings(),
+      );
 
-//     BigPictureStyleInformation? bigPictureStyleInformation;
+      await _plugin.initialize(
+        settings: settings,
+        onDidReceiveNotificationResponse: _onTap,
+      );
 
-//     if (imageUrl != null && imageUrl.isNotEmpty) {
-//       // Reuse the static _imageDio instance instead of creating a new one
-//       final Response<List<int>> response = await _imageDio.get<List<int>>(
-//         imageUrl,
-//         options: Options(responseType: ResponseType.bytes),
-//       );
+      // --- Android 8+ requires a channel before anything is shown ---
+      final android = _plugin
+          .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin
+          >();
+      await android?.createNotificationChannel(
+        const AndroidNotificationChannel(
+          channelId,
+          channelName,
+          description: channelDescription,
+          importance: Importance.high,
+        ),
+      );
 
-//       if (response.statusCode == 200 && response.data != null) {
-//         final String imageBase64 = base64Encode(response.data!);
+      // --- Android 13+ requires a runtime permission to post ---
+      await android?.requestNotificationsPermission();
 
-//         bigPictureStyleInformation = BigPictureStyleInformation(
-//           ByteArrayAndroidBitmap.fromBase64String(imageBase64),
-//           largeIcon: ByteArrayAndroidBitmap.fromBase64String(imageBase64),
-//         );
-//       }
-//     }
+      _initialized = true;
+    } catch (e) {
+      log('LocalNotificationService.init error: $e');
+    }
+  }
 
-//     final AndroidNotificationDetails android = AndroidNotificationDetails(
-//       'channel_id',
-//       'channel_name',
-//       importance: Importance.max,
-//       priority: Priority.high,
-//       styleInformation: bigPictureStyleInformation,
-//       playSound: true,
-//       sound: const RawResourceAndroidNotificationSound(
-//         'long_notification_sound',
-//       ),
-//     );
+  //! ======= show a foreground message as a local notification ========
+  static Future<void> showFromMessage(RemoteMessage message) async {
+    try {
+      final title =
+          message.notification?.title ?? message.data['title']?.toString();
+      final body =
+          message.notification?.body ?? message.data['body']?.toString();
 
-//     final NotificationDetails details = NotificationDetails(android: android);
+      // --- Skip empty payloads so nothing blank or duplicated is shown ---
+      if ((title == null || title.isEmpty) && (body == null || body.isEmpty)) {
+        return;
+      }
 
-//     final int notificationId =
-//         message.messageId?.hashCode ??
-//         (DateTime.now().millisecondsSinceEpoch % 100000);
+      const android = AndroidNotificationDetails(
+        channelId,
+        channelName,
+        channelDescription: channelDescription,
+        importance: Importance.high,
+        priority: Priority.high,
+      );
+      const darwin = DarwinNotificationDetails();
+      const details = NotificationDetails(android: android, iOS: darwin);
 
-//     await flutterLocalNotificationsPlugin.show(
-//       id: notificationId,
-//       title: message.notification?.title,
-//       body: message.notification?.body,
-//       notificationDetails: details,
-//     );
-//   }
+      final int notificationId =
+          message.messageId?.hashCode ??
+          (DateTime.now().millisecondsSinceEpoch % 100000);
 
-//   ///! ======= Releases all resources held by this service ========
-//   static Future<void> dispose() async {
-//     await streamController.close();
-//     _imageDio.close(force: true);
-//   }
-// }
+      await _plugin.show(
+        id: notificationId,
+        title: title,
+        body: body,
+        notificationDetails: details,
+        payload: _encodePayload(message.data),
+      );
+    } catch (e) {
+      log('LocalNotificationService.showFromMessage error: $e');
+    }
+  }
+
+  //! ======= payload of the tap that launched a terminated app ========
+  static Future<String?> consumeLaunchPayload() async {
+    try {
+      final launchDetails = await _plugin.getNotificationAppLaunchDetails();
+      if (launchDetails?.didNotificationLaunchApp ?? false) {
+        return launchDetails?.notificationResponse?.payload;
+      }
+    } catch (e) {
+      log('LocalNotificationService.consumeLaunchPayload error: $e');
+    }
+    return null;
+  }
+
+  //! ======= Releases all resources held by this service ========
+  static Future<void> dispose() async {
+    _initialized = false;
+    if (!_tapController.isClosed) {
+      await _tapController.close();
+    }
+  }
+
+  //! ======= handle notification taps =======
+  static void _onTap(NotificationResponse response) {
+    if (!_tapController.isClosed) {
+      _tapController.add(response.payload);
+    }
+  }
+
+  static String _encodePayload(Map<String, dynamic> data) {
+    try {
+      return jsonEncode(data);
+    } catch (e) {
+      log('LocalNotificationService._encodePayload error: $e');
+      return '';
+    }
+  }
+}

@@ -1,27 +1,158 @@
 import 'dart:async';
-import 'dart:math';
 import '../../domain/entities/chat_message_entity.dart';
 import '../models/chat_message_model.dart';
+import '../models/chat_model.dart';
+import '../models/chatbot_send_message_response_model.dart';
+import '../models/suggested_action_model.dart';
 import 'chatbot_remote_data_source.dart';
 
 class ChatbotMockRemoteDataSourceImpl implements ChatbotRemoteDataSource {
+  final List<ChatModel> _sessions = [];
+
   @override
-  Future<ChatMessageModel> sendMessage({
-    required String chatId,
-    required String messageContent,
-    required List<ChatMessageModel> history,
+  Future<List<ChatModel>> getConversations() async {
+    return List.unmodifiable(_sessions);
+  }
+
+  @override
+  Future<ChatModel> getConversationDetails(String conversationId) async {
+    return _sessions.firstWhere(
+      (s) => s.id == conversationId,
+      orElse: () => ChatModel(
+        id: conversationId,
+        title: 'Interview Preparation',
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+        messages: const [],
+      ),
+    );
+  }
+
+  @override
+  Future<ChatModel> createConversation({
+    String? title,
+    String? message,
+    String? contextMode,
+    int? jobPostId,
   }) async {
-    // Simulate network latency
-    await Future.delayed(Duration(milliseconds: 900 + Random().nextInt(600)));
+    final convoId = 'conv_${DateTime.now().millisecondsSinceEpoch}';
+    final initialTitle = title ?? (message != null && message.length > 30 ? '${message.substring(0, 30)}...' : 'New Chat');
 
-    final responseText = _generateSmartResponse(messageContent);
+    final messages = <ChatMessageModel>[];
+    if (message != null && message.isNotEmpty) {
+      messages.add(
+        ChatMessageModel(
+          id: 'msg_user_${DateTime.now().millisecondsSinceEpoch}',
+          content: message,
+          sender: MessageSender.user,
+          timestamp: DateTime.now(),
+        ),
+      );
+      messages.add(
+        ChatMessageModel(
+          id: 'msg_ai_${DateTime.now().millisecondsSinceEpoch}',
+          content: _generateSmartResponse(message),
+          sender: MessageSender.ai,
+          timestamp: DateTime.now().add(const Duration(milliseconds: 100)),
+          suggestedActions: const [
+            SuggestedActionModel(
+              type: 'suggested_prompt',
+              label: 'Tell me more about state management',
+            ),
+            SuggestedActionModel(
+              type: 'suggested_prompt',
+              label: 'Review my resume roadmap',
+            ),
+          ],
+        ),
+      );
+    }
 
-    return ChatMessageModel(
-      id: 'msg_${DateTime.now().millisecondsSinceEpoch}_${Random().nextInt(1000)}',
-      content: responseText,
-      sender: MessageSender.ai,
+    final session = ChatModel(
+      id: convoId,
+      title: initialTitle,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+      messages: messages,
+      jobPostId: jobPostId,
+      contextMode: contextMode,
+    );
+
+    _sessions.insert(0, session);
+    return session;
+  }
+
+  @override
+  Future<ChatbotSendMessageResponseModel> sendMessage({
+    required String conversationId,
+    required String message,
+  }) async {
+    final responseText = _generateSmartResponse(message);
+
+    final userMsg = ChatMessageModel(
+      id: 'msg_user_${DateTime.now().millisecondsSinceEpoch}',
+      content: message,
+      sender: MessageSender.user,
       timestamp: DateTime.now(),
     );
+
+    final aiReply = ChatMessageModel(
+      id: 'msg_ai_${DateTime.now().millisecondsSinceEpoch}',
+      content: responseText,
+      sender: MessageSender.ai,
+      timestamp: DateTime.now().add(const Duration(milliseconds: 50)),
+      suggestedActions: const [
+        SuggestedActionModel(
+          type: 'suggested_prompt',
+          label: 'How do I optimize app performance?',
+        ),
+        SuggestedActionModel(
+          type: 'suggested_prompt',
+          label: 'Review system design concepts',
+        ),
+      ],
+    );
+
+    return ChatbotSendMessageResponseModel(
+      userMessage: userMsg,
+      mentorReply: aiReply,
+    );
+  }
+
+  @override
+  Future<void> updateConversation({
+    required String conversationId,
+    String? title,
+    bool? isArchived,
+  }) async {
+    final index = _sessions.indexWhere((s) => s.id == conversationId);
+    if (index >= 0) {
+      final s = _sessions[index];
+      _sessions[index] = ChatModel(
+        id: s.id,
+        title: title ?? s.title,
+        createdAt: s.createdAt,
+        updatedAt: DateTime.now(),
+        messages: s.messages,
+        isArchived: isArchived ?? s.isArchived,
+        jobPostId: s.jobPostId,
+        contextMode: s.contextMode,
+      );
+    }
+  }
+
+  @override
+  Future<void> deleteConversation(String conversationId) async {
+    _sessions.removeWhere((s) => s.id == conversationId);
+  }
+
+  @override
+  Future<Map<String, dynamic>> getContextPreview() async {
+    return {
+      'headline': 'Senior Flutter Engineer',
+      'skills': ['Flutter', 'Dart', 'Bloc', 'Clean Architecture'],
+      'target_role': 'Mobile Architect',
+    };
   }
 
   String _generateSmartResponse(String prompt) {
@@ -42,31 +173,10 @@ Would you like me to help review a specific section of your CV?''';
 
 • **State Management**: BLoC vs Provider vs Riverpod lifecycle & architectural patterns.
 • **Dart Internals**: Isolates, Event Loop, Futures, and Microtasks.
-• **Performance Tuning**: `const` constructors, repaintd boundary, and list optimization.
+• **Performance Tuning**: `const` constructors, repaint boundary, and list optimization.
 • **Testing**: Unit tests, Widget tests, and Mocking.
 
 Shall we simulate a technical interview question together?''';
-    }
-
-    if (lower.contains('flutter') || lower.contains('dart') || lower.contains('cubit')) {
-      return '''Flutter is Google's UI toolkit for building natively compiled applications from a single codebase.
-
-Key architectural recommendations:
-- **Clean Architecture**: Separate Domain, Data, and Presentation layers.
-- **State Management**: Cubit/BLoC for reactive state management.
-- **Dependency Injection**: Use `get_it` for decoupling dependencies.
-
-Let me know if you want code examples!''';
-    }
-
-    if (lower.contains('job') || lower.contains('career') || lower.contains('عمل') || lower.contains('وظيفة')) {
-      return '''Based on your profile, here are strategic career steps:
-
-1. **Build Proof of Work**: Publish open-source Flutter packages or apps on GitHub.
-2. **Target High-Match Roles**: Use MatchIn's Job Match feature to view direct skill fit.
-3. **Prepare System Design**: Practice designing scalable frontend Flutter architectures.
-
-How else can I support your career journey today?''';
     }
 
     return '''Thank you for reaching out! I am your MatchIn AI Career & Tech Assistant.

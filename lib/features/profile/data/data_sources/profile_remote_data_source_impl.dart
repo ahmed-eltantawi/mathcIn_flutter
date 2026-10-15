@@ -5,12 +5,23 @@ import 'package:MatchIn/features/profile/data/models/candidate_profile_model.dar
 import 'package:MatchIn/features/profile/data/models/candidate_project_model.dart';
 import 'package:MatchIn/features/profile/data/models/candidate_skill_model.dart';
 import 'package:MatchIn/features/profile/data/models/career_preference_model.dart';
+import 'package:MatchIn/features/profile/data/models/cv_upload_receipt_model.dart';
+import 'package:MatchIn/features/profile/data/models/education_model.dart';
+import 'package:MatchIn/features/profile/data/models/experience_model.dart';
+import 'package:MatchIn/features/profile/data/models/cv_upload_payload.dart';
 import 'package:MatchIn/features/profile/data/models/skill_search_result_model.dart';
 import 'package:MatchIn/features/profile/data/models/user_profile_model.dart';
 import 'package:MatchIn/features/profile/domain/entities/add_candidate_project_params.dart';
 import 'package:MatchIn/features/profile/domain/entities/add_candidate_skill_params.dart';
+import 'package:MatchIn/features/profile/domain/entities/add_education_params.dart';
+import 'package:MatchIn/features/profile/domain/entities/add_experience_params.dart';
+import 'package:MatchIn/features/profile/domain/entities/avatar_upload_input.dart';
+import 'package:MatchIn/features/profile/domain/entities/cv_upload_input.dart';
 import 'package:MatchIn/features/profile/domain/entities/save_career_preferences_params.dart';
+import 'package:MatchIn/features/profile/domain/entities/update_candidate_profile_params.dart';
 import 'package:MatchIn/features/profile/domain/entities/update_candidate_project_params.dart';
+import 'package:MatchIn/features/profile/domain/entities/update_education_params.dart';
+import 'package:MatchIn/features/profile/domain/entities/update_experience_params.dart';
 
 class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   const ProfileRemoteDataSourceImpl({required this.apiConsumer});
@@ -21,6 +32,43 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   Future<CandidateProfileModel> getCandidateProfile() async {
     final response = await apiConsumer.get(EndPoint.candidateProfile);
 
+    return _parseCandidateProfileResponse(response);
+  }
+
+  @override
+  Future<CandidateProfileModel> updateCandidateProfile(
+    UpdateCandidateProfileParams params,
+  ) async {
+    final response = await apiConsumer.patch(
+      EndPoint.candidateProfile,
+      data: {
+        if (UpdateCandidateProfileParams.isSet(params.dateOfBirth))
+          'date_of_birth': params.dateOfBirth as String?,
+        if (UpdateCandidateProfileParams.isSet(params.gender))
+          'gender': params.gender as String?,
+        if (UpdateCandidateProfileParams.isSet(params.jobTitle))
+          'job_title': params.jobTitle as String?,
+        if (UpdateCandidateProfileParams.isSet(params.country))
+          'country': params.country as String?,
+        if (UpdateCandidateProfileParams.isSet(params.state))
+          'state': params.state as String?,
+        if (UpdateCandidateProfileParams.isSet(params.city))
+          'city': params.city as String?,
+        if (UpdateCandidateProfileParams.isSet(params.githubUrl))
+          'github_url': params.githubUrl as String?,
+        if (UpdateCandidateProfileParams.isSet(params.linkedinUrl))
+          'linkedin_url': params.linkedinUrl as String?,
+        if (UpdateCandidateProfileParams.isSet(params.militaryStatus))
+          'military_status': params.militaryStatus as String?,
+        if (UpdateCandidateProfileParams.isSet(params.professionalSummary))
+          'professional_summary': params.professionalSummary as String?,
+      },
+    );
+
+    return _parseCandidateProfileResponse(response);
+  }
+
+  CandidateProfileModel _parseCandidateProfileResponse(dynamic response) {
     if (response is! Map<String, dynamic>) {
       throw const FormatException(
         'Invalid response format for candidate profile',
@@ -65,6 +113,10 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   Future<CandidateSkillModel> addCandidateSkill(
     AddCandidateSkillParams params,
   ) async {
+    // NOTE(swagger): the documented example also shows
+    // proficiency_level and years_of_experience, but the confirmed
+    // request shape used here stays name-only until live backend
+    // verification. Do not add fields on assumption.
     final response = await apiConsumer.post(
       EndPoint.candidateSkills,
       data: {'name': params.name},
@@ -92,7 +144,7 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   Future<List<SkillSearchResultModel>> searchSkills(String query) async {
     final response = await apiConsumer.get(
       EndPoint.searchSkills,
-      queryParameters: {'q': query},
+      queryParameters: {ApiKey.skillsQuery: query},
     );
 
     if (response is! Map<String, dynamic>) {
@@ -144,10 +196,14 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
       EndPoint.candidateProject(projectId),
     );
 
-    return _parseProjectResponse(response);
+    final project = _parseProjectResponse(response);
+    if (project == null) {
+      throw const FormatException('Invalid candidate project data format');
+    }
+    return project;
   }
 
-  CandidateProjectModel _parseProjectResponse(dynamic response) {
+  CandidateProjectModel? _parseProjectResponse(dynamic response) {
     if (response is! Map<String, dynamic>) {
       throw const FormatException('Invalid candidate project response format');
     }
@@ -158,11 +214,11 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
       throw const FormatException('Invalid candidate project data format');
     }
 
-    return CandidateProjectModel.fromJson(data);
+    return CandidateProjectModel.tryParseMutation(data);
   }
 
   @override
-  Future<CandidateProjectModel> addCandidateProject(
+  Future<CandidateProjectModel?> addCandidateProject(
     AddCandidateProjectParams params,
   ) async {
     final response = await apiConsumer.post(
@@ -182,19 +238,26 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   }
 
   @override
-  Future<CandidateProjectModel> updateCandidateProject(
+  Future<CandidateProjectModel?> updateCandidateProject(
     UpdateCandidateProjectParams params,
   ) async {
     final response = await apiConsumer.patch(
       EndPoint.candidateProject(params.projectId),
       data: {
-        if (params.name != null) 'name': params.name,
-        if (params.description != null) 'description': params.description,
-        if (params.technologies != null) 'technologies': params.technologies,
-        if (params.projectUrl != null) 'project_url': params.projectUrl,
-        if (params.githubUrl != null) 'github_url': params.githubUrl,
-        if (params.startDate != null) 'start_date': params.startDate,
-        if (params.endDate != null) 'end_date': params.endDate,
+        if (UpdateCandidateProjectParams.isSet(params.name))
+          'name': params.name as String?,
+        if (UpdateCandidateProjectParams.isSet(params.description))
+          'description': params.description as String?,
+        if (UpdateCandidateProjectParams.isSet(params.technologies))
+          'technologies': params.technologies as List<String>?,
+        if (UpdateCandidateProjectParams.isSet(params.projectUrl))
+          'project_url': params.projectUrl as String?,
+        if (UpdateCandidateProjectParams.isSet(params.githubUrl))
+          'github_url': params.githubUrl as String?,
+        if (UpdateCandidateProjectParams.isSet(params.startDate))
+          'start_date': params.startDate as String?,
+        if (UpdateCandidateProjectParams.isSet(params.endDate))
+          'end_date': params.endDate as String?,
       },
     );
 
@@ -204,6 +267,234 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   @override
   Future<void> deleteCandidateProject(int projectId) async {
     await apiConsumer.delete(EndPoint.candidateProject(projectId));
+  }
+
+  // Candidate Educations
+
+  @override
+  Future<List<EducationModel>> getEducations() async {
+    final response = await apiConsumer.get(EndPoint.candidateEducations);
+
+    if (response is! Map<String, dynamic>) {
+      throw const FormatException(
+        'Invalid response format for candidate educations',
+      );
+    }
+
+    final data = response['data'];
+
+    if (data is! List) {
+      throw const FormatException('Invalid candidate educations data format');
+    }
+
+    return data
+        .map(
+          (education) =>
+              EducationModel.fromJson(education as Map<String, dynamic>),
+        )
+        .toList();
+  }
+
+  @override
+  Future<EducationModel?> addEducation(AddEducationParams params) async {
+    final response = await apiConsumer.post(
+      EndPoint.candidateEducations,
+      data: {
+        'institution': params.institution,
+        if (params.degree != null) 'degree': params.degree,
+        if (params.fieldOfStudy != null) 'field_of_study': params.fieldOfStudy,
+        if (params.educationLevel != null)
+          'education_level': params.educationLevel,
+        if (params.grade != null) 'grade': params.grade,
+        if (params.description != null) 'description': params.description,
+        'is_current': params.isCurrent,
+        if (params.startDate != null) 'start_date': params.startDate,
+        if (params.endDate != null) 'end_date': params.endDate,
+      },
+    );
+
+    return _parseEducationResponse(response);
+  }
+
+  @override
+  Future<EducationModel?> updateEducation(UpdateEducationParams params) async {
+    final response = await apiConsumer.patch(
+      EndPoint.candidateEducation(params.educationId),
+      data: {
+        if (UpdateEducationParams.isSet(params.institution))
+          'institution': params.institution as String?,
+        if (UpdateEducationParams.isSet(params.degree))
+          'degree': params.degree as String?,
+        if (UpdateEducationParams.isSet(params.fieldOfStudy))
+          'field_of_study': params.fieldOfStudy as String?,
+        if (UpdateEducationParams.isSet(params.educationLevel))
+          'education_level': params.educationLevel as String?,
+        if (UpdateEducationParams.isSet(params.grade))
+          'grade': params.grade as String?,
+        if (UpdateEducationParams.isSet(params.description))
+          'description': params.description as String?,
+        if (UpdateEducationParams.isSet(params.isCurrent))
+          'is_current': params.isCurrent as bool?,
+        if (UpdateEducationParams.isSet(params.startDate))
+          'start_date': params.startDate as String?,
+        if (UpdateEducationParams.isSet(params.endDate))
+          'end_date': params.endDate as String?,
+      },
+    );
+
+    return _parseEducationResponse(response);
+  }
+
+  @override
+  Future<void> deleteEducation(int educationId) async {
+    await apiConsumer.delete(EndPoint.candidateEducation(educationId));
+  }
+
+  EducationModel? _parseEducationResponse(dynamic response) {
+    if (response is! Map<String, dynamic>) {
+      throw const FormatException(
+        'Invalid candidate education response format',
+      );
+    }
+
+    final data = response['data'];
+
+    if (data is! Map<String, dynamic>) {
+      throw const FormatException('Invalid candidate education data format');
+    }
+
+    return EducationModel.tryParseMutation(data);
+  }
+
+  // Candidate Experiences
+
+  @override
+  Future<List<ExperienceModel>> getExperiences() async {
+    final response = await apiConsumer.get(EndPoint.candidateExperiences);
+
+    if (response is! Map<String, dynamic>) {
+      throw const FormatException(
+        'Invalid response format for candidate experiences',
+      );
+    }
+
+    final data = response['data'];
+
+    if (data is! List) {
+      throw const FormatException('Invalid candidate experiences data format');
+    }
+
+    return data
+        .map(
+          (experience) =>
+              ExperienceModel.fromJson(experience as Map<String, dynamic>),
+        )
+        .toList();
+  }
+
+  @override
+  Future<ExperienceModel?> addExperience(AddExperienceParams params) async {
+    final response = await apiConsumer.post(
+      EndPoint.candidateExperiences,
+      data: {
+        'job_title': params.jobTitle,
+        'company_name': params.companyName,
+        if (params.employmentType != null)
+          'employment_type': params.employmentType,
+        if (params.country != null) 'country': params.country,
+        if (params.city != null) 'city': params.city,
+        if (params.description != null) 'description': params.description,
+        if (params.technologies.isNotEmpty) 'technologies': params.technologies,
+        'is_current': params.isCurrent,
+        if (params.startDate != null) 'start_date': params.startDate,
+        if (params.endDate != null) 'end_date': params.endDate,
+      },
+    );
+
+    return _parseExperienceResponse(response);
+  }
+
+  @override
+  Future<ExperienceModel?> updateExperience(
+    UpdateExperienceParams params,
+  ) async {
+    final response = await apiConsumer.patch(
+      EndPoint.candidateExperience(params.experienceId),
+      data: {
+        if (UpdateExperienceParams.isSet(params.jobTitle))
+          'job_title': params.jobTitle as String?,
+        if (UpdateExperienceParams.isSet(params.companyName))
+          'company_name': params.companyName as String?,
+        if (UpdateExperienceParams.isSet(params.employmentType))
+          'employment_type': params.employmentType as String?,
+        if (UpdateExperienceParams.isSet(params.country))
+          'country': params.country as String?,
+        if (UpdateExperienceParams.isSet(params.city))
+          'city': params.city as String?,
+        if (UpdateExperienceParams.isSet(params.description))
+          'description': params.description as String?,
+        if (UpdateExperienceParams.isSet(params.technologies))
+          'technologies': params.technologies as List<String>?,
+        if (UpdateExperienceParams.isSet(params.isCurrent))
+          'is_current': params.isCurrent as bool?,
+        if (UpdateExperienceParams.isSet(params.startDate))
+          'start_date': params.startDate as String?,
+        if (UpdateExperienceParams.isSet(params.endDate))
+          'end_date': params.endDate as String?,
+      },
+    );
+
+    return _parseExperienceResponse(response);
+  }
+
+  @override
+  Future<void> deleteExperience(int experienceId) async {
+    await apiConsumer.delete(EndPoint.candidateExperience(experienceId));
+  }
+
+  ExperienceModel? _parseExperienceResponse(dynamic response) {
+    if (response is! Map<String, dynamic>) {
+      throw const FormatException(
+        'Invalid candidate experience response format',
+      );
+    }
+
+    final data = response['data'];
+
+    if (data is! Map<String, dynamic>) {
+      throw const FormatException('Invalid candidate experience data format');
+    }
+
+    return ExperienceModel.tryParseMutation(data);
+  }
+
+  // CV Upload
+
+  @override
+  Future<CvUploadReceiptModel?> uploadCv(CvUploadInput input) async {
+    final response = await apiConsumer.post(
+      EndPoint.cvUpload,
+      data: CvUploadPayload.formData(input),
+      isFormData: true,
+    );
+
+    if (response is! Map<String, dynamic>) {
+      throw const FormatException('Invalid CV upload response format');
+    }
+
+    return CvUploadReceiptModel.tryParseReceipt(response);
+  }
+
+  // Avatar Upload
+  @override
+  Future<void> uploadAvatar(AvatarUploadInput input) async {
+    // TODO(avatar-backend): implement the multipart upload once the
+    // endpoint, HTTP method, field name, and response schema are
+    // documented. Do NOT invent them here. This throw intentionally
+    // fires before any network operation.
+    throw UnimplementedError(
+      'Avatar upload API contract is pending backend support.',
+    );
   }
 
   // career preferences
@@ -236,30 +527,35 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
     final response = await apiConsumer.patch(
       EndPoint.careerPreferences,
       data: {
-        if (params.targetRole != null) 'target_role': params.targetRole,
+        if (SaveCareerPreferencesParams.isSet(params.targetRole))
+          'target_role': params.targetRole as String?,
 
-        if (params.jobType != null) 'job_type': params.jobType,
+        if (SaveCareerPreferencesParams.isSet(params.jobType))
+          'job_type': params.jobType as String?,
 
-        if (params.workMode != null) 'work_mode': params.workMode,
+        if (SaveCareerPreferencesParams.isSet(params.workMode))
+          'work_mode': params.workMode as String?,
 
-        if (params.preferredCountry != null)
-          'preferred_country': params.preferredCountry,
+        if (SaveCareerPreferencesParams.isSet(params.preferredCountry))
+          'preferred_country': params.preferredCountry as String?,
 
-        if (params.preferredCity != null)
-          'preferred_city': params.preferredCity,
+        if (SaveCareerPreferencesParams.isSet(params.preferredCity))
+          'preferred_city': params.preferredCity as String?,
 
-        if (params.experienceLevel != null)
-          'experience_level': params.experienceLevel,
+        if (SaveCareerPreferencesParams.isSet(params.experienceLevel))
+          'experience_level': params.experienceLevel as String?,
 
-        if (params.careerGoal != null) 'career_goal': params.careerGoal,
+        if (SaveCareerPreferencesParams.isSet(params.careerGoal))
+          'career_goal': params.careerGoal as String?,
 
-        if (params.openToRelocation != null)
-          'open_to_relocation': params.openToRelocation,
+        if (SaveCareerPreferencesParams.isSet(params.openToRelocation))
+          'open_to_relocation': params.openToRelocation as bool?,
 
-        if (params.targetRoles != null) 'target_roles': params.targetRoles,
+        if (SaveCareerPreferencesParams.isSet(params.targetRoles))
+          'target_roles': params.targetRoles as List<String>?,
 
-        if (params.preferredIndustries != null)
-          'preferred_industries': params.preferredIndustries,
+        if (SaveCareerPreferencesParams.isSet(params.preferredIndustries))
+          'preferred_industries': params.preferredIndustries as List<String>?,
       },
     );
 

@@ -5,6 +5,7 @@ class CompanyEntity extends Equatable {
     required this.id,
     required this.name,
     this.logoUrl,
+    this.website,
     this.isVerified = false,
     this.isActive = true,
   });
@@ -12,9 +13,10 @@ class CompanyEntity extends Equatable {
   final int id;
   final String name;
   final String? logoUrl;
+  final String? website;
   final bool isVerified;
   final bool isActive;
 
   @override
-  List<Object?> get props => [id, name, logoUrl, isVerified, isActive];
+  List<Object?> get props => [id, name, logoUrl, website, isVerified, isActive];
 }

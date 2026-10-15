@@ -5,6 +5,7 @@ abstract class CompanyModelKey {
   static const String id = 'id';
   static const String name = 'name';
   static const String logoUrl = 'logo_url';
+  static const String website = 'website';
   static const String isVerified = 'is_verified';
   static const String isActive = 'is_active';
 }
@@ -14,6 +15,7 @@ class CompanyModel {
     required this.id,
     required this.name,
     this.logoUrl,
+    this.website,
     this.isVerified = false,
     this.isActive = true,
   });
@@ -25,6 +27,7 @@ class CompanyModel {
           : int.tryParse(json[CompanyModelKey.id]?.toString() ?? '0') ?? 0,
       name: json[CompanyModelKey.name] as String? ?? '',
       logoUrl: json[CompanyModelKey.logoUrl] as String?,
+      website: json[CompanyModelKey.website] as String?,
       isVerified: json[CompanyModelKey.isVerified] as bool? ?? false,
       isActive: json[CompanyModelKey.isActive] as bool? ?? true,
     );
@@ -33,6 +36,7 @@ class CompanyModel {
   final int id;
   final String name;
   final String? logoUrl;
+  final String? website;
   final bool isVerified;
   final bool isActive;
 
@@ -41,6 +45,7 @@ class CompanyModel {
       CompanyModelKey.id: id,
       CompanyModelKey.name: name,
       CompanyModelKey.logoUrl: logoUrl,
+      CompanyModelKey.website: website,
       CompanyModelKey.isVerified: isVerified,
       CompanyModelKey.isActive: isActive,
     };
@@ -51,6 +56,7 @@ class CompanyModel {
       id: id,
       name: name,
       logoUrl: logoUrl,
+      website: website,
       isVerified: isVerified,
       isActive: isActive,
     );

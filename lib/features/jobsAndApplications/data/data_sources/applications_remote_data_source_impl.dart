@@ -47,13 +47,22 @@ class ApplicationsRemoteDataSourceImpl implements ApplicationsRemoteDataSource {
   @override
   Future<ApplicationModel> applyToJob({
     required int jobId,
+    int? cvDocumentId,
     String? coverLetter,
+    String? notes,
   }) async {
-    final body = <String, dynamic>{
-      ApiKey.jobId: jobId,
-      if (coverLetter != null && coverLetter.isNotEmpty)
-        ApiKey.coverLetter: coverLetter,
-    };
+    // Live contract: POST /applications with job_post_id (required) plus
+    // the documented optional fields. No invented fields are sent.
+    final body = <String, dynamic>{ApiKey.jobPostId: jobId};
+    if (cvDocumentId != null) {
+      body[ApiKey.cvDocumentId] = cvDocumentId;
+    }
+    if (coverLetter != null && coverLetter.isNotEmpty) {
+      body[ApiKey.coverLetter] = coverLetter;
+    }
+    if (notes != null && notes.isNotEmpty) {
+      body[ApiKey.notes] = notes;
+    }
 
     final response = await apiConsumer.post(
       EndPoint.applications,
@@ -100,5 +109,23 @@ class ApplicationsRemoteDataSourceImpl implements ApplicationsRemoteDataSource {
       return ApplicationModel.fromJson(response);
     }
     throw const FormatException('Invalid response format for withdraw application');
+  }
+
+  @override
+  Future<ApplicationModel> updateApplicationNotes({
+    required String applicationId,
+    required String notes,
+  }) async {
+    final response = await apiConsumer.patch(
+      EndPoint.applicationNotes(applicationId),
+      data: {ApiKey.notes: notes},
+    );
+
+    if (response is Map<String, dynamic>) {
+      return ApplicationModel.fromJson(response);
+    }
+    throw const FormatException(
+      'Invalid response format for update application notes',
+    );
   }
 }

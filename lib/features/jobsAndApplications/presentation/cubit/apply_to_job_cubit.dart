@@ -10,7 +10,9 @@ class ApplyToJobCubit extends Cubit<ApplyToJobState> {
 
   Future<void> submitApplication({
     required int jobId,
+    int? cvDocumentId,
     String? coverLetter,
+    String? notes,
   }) async {
     if (state is ApplyToJobSubmitting) return;
 
@@ -18,7 +20,9 @@ class ApplyToJobCubit extends Cubit<ApplyToJobState> {
 
     final result = await applyToJobUseCase(
       jobId: jobId,
+      cvDocumentId: cvDocumentId,
       coverLetter: coverLetter,
+      notes: notes,
     );
 
     result.fold(

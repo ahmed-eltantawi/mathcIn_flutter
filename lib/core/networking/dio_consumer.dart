@@ -1,7 +1,10 @@
+import 'package:MatchIn/core/errors/error_model.dart';
 import 'package:MatchIn/core/errors/exceptions.dart';
 import 'package:MatchIn/core/networking/api_consumer.dart';
 import 'package:MatchIn/core/networking/api_end_points.dart';
 import 'package:MatchIn/core/networking/api_interceptor.dart';
+import 'package:MatchIn/core/networking/connectivity_cubit.dart';
+import 'package:MatchIn/core/services/app_config_service.dart';
 import 'package:MatchIn/core/services/secure_storage_service.dart';
 import 'package:MatchIn/core/services/shared_preferences_service.dart';
 import 'package:dio/dio.dart';
@@ -13,9 +16,10 @@ class DioConsumer extends ApiConsumer {
     required this.dio,
     required SecureStorageService secureStorageService,
     required SharedPreferencesService sharedPreferencesService,
+    ConnectivityCubit? connectivityCubit,
   }) {
     //! =================== Configurations ===================
-    // takeing base url from api end point
+    // takeing base url from the centralized end point configuration
     dio.options.baseUrl = EndPoint.baseUrl;
 
     // adding api interceptor
@@ -24,6 +28,7 @@ class DioConsumer extends ApiConsumer {
         dio,
         secureStorageService: secureStorageService,
         sharedPreferencesService: sharedPreferencesService,
+        connectivityCubit: connectivityCubit,
       ),
     );
 
@@ -41,6 +46,23 @@ class DioConsumer extends ApiConsumer {
 
   final Dio dio; // injecting dio
 
+  //! =================== Configuration guard ===================
+
+  // --- No hardcoded fallback exists anywhere: a request proceeds only
+  // --- with a Firestore-resolved or valid cached base URL. Otherwise it
+  // --- fails fast with a recoverable error instead of hitting an
+  // --- obsolete backend. Repositories map this to a Failure as usual. ---
+  void _requireResolvedBaseUrl() {
+    if (!AppConfigService.isValidBaseUrl(EndPoint.baseUrl)) {
+      throw ServerException(
+        errorModel: const ErrorModel(
+          statusCode: 0,
+          errorMessage: 'API configuration is unavailable. Please check your connection and try again.',
+        ),
+      );
+    }
+  }
+
   //! =================== Methods ===================
 
   //? ---------- Delete ----------
@@ -51,6 +73,7 @@ class DioConsumer extends ApiConsumer {
     dynamic data,
     bool isFormData = false,
   }) async {
+    _requireResolvedBaseUrl();
     try {
       final dynamic response = await dio.delete(
         path,
@@ -71,6 +94,7 @@ class DioConsumer extends ApiConsumer {
     Object? data,
     bool isFormData = false,
   }) async {
+    _requireResolvedBaseUrl();
     try {
       final dynamic response = await dio.get(
         path,
@@ -91,6 +115,7 @@ class DioConsumer extends ApiConsumer {
     dynamic data,
     bool isFormData = false,
   }) async {
+    _requireResolvedBaseUrl();
     try {
       final dynamic response = await dio.post(
         path,
@@ -111,6 +136,7 @@ class DioConsumer extends ApiConsumer {
     dynamic data,
     bool isFormData = false,
   }) async {
+    _requireResolvedBaseUrl();
     try {
       final dynamic response = await dio.put(
         path,
@@ -131,6 +157,7 @@ class DioConsumer extends ApiConsumer {
     dynamic data,
     bool isFormData = false,
   }) async {
+    _requireResolvedBaseUrl();
     try {
       final dynamic response = await dio.patch(
         path,

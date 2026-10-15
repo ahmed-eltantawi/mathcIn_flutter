@@ -1,5 +1,5 @@
 import 'package:MatchIn/features/profile/domain/entities/skill_search_result_entity.dart';
-import 'package:MatchIn/features/profile/presentation/cubits/skills_cubit.dart';
+import 'package:MatchIn/features/profile/presentation/cubits/skills_cubit/skills_cubit.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/add_skill_section.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/skill_search_debouncer.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +38,7 @@ class _AddSkillFormState extends State<AddSkillForm> {
     final query = value.trim();
 
     if (query.isEmpty) {
-      _debouncer.dispose();
+      _debouncer.cancel();
       context.read<SkillsCubit>().clearSearch();
       return;
     }
@@ -50,12 +50,16 @@ class _AddSkillFormState extends State<AddSkillForm> {
     });
   }
 
-  void _addSkill(String value) {
+  Future<void> _addSkill(String value) async {
     final name = value.trim();
 
     if (name.isEmpty) return;
 
-    context.read<SkillsCubit>().addSkill(name: name);
+    final added = await context.read<SkillsCubit>().addSkill(name: name);
+    if (!mounted || !added) return;
+
+    _controller.clear();
+    context.read<SkillsCubit>().clearSearch();
   }
 
   @override
@@ -64,6 +68,7 @@ class _AddSkillFormState extends State<AddSkillForm> {
       controller: _controller,
       suggestions: widget.suggestions.map((skill) => skill.name).toList(),
       onSearchChanged: _onSearchChanged,
+      onSubmitted: _addSkill,
       onAddPressed: () {
         _addSkill(_controller.text);
       },

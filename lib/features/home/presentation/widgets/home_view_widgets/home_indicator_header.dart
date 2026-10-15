@@ -1,3 +1,4 @@
+import 'package:MatchIn/features/home/presentation/widgets/home_view_widgets/home_header_skeleton.dart';
 import 'package:flutter/material.dart';
 
 class HomeInicatorHeader extends StatelessWidget {
@@ -5,10 +6,6 @@ class HomeInicatorHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // مؤقتًا Loading بسيط، ممكن نستبدلها بـ AppShimmer بتاعك لاحقًا
-    return const Padding(
-      padding: EdgeInsets.all(16),
-      child: Center(child: CircularProgressIndicator()),
-    );
+    return const HomeHeaderSkeleton();
   }
 }

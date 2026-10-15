@@ -5,18 +5,19 @@ class PreferenceDropdownField extends StatelessWidget {
   const PreferenceDropdownField({
     required this.label,
     required this.value,
-    required this.onPressed,
+    this.onPressed,
     super.key,
   });
 
   final String label;
   final String value;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
+    final enabled = onPressed != null;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,26 +30,31 @@ class PreferenceDropdownField extends StatelessWidget {
           ),
         ),
         SizedBox(height: 8.h),
-        InkWell(
-          onTap: onPressed,
-          borderRadius: BorderRadius.circular(10.r),
-          child: Container(
-            height: 52.h,
-            padding: EdgeInsets.symmetric(horizontal: 14.w),
-            decoration: BoxDecoration(
-              color: colors.surface,
-              borderRadius: BorderRadius.circular(10.r),
-              border: Border.all(color: colors.outlineVariant, width: 1),
-            ),
-            child: Row(
-              children: [
-                Expanded(child: Text(value, style: theme.textTheme.bodyMedium)),
-                Icon(
-                  Icons.keyboard_arrow_down_rounded,
-                  color: colors.onSurfaceVariant,
-                  size: 24.r,
-                ),
-              ],
+        Opacity(
+          opacity: enabled ? 1.0 : 0.5,
+          child: InkWell(
+            onTap: onPressed,
+            borderRadius: BorderRadius.circular(10.r),
+            child: Container(
+              height: 52.h,
+              padding: EdgeInsets.symmetric(horizontal: 14.w),
+              decoration: BoxDecoration(
+                color: colors.surface,
+                borderRadius: BorderRadius.circular(10.r),
+                border: Border.all(color: colors.outlineVariant, width: 1),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(value, style: theme.textTheme.bodyMedium),
+                  ),
+                  Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    color: colors.onSurfaceVariant,
+                    size: 24.r,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

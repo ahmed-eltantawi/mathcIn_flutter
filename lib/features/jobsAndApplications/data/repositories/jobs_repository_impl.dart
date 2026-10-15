@@ -33,7 +33,7 @@ class JobsRepositoryImpl implements JobsRepository {
       } on ServerException catch (e) {
         final cached = await _getFallbackCachedJobs(cacheKey);
         if (cached != null) return Right(cached);
-        return Left(ServerFailure(message: e.errorModel.errorMessage));
+        return Left(ServerFailure(message: e.errorModel.errorMessage, fieldErrors: e.errorModel.fieldErrors));
       } catch (e) {
         final cached = await _getFallbackCachedJobs(cacheKey);
         if (cached != null) return Right(cached);
@@ -89,6 +89,30 @@ class JobsRepositoryImpl implements JobsRepository {
   }
 
   @override
+  Future<Either<Failure, JobEntity>> getJobDetails(String jobId) async {
+    if (!await networkInfo.isConnected) {
+      final cached = await localDataSource.findCachedJobById(jobId);
+      if (cached != null) return Right(cached.toEntity());
+      return const Left(OfflineFailure());
+    }
+
+    try {
+      final model = await remoteDataSource.getJobDetails(jobId);
+      return Right(model.toEntity());
+    } on ServerException catch (e) {
+      final cached = await localDataSource.findCachedJobById(jobId);
+      if (cached != null) return Right(cached.toEntity());
+      return Left(
+        ServerFailure(message: e.errorModel.errorMessage, fieldErrors: e.errorModel.fieldErrors),
+      );
+    } catch (e) {
+      final cached = await localDataSource.findCachedJobById(jobId);
+      if (cached != null) return Right(cached.toEntity());
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
   Future<Either<Failure, JobEntity>> toggleSaveJob(
     String jobId, {
     bool? currentIsSaved,
@@ -106,7 +130,7 @@ class JobsRepositoryImpl implements JobsRepository {
       return Right(job);
     } on ServerException catch (e) {
       return Left(
-        ServerFailure(message: e.errorModel.errorMessage),
+        ServerFailure(message: e.errorModel.errorMessage, fieldErrors: e.errorModel.fieldErrors),
       );
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
@@ -127,7 +151,7 @@ class JobsRepositoryImpl implements JobsRepository {
       return Right(job);
     } on ServerException catch (e) {
       return Left(
-        ServerFailure(message: e.errorModel.errorMessage),
+        ServerFailure(message: e.errorModel.errorMessage, fieldErrors: e.errorModel.fieldErrors),
       );
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));

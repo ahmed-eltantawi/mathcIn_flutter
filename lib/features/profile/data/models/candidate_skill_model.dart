@@ -1,3 +1,4 @@
+import 'package:MatchIn/features/profile/data/models/json_parsing.dart';
 import 'package:MatchIn/features/profile/domain/entities/candidate_skill_entity.dart';
 
 class CandidateSkillModel extends CandidateSkillEntity {
@@ -10,14 +11,17 @@ class CandidateSkillModel extends CandidateSkillEntity {
   });
 
   factory CandidateSkillModel.fromJson(Map<String, dynamic> json) {
-    final skill = json['skill'] as Map<String, dynamic>;
+    final skill = json['skill'];
+    if (skill is! Map<String, dynamic>) {
+      throw const FormatException('Invalid candidate skill: missing skill');
+    }
 
     return CandidateSkillModel(
-      id: json['id'] as int,
-      skillId: json['skill_id'] as int,
-      source: json['source'] as String,
-      proficiencyLevel: json['proficiency_level'] as String?,
-      name: skill['name'] as String,
+      id: JsonParsing.parseId(json['id']) ?? 0,
+      skillId: JsonParsing.parseId(json['skill_id']) ?? 0,
+      source: JsonParsing.parseString(json['source']) ?? 'manual',
+      proficiencyLevel: JsonParsing.parseString(json['proficiency_level']),
+      name: skill['name']?.toString() ?? '',
     );
   }
 

@@ -11,6 +11,7 @@ class AddSkillSection extends StatelessWidget {
     required this.onSearchChanged,
     required this.onAddPressed,
     required this.onSuggestionPressed,
+    required this.onSubmitted,
     super.key,
   });
 
@@ -19,6 +20,7 @@ class AddSkillSection extends StatelessWidget {
   final ValueChanged<String> onSearchChanged;
   final VoidCallback onAddPressed;
   final ValueChanged<String> onSuggestionPressed;
+  final ValueChanged<String> onSubmitted;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +40,7 @@ class AddSkillSection extends StatelessWidget {
         SkillSearchField(
           controller: controller,
           onChanged: onSearchChanged,
+          onSubmitted: onSubmitted,
           onAddPressed: onAddPressed,
         ),
         if (suggestions.isNotEmpty) ...[

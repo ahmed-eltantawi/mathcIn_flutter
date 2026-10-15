@@ -1,3 +1,4 @@
+import 'package:MatchIn/features/profile/data/models/json_parsing.dart';
 import 'package:MatchIn/features/profile/domain/entities/profile_user_entity.dart';
 
 class ProfileUserModel extends ProfileUserEntity {
@@ -13,13 +14,13 @@ class ProfileUserModel extends ProfileUserEntity {
 
   factory ProfileUserModel.fromJson(Map<String, dynamic> json) {
     return ProfileUserModel(
-      id: json['id'] as int,
-      name: json['name'] as String,
-      email: json['email'] as String,
-      role: json['role'] as String,
-      isActive: json['is_active'] as bool,
-      phone: json['phone'] as String?,
-      avatar: json['avatar'] as String?,
+      id: JsonParsing.parseId(json['id']) ?? 0,
+      name: JsonParsing.parseString(json['name']) ?? '',
+      email: JsonParsing.parseString(json['email']) ?? '',
+      role: JsonParsing.parseString(json['role']) ?? 'candidate',
+      isActive: JsonParsing.parseBoolFlag(json['is_active']) ?? true,
+      phone: JsonParsing.parseString(json['phone']),
+      avatar: JsonParsing.parseString(json['avatar']),
     );
   }
 

@@ -8,11 +8,13 @@ class SkillSearchField extends StatelessWidget {
     required this.onAddPressed,
     this.controller,
     this.onChanged,
+    this.onSubmitted,
     super.key,
   });
 
   final TextEditingController? controller;
   final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onSubmitted;
   final VoidCallback onAddPressed;
 
   @override
@@ -29,6 +31,7 @@ class SkillSearchField extends StatelessWidget {
             child: TextField(
               controller: controller,
               onChanged: onChanged,
+              onSubmitted: onSubmitted,
               textInputAction: TextInputAction.done,
               decoration: InputDecoration(
                 hintText: locale.addSkillHint,

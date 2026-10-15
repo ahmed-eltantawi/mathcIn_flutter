@@ -13,6 +13,7 @@ class RoadmapNode {
     this.xp,
     this.icon,
     this.tasks = const [],
+    this.id,
   });
 
   final String title;
@@ -22,6 +23,10 @@ class RoadmapNode {
   final int? xp;
   final dynamic icon;
   final List<SkillTask> tasks;
+
+  /// Backend milestone id as a string, when this node was mapped from
+  /// backend data. Null for locally constructed (mock) nodes.
+  final String? id;
 
   int get completedTasksCount => tasks.where((t) => t.isCompleted).length;
 
@@ -42,6 +47,7 @@ class RoadmapNode {
     int? xp,
     dynamic icon,
     List<SkillTask>? tasks,
+    String? id,
   }) {
     return RoadmapNode(
       title: title ?? this.title,
@@ -51,6 +57,7 @@ class RoadmapNode {
       xp: xp ?? this.xp,
       icon: icon ?? this.icon,
       tasks: tasks ?? this.tasks,
+      id: id ?? this.id,
     );
   }
 }

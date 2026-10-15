@@ -2,45 +2,58 @@ import 'package:MatchIn/core/cache/secure_storage_helper.dart';
 import 'package:MatchIn/core/cache/shared_preferences_helper.dart';
 import 'package:MatchIn/core/networking/api_consumer.dart';
 import 'package:MatchIn/core/networking/dio_consumer.dart';
+import 'package:MatchIn/core/networking/connectivity_cubit.dart';
 import 'package:MatchIn/core/networking/network_info.dart';
 import 'package:MatchIn/core/routing/cubit/main_navigation_cubit.dart';
+import 'package:MatchIn/core/services/app_config_service.dart';
+import 'package:MatchIn/core/services/app_initializer.dart';
 import 'package:MatchIn/core/services/file_picker_service.dart';
+import 'package:MatchIn/core/services/profile_image_picker_service.dart';
+import 'package:MatchIn/core/services/google_sign_in_service.dart';
 import 'package:MatchIn/core/services/secure_storage_service.dart';
 import 'package:MatchIn/core/services/shared_preferences_service.dart';
 import 'package:MatchIn/core/widgets/ads/rewarded_ad_manager.dart';
 import 'package:MatchIn/features/auth/data/data_sources/auth_remote_data_source_impl.dart';
-import 'package:MatchIn/features/auth/domain/use_cases/forgot_password_use_case.dart';
-import 'package:MatchIn/features/auth/presentation/cubit/forgot_password_cubit.dart';
 import 'package:MatchIn/features/auth/data/data_sources/auth_remote_data_source.dart';
 import 'package:MatchIn/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:MatchIn/features/auth/domain/repositories/auth_repository.dart';
+import 'package:MatchIn/features/auth/domain/use_cases/forgot_password_use_case.dart';
 import 'package:MatchIn/features/auth/domain/use_cases/login_use_case.dart';
+import 'package:MatchIn/features/auth/domain/use_cases/login_with_google_use_case.dart';
 import 'package:MatchIn/features/auth/domain/use_cases/register_use_case.dart';
 import 'package:MatchIn/features/auth/domain/use_cases/resend_otp_use_case.dart';
 import 'package:MatchIn/features/auth/domain/use_cases/reset_password_use_case.dart';
 import 'package:MatchIn/features/auth/domain/use_cases/verify_otp_use_case.dart';
-import 'package:MatchIn/features/auth/domain/use_cases/verify_otp_for_forgot_password_use_case.dart';
+import 'package:MatchIn/features/auth/domain/use_cases/verify_password_reset_otp_use_case.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/otp_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/reset_password_cubit.dart';
 import 'package:MatchIn/features/chatbot/data/data_sources/chatbot_local_data_source.dart';
 import 'package:MatchIn/features/chatbot/data/data_sources/chatbot_local_data_source_impl.dart';
-import 'package:MatchIn/features/chatbot/data/data_sources/chatbot_mock_remote_data_source_impl.dart';
 import 'package:MatchIn/features/chatbot/data/data_sources/chatbot_remote_data_source.dart';
+import 'package:MatchIn/features/chatbot/data/data_sources/chatbot_remote_data_source_impl.dart';
 import 'package:MatchIn/features/chatbot/data/repositories/chatbot_repository_impl.dart';
 import 'package:MatchIn/features/chatbot/domain/repositories/chatbot_repository.dart';
 import 'package:MatchIn/features/chatbot/domain/use_cases/clear_all_chats_use_case.dart';
+import 'package:MatchIn/features/chatbot/domain/use_cases/create_conversation_use_case.dart';
 import 'package:MatchIn/features/chatbot/domain/use_cases/delete_chat_use_case.dart';
 import 'package:MatchIn/features/chatbot/domain/use_cases/get_chat_history_use_case.dart';
+import 'package:MatchIn/features/chatbot/domain/use_cases/get_context_preview_use_case.dart';
+import 'package:MatchIn/features/chatbot/domain/use_cases/get_conversation_details_use_case.dart';
 import 'package:MatchIn/features/chatbot/domain/use_cases/save_chat_use_case.dart';
 import 'package:MatchIn/features/chatbot/domain/use_cases/send_message_use_case.dart';
+import 'package:MatchIn/features/chatbot/domain/use_cases/update_conversation_use_case.dart';
 import 'package:MatchIn/features/chatbot/presentation/cubit/chatbot_cubit.dart';
+import 'package:MatchIn/features/home/data/data_sources/home_local_data_source.dart';
+import 'package:MatchIn/features/home/data/data_sources/home_local_data_source_impl.dart';
 import 'package:MatchIn/features/home/data/data_sources/home_remote_data_source_impl.dart';
 import 'package:MatchIn/features/home/data/data_sources/home_remote_data_source.dart';
 import 'package:MatchIn/features/home/data/repositories/home_repository_impl.dart';
 import 'package:MatchIn/features/home/domain/repositories/home_repository.dart';
+import 'package:MatchIn/features/home/domain/use_cases/get_cached_home_dashboard_use_case.dart';
 import 'package:MatchIn/features/home/domain/use_cases/get_home_dashboard_use_case.dart';
 import 'package:MatchIn/features/home/presentation/cubit/home_cubit.dart';
+import 'package:MatchIn/features/profile/data/data_sources/location/location_catalog.dart';
 import 'package:MatchIn/features/profile/data/data_sources/profile_local_data_source.dart';
 import 'package:MatchIn/features/profile/data/data_sources/profile_local_data_source_impl.dart';
 import 'package:MatchIn/features/profile/data/data_sources/profile_remote_data_source.dart';
@@ -48,7 +61,7 @@ import 'package:MatchIn/features/profile/data/data_sources/profile_remote_data_s
 import 'package:MatchIn/features/profile/data/repositories/profile_repository_impl.dart';
 import 'package:MatchIn/features/profile/domain/repositories/profile_repository.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/get_user_profile_use_case.dart';
-import 'package:MatchIn/features/profile/presentation/cubits/profile_cubit.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/retry_pending_cv_upload_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/data/data_sources/applications_local_data_source.dart';
 import 'package:MatchIn/features/jobsAndApplications/data/data_sources/applications_local_data_source_impl.dart';
 import 'package:MatchIn/features/jobsAndApplications/data/data_sources/applications_remote_data_source.dart';
@@ -67,10 +80,12 @@ import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_applica
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_applications_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_cached_applications_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_cached_jobs_use_case.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_job_details_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_jobs_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/refresh_jobs_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/search_jobs_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/toggle_save_job_use_case.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/use_case/update_application_notes_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/update_application_status_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/withdraw_application_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/application_details_cubit.dart';
@@ -80,20 +95,50 @@ import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/cv_cubit
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_cubit.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/add_candidate_project_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/add_candidate_skill_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/add_education_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/add_experience_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/delete_candidate_project_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/delete_education_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/delete_experience_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/get_cached_candidate_profile_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/get_candidate_profile_for_edit_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/get_candidate_profile_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/get_local_cv_file_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/get_pending_cv_upload_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/get_candidate_projects_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/get_candidate_skills_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/get_educations_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/get_experiences_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/get_career_preferences_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/get_project_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/remove_candidate_skill_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/save_career_preferences_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/search_skills_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/update_candidate_profile_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/update_candidate_project_use_case.dart';
-import 'package:MatchIn/features/profile/presentation/cubits/career_preferences_cubit.dart';
-import 'package:MatchIn/features/profile/presentation/cubits/projects_cubit.dart';
-import 'package:MatchIn/features/profile/presentation/cubits/skills_cubit.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/update_education_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/update_experience_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/upload_avatar_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/upload_cv_use_case.dart';
+
+import 'package:MatchIn/features/profile/presentation/cubits/career_cubit/career_preferences_cubit.dart';
+import 'package:MatchIn/features/profile/presentation/cubits/cv_cubit/cv_upload_cubit.dart';
+import 'package:MatchIn/features/profile/presentation/cubits/profile_cubit/edit_profile_cubit.dart';
+import 'package:MatchIn/features/profile/presentation/cubits/profile_cubit/profile_cubit.dart';
+import 'package:MatchIn/features/profile/presentation/cubits/education_cubit/edit_education_cubit.dart';
+import 'package:MatchIn/features/profile/presentation/cubits/experience_cubit/edit_experience_cubit.dart';
+import 'package:MatchIn/features/profile/presentation/cubits/projects_cubit/projects_cubit.dart';
+import 'package:MatchIn/features/profile/presentation/cubits/skills_cubit/skills_cubit.dart';
+
+import 'package:MatchIn/features/roadmap/data/data_sources/roadmap_remote_data_source.dart';
+import 'package:MatchIn/features/roadmap/data/data_sources/roadmap_remote_data_source_impl.dart';
+import 'package:MatchIn/features/roadmap/data/repositories/roadmap_repository_impl.dart';
+import 'package:MatchIn/features/roadmap/domain/repositories/roadmap_repository.dart';
+import 'package:MatchIn/features/roadmap/domain/use_cases/complete_roadmap_task_use_case.dart';
+import 'package:MatchIn/features/roadmap/domain/use_cases/get_roadmap_details_use_case.dart';
+import 'package:MatchIn/features/roadmap/domain/use_cases/get_roadmaps_use_case.dart';
+import 'package:MatchIn/features/roadmap/domain/use_cases/generate_roadmap_use_case.dart';
+import 'package:MatchIn/features/roadmap/domain/use_cases/refresh_roadmap_use_case.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/roadmap_cubit/roadmap_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/skill_task_cubit/skill_task_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/treasure_cubit/treasure_cubit.dart';
@@ -157,11 +202,7 @@ Future<void> setupServiceLocator() async {
   );
 
   getIt.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(
-      remoteDataSource: getIt(),
-      networkInfo: getIt(),
-      secureStorageService: getIt(),
-    ),
+    () => AuthRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
   );
 
   getIt.registerLazySingleton<RegisterUseCase>(
@@ -172,16 +213,12 @@ Future<void> setupServiceLocator() async {
     () => LoginUseCase(repository: getIt()),
   );
 
+  getIt.registerLazySingleton<LoginWithGoogleUseCase>(
+    () => LoginWithGoogleUseCase(repository: getIt()),
+  );
+
   getIt.registerLazySingleton<VerifyOtpUseCase>(
     () => VerifyOtpUseCase(repository: getIt()),
-  );
-
-  getIt.registerLazySingleton<ForgotPasswordUseCase>(
-    () => ForgotPasswordUseCase(repository: getIt()),
-  );
-
-  getIt.registerFactory<ForgotPasswordCubit>(
-    () => ForgotPasswordCubit(forgotPasswordUseCase: getIt()),
   );
 
   getIt.registerLazySingleton<ResendOtpUseCase>(
@@ -192,19 +229,30 @@ Future<void> setupServiceLocator() async {
     () => ResetPasswordUseCase(repository: getIt()),
   );
 
-  getIt.registerFactory<AuthCubit>(
-    () => AuthCubit(loginUseCase: getIt(), registerUseCase: getIt()),
+  getIt.registerLazySingleton<ForgotPasswordUseCase>(
+    () => ForgotPasswordUseCase(repository: getIt()),
   );
 
-  getIt.registerLazySingleton<VerifyOtpForForgotPasswordUseCase>(
-    () => VerifyOtpForForgotPasswordUseCase(repository: getIt()),
+  getIt.registerLazySingleton<VerifyPasswordResetOtpUseCase>(
+    () => VerifyPasswordResetOtpUseCase(repository: getIt()),
+  );
+
+  getIt.registerFactory<AuthCubit>(
+    () => AuthCubit(
+      loginUseCase: getIt(),
+      registerUseCase: getIt(),
+      googleSignInService: getIt(),
+      loginWithGoogleUseCase: getIt(),
+    ),
   );
 
   getIt.registerFactory<OtpCubit>(
     () => OtpCubit(
       verifyOtpUseCase: getIt(),
-      verifyOtpForForgotPasswordUseCase: getIt(),
       resendOtpUseCase: getIt(),
+
+      forgotPasswordUseCase: getIt(),
+      verifyPasswordResetOtpUseCase: getIt(),
     ),
   );
 
@@ -218,8 +266,43 @@ Future<void> setupServiceLocator() async {
 
   getIt.registerLazySingleton<RewardedAdManager>(() => RewardedAdManager());
 
+  getIt.registerLazySingleton<RoadmapRemoteDataSource>(
+    () => RoadmapRemoteDataSourceImpl(apiConsumer: getIt()),
+  );
+
+  getIt.registerLazySingleton<RoadmapRepository>(
+    () =>
+        RoadmapRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
+  );
+
+  getIt.registerLazySingleton<GetRoadmapsUseCase>(
+    () => GetRoadmapsUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<GetRoadmapDetailsUseCase>(
+    () => GetRoadmapDetailsUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<GenerateRoadmapUseCase>(
+    () => GenerateRoadmapUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<CompleteRoadmapTaskUseCase>(
+    () => CompleteRoadmapTaskUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<RefreshRoadmapUseCase>(
+    () => RefreshRoadmapUseCase(repository: getIt()),
+  );
+
   getIt.registerFactory<RoadmapCubit>(
-    () => RoadmapCubit(sharedPreferencesService: getIt()),
+    () => RoadmapCubit(
+      sharedPreferencesService: getIt(),
+      getRoadmapsUseCase: getIt(),
+      getRoadmapDetailsUseCase: getIt(),
+      generateRoadmapUseCase: getIt(),
+      refreshRoadmapUseCase: getIt(),
+    ),
   );
 
   getIt.registerFactory<TreasureCubit>(
@@ -227,7 +310,7 @@ Future<void> setupServiceLocator() async {
   );
 
   getIt.registerFactory<SkillTaskCubit>(
-    () => SkillTaskCubit(sharedPreferencesService: getIt()),
+    () => SkillTaskCubit(completeRoadmapTaskUseCase: getIt()),
   );
 
   // =========================================================
@@ -235,7 +318,9 @@ Future<void> setupServiceLocator() async {
   // =========================================================
 
   getIt.registerLazySingleton<ChatbotRemoteDataSource>(
-    () => ChatbotMockRemoteDataSourceImpl(),
+    () => ChatbotRemoteDataSourceImpl(
+      apiConsumer: getIt(),
+    ),
   );
 
   getIt.registerLazySingleton<ChatbotLocalDataSource>(
@@ -246,6 +331,8 @@ Future<void> setupServiceLocator() async {
     () => ChatbotRepositoryImpl(
       remoteDataSource: getIt(),
       localDataSource: getIt(),
+      networkInfo: getIt(),
+      sharedPreferencesService: getIt(),
     ),
   );
 
@@ -253,8 +340,20 @@ Future<void> setupServiceLocator() async {
     () => GetChatHistoryUseCase(repository: getIt()),
   );
 
+  getIt.registerLazySingleton<GetConversationDetailsUseCase>(
+    () => GetConversationDetailsUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<CreateConversationUseCase>(
+    () => CreateConversationUseCase(repository: getIt()),
+  );
+
   getIt.registerLazySingleton<SendMessageUseCase>(
     () => SendMessageUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<UpdateConversationUseCase>(
+    () => UpdateConversationUseCase(repository: getIt()),
   );
 
   getIt.registerLazySingleton<SaveChatUseCase>(
@@ -269,13 +368,21 @@ Future<void> setupServiceLocator() async {
     () => ClearAllChatsUseCase(repository: getIt()),
   );
 
+  getIt.registerLazySingleton<GetContextPreviewUseCase>(
+    () => GetContextPreviewUseCase(repository: getIt()),
+  );
+
   getIt.registerFactory<ChatbotCubit>(
     () => ChatbotCubit(
       getChatHistoryUseCase: getIt(),
+      getConversationDetailsUseCase: getIt(),
+      createConversationUseCase: getIt(),
       sendMessageUseCase: getIt(),
-      saveChatUseCase: getIt(),
+      updateConversationUseCase: getIt(),
       deleteChatUseCase: getIt(),
       clearAllChatsUseCase: getIt(),
+      getContextPreviewUseCase: getIt(),
+      sharedPreferencesService: getIt(),
     ),
   );
 
@@ -283,9 +390,7 @@ Future<void> setupServiceLocator() async {
   // Notifications Feature
   // =========================================================
 
-  getIt.registerLazySingleton<NotificationService>(
-    () => NotificationService(),
-  );
+  getIt.registerLazySingleton<NotificationService>(() => NotificationService());
 
   getIt.registerLazySingleton<NotificationRemoteDataSource>(
     () => NotificationRemoteDataSourceImpl(apiConsumer: getIt()),
@@ -354,6 +459,10 @@ Future<void> setupServiceLocator() async {
     () => GetJobsUseCase(repository: getIt()),
   );
 
+  getIt.registerLazySingleton<GetJobDetailsUseCase>(
+    () => GetJobDetailsUseCase(repository: getIt()),
+  );
+
   getIt.registerLazySingleton<SearchJobsUseCase>(
     () => SearchJobsUseCase(repository: getIt()),
   );
@@ -377,6 +486,7 @@ Future<void> setupServiceLocator() async {
   getIt.registerLazySingleton<JobsFeedCubit>(
     () => JobsFeedCubit(
       getJobsUseCase: getIt(),
+      getCachedJobsUseCase: getIt(),
       searchJobsUseCase: getIt(),
       refreshJobsUseCase: getIt(),
       toggleSaveJobUseCase: getIt(),
@@ -388,23 +498,38 @@ Future<void> setupServiceLocator() async {
   // Home Feature
   // =========================================================
 
-  getIt.registerLazySingleton<HomeRemoteDataSource>(
-    () => HomeRemoteDataSourceImpl(
-      apiConsumer: getIt(),
+  getIt.registerLazySingleton<HomeLocalDataSource>(
+    () => HomeLocalDataSourceImpl(
       profileLocalDataSource: getIt(),
+      sharedPreferencesHelper: getIt(),
     ),
   );
 
+  getIt.registerLazySingleton<HomeRemoteDataSource>(
+    () => HomeRemoteDataSourceImpl(apiConsumer: getIt()),
+  );
+
   getIt.registerLazySingleton<HomeRepository>(
-    () => HomeRepositoryImpl(remoteDataSource: getIt()),
+    () => HomeRepositoryImpl(
+      remoteDataSource: getIt(),
+      localDataSource: getIt(),
+      profileLocalDataSource: getIt(),
+    ),
   );
 
   getIt.registerLazySingleton<GetHomeDashboardUseCase>(
     () => GetHomeDashboardUseCase(repository: getIt()),
   );
 
+  getIt.registerLazySingleton<GetCachedHomeDashboardUseCase>(
+    () => GetCachedHomeDashboardUseCase(repository: getIt()),
+  );
+
   getIt.registerLazySingleton<HomeCubit>(
-    () => HomeCubit(getHomeDashboardUseCase: getIt()),
+    () => HomeCubit(
+      getHomeDashboardUseCase: getIt(),
+      getCachedHomeDashboardUseCase: getIt(),
+    ),
   );
 
   // =========================================================
@@ -459,11 +584,32 @@ Future<void> setupServiceLocator() async {
 
   getIt.registerLazySingleton<FilePickerService>(() => FilePickerService());
 
+  getIt.registerLazySingleton<ProfileImagePickerService>(
+    () => ProfileImagePickerService(),
+  );
+
+  getIt.registerLazySingleton<GoogleSignInService>(() => GoogleSignInService());
+
   // =========================================================
   // Networking
   // =========================================================
 
   getIt.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl());
+
+  getIt.registerLazySingleton<ConnectivityCubit>(
+    () => ConnectivityCubit(networkInfo: getIt())..checkConnectivity(),
+  );
+
+  getIt.registerLazySingleton<BaseUrlProvider>(
+    () => FirestoreBaseUrlProvider(),
+  );
+
+  getIt.registerLazySingleton<AppConfigService>(
+    () => AppConfigService(
+      sharedPreferencesService: getIt(),
+      baseUrlProvider: getIt(),
+    ),
+  );
 
   getIt.registerLazySingleton<Dio>(() => Dio());
 
@@ -472,16 +618,21 @@ Future<void> setupServiceLocator() async {
       dio: getIt(),
       secureStorageService: getIt(),
       sharedPreferencesService: getIt(),
+      connectivityCubit: getIt(),
+    ),
+  );
+
+  getIt.registerLazySingleton<AppInitializer>(
+    () => AppInitializer(
+      appConfigService: getIt(),
+      sharedPreferencesService: getIt(),
+      dio: getIt(),
     ),
   );
 
   // =========================================================
   // Applications Feature
   // =========================================================
-
-  getIt.registerFactory<CvCubit>(
-    () => CvCubit(filePickerService: getIt<FilePickerService>()),
-  );
 
   getIt.registerLazySingleton<ApplicationsLocalDataSource>(
     () => ApplicationsLocalDataSourceImpl(sharedPreferencesHelper: getIt()),
@@ -528,6 +679,16 @@ Future<void> setupServiceLocator() async {
   getIt.registerLazySingleton<WithdrawApplicationUseCase>(
     () =>
         WithdrawApplicationUseCase(repository: getIt<ApplicationsRepository>()),
+  );
+
+  getIt.registerLazySingleton<UpdateApplicationNotesUseCase>(
+    () => UpdateApplicationNotesUseCase(
+      repository: getIt<ApplicationsRepository>(),
+    ),
+  );
+
+  getIt.registerFactory<CvCubit>(
+    () => CvCubit(filePickerService: getIt<FilePickerService>()),
   );
 
   getIt.registerFactory<ApplicationsCubit>(
@@ -594,6 +755,8 @@ Future<void> setupServiceLocator() async {
     () => ProfileRemoteDataSourceImpl(apiConsumer: getIt()),
   );
 
+  getIt.registerLazySingleton<LocationCatalog>(() => const LocationCatalog());
+
   // Profile Use Cases and cubit
   getIt.registerLazySingleton<GetCandidateProfileUseCase>(
     () => GetCandidateProfileUseCase(repository: getIt()),
@@ -603,11 +766,30 @@ Future<void> setupServiceLocator() async {
     () => GetCachedCandidateProfileUseCase(repository: getIt()),
   );
 
+  getIt.registerLazySingleton<UpdateCandidateProfileUseCase>(
+    () => UpdateCandidateProfileUseCase(getIt()),
+  );
   getIt.registerFactory<ProfileCubit>(
     () => ProfileCubit(
       getCandidateProfileUseCase: getIt(),
       getCachedCandidateProfileUseCase: getIt(),
     ),
+  );
+
+  getIt.registerFactory<EditProfileCubit>(
+    () => EditProfileCubit(
+      getCandidateProfileForEditUseCase: getIt(),
+      updateCandidateProfileUseCase: getIt(),
+      uploadAvatarUseCase: getIt(),
+    ),
+  );
+
+  getIt.registerLazySingleton<UploadAvatarUseCase>(
+    () => UploadAvatarUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<GetCandidateProfileForEditUseCase>(
+    () => GetCandidateProfileForEditUseCase(getIt()),
   );
 
   // Skills use cases and cubit
@@ -667,6 +849,84 @@ Future<void> setupServiceLocator() async {
     () => DeleteCandidateProjectUseCase(repository: getIt()),
   );
 
+  // Education use cases and cubit
+
+  getIt.registerFactory<EditEducationCubit>(
+    () => EditEducationCubit(
+      getEducationsUseCase: getIt(),
+      addEducationUseCase: getIt(),
+      updateEducationUseCase: getIt(),
+      deleteEducationUseCase: getIt(),
+    ),
+  );
+  getIt.registerLazySingleton<GetEducationsUseCase>(
+    () => GetEducationsUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<AddEducationUseCase>(
+    () => AddEducationUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<UpdateEducationUseCase>(
+    () => UpdateEducationUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<DeleteEducationUseCase>(
+    () => DeleteEducationUseCase(repository: getIt()),
+  );
+
+  // Experience use cases and cubit
+
+  getIt.registerFactory<EditExperienceCubit>(
+    () => EditExperienceCubit(
+      getExperiencesUseCase: getIt(),
+      addExperienceUseCase: getIt(),
+      updateExperienceUseCase: getIt(),
+      deleteExperienceUseCase: getIt(),
+    ),
+  );
+  getIt.registerLazySingleton<GetExperiencesUseCase>(
+    () => GetExperiencesUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<AddExperienceUseCase>(
+    () => AddExperienceUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<UpdateExperienceUseCase>(
+    () => UpdateExperienceUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<DeleteExperienceUseCase>(
+    () => DeleteExperienceUseCase(repository: getIt()),
+  );
+
+  // CV upload use case and cubit
+
+  getIt.registerFactory<CvUploadCubit>(
+    () => CvUploadCubit(
+      uploadCvUseCase: getIt(),
+      getPendingCvUploadUseCase: getIt(),
+      retryPendingCvUploadUseCase: getIt(),
+      getLocalCvFileUseCase: getIt(),
+    ),
+  );
+  getIt.registerLazySingleton<UploadCvUseCase>(
+    () => UploadCvUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<GetPendingCvUploadUseCase>(
+    () => GetPendingCvUploadUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<RetryPendingCvUploadUseCase>(
+    () => RetryPendingCvUploadUseCase(repository: getIt()),
+  );
+
+  getIt.registerLazySingleton<GetLocalCvFileUseCase>(
+    () => GetLocalCvFileUseCase(repository: getIt()),
+  );
+
   // career preferences
   getIt.registerFactory<CareerPreferencesCubit>(
     () => CareerPreferencesCubit(
@@ -691,6 +951,7 @@ Future<void> setupServiceLocator() async {
       sharedPreferencesService: getIt(),
       secureStorageService: getIt(),
       profileLocalDataSource: getIt(),
+      googleSignInService: getIt(),
     ),
   );
 
@@ -753,4 +1014,3 @@ Future<void> setupServiceLocator() async {
     () => ChangePasswordCubit(changePasswordUseCase: getIt()),
   );
 }
-

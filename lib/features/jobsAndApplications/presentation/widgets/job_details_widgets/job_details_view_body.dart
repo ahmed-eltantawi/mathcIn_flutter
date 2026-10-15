@@ -1,3 +1,5 @@
+import 'package:MatchIn/core/functions/require_auth.dart';
+import 'package:MatchIn/core/functions/share_job.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_entity.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_cubit.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_state.dart';
@@ -15,8 +17,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
 class JobDetailsViewBody extends StatelessWidget {
-  const JobDetailsViewBody({super.key, required this.job});
+  const JobDetailsViewBody({super.key, required this.job, this.heroPrefix = 'feed'});
   final JobEntity job;
+
+  /// Originating list prefix so Hero tags match the tapped card.
+  final String heroPrefix;
 
   @override
   Widget build(BuildContext context) {
@@ -33,13 +38,24 @@ class JobDetailsViewBody extends StatelessWidget {
 
         return Column(
           children: [
-            const JobDetailsHeader(),
+            JobDetailsHeader(
+              isSaved: currentJob.isSaved,
+              onSave: () {
+                if (!requireAuth(context)) return;
+                context.read<JobsFeedCubit>().toggleSaveJob(currentJob.id);
+              },
+              onShare: () => shareJob(context, currentJob),
+            ),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.all(16.r),
                 child: ListView(
                   children: [
-                    JobCard(job: currentJob),
+                    JobCard(
+                      job: currentJob,
+                      heroPrefix: heroPrefix,
+                      onTap: () {},
+                    ),
                     Gap(14.h),
                     const JobMatchCard(),
                     Gap(14.h),

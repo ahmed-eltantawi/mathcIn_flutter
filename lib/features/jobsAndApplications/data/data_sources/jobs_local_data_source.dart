@@ -1,3 +1,4 @@
+import 'package:MatchIn/features/jobsAndApplications/data/models/job_model.dart';
 import 'package:MatchIn/features/jobsAndApplications/data/models/paginated_jobs_model.dart';
 
 abstract class JobsLocalDataSource {
@@ -6,4 +7,6 @@ abstract class JobsLocalDataSource {
   Future<void> cacheJobs(String cacheKey, PaginatedJobsModel paginatedJobs);
 
   Future<void> clearCachedJobs(String cacheKey);
+
+  Future<JobModel?> findCachedJobById(String jobId);
 }

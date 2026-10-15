@@ -1,3 +1,4 @@
+import 'package:MatchIn/features/profile/data/models/json_parsing.dart';
 import 'package:MatchIn/features/profile/domain/entities/candidate_project_entity.dart';
 
 class CandidateProjectModel extends CandidateProjectEntity {
@@ -15,19 +16,46 @@ class CandidateProjectModel extends CandidateProjectEntity {
 
   factory CandidateProjectModel.fromJson(Map<String, dynamic> json) {
     return CandidateProjectModel(
-      id: json['id'] as int,
-      name: json['name'] as String,
-      description: json['description'] as String?,
-      technologies:
-          (json['technologies'] as List<dynamic>?)
-              ?.map((technology) => technology.toString())
-              .toList() ??
-          const [],
-      projectUrl: json['project_url'] as String?,
-      githubUrl: json['github_url'] as String?,
-      source: json['source'] as String? ?? 'manual',
-      startDate: json['start_date'] as String?,
-      endDate: json['end_date'] as String?,
+      id: JsonParsing.parseId(json['id']) ?? 0,
+      name: JsonParsing.parseString(json['name']) ?? '',
+      description: JsonParsing.parseString(json['description']),
+      technologies: JsonParsing.parseStringList(json['technologies']),
+      projectUrl: JsonParsing.parseString(json['project_url']),
+      githubUrl: JsonParsing.parseString(json['github_url']),
+      source: JsonParsing.parseString(json['source']) ?? 'manual',
+      startDate: JsonParsing.parseString(json['start_date']),
+      endDate: JsonParsing.parseString(json['end_date']),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'description': description,
+      'technologies': technologies,
+      'project_url': projectUrl,
+      'github_url': githubUrl,
+      'source': source,
+      'start_date': startDate,
+      'end_date': endDate,
+    };
+  }
+
+  /// Strict parser for POST/PATCH mutation responses.
+  ///
+  /// Returns null when the payload is not a complete record: an
+  /// invalid `id` or a blank `name` (required on create, so always
+  /// present in a complete object). Callers must treat null as
+  /// "mutation accepted but payload unusable" and refresh from GET
+  /// instead of replacing list data with defaults.
+  static CandidateProjectModel? tryParseMutation(Map<String, dynamic> json) {
+    final id = JsonParsing.parseId(json['id']) ?? 0;
+    if (id <= 0) return null;
+
+    final name = JsonParsing.parseString(json['name'])?.trim() ?? '';
+    if (name.isEmpty) return null;
+
+    return CandidateProjectModel.fromJson(json);
   }
 }

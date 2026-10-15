@@ -1,4 +1,5 @@
 import 'package:MatchIn/core/utils/app_assets.dart';
+import 'package:MatchIn/features/auth/presentation/cubit/otp_constants.dart';
 import 'package:MatchIn/features/auth/presentation/widgets/otp_resend_row.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
@@ -66,6 +67,8 @@ class OtpInputCard extends StatelessWidget {
                     length: otpLength,
                     autofocus: true,
                     keyboardType: TextInputType.number,
+                    minimumVerifyingDuration:
+                        OtpConstants.minVerifyingDuration,
                     onCompleted: onCompleted,
                     onStatusChanged: onStatusChanged,
                     semanticLabels: OtpSemanticLabels(

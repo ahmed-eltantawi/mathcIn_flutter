@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "653527472666",
+    "project_id": "matchin-ecb1f",
+    "storage_bucket": "matchin-ecb1f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:653527472666:android:52faaa80d31b3d7ca04fa3",
+        "android_client_info": {
+          "package_name": "com.example.MatchIn"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFwIGgqHl8HqYLN8lK0ivUDAvqWi0huIc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

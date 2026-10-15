@@ -1,18 +1,17 @@
+import 'package:MatchIn/core/functions/require_auth.dart';
 import 'package:MatchIn/core/routing/app_routes.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_entity.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/apply_bottom_button.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/apply_header.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/application_questions_view_widgets/job_info_details.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/application_questions_view_widgets/portfolio_link.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/application_questions_view_widgets/question_card.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/application_questions_view_widgets/technology_option.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/application_questions_view_widgets/upload_document.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/application_questions_view_widgets/work_mode_option.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+//* The backend application contract (POST /applications) supports only
+//* job_post_id, cv_document_id, cover_letter and notes. This step keeps no
+//* extra employer-question inputs; it forwards to the review step.
 class ApplicationQuestionsViewBody extends StatelessWidget {
   const ApplicationQuestionsViewBody({
     super.key,
@@ -29,7 +28,7 @@ class ApplicationQuestionsViewBody extends StatelessWidget {
         ApplyHeader(
           title: s.applicationQuestions,
           currentStep: 2,
-          totalSteps: 3,
+          totalSteps: 2,
         ),
         Expanded(
           child: Padding(
@@ -40,9 +39,9 @@ class ApplicationQuestionsViewBody extends StatelessWidget {
                   label:
                       '${job.title} • ${job.companyName}',
                 ),
-                SizedBox(height: 14.h),
+                SizedBox(height: 24.h),
                 Text(
-                  s.aFewMoreQuestions,
+                  s.reviewBeforeSubmitting,
                   style: theme.textTheme.headlineMedium
                       ?.copyWith(
                         color: theme.colorScheme.primary,
@@ -51,7 +50,7 @@ class ApplicationQuestionsViewBody extends StatelessWidget {
                 ),
                 SizedBox(height: 8.h),
                 Text(
-                  s.answerEmployerQuestions,
+                  s.reviewBeforeSubmittingDescription,
                   style: theme.textTheme.bodyMedium
                       ?.copyWith(
                         color: theme.colorScheme.onSurface
@@ -59,104 +58,11 @@ class ApplicationQuestionsViewBody extends StatelessWidget {
                       ),
                 ),
                 SizedBox(height: 24.h),
-
-                QuestionCard(
-                  title: s.whyInterestedRequired,
-                  child: TextField(
-                    maxLines: 4,
-                    maxLength: 500,
-                    decoration: InputDecoration(
-                      hintText: s.whyInterestedHint,
-                      counterText: '0 / 500',
-                    ),
-                  ),
-                ),
-
-                SizedBox(height: 14.h),
-
-                QuestionCard(
-                  title: s.expectedMonthlySalary,
-                  child: TextField(
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      hintText: s.salaryHint,
-                      suffixText: 'EGP',
-                      helperText: s.salaryHelper,
-                    ),
-                  ),
-                ),
-
-                SizedBox(height: 14.h),
-
-                QuestionCard(
-                  title: s.preferredWorkMode,
-                  child: Column(
-                    children: [
-                      WorkModeOption(
-                        label: s.remote,
-                        isSelected: false,
-                      ),
-                      SizedBox(height: 8.h),
-                      WorkModeOption(
-                        label: s.hybrid,
-                        isSelected: true,
-                        badge: s.popular,
-                      ),
-                      SizedBox(height: 8.h),
-                      WorkModeOption(
-                        label: s.onSite,
-                        isSelected: false,
-                      ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: 14.h),
-
-                QuestionCard(
-                  title: s.technologiesWorkedWith,
-                  child: GridView.count(
-                    crossAxisCount: 2,
-                    shrinkWrap: true,
-                    physics:
-                        const NeverScrollableScrollPhysics(),
-                    crossAxisSpacing: 10.w,
-                    mainAxisSpacing: 10.h,
-                    childAspectRatio: 2.8,
-                    children: const [
-                      TechnologyOption(
-                        label: 'Flutter',
-                        isSelected: true,
-                      ),
-                      TechnologyOption(
-                        label: 'REST APIs',
-                        isSelected: true,
-                      ),
-                      TechnologyOption(
-                        label: 'Firebase',
-                        isSelected: false,
-                      ),
-                      TechnologyOption(
-                        label: 'Testing',
-                        isSelected: false,
-                      ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: 14.h),
-
-                const UploadDocument(),
-
-                SizedBox(height: 14.h),
-
-                const PortfolioLink(),
-
-                SizedBox(height: 24.h),
                 ApplyBottomButton(
                   label: s.reviewApplication,
                   helperText: s.reviewBeforeSubmission,
                   onPressed: () {
+                    if (!requireAuth(context)) return;
                     context.push(
                       AppRoutes.kreviewApplication,
                       extra: job,

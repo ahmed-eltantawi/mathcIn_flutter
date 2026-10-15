@@ -18,6 +18,10 @@ class SavedJobsCubit extends Cubit<SavedJobsState> {
   final SaveJobUseCase saveJobUseCase;
   final UnsaveJobUseCase unsaveJobUseCase;
 
+  //! ===== Optimistic bookmark handling =====
+  // Guards against rapid repeated taps firing duplicate save/unsave calls.
+  final Set<int> _pendingBookmarkIds = <int>{};
+
   Future<void> fetchSavedJobs({bool isRefresh = false}) async {
     final currentState = state;
     if (isRefresh && currentState is SavedJobsLoaded) {
@@ -80,9 +84,11 @@ class SavedJobsCubit extends Cubit<SavedJobsState> {
   Future<void> toggleBookmark(SavedJobEntity job) async {
     final currentState = state;
     if (currentState is! SavedJobsLoaded) return;
+    if (_pendingBookmarkIds.contains(job.id)) return;
 
     if (job.isSaved) {
       // Optimistically remove from saved jobs list
+      _pendingBookmarkIds.add(job.id);
       final updatedJobs =
           currentState.jobs.where((j) => j.id != job.id).toList();
       emit(
@@ -93,9 +99,11 @@ class SavedJobsCubit extends Cubit<SavedJobsState> {
       );
 
       final result = await unsaveJobUseCase(jobPostId: job.id);
+      _pendingBookmarkIds.remove(job.id);
       result.fold(
         (failure) {
-          // Revert on failure
+          // Revert on failure so a failed request never looks successful.
+          // Local cache is untouched by the failed remote call.
           emit(currentState);
         },
         (_) {
@@ -109,9 +117,14 @@ class SavedJobsCubit extends Cubit<SavedJobsState> {
         },
       );
     } else {
+      _pendingBookmarkIds.add(job.id);
       final result = await saveJobUseCase(jobPostId: job.id);
+      _pendingBookmarkIds.remove(job.id);
       result.fold(
-        (failure) {},
+        (failure) {
+          // No optimistic change was emitted, so nothing to revert.
+          // Deliberately no success feedback here.
+        },
         (_) {
           if (getIt.isRegistered<JobsFeedCubit>()) {
             getIt<JobsFeedCubit>().updateJobSavedStatus(

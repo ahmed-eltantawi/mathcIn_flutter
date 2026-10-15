@@ -9,6 +9,6 @@ class GetChatHistoryUseCase {
   final ChatbotRepository repository;
 
   Future<Either<Failure, List<ChatEntity>>> call() {
-    return repository.getChatHistory();
+    return repository.getConversations();
   }
 }

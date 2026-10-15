@@ -1,9 +1,9 @@
 import 'package:MatchIn/core/routing/app_routes.dart';
 import 'package:MatchIn/core/services/services_locator.dart';
 import 'package:MatchIn/core/services/shared_preferences_service.dart';
-import 'package:MatchIn/core/widgets/social_login_button.dart';
 import 'package:MatchIn/core/utils/app_colors.dart';
 import 'package:MatchIn/core/widgets/views/or_divider.dart';
+import 'package:MatchIn/features/auth/presentation/widgets/google_sign_in_button.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,17 +14,11 @@ class LoginFooterInner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final locale = S.of(context);
-
     return Column(
       children: [
         const OrDivider(),
         SizedBox(height: 12.h),
-        SocialLoginButton(
-          text: locale.registerWithGoogle,
-          icon: const Icon(Icons.g_mobiledata, size: 28),
-          onPressed: () {},
-        ),
+        const GoogleSignInButton(),
       ],
     );
   }
@@ -77,7 +71,13 @@ class LoginFooterOuter extends StatelessWidget {
               ),
             ),
             InkWell(
-              onTap: () => context.go(AppRoutes.kRegisterView),
+              onTap: () {
+                if (context.canPop()) {
+                  context.pop();
+                } else {
+                  context.push(AppRoutes.kRegisterView);
+                }
+              },
               child: Padding(
                 padding: EdgeInsets.all(4.w),
                 child: Text(

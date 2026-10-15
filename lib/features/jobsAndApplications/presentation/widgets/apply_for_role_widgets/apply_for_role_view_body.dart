@@ -1,3 +1,4 @@
+import 'package:MatchIn/core/functions/require_auth.dart';
 import 'package:MatchIn/core/routing/app_routes.dart';
 import 'package:MatchIn/core/widgets/cv_file_card.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_entity.dart';
@@ -14,13 +15,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-class ApplyForRoleViewBody extends StatelessWidget {
+class ApplyForRoleViewBody extends StatefulWidget {
   const ApplyForRoleViewBody({
     super.key,
     required this.job,
   });
 
   final JobEntity job;
+
+  @override
+  State<ApplyForRoleViewBody> createState() => _ApplyForRoleViewBodyState();
+}
+
+class _ApplyForRoleViewBodyState extends State<ApplyForRoleViewBody> {
+  String? _coverLetter;
+
   @override
   Widget build(BuildContext context) {
     final s = S.of(context);
@@ -30,14 +39,14 @@ class ApplyForRoleViewBody extends StatelessWidget {
         ApplyHeader(
           title: s.applyForRole,
           currentStep: 1,
-          totalSteps: 3,
+          totalSteps: 2,
         ),
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(16.r),
             child: ListView(
               children: [
-                JobSummaryCard(job: job),
+                JobSummaryCard(job: widget.job),
                 SizedBox(height: 24.h),
                 const UserInfo(),
                 SizedBox(height: 24.h),
@@ -109,15 +118,27 @@ class ApplyForRoleViewBody extends StatelessWidget {
                   },
                 ),
                 SizedBox(height: 24.h),
-                const CoverNote(),
+                CoverNote(
+                  onChanged: (value) {
+                    _coverLetter = value.trim().isEmpty ? null : value.trim();
+                  },
+                ),
                 SizedBox(height: 20.h),
                 ApplyBottomButton(
                   label: s.continueText,
-                  helperText: s.nextApplicationQuestions,
+                  helperText: s.reviewBeforeSubmission,
                   onPressed: () {
+                    if (!requireAuth(context)) return;
+                    final cvFile = context.read<CvCubit>().state.file;
                     context.push(
-                      AppRoutes.kapplicationQuestions,
-                      extra: job,
+                      AppRoutes.kreviewApplication,
+                      extra: <String, dynamic>{
+                        'job': widget.job,
+                        if (_coverLetter != null) 'coverLetter': _coverLetter,
+                        if (cvFile != null) ...{
+                          'cvFileName': cvFile.name,
+                        },
+                      },
                     );
                   },
                 ),

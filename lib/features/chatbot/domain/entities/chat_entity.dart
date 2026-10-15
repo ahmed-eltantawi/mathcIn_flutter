@@ -8,6 +8,9 @@ class ChatEntity extends Equatable {
     required this.createdAt,
     required this.updatedAt,
     this.messages = const [],
+    this.isArchived = false,
+    this.jobPostId,
+    this.contextMode,
   });
 
   final String id;
@@ -15,6 +18,9 @@ class ChatEntity extends Equatable {
   final DateTime createdAt;
   final DateTime updatedAt;
   final List<ChatMessageEntity> messages;
+  final bool isArchived;
+  final int? jobPostId;
+  final String? contextMode;
 
   ChatEntity copyWith({
     String? id,
@@ -22,6 +28,9 @@ class ChatEntity extends Equatable {
     DateTime? createdAt,
     DateTime? updatedAt,
     List<ChatMessageEntity>? messages,
+    bool? isArchived,
+    int? jobPostId,
+    String? contextMode,
   }) {
     return ChatEntity(
       id: id ?? this.id,
@@ -29,9 +38,21 @@ class ChatEntity extends Equatable {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       messages: messages ?? this.messages,
+      isArchived: isArchived ?? this.isArchived,
+      jobPostId: jobPostId ?? this.jobPostId,
+      contextMode: contextMode ?? this.contextMode,
     );
   }
 
   @override
-  List<Object?> get props => [id, title, createdAt, updatedAt, messages];
+  List<Object?> get props => [
+        id,
+        title,
+        createdAt,
+        updatedAt,
+        messages,
+        isArchived,
+        jobPostId,
+        contextMode,
+      ];
 }

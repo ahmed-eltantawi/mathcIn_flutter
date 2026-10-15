@@ -1,4 +1,5 @@
 import 'package:MatchIn/core/networking/api_interceptor.dart';
+import 'package:MatchIn/core/services/google_sign_in_service.dart';
 import 'package:MatchIn/core/services/secure_storage_service.dart';
 import 'package:MatchIn/core/services/shared_preferences_service.dart';
 import 'package:MatchIn/features/profile/data/data_sources/profile_local_data_source.dart';
@@ -9,11 +10,13 @@ class SettingsLocalDataSourceImpl implements SettingsLocalDataSource {
     required this.sharedPreferencesService,
     required this.secureStorageService,
     required this.profileLocalDataSource,
+    this.googleSignInService,
   });
 
   final SharedPreferencesService sharedPreferencesService;
   final SecureStorageService secureStorageService;
   final ProfileLocalDataSource profileLocalDataSource;
+  final GoogleSignInService? googleSignInService;
 
   @override
   Future<bool> getNotificationPreference() async {
@@ -54,6 +57,14 @@ class SettingsLocalDataSourceImpl implements SettingsLocalDataSource {
 
     // 2. Clear JWT tokens from FlutterSecureStorage
     await secureStorageService.deleteTokens();
+
+    // 2b. Clear the Google/Firebase session when appropriate; never block
+    // local sign-out if the Google sign-out itself fails.
+    try {
+      await googleSignInService?.signOut();
+    } catch (_) {
+      // Intentionally ignored; local cleanup below is authoritative.
+    }
 
     // 3. Clear cached profile data
     await profileLocalDataSource.clearCachedCandidateProfile();

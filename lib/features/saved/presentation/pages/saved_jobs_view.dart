@@ -1,3 +1,6 @@
+import 'package:MatchIn/core/functions/require_auth.dart';
+import 'package:MatchIn/core/functions/share_job.dart';
+import 'package:MatchIn/core/services/shared_preferences_service.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/applications_cubit.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/applications_state.dart';
 import 'package:flutter/material.dart';
@@ -11,11 +14,9 @@ import 'package:MatchIn/core/services/services_locator.dart';
 import 'package:MatchIn/core/widgets/error/app_error.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/job_details_widgets/job_card_widgets/job_card.dart';
-import 'package:MatchIn/features/saved/data/repositories/applied_jobs_repository.dart';
 import 'package:MatchIn/features/saved/domain/entities/saved_job_entity.dart';
 import 'package:MatchIn/features/saved/presentation/cubit/saved_jobs_cubit.dart';
 import 'package:MatchIn/features/saved/presentation/cubit/saved_jobs_state.dart';
-import 'package:MatchIn/features/saved/presentation/models/applied_job_ui_model.dart';
 import 'package:MatchIn/features/saved/presentation/models/saved_tab_type.dart';
 import 'package:MatchIn/features/saved/presentation/widgets/applied_job_card.dart';
 import 'package:MatchIn/features/saved/presentation/widgets/saved_segmented_tab.dart';
@@ -30,10 +31,10 @@ class SavedJobsView extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<SavedJobsCubit>(
-          create: (_) => getIt<SavedJobsCubit>()..fetchSavedJobs(),
+          create: (_) => getIt<SavedJobsCubit>(),
         ),
         BlocProvider<ApplicationsCubit>(
-          create: (_) => getIt<ApplicationsCubit>()..fetchApplications(),
+          create: (_) => getIt<ApplicationsCubit>(),
         ),
       ],
       child: const _SavedJobsContent(),
@@ -56,6 +57,17 @@ class _SavedJobsContentState extends State<_SavedJobsContent> {
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
+    // Protected screen: guests see the login dialog instead of firing
+    // authenticated requests; signed-in users load both tabs.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      if (!getIt<SharedPreferencesService>().isLoggedIn()) {
+        requireAuth(context);
+        return;
+      }
+      context.read<SavedJobsCubit>().fetchSavedJobs();
+      context.read<ApplicationsCubit>().fetchApplications();
+    });
   }
 
   @override
@@ -80,37 +92,29 @@ class _SavedJobsContentState extends State<_SavedJobsContent> {
   }
 
   void _onApplyToJob(SavedJobEntity job) {
-    // Record application in repository so it appears in Applied tab
-    AppliedJobsRepository.instance.addApplication(
-      AppliedJobUiModel(
-        id: 'app_${job.id}',
-        title: job.title,
-        company: job.company,
-        companyInitials: _getInitials(job.company),
-        logoBgColor: const Color(0xFFE8F5E9),
-        logoTextColor: const Color(0xFF2E7D32),
-        tags: [job.location, job.workMode, job.jobType],
-        appliedTime: 'Applied just now',
-        footerStatus: 'Application submitted successfully',
-        status: ApplicationStatus.applied,
-      ),
-    );
-    // Navigate to apply flow
-    context.push(AppRoutes.kapplyForRole);
-  }
-
-  String _getInitials(String company) {
-    final words = company
-        .trim()
-        .split(RegExp(r'\s+'))
-        .where((w) => w.isNotEmpty)
-        .toList();
-    if (words.isEmpty) return '?';
-    if (words.length == 1) {
-      final w = words.first;
-      return w.substring(0, w.length >= 2 ? 2 : 1).toUpperCase();
+    if (!requireAuth(context)) return;
+    final jobEntity = job.toJobEntity();
+    // External listings open the employer's website and are never
+    // recorded as submitted merely for opening the link.
+    if (jobEntity.isExternalApply) {
+      final website = jobEntity.websiteUrl?.trim() ?? '';
+      final uri = Uri.tryParse(website);
+      final isValid = uri != null &&
+          uri.isAbsolute &&
+          (uri.scheme == 'http' || uri.scheme == 'https');
+      if (!isValid) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(S.of(context).shareJobLinkUnavailable)),
+        );
+        return;
+      }
+      context.push(
+        AppRoutes.kWebView,
+        extra: <String, dynamic>{'url': website, 'title': jobEntity.title},
+      );
+      return;
     }
-    return '${words[0][0]}${words[1][0]}'.toUpperCase();
+    context.push(AppRoutes.kapplyForRole, extra: jobEntity);
   }
 
   @override
@@ -244,10 +248,13 @@ class _SavedJobsContentState extends State<_SavedJobsContent> {
                   child: FadeInAnimation(
                     child: JobCard(
                       job: job.toJobEntity(),
+                      heroPrefix: 'saved',
                       showShareButton: true,
                       onSave: () {
+                        if (!requireAuth(context)) return;
                         context.read<SavedJobsCubit>().toggleBookmark(job);
                       },
+                      onShare: () => shareJob(context, job.toJobEntity()),
                       onApply: () => _onApplyToJob(job),
                     ),
                   ),

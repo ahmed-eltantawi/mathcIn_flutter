@@ -19,7 +19,7 @@ class CompanyAvatar extends StatelessWidget {
   final String? logoUrl;
 
   /// Optional Hero tag for shared-element transitions.
-  /// Pass `'company_avatar_${job.id}'` from the caller.
+  /// Prefer scoped tags from [JobHeroTags] (e.g. 'home_avatar_123').
   final String? heroTag;
 
   /// Override the default 48×48 size when used in the details header.

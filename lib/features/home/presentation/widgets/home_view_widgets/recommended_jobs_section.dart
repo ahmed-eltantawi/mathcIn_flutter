@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:MatchIn/core/extensions/context_extensions.dart';
+import 'package:MatchIn/core/functions/require_auth.dart';
+import 'package:MatchIn/core/functions/share_job.dart';
 import 'package:MatchIn/core/routing/app_routes.dart';
 import 'package:MatchIn/core/widgets/app_empty.dart';
 import 'package:MatchIn/core/widgets/error/app_error.dart';
@@ -52,15 +54,23 @@ class RecommendedJobsSection extends StatelessWidget {
                 ),
                 JobsFeedLoaded(:final jobs) => AnimatedJobCardList(
                   jobs: jobs.take(3).toList(),
+                  heroPrefix: 'home',
                   showShareButton: true,
-                  onSave: (id) =>
-                      context.read<JobsFeedCubit>().toggleSaveJob(id),
+                  onSave: (id) {
+                    if (!requireAuth(context)) return;
+                    context.read<JobsFeedCubit>().toggleSaveJob(id);
+                  },
+                  onShareJob: (job) => shareJob(context, job),
                 ),
                 JobsFeedOfflineWithCache(:final jobs) => AnimatedJobCardList(
                   jobs: jobs.take(3).toList(),
+                  heroPrefix: 'home',
                   showShareButton: true,
-                  onSave: (id) =>
-                      context.read<JobsFeedCubit>().toggleSaveJob(id),
+                  onSave: (id) {
+                    if (!requireAuth(context)) return;
+                    context.read<JobsFeedCubit>().toggleSaveJob(id);
+                  },
+                  onShareJob: (job) => shareJob(context, job),
                 ),
               };
             },

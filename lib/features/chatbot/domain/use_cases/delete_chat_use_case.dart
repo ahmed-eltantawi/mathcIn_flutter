@@ -7,7 +7,7 @@ class DeleteChatUseCase {
 
   final ChatbotRepository repository;
 
-  Future<Either<Failure, Unit>> call(String chatId) {
-    return repository.deleteChatSession(chatId);
+  Future<Either<Failure, Unit>> call(String conversationId) {
+    return repository.deleteConversation(conversationId);
   }
 }

@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:MatchIn/core/routing/app_routes.dart';
-import 'package:MatchIn/core/services/services_locator.dart';
-import 'package:MatchIn/core/services/shared_preferences_service.dart';
 import 'package:MatchIn/core/widgets/custom_app_bar.dart';
 import 'package:MatchIn/core/widgets/custom_snack_bar.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/otp_cubit.dart';
@@ -20,18 +18,26 @@ import 'package:otp_animated_fields/otp_animated_fields.dart';
 /// OTP length expected by the authentication backend.
 const int _kOtpLength = 6;
 
-/// Determines what action to take after OTP is verified successfully.
-enum OtpPurpose { register, forgotPassword }
+/// Determines the navigation destination after a successful OTP verification.
+enum OtpMode {
+  /// Email verification after registration — navigates to Home on success.
+  emailVerification,
+
+  /// Password-reset flow — navigates to Create New Password on success.
+  passwordReset,
+}
 
 class OtpVerificationView extends StatefulWidget {
   const OtpVerificationView({
     super.key,
     this.email = 'user@example.com',
-    this.purpose = OtpPurpose.register,
+    this.mode = OtpMode.emailVerification,
   });
 
   final String email;
-  final OtpPurpose purpose;
+
+  /// Controls the post-verification navigation destination.
+  final OtpMode mode;
 
   @override
   State<OtpVerificationView> createState() => _OtpVerificationViewState();
@@ -82,7 +88,11 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
 
   void _onResend() {
     if (_secondsRemaining == 0 && !_isVerifying) {
-      context.read<OtpCubit>().resendOtp(email: widget.email);
+      if (widget.mode == OtpMode.passwordReset) {
+        context.read<OtpCubit>().requestPasswordReset(email: widget.email);
+      } else {
+        context.read<OtpCubit>().resendOtp(email: widget.email);
+      }
       _startTimer();
     }
   }
@@ -92,11 +102,14 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
   void _onCompleted(String code) {
     if (_isVerifying) return; // prevent duplicate requests
     _isVerifying = true;
-    context.read<OtpCubit>().verifyOtp(
-      email: widget.email,
-      otp: code,
-      purpose: widget.purpose,
-    );
+    if (widget.mode == OtpMode.passwordReset) {
+      context.read<OtpCubit>().verifyPasswordResetOtp(
+        email: widget.email,
+        otp: code,
+      );
+    } else {
+      context.read<OtpCubit>().verifyOtp(email: widget.email, otp: code);
+    }
   }
 
   // -- Navigation after success Lottie plays ------------------------------
@@ -108,20 +121,18 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
       await Future.delayed(const Duration(seconds: 1));
       if (!mounted) return;
 
-      switch (widget.purpose) {
-        case OtpPurpose.register:
-          // OTP verified after registration → mark logged in and go home
-          final prefs = getIt<SharedPreferencesService>();
-          await prefs.setLoggedIn(true);
-          await prefs.setGuest(false);
-          if (mounted) context.go(AppRoutes.kHomeView);
-        case OtpPurpose.forgotPassword:
-          // OTP verified after forgot-password → go to create new password
+      switch (widget.mode) {
+        case OtpMode.emailVerification:
+          // Email verified. No session tokens exist at this point, so the
+          // user must sign in to obtain them instead of entering the app
+          // with a tokenless "logged-in" flag.
           if (mounted) {
-            context.pushReplacement(
-              AppRoutes.kCreateNewPasswordView,
-              extra: widget.email,
-            );
+            context.go(AppRoutes.kLoginView);
+          }
+        case OtpMode.passwordReset:
+          // Password-reset OTP confirmed → proceed to create new password.
+          if (mounted) {
+            context.go(AppRoutes.kCreateNewPasswordView, extra: widget.email);
           }
       }
     }
@@ -135,7 +146,11 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
     if (context.canPop()) {
       context.pop();
     } else {
-      context.go(AppRoutes.kLoginView);
+      context.go(
+        widget.mode == OtpMode.emailVerification
+            ? AppRoutes.kRegisterView
+            : AppRoutes.kLoginView,
+      );
     }
   }
 
@@ -160,12 +175,19 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
           CustomSnackBar.showError(context, message: state.message);
         }
       },
-      child: Scaffold(
-        backgroundColor: theme.scaffoldBackgroundColor,
-        appBar: CustomAppBar(
-          title: S.of(context).enterVerificationCode,
-          onBack: _handleBack,
-        ),
+      child: PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, _) {
+          if (!didPop) {
+            _handleBack();
+          }
+        },
+        child: Scaffold(
+          backgroundColor: theme.scaffoldBackgroundColor,
+          appBar: CustomAppBar(
+            title: S.of(context).enterVerificationCode,
+            onBack: _handleBack,
+          ),
         body: SafeArea(
           child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
@@ -189,6 +211,7 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
               ],
             ),
           ),
+        ),
         ),
       ),
     );

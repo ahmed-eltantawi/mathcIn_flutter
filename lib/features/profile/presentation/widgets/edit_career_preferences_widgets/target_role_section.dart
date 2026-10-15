@@ -56,28 +56,30 @@ class TargetRoleSection extends StatelessWidget {
             ),
           ),
           SizedBox(height: 18.h),
-          Text(
-            locale.suggestedRoles.toUpperCase(),
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: colors.onSurfaceVariant,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 0.5,
+          if (suggestedRoles.isNotEmpty) ...[
+            Text(
+              locale.suggestedRoles.toUpperCase(),
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: colors.onSurfaceVariant,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.5,
+              ),
             ),
-          ),
-          SizedBox(height: 9.h),
-          Wrap(
-            spacing: 8.w,
-            runSpacing: 8.h,
-            children: suggestedRoles
-                .map(
-                  (role) => PreferenceChoiceChip(
-                    label: role,
-                    isSelected: role == selectedSuggestedRole,
-                    onPressed: () => onSuggestedRolePressed(role),
-                  ),
-                )
-                .toList(),
-          ),
+            SizedBox(height: 9.h),
+            Wrap(
+              spacing: 8.w,
+              runSpacing: 8.h,
+              children: suggestedRoles
+                  .map(
+                    (role) => PreferenceChoiceChip(
+                      label: role,
+                      isSelected: role == selectedSuggestedRole,
+                      onPressed: () => onSuggestedRolePressed(role),
+                    ),
+                  )
+                  .toList(),
+            ),
+          ],
         ],
       ),
     );

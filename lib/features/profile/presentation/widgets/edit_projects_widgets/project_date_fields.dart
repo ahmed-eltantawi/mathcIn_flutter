@@ -7,11 +7,15 @@ class ProjectDateFields extends StatelessWidget {
   const ProjectDateFields({
     this.startDateController,
     this.endDateController,
+    this.onStartDateTap,
+    this.onEndDateTap,
     super.key,
   });
 
   final TextEditingController? startDateController;
   final TextEditingController? endDateController;
+  final VoidCallback? onStartDateTap;
+  final VoidCallback? onEndDateTap;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +29,8 @@ class ProjectDateFields extends StatelessWidget {
             label: locale.startDate,
             hint: locale.monthYearHint,
             controller: startDateController,
+            readOnly: true,
+            onTap: onStartDateTap,
           ),
         ),
         SizedBox(width: 12.w),
@@ -33,6 +39,8 @@ class ProjectDateFields extends StatelessWidget {
             label: locale.endDate,
             hint: locale.monthYearHint,
             controller: endDateController,
+            readOnly: true,
+            onTap: onEndDateTap,
           ),
         ),
       ],

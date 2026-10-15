@@ -64,6 +64,14 @@ abstract final class ErrorMessageResolver {
           : 'You do not have permission to perform this action';
     }
 
+    // 5b. Google sign-in not yet supported by the backend (501)
+    if (lower.contains('google sign-in') ||
+        lower.contains('google sign in')) {
+      return isArabic
+          ? 'تسجيل الدخول عبر Google غير مدعوم من الخادم بعد، يرجى استخدام البريد الإلكتروني وكلمة المرور'
+          : 'Google sign-in is not supported by the server yet. Please use email and password';
+    }
+
     // 6. Not Found / 404
     if (lower.contains('not found') || lower.contains('404')) {
       return isArabic

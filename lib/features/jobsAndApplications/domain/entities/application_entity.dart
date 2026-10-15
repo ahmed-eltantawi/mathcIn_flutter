@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 
 enum ApplicationStatus {
   applied,
+  underReview,
   inReview,
   interview,
   offer,
@@ -13,7 +14,10 @@ enum ApplicationStatus {
   static ApplicationStatus fromString(String? value) {
     switch (value?.toLowerCase()) {
       case 'applied':
+      case 'pending':
         return ApplicationStatus.applied;
+      case 'under_review':
+        return ApplicationStatus.underReview;
       case 'in_review':
         return ApplicationStatus.inReview;
       case 'interview':
@@ -33,6 +37,8 @@ enum ApplicationStatus {
     switch (this) {
       case ApplicationStatus.applied:
         return 'applied';
+      case ApplicationStatus.underReview:
+        return 'under_review';
       case ApplicationStatus.inReview:
         return 'in_review';
       case ApplicationStatus.interview:
@@ -52,11 +58,14 @@ enum ApplicationStatus {
     if (this == target) return true;
     switch (this) {
       case ApplicationStatus.applied:
-        return target == ApplicationStatus.inReview ||
+        return target == ApplicationStatus.underReview ||
+            target == ApplicationStatus.inReview ||
             target == ApplicationStatus.withdrawn ||
             target == ApplicationStatus.rejected;
+      case ApplicationStatus.underReview:
       case ApplicationStatus.inReview:
-        return target == ApplicationStatus.interview ||
+        return target == ApplicationStatus.inReview ||
+            target == ApplicationStatus.interview ||
             target == ApplicationStatus.rejected ||
             target == ApplicationStatus.offer ||
             target == ApplicationStatus.withdrawn;
@@ -82,6 +91,7 @@ class ApplicationEntity extends Equatable {
     required this.type,
     required this.status,
     this.coverLetter,
+    this.notes,
     this.appliedAt,
     this.createdAt,
     this.updatedAt,
@@ -92,6 +102,7 @@ class ApplicationEntity extends Equatable {
   final String type;
   final ApplicationStatus status;
   final String? coverLetter;
+  final String? notes;
   final DateTime? appliedAt;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -102,6 +113,7 @@ class ApplicationEntity extends Equatable {
     String? type,
     ApplicationStatus? status,
     String? coverLetter,
+    String? notes,
     DateTime? appliedAt,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -112,6 +124,7 @@ class ApplicationEntity extends Equatable {
       type: type ?? this.type,
       status: status ?? this.status,
       coverLetter: coverLetter ?? this.coverLetter,
+      notes: notes ?? this.notes,
       appliedAt: appliedAt ?? this.appliedAt,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -125,6 +138,7 @@ class ApplicationEntity extends Equatable {
         type,
         status,
         coverLetter,
+        notes,
         appliedAt,
         createdAt,
         updatedAt,

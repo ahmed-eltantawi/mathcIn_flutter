@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:MatchIn/core/errors/failures.dart';
@@ -6,6 +8,7 @@ import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_filter_
 import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_pagination_entity.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/repositories/jobs_repository.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/apply_for_job_use_case.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_cached_jobs_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/get_jobs_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/refresh_jobs_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/search_jobs_use_case.dart';
@@ -23,6 +26,8 @@ class FakeJobsRepository implements JobsRepository {
   Either<Failure, PaginatedJobsEntity?>? getCachedResult;
   Either<Failure, JobEntity>? toggleResult;
   Either<Failure, JobEntity>? applyResult;
+  Completer<Either<Failure, JobEntity>>? toggleCompleter;
+  int toggleCallCount = 0;
 
   @override
   Future<Either<Failure, PaginatedJobsEntity>> getJobs({
@@ -51,11 +56,18 @@ class FakeJobsRepository implements JobsRepository {
 
   @override
   Future<Either<Failure, JobEntity>> toggleSaveJob(String jobId,
-          {bool? currentIsSaved}) async =>
-      toggleResult!;
+          {bool? currentIsSaved}) async {
+    toggleCallCount++;
+    if (toggleCompleter != null) return toggleCompleter!.future;
+    return toggleResult!;
+  }
 
   @override
   Future<Either<Failure, JobEntity>> applyForJob(String jobId) async =>
+      applyResult!;
+
+  @override
+  Future<Either<Failure, JobEntity>> getJobDetails(String jobId) async =>
       applyResult!;
 }
 
@@ -101,6 +113,7 @@ PaginatedJobsEntity _makePaginated({
 JobsFeedCubit _makeCubit(FakeJobsRepository repo) {
   return JobsFeedCubit(
     getJobsUseCase: GetJobsUseCase(repository: repo),
+    getCachedJobsUseCase: GetCachedJobsUseCase(repository: repo),
     searchJobsUseCase: SearchJobsUseCase(repository: repo),
     refreshJobsUseCase: RefreshJobsUseCase(repository: repo),
     toggleSaveJobUseCase: ToggleSaveJobUseCase(repository: repo),
@@ -329,6 +342,90 @@ void main() {
         isA<JobsFeedLoaded>()
             .having((s) => s.jobs.first.isSaved, 'isSaved toggled to true', isTrue),
       ],
+    );
+
+    test(
+      'toggleSaveJob flips the icon immediately without waiting for network',
+      () async {
+        repo.toggleCompleter =
+            Completer<Either<Failure, JobEntity>>();
+        final cubit = _makeCubit(repo);
+        cubit.emit(
+          JobsFeedLoaded(jobs: [_makeJob(id: '1', isSaved: false)]),
+        );
+
+        final pending = cubit.toggleSaveJob('1');
+        await Future<void>.delayed(Duration.zero);
+
+        // Optimistic update is visible while the request is still in flight.
+        expect(
+          (cubit.state as JobsFeedLoaded).jobs.first.isSaved,
+          isTrue,
+        );
+
+        repo.toggleCompleter!.complete(
+          Right(_makeJob(id: '1', isSaved: true)),
+        );
+        await pending;
+        expect(
+          (cubit.state as JobsFeedLoaded).jobs.first.isSaved,
+          isTrue,
+        );
+        await cubit.close();
+      },
+    );
+
+    test(
+      'toggleSaveJob reverts the optimistic update when the request fails',
+      () async {
+        repo.toggleCompleter =
+            Completer<Either<Failure, JobEntity>>();
+        final cubit = _makeCubit(repo);
+        cubit.emit(
+          JobsFeedLoaded(jobs: [_makeJob(id: '1', isSaved: false)]),
+        );
+
+        final pending = cubit.toggleSaveJob('1');
+        await Future<void>.delayed(Duration.zero);
+        expect(
+          (cubit.state as JobsFeedLoaded).jobs.first.isSaved,
+          isTrue,
+        );
+
+        repo.toggleCompleter!.complete(
+          const Left(ServerFailure(message: 'Server unavailable')),
+        );
+        await pending;
+
+        final state = cubit.state as JobsFeedLoaded;
+        expect(state.jobs.first.isSaved, isFalse);
+        expect(state.errorMessage, 'Server unavailable');
+        await cubit.close();
+      },
+    );
+
+    test(
+      'toggleSaveJob ignores rapid repeated taps while a request is pending',
+      () async {
+        repo.toggleCompleter =
+            Completer<Either<Failure, JobEntity>>();
+        final cubit = _makeCubit(repo);
+        cubit.emit(
+          JobsFeedLoaded(jobs: [_makeJob(id: '1', isSaved: false)]),
+        );
+
+        final first = cubit.toggleSaveJob('1');
+        await Future<void>.delayed(Duration.zero);
+        await cubit.toggleSaveJob('1');
+
+        expect(repo.toggleCallCount, 1);
+
+        repo.toggleCompleter!.complete(
+          Right(_makeJob(id: '1', isSaved: true)),
+        );
+        await first;
+        await cubit.close();
+      },
     );
   });
 }

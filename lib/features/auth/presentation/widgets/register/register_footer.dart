@@ -1,8 +1,8 @@
 import 'package:MatchIn/core/routing/app_routes.dart';
 import 'package:MatchIn/core/services/services_locator.dart';
 import 'package:MatchIn/core/services/shared_preferences_service.dart';
-import 'package:MatchIn/core/widgets/social_login_button.dart';
 import 'package:MatchIn/core/utils/app_colors.dart';
+import 'package:MatchIn/features/auth/presentation/widgets/google_sign_in_button.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,11 +34,7 @@ class RegisterFooter extends StatelessWidget {
           ],
         ),
         SizedBox(height: 12.h),
-        SocialLoginButton(
-          text: locale.registerWithGoogle,
-          icon: const Icon(Icons.g_mobiledata, size: 24),
-          onPressed: () {},
-        ),
+        const GoogleSignInButton(),
         SizedBox(height: 16.h),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -51,7 +47,13 @@ class RegisterFooter extends StatelessWidget {
               ),
             ),
             InkWell(
-              onTap: () => context.go(AppRoutes.kLoginView),
+              onTap: () {
+                if (context.canPop()) {
+                  context.pop();
+                } else {
+                  context.push(AppRoutes.kLoginView);
+                }
+              },
               child: Padding(
                 padding: EdgeInsets.all(4.w),
                 child: Text(

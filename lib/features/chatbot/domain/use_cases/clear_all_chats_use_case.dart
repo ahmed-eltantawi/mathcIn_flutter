@@ -8,6 +8,6 @@ class ClearAllChatsUseCase {
   final ChatbotRepository repository;
 
   Future<Either<Failure, Unit>> call() {
-    return repository.clearAllChatSessions();
+    return repository.clearAllLocalConversations();
   }
 }

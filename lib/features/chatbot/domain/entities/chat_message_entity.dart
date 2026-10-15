@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'suggested_action_entity.dart';
 
 enum MessageSender { user, ai }
 
@@ -9,6 +10,7 @@ class ChatMessageEntity extends Equatable {
     required this.sender,
     required this.timestamp,
     this.isError = false,
+    this.suggestedActions = const [],
   });
 
   final String id;
@@ -16,6 +18,7 @@ class ChatMessageEntity extends Equatable {
   final MessageSender sender;
   final DateTime timestamp;
   final bool isError;
+  final List<SuggestedActionEntity> suggestedActions;
 
   ChatMessageEntity copyWith({
     String? id,
@@ -23,6 +26,7 @@ class ChatMessageEntity extends Equatable {
     MessageSender? sender,
     DateTime? timestamp,
     bool? isError,
+    List<SuggestedActionEntity>? suggestedActions,
   }) {
     return ChatMessageEntity(
       id: id ?? this.id,
@@ -30,9 +34,17 @@ class ChatMessageEntity extends Equatable {
       sender: sender ?? this.sender,
       timestamp: timestamp ?? this.timestamp,
       isError: isError ?? this.isError,
+      suggestedActions: suggestedActions ?? this.suggestedActions,
     );
   }
 
   @override
-  List<Object?> get props => [id, content, sender, timestamp, isError];
+  List<Object?> get props => [
+        id,
+        content,
+        sender,
+        timestamp,
+        isError,
+        suggestedActions,
+      ];
 }

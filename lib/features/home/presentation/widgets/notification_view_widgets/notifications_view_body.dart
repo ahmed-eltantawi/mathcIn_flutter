@@ -164,7 +164,7 @@ class _NotificationsViewBodyState extends State<NotificationsViewBody> {
         ),
         itemCount:
             state.notifications.length + (state.hasMorePages ? 1 : 0),
-        separatorBuilder: (context, index) => SizedBox(height: 10.h),
+        separatorBuilder: (_, _) => SizedBox(height: 10.h),
         itemBuilder: (context, index) {
           if (index == state.notifications.length) {
             return _PaginationLoader(state: state);

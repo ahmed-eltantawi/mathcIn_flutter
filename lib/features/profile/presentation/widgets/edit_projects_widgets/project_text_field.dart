@@ -11,6 +11,8 @@ class ProjectTextField extends StatelessWidget {
     this.prefixIcon,
     this.trailingLabel,
     this.onChanged,
+    this.readOnly = false,
+    this.onTap,
     super.key,
   });
 
@@ -22,6 +24,8 @@ class ProjectTextField extends StatelessWidget {
   final IconData? prefixIcon;
   final String? trailingLabel;
   final ValueChanged<String>? onChanged;
+  final bool readOnly;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +58,8 @@ class ProjectTextField extends StatelessWidget {
         TextField(
           controller: controller,
           onChanged: onChanged,
+          onTap: onTap,
+          readOnly: readOnly,
           keyboardType: keyboardType,
           maxLines: maxLines,
           decoration: InputDecoration(

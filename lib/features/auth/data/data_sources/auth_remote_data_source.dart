@@ -1,5 +1,4 @@
 import 'package:MatchIn/features/auth/data/models/login_model.dart';
-
 abstract class AuthRemoteDataSource {
   Future<void> verifyOtp({required String email, required String otp});
 
@@ -7,7 +6,7 @@ abstract class AuthRemoteDataSource {
 
   Future<void> forgotPassword({required String email});
 
-  Future<void> verifyOtpForForgotPassword({
+  Future<void> verifyPasswordResetOtp({
     required String email,
     required String otp,
   });
@@ -28,4 +27,6 @@ abstract class AuthRemoteDataSource {
     required String email,
     required String password,
   });
+
+  Future<LoginModel> loginWithGoogle({required String idToken});
 }

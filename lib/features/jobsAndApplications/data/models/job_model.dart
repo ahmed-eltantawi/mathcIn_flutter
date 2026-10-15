@@ -25,6 +25,12 @@ abstract class JobModelKey {
   static const String preferredSkills = 'preferred_skills';
   static const String isExpired = 'is_expired';
   static const String isSaved = 'is_saved';
+  static const String salaryMin = 'salary_min';
+  static const String salaryMax = 'salary_max';
+  static const String salaryCurrency = 'salary_currency';
+  static const String match = 'match';
+  static const String matchScore = 'match_score';
+  static const String matchPercentage = 'match_percentage';
 }
 
 class JobModel {
@@ -50,9 +56,24 @@ class JobModel {
     this.preferredSkills,
     this.isExpired = false,
     this.isSaved = false,
+    this.salaryMin,
+    this.salaryMax,
+    this.salaryCurrency,
+    this.matchScore,
   });
 
   factory JobModel.fromJson(Map<String, dynamic> json) {
+    num? asNum(dynamic value) {
+      if (value is num) return value;
+      return num.tryParse(value?.toString() ?? '');
+    }
+
+    // Recommended-jobs nests the score in `match: {match_score}`.
+    final matchObj = json[JobModelKey.match];
+    final nestedScore = matchObj is Map<String, dynamic>
+        ? asNum(matchObj[JobModelKey.matchScore])
+        : null;
+
     return JobModel(
       id: json[JobModelKey.id] is int
           ? json[JobModelKey.id] as int
@@ -93,6 +114,13 @@ class JobModel {
           : null,
       isExpired: json[JobModelKey.isExpired] as bool? ?? false,
       isSaved: json[JobModelKey.isSaved] as bool? ?? false,
+      salaryMin: asNum(json[JobModelKey.salaryMin])?.toDouble(),
+      salaryMax: asNum(json[JobModelKey.salaryMax])?.toDouble(),
+      salaryCurrency: json[JobModelKey.salaryCurrency] as String?,
+      matchScore:
+          nestedScore?.toDouble() ??
+          asNum(json[JobModelKey.matchScore])?.toDouble() ??
+          asNum(json[JobModelKey.matchPercentage])?.toDouble(),
     );
   }
 
@@ -117,6 +145,10 @@ class JobModel {
   final List<SkillModel>? preferredSkills;
   final bool isExpired;
   final bool isSaved;
+  final double? salaryMin;
+  final double? salaryMax;
+  final String? salaryCurrency;
+  final double? matchScore;
 
   Map<String, dynamic> toJson() {
     return {
@@ -141,6 +173,10 @@ class JobModel {
       JobModelKey.preferredSkills: preferredSkills?.map((s) => s.toJson()).toList(),
       JobModelKey.isExpired: isExpired,
       JobModelKey.isSaved: isSaved,
+      JobModelKey.salaryMin: salaryMin,
+      JobModelKey.salaryMax: salaryMax,
+      JobModelKey.salaryCurrency: salaryCurrency,
+      JobModelKey.matchScore: matchScore,
     };
   }
 
@@ -178,10 +214,16 @@ class JobModel {
       matchedSkills: const [],
       missingSkills: const [],
       isSaved: isSaved,
+      matchPercentage: matchScore?.round(),
+      salaryMin: salaryMin,
+      salaryMax: salaryMax,
+      currency: salaryCurrency,
       company: company?.toEntity(),
       requiredSkills: reqSkillEntities,
       preferredSkills: prefSkillEntities,
       isExpired: isExpired,
+      applicationMethod: applicationMethod,
+      websiteUrl: company?.website,
     );
   }
 }

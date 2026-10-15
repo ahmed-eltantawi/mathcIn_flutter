@@ -1,4 +1,3 @@
-
 import '../cache/cache_key.dart';
 import '../cache/shared_preferences_helper.dart';
 
@@ -17,6 +16,14 @@ class SharedPreferencesService {
 
   bool isLoggedIn() {
     return _sharedPreferencesHelper.getData(key: CacheKey.isLoggedIn) ?? false;
+  }
+
+  Future<void> saveUserId(int id) async {
+    await _sharedPreferencesHelper.saveData(key: CacheKey.id, value: id);
+  }
+
+  int? getUserId() {
+    return _sharedPreferencesHelper.getData(key: CacheKey.id);
   }
 
   /// Clears only the logged-in session. Guest flag is intentionally kept
@@ -131,6 +138,18 @@ class SharedPreferencesService {
         true;
   }
 
+  // --- API base URL — last valid remote configuration, used offline ---
+  Future<void> saveApiBaseUrl(String url) async {
+    await _sharedPreferencesHelper.saveData(
+      key: CacheKey.apiBaseUrl,
+      value: url,
+    );
+  }
+
+  String? getApiBaseUrl() {
+    return _sharedPreferencesHelper.getString(key: CacheKey.apiBaseUrl);
+  }
+
   // --- Language Preference ---
   Future<void> saveLanguageCode(String code) async {
     await _sharedPreferencesHelper.saveData(
@@ -157,4 +176,3 @@ class SharedPreferencesService {
         'light';
   }
 }
-

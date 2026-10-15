@@ -88,7 +88,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
       );
       return const Right(unit);
     } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.errorModel.errorMessage));
+      return Left(ServerFailure(message: e.errorModel.errorMessage, fieldErrors: e.errorModel.fieldErrors));
     } on OfflineException {
       return const Left(OfflineFailure());
     } catch (e) {
@@ -98,6 +98,13 @@ class SettingsRepositoryImpl implements SettingsRepository {
 
   @override
   Future<Either<Failure, Unit>> logout() async {
+    // Invalidate the server session first, but never block local sign-out:
+    // a dead network or an already-expired token must not trap the user.
+    try {
+      await remoteDataSource.logout();
+    } catch (_) {
+      // Intentionally ignored; local cleanup below is authoritative.
+    }
     try {
       await localDataSource.logout();
       return const Right(unit);

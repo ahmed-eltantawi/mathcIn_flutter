@@ -10,16 +10,16 @@ abstract class AuthRepository {
 
   Future<Either<Failure, Unit>> resendOtp({required String email});
 
+  Future<Either<Failure, Unit>> forgotPassword({required String email});
+
+  Future<Either<Failure, Unit>> verifyPasswordResetOtp({
+    required String email,
+    required String otp,
+  });
+
   Future<Either<Failure, Unit>> resetPassword({
     required String email,
     required String newPassword,
-  });
-
-  Future<Either<Failure, Unit>> forgotPassword({required String email});
-
-  Future<Either<Failure, Unit>> verifyOtpForForgotPassword({
-    required String email,
-    required String otp,
   });
   Future<Either<Failure, Unit>> register({
     required String name,
@@ -31,5 +31,9 @@ abstract class AuthRepository {
   Future<Either<Failure, LoginModel>> login({
     required String email,
     required String password,
+  });
+
+  Future<Either<Failure, LoginModel>> loginWithGoogle({
+    required String idToken,
   });
 }

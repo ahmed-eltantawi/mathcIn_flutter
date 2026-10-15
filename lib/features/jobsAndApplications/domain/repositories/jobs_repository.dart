@@ -22,6 +22,8 @@ abstract interface class JobsRepository {
     JobFilterParams? params,
   });
 
+  Future<Either<Failure, JobEntity>> getJobDetails(String jobId);
+
   Future<Either<Failure, JobEntity>> toggleSaveJob(
     String jobId, {
     bool? currentIsSaved,

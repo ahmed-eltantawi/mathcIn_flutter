@@ -1,18 +1,15 @@
-import 'package:MatchIn/core/extensions/snack_bar_extensions.dart';
-import 'package:MatchIn/core/routing/app_routes.dart';
-import 'package:MatchIn/core/services/services_locator.dart';
-import 'package:MatchIn/core/services/secure_storage_service.dart';
-import 'package:MatchIn/core/services/shared_preferences_service.dart';
-import 'package:MatchIn/core/utils/app_colors.dart';
-import 'package:MatchIn/core/utils/validator.dart';
 import 'package:MatchIn/core/widgets/custom_button.dart';
 import 'package:MatchIn/core/widgets/custom_text_field.dart';
-import 'package:MatchIn/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:MatchIn/generated/l10n.dart';
+import 'package:MatchIn/core/utils/app_colors.dart';
+import 'package:MatchIn/core/utils/validator.dart';
+import 'package:MatchIn/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:MatchIn/features/auth/presentation/helpers/auth_success_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:MatchIn/core/routing/app_routes.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -76,83 +73,83 @@ class _LoginFormState extends State<LoginForm> {
               return null;
             },
           ),
-          SizedBox(height: 4.h),
-          // 1️⃣ زر نسيت كلمة المرور محاذى لليمين تحت الباسورد مباشرة:
-          Align(
-            alignment: AlignmentDirectional.centerEnd,
-            child: TextButton(
-              onPressed: () {
-                context.push(
-                  AppRoutes.kForgetPasswordView,
-                  extra: _emailController.text.trim(),
-                );
-              },
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
-                minimumSize: Size.zero,
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-              child: Text(
-                locale.forgotPassword,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: AppColors.terracotta,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ),
-          SizedBox(height: 4.h),
+          SizedBox(height: 16.h),
           Row(
             children: [
-              ValueListenableBuilder<bool>(
-                valueListenable: _isKeepSignedIn,
-                builder: (context, value, child) {
-                  return Switch(
-                    value: value,
-                    activeThumbColor: AppColors.white,
-                    activeTrackColor: AppColors.midnightBlue,
-                    inactiveTrackColor: AppColors.surfaceVariant,
-                    onChanged: (newValue) => _isKeepSignedIn.value = newValue,
-                  );
-                },
-              ),
-              SizedBox(width: 8.w),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
                   children: [
-                    Text(
-                      locale.keepMeSignedIn,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    ValueListenableBuilder<bool>(
+                      valueListenable: _isKeepSignedIn,
+                      builder: (context, value, child) {
+                        return Switch(
+                          value: value,
+                          activeThumbColor: AppColors.white,
+                          activeTrackColor: AppColors.midnightBlue,
+                          inactiveTrackColor: AppColors.surfaceVariant,
+                          onChanged: (newValue) =>
+                              _isKeepSignedIn.value = newValue,
+                        );
+                      },
                     ),
-                    Text(
-                      locale.onlyOnTrustedDevices,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
+                    SizedBox(width: 8.w),
+                    Flexible(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            locale.keepMeSignedIn,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: AppColors.textPrimary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            locale.onlyOnTrustedDevices,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
               ),
+              TextButton(
+                onPressed: () {
+                  final email = _emailController.text.trim();
+                  context.push(
+                    AppRoutes.kForgetPasswordView,
+                    extra: email.isNotEmpty ? email : null,
+                  );
+                },
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                child: Text(
+                  locale.forgotPassword,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: AppColors.terracotta,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
             ],
           ),
-          SizedBox(height: 12.h),
+          SizedBox(height: 24.h),
           BlocConsumer<AuthCubit, AuthState>(
             listener: (context, state) async {
               if (state is LoginSuccess) {
-                await getIt<SecureStorageService>().saveTokens(
-                  accessToken: state.loginModel.accessToken,
-                  refreshToken: state.loginModel.refreshToken ?? '',
-                );
-                final prefs = getIt<SharedPreferencesService>();
-                await prefs.setLoggedIn(true);
-                await prefs.setGuest(false);
-                if (context.mounted) context.go(AppRoutes.kHomeView);
+                await handleLoginSuccess(context, state.loginModel);
               } else if (state is LoginFailure) {
-                context.showErrorSnackBar(state.message);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.message),
+                    backgroundColor: AppColors.error,
+                  ),
+                );
               }
             },
             builder: (context, state) {
@@ -165,7 +162,7 @@ class _LoginFormState extends State<LoginForm> {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             context.read<AuthCubit>().login(
-                              email: _emailController.text.trim(),
+                              email: _emailController.text,
                               password: _passwordController.text,
                             );
                           }

@@ -1,9 +1,12 @@
 import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:MatchIn/core/extensions/date_time_extensions.dart';
+import 'package:MatchIn/core/extensions/snack_bar_extensions.dart';
+import 'package:MatchIn/core/functions/require_auth.dart';
 import 'package:MatchIn/core/routing/app_routes.dart';
 import 'package:MatchIn/core/widgets/matching_status/matching_status.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_entity.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/job_details_widgets/job_card_widgets/job_card_header.dart';
+import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/job_details_widgets/job_card_widgets/job_hero_tags.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/job_details_widgets/job_card_widgets/job_card_posted_date.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/job_details_widgets/job_card_widgets/job_card_skills_section.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/job_details_widgets/jobs_info_job_card.dart';
@@ -20,6 +23,7 @@ class JobCard extends StatelessWidget {
     this.onTap,
     this.onApply,
     this.onSave,
+    this.heroPrefix = 'feed',
   });
 
   final JobEntity job;
@@ -30,12 +34,45 @@ class JobCard extends StatelessWidget {
   final VoidCallback? onApply;
   final VoidCallback? onSave;
 
+  /// List-source prefix scoping Hero tags ('home', 'feed', 'search', 'saved').
+  final String heroPrefix;
+
   bool get _isApplied =>
       job.applicationStatus != JobApplicationStatus.notApplied;
 
-  ///* Hero tag scoped to the job's unique ID — guarantees no duplicate tags
-  ///* across the list, even when the same job appears multiple times.
-  String get _heroTag => 'company_avatar_${job.id}';
+  ///* Scoped Hero tags: prefix + job id + element. The details screen reuses
+  ///* the originating [heroPrefix] passed via navigation extra, so the same
+  ///* job in Home / Feed / Search / Saved never produces duplicate tags.
+  String get _heroTag =>
+      JobHeroTags.avatar(prefix: heroPrefix, jobId: job.id);
+
+  // Guards against rapid repeated taps pushing duplicate details screens.
+  static String? _navigatingJobId;
+  static DateTime? _lastNavigationTime;
+
+  static void navigateToJobDetails(
+    BuildContext context, {
+    required JobEntity job,
+    required String heroPrefix,
+  }) {
+    final now = DateTime.now();
+    if (_navigatingJobId == job.id &&
+        _lastNavigationTime != null &&
+        now.difference(_lastNavigationTime!) <
+            const Duration(milliseconds: 750)) {
+      return;
+    }
+    _navigatingJobId = job.id;
+    _lastNavigationTime = now;
+    context.push(
+      AppRoutes.kJobDetailsView,
+      extra: <String, dynamic>{'job': job, 'heroPrefix': heroPrefix},
+    ).then((_) {
+      if (_navigatingJobId == job.id) {
+        _navigatingJobId = null;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +82,10 @@ class JobCard extends StatelessWidget {
       child: InkWell(
         onTap:
             onTap ??
-            () => context.push(
-              AppRoutes.kJobDetailsView,
-              extra: job,
+            () => navigateToJobDetails(
+              context,
+              job: job,
+              heroPrefix: heroPrefix,
             ),
         child: Padding(
           padding: EdgeInsets.all(16.r),
@@ -63,6 +101,8 @@ class JobCard extends StatelessWidget {
                 onShare: onShare,
                 onSave: onSave,
                 heroTag: _heroTag,
+                heroPrefix: heroPrefix,
+                jobId: job.id,
               ),
               SizedBox(height: 14.h),
               Wrap(
@@ -96,14 +136,44 @@ class JobCard extends StatelessWidget {
                 children: [
                   MatchingStatus(percentage: job.matchPercentage),
                   const Spacer(),
-                  ElevatedButton(
-                    onPressed: _isApplied
-                        ? null
-                        : () => context.push(
-                              AppRoutes.kapplyForRole,
-                              extra: job,
-                            ),
-                    style: ElevatedButton.styleFrom(
+                    ElevatedButton(
+                      onPressed: _isApplied
+                          ? null
+                          : (onApply ??
+                              () {
+                                if (!requireAuth(context)) return;
+                                // External listings open the employer's
+                                // website and are never marked as applied
+                                // merely for opening the link.
+                                if (job.isExternalApply) {
+                                  final website =
+                                      job.websiteUrl?.trim() ?? '';
+                                  final uri = Uri.tryParse(website);
+                                  final isValid = uri != null &&
+                                      uri.isAbsolute &&
+                                      (uri.scheme == 'http' ||
+                                          uri.scheme == 'https');
+                                  if (!isValid) {
+                                    context.showErrorSnackBar(
+                                      context.l10n.shareJobLinkUnavailable,
+                                    );
+                                    return;
+                                  }
+                                  context.push(
+                                    AppRoutes.kWebView,
+                                    extra: <String, dynamic>{
+                                      'url': website,
+                                      'title': job.title,
+                                    },
+                                  );
+                                  return;
+                                }
+                                context.push(
+                                  AppRoutes.kapplyForRole,
+                                  extra: job,
+                                );
+                              }),
+                      style: ElevatedButton.styleFrom(
                       minimumSize: Size(110.w, 42.h),
                       padding: EdgeInsets.symmetric(horizontal: 18.w),
                     ),

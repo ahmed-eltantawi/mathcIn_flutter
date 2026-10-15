@@ -1,6 +1,8 @@
 import 'package:MatchIn/core/extensions/context_extensions.dart';
+import 'package:MatchIn/core/routing/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class ViewMatchesButton extends StatelessWidget {
   const ViewMatchesButton({super.key, this.onViewMatches});
@@ -13,7 +15,8 @@ class ViewMatchesButton extends StatelessWidget {
       width: double.infinity,
       height: 38.h,
       child: ElevatedButton(
-        onPressed: onViewMatches ?? () {},
+        onPressed:
+            onViewMatches ?? () => context.push(AppRoutes.kJobsSearchView),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,

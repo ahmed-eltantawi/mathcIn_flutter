@@ -35,6 +35,8 @@ class JobEntity extends Equatable {
     this.requiredSkills,
     this.preferredSkills,
     this.isExpired = false,
+    this.applicationMethod,
+    this.websiteUrl,
   });
 
   final String id;
@@ -75,6 +77,14 @@ class JobEntity extends Equatable {
   final List<SkillEntity>? preferredSkills;
   final bool isExpired;
 
+  /// Raw `application_method` value returned by the backend
+  /// (e.g. easy-apply vs. external). Null when the API omits it.
+  final String? applicationMethod;
+
+  /// Real website URL attached to the job (resolved from the company).
+  /// Null when the backend provides no website.
+  final String? websiteUrl;
+
   JobEntity copyWith({
     String? id,
     String? title,
@@ -98,6 +108,8 @@ class JobEntity extends Equatable {
     List<SkillEntity>? requiredSkills,
     List<SkillEntity>? preferredSkills,
     bool? isExpired,
+    String? applicationMethod,
+    String? websiteUrl,
   }) {
     return JobEntity(
       id: id ?? this.id,
@@ -122,8 +134,15 @@ class JobEntity extends Equatable {
       requiredSkills: requiredSkills ?? this.requiredSkills,
       preferredSkills: preferredSkills ?? this.preferredSkills,
       isExpired: isExpired ?? this.isExpired,
+      applicationMethod: applicationMethod ?? this.applicationMethod,
+      websiteUrl: websiteUrl ?? this.websiteUrl,
     );
   }
+
+  /// True when the backend marks this job as externally applied, in which
+  /// case the in-app application endpoint must not be used.
+  bool get isExternalApply =>
+      applicationMethod?.trim().toLowerCase() == 'external';
 
   @override
   List<Object?> get props => [
@@ -149,5 +168,7 @@ class JobEntity extends Equatable {
     requiredSkills,
     preferredSkills,
     isExpired,
+    applicationMethod,
+    websiteUrl,
   ];
 }

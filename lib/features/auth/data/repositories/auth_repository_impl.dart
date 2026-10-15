@@ -1,7 +1,6 @@
 import 'package:MatchIn/core/errors/exceptions.dart';
 import 'package:MatchIn/core/errors/failures.dart';
 import 'package:MatchIn/core/networking/network_info.dart';
-import 'package:MatchIn/core/services/secure_storage_service.dart';
 import 'package:MatchIn/features/auth/data/data_sources/auth_remote_data_source.dart';
 import 'package:MatchIn/features/auth/data/models/login_model.dart';
 import 'package:MatchIn/features/auth/domain/repositories/auth_repository.dart';
@@ -9,14 +8,12 @@ import 'package:dartz/dartz.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   const AuthRepositoryImpl({
-    required this.secureStorageService,
     required this.remoteDataSource,
     required this.networkInfo,
   });
 
   final AuthRemoteDataSource remoteDataSource;
   final NetworkInfo networkInfo;
-  final SecureStorageService secureStorageService;
 
   @override
   Future<Either<Failure, Unit>> verifyOtp({
@@ -27,41 +24,7 @@ class AuthRepositoryImpl implements AuthRepository {
       await remoteDataSource.verifyOtp(email: email, otp: otp);
       return const Right(unit);
     } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.errorModel.errorMessage));
-    } on OfflineException {
-      return const Left(OfflineFailure());
-    } catch (e) {
-      return Left(ServerFailure(message: e.toString()));
-    }
-  }
-
-  @override
-  Future<Either<Failure, Unit>> forgotPassword({required String email}) async {
-    try {
-      await remoteDataSource.forgotPassword(email: email);
-      return const Right(unit);
-    } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.errorModel.errorMessage));
-    } on OfflineException {
-      return const Left(OfflineFailure());
-    } catch (e) {
-      return Left(ServerFailure(message: e.toString()));
-    }
-  }
-
-  @override
-  Future<Either<Failure, Unit>> verifyOtpForForgotPassword({
-    required String email,
-    required String otp,
-  }) async {
-    try {
-      await remoteDataSource.verifyOtpForForgotPassword(
-        email: email,
-        otp: otp,
-      );
-      return const Right(unit);
-    } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.errorModel.errorMessage));
+      return Left(ServerFailure(message: e.errorModel.errorMessage, fieldErrors: e.errorModel.fieldErrors));
     } on OfflineException {
       return const Left(OfflineFailure());
     } catch (e) {
@@ -75,7 +38,38 @@ class AuthRepositoryImpl implements AuthRepository {
       await remoteDataSource.resendOtp(email: email);
       return const Right(unit);
     } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.errorModel.errorMessage));
+      return Left(ServerFailure(message: e.errorModel.errorMessage, fieldErrors: e.errorModel.fieldErrors));
+    } on OfflineException {
+      return const Left(OfflineFailure());
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> forgotPassword({required String email}) async {
+    try {
+      await remoteDataSource.forgotPassword(email: email);
+      return const Right(unit);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.errorModel.errorMessage, fieldErrors: e.errorModel.fieldErrors));
+    } on OfflineException {
+      return const Left(OfflineFailure());
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> verifyPasswordResetOtp({
+    required String email,
+    required String otp,
+  }) async {
+    try {
+      await remoteDataSource.verifyPasswordResetOtp(email: email, otp: otp);
+      return const Right(unit);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.errorModel.errorMessage, fieldErrors: e.errorModel.fieldErrors));
     } on OfflineException {
       return const Left(OfflineFailure());
     } catch (e) {
@@ -95,7 +89,7 @@ class AuthRepositoryImpl implements AuthRepository {
       );
       return const Right(unit);
     } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.errorModel.errorMessage));
+      return Left(ServerFailure(message: e.errorModel.errorMessage, fieldErrors: e.errorModel.fieldErrors));
     } on OfflineException {
       return const Left(OfflineFailure());
     } catch (e) {
@@ -119,7 +113,7 @@ class AuthRepositoryImpl implements AuthRepository {
       );
       return const Right(unit);
     } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.errorModel.errorMessage));
+      return Left(ServerFailure(message: e.errorModel.errorMessage, fieldErrors: e.errorModel.fieldErrors));
     } on OfflineException {
       return const Left(OfflineFailure());
     } catch (e) {
@@ -139,7 +133,25 @@ class AuthRepositoryImpl implements AuthRepository {
       );
       return Right(loginModel);
     } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.errorModel.errorMessage));
+      return Left(ServerFailure(message: e.errorModel.errorMessage, fieldErrors: e.errorModel.fieldErrors));
+    } on OfflineException {
+      return const Left(OfflineFailure());
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, LoginModel>> loginWithGoogle({
+    required String idToken,
+  }) async {
+    try {
+      final loginModel = await remoteDataSource.loginWithGoogle(
+        idToken: idToken,
+      );
+      return Right(loginModel);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.errorModel.errorMessage, fieldErrors: e.errorModel.fieldErrors));
     } on OfflineException {
       return const Left(OfflineFailure());
     } catch (e) {

@@ -8,9 +8,11 @@ class HomeCardViewMatchesJobs extends StatelessWidget {
   const HomeCardViewMatchesJobs({
     super.key,
     required this.matchesCount,
+    this.onViewMatches,
   });
 
   final int matchesCount;
+  final VoidCallback? onViewMatches;
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +76,7 @@ class HomeCardViewMatchesJobs extends StatelessWidget {
                   SizedBox(height: 18.h),
 
                   // View Matches button
-                  const ViewMatchesButton(),
+                  ViewMatchesButton(onViewMatches: onViewMatches),
                 ],
               ),
             ),

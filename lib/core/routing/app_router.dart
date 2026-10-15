@@ -1,7 +1,8 @@
 import 'package:MatchIn/core/routing/app_routes.dart';
-import 'package:MatchIn/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:MatchIn/features/auth/presentation/cubit/forgot_password_cubit.dart';
 import 'package:MatchIn/features/profile/presentation/views/edit_career_preferences_view.dart';
+import 'package:MatchIn/features/profile/presentation/views/edit_education_view.dart';
+import 'package:MatchIn/features/profile/presentation/views/edit_experience_view.dart';
+import 'package:MatchIn/features/profile/presentation/views/edit_profile_view.dart';
 import 'package:MatchIn/features/profile/presentation/views/edit_projects_view.dart';
 import 'package:MatchIn/features/profile/presentation/views/edit_skills_view.dart';
 import 'package:MatchIn/features/splash/presentation/pages/splash_view.dart';
@@ -9,6 +10,7 @@ import 'package:MatchIn/core/services/services_locator.dart';
 import 'package:MatchIn/core/services/shared_preferences_service.dart';
 import 'package:MatchIn/core/widgets/app_web_view.dart';
 import 'package:MatchIn/core/widgets/main_navigation_screen.dart';
+import 'package:MatchIn/features/chatbot/presentation/views/ai_chat_view.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_entity.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/views/application_questions_view.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/views/application_submitted_view.dart';
@@ -16,11 +18,10 @@ import 'package:MatchIn/features/jobsAndApplications/presentation/views/apply_fo
 import 'package:MatchIn/features/jobsAndApplications/presentation/views/review_application_view.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/views/tracking_application_view.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/otp_cubit.dart';
-import 'package:MatchIn/features/auth/presentation/pages/otp_verification_view.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/reset_password_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/pages/create_new_password_view.dart';
-import 'package:MatchIn/features/auth/presentation/pages/forgot_password_view.dart';
 import 'package:MatchIn/features/auth/presentation/pages/login_view.dart';
+import 'package:MatchIn/features/auth/presentation/pages/otp_verification_view.dart';
 import 'package:MatchIn/features/auth/presentation/pages/password_changed_success_view.dart';
 import 'package:MatchIn/features/auth/presentation/pages/register_view.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/views/job_details_view.dart';
@@ -38,6 +39,48 @@ import 'package:go_router/go_router.dart';
 
 abstract final class AppRouter {
   AppRouter._();
+
+  // --- Extracts the job from route extras, accepting either a bare
+  // --- JobEntity (legacy call sites) or {'job': JobEntity, ...}.
+  static JobEntity _jobFromExtra(Object? extra) {
+    if (extra is JobEntity) return extra;
+    if (extra is Map<String, dynamic> && extra['job'] is JobEntity) {
+      return extra['job'] as JobEntity;
+    }
+    throw ArgumentError('Route requires a JobEntity extra');
+  }
+
+  static String? _coverLetterFromExtra(Object? extra) {
+    if (extra is Map<String, dynamic>) {
+      final value = extra['coverLetter'];
+      if (value is String && value.isNotEmpty) return value;
+    }
+    return null;
+  }
+
+  static String? _cvFileNameFromExtra(Object? extra) {
+    if (extra is Map<String, dynamic>) {
+      final value = extra['cvFileName'] ?? extra['cvName'];
+      if (value is String && value.isNotEmpty) return value;
+    }
+    return null;
+  }
+
+  static String? _cvFileSizeFromExtra(Object? extra) {
+    if (extra is Map<String, dynamic>) {
+      final value = extra['cvFileSize'] ?? extra['cvSize'];
+      if (value is String && value.isNotEmpty) return value;
+    }
+    return null;
+  }
+
+  static String _heroPrefixFromExtra(Object? extra) {
+    if (extra is Map<String, dynamic>) {
+      final value = extra['heroPrefix'];
+      if (value is String && value.isNotEmpty) return value;
+    }
+    return 'feed';
+  }
 
   static CustomTransitionPage<dynamic> _buildTransitionPage({
     required GoRouterState state,
@@ -79,10 +122,13 @@ abstract final class AppRouter {
         return skipAuth ? AppRoutes.kHomeView : AppRoutes.kRegisterView;
       }
 
-      // Already logged in or guest → never show register/login again
+      // Signed-in users never see register/login again. Guests keep
+      // access so the guest-mode dialog can push Login/Register and
+      // pop back to the previous screen afterwards.
+      final isLoggedIn = prefs.isLoggedIn();
       if (location == AppRoutes.kRegisterView ||
           location == AppRoutes.kLoginView) {
-        return skipAuth ? AppRoutes.kHomeView : null;
+        return isLoggedIn ? AppRoutes.kHomeView : null;
       }
 
       return null;
@@ -110,7 +156,18 @@ abstract final class AppRouter {
         pageBuilder: (context, state) {
           return _buildTransitionPage(
             state: state,
-            child: const MainNavigationScreen(),
+            child: const MainNavigationWidget(),
+          );
+        },
+      ),
+
+      // AI Chatbot
+      GoRoute(
+        path: AppRoutes.kChatBotView,
+        pageBuilder: (context, state) {
+          return _buildTransitionPage(
+            state: state,
+            child: const AiChatView(),
           );
         },
       ),
@@ -146,10 +203,11 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kJobDetailsView,
         pageBuilder: (context, state) {
-          final job = state.extra as JobEntity;
+          final job = _jobFromExtra(state.extra);
+          final heroPrefix = _heroPrefixFromExtra(state.extra);
           return _buildTransitionPage(
             state: state,
-            child: JobDetailsView(job: job),
+            child: JobDetailsView(job: job, heroPrefix: heroPrefix),
           );
         },
       ),
@@ -226,10 +284,7 @@ abstract final class AppRouter {
         pageBuilder: (context, state) {
           return _buildTransitionPage(
             state: state,
-            child: BlocProvider(
-              create: (_) => getIt<AuthCubit>(),
-              child: const RegisterView(),
-            ),
+            child: const RegisterView(),
           );
         },
       ),
@@ -238,69 +293,45 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kLoginView,
         pageBuilder: (context, state) {
-          return _buildTransitionPage(
-            state: state,
-            child: BlocProvider(
-              create: (_) => getIt<AuthCubit>(),
-              child: const LoginView(),
-            ),
-          );
+          return _buildTransitionPage(state: state, child: const LoginView());
         },
       ),
 
-      // Register
-      GoRoute(
-        path: AppRoutes.kRegisterView,
-        pageBuilder: (context, state) {
-          return _buildTransitionPage(
-            state: state,
-            child: BlocProvider(
-              create: (_) => getIt<AuthCubit>(),
-              child: const RegisterView(),
-            ),
-          );
-        },
-      ),
-
-      // Forget Password
+      // Forget Password OTP — after confirming reset OTP, go to Create New Password
       GoRoute(
         path: AppRoutes.kForgetPasswordView,
         pageBuilder: (context, state) {
-          final email = state.extra is String ? state.extra as String : null;
-          return _buildTransitionPage(
-            state: state,
-            child: BlocProvider(
-              create: (_) => getIt<ForgotPasswordCubit>(),
-              child: ForgotPasswordView(email: email),
-            ),
-          );
-        },
-      ),
-
-      // OTP (after Register / Forgot Password)
-      GoRoute(
-        path: AppRoutes.kOtpVerificationView,
-        pageBuilder: (context, state) {
           final extra = state.extra;
-          final String email;
-          final OtpPurpose purpose;
-
-          if (extra is Map<String, dynamic>) {
-            email = (extra['email'] as String?) ?? 'user@example.com';
-            purpose = (extra['purpose'] as OtpPurpose?) ?? OtpPurpose.register;
-          } else if (extra is String) {
-            email = extra;
-            purpose = OtpPurpose.register;
-          } else {
-            email = 'user@example.com';
-            purpose = OtpPurpose.register;
-          }
-
+          final email = extra is Map<String, dynamic>
+              ? extra['email'] as String? ?? 'user@example.com'
+              : extra is String
+              ? extra
+              : 'user@example.com';
           return _buildTransitionPage(
             state: state,
             child: BlocProvider(
               create: (_) => getIt<OtpCubit>(),
-              child: OtpVerificationView(email: email, purpose: purpose),
+              child: OtpVerificationView(
+                email: email,
+                mode: OtpMode.passwordReset,
+              ),
+            ),
+          );
+        },
+      ),
+
+      // OTP — email verification after registration → navigates to Home
+      GoRoute(
+        path: AppRoutes.kOtpVerificationView,
+        pageBuilder: (context, state) {
+          return _buildTransitionPage(
+            state: state,
+            child: BlocProvider(
+              create: (_) => getIt<OtpCubit>(),
+              child: OtpVerificationView(
+                email: state.extra as String? ?? 'user@example.com',
+                mode: OtpMode.emailVerification,
+              ),
             ),
           );
         },
@@ -310,14 +341,13 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kCreateNewPasswordView,
         pageBuilder: (context, state) {
-          final email = state.extra is String
-              ? state.extra as String
-              : 'user@example.com';
           return _buildTransitionPage(
             state: state,
             child: BlocProvider(
               create: (_) => getIt<ResetPasswordCubit>(),
-              child: CreateNewPasswordView(email: email),
+              child: CreateNewPasswordView(
+                email: state.extra as String? ?? 'user@example.com',
+              ),
             ),
           );
         },
@@ -338,7 +368,7 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kapplyForRole,
         pageBuilder: (context, state) {
-          final job = state.extra as JobEntity;
+          final job = _jobFromExtra(state.extra);
           return _buildTransitionPage(
             state: state,
             child: ApplyForRoleView(job: job),
@@ -350,7 +380,7 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kapplicationQuestions,
         pageBuilder: (context, state) {
-          final job = state.extra as JobEntity;
+          final job = _jobFromExtra(state.extra);
           return _buildTransitionPage(
             state: state,
             child: ApplicationQuestionsView(job: job),
@@ -362,10 +392,15 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kreviewApplication,
         pageBuilder: (context, state) {
-          final job = state.extra as JobEntity;
+          final job = _jobFromExtra(state.extra);
           return _buildTransitionPage(
             state: state,
-            child: ReviewApplicationView(job: job),
+            child: ReviewApplicationView(
+              job: job,
+              coverLetter: _coverLetterFromExtra(state.extra),
+              cvFileName: _cvFileNameFromExtra(state.extra),
+              cvFileSize: _cvFileSizeFromExtra(state.extra),
+            ),
           );
         },
       ),
@@ -374,7 +409,7 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kapplicationSubmitted,
         pageBuilder: (context, state) {
-          final job = state.extra as JobEntity;
+          final job = _jobFromExtra(state.extra);
           return _buildTransitionPage(
             state: state,
             child: ApplicationSubmittedView(job: job),
@@ -386,7 +421,7 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.ktrackingApplication,
         pageBuilder: (context, state) {
-          final job = state.extra as JobEntity;
+          final job = _jobFromExtra(state.extra);
           return _buildTransitionPage(
             state: state,
             child: TrackingApplicationView(job: job),
@@ -423,6 +458,34 @@ abstract final class AppRouter {
           return _buildTransitionPage(
             state: state,
             child: const EditCareerPreferencesView(),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: AppRoutes.keditProfileView,
+        pageBuilder: (context, state) {
+          return _buildTransitionPage(
+            state: state,
+            child: const EditProfileView(),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.keditEducationView,
+        pageBuilder: (context, state) {
+          return _buildTransitionPage(
+            state: state,
+            child: const EditEducationView(),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.keditExperience,
+        pageBuilder: (context, state) {
+          return _buildTransitionPage(
+            state: state,
+            child: const EditExperienceView(),
           );
         },
       ),

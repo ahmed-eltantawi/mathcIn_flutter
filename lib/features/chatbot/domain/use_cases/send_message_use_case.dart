@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import '../../../../core/errors/failures.dart';
-import '../entities/chat_message_entity.dart';
+import '../../data/models/chatbot_send_message_response_model.dart';
 import '../repositories/chatbot_repository.dart';
 
 class SendMessageUseCase {
@@ -8,15 +8,13 @@ class SendMessageUseCase {
 
   final ChatbotRepository repository;
 
-  Future<Either<Failure, ChatMessageEntity>> call({
-    required String chatId,
-    required String messageContent,
-    required List<ChatMessageEntity> currentMessages,
+  Future<Either<Failure, ChatbotSendMessageResponseModel>> call({
+    required String conversationId,
+    required String message,
   }) {
     return repository.sendMessage(
-      chatId: chatId,
-      messageContent: messageContent,
-      currentMessages: currentMessages,
+      conversationId: conversationId,
+      message: message,
     );
   }
 }

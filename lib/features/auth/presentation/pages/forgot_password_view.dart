@@ -90,7 +90,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                     AppRoutes.kOtpVerificationView,
                     extra: <String, dynamic>{
                       'email': _emailController.text.trim(),
-                      'purpose': OtpPurpose.forgotPassword,
+                      'mode': OtpMode.passwordReset,
                     },
                   );
                 }

@@ -32,16 +32,20 @@ class SkillDetailsProgressOverview extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                totalCount > 0
-                    ? '$completedCount / $totalCount ${l10n.tasksCompleted}'
-                    : (node.status == RoadmapTaskStatus.completed
-                          ? l10n.skillCompleted
-                          : l10n.skillInProgress),
-                style: textTheme.titleSmall?.copyWith(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                  color: colors.onSurface,
+              Flexible(
+                child: Text(
+                  totalCount > 0
+                      ? '$completedCount / $totalCount ${l10n.tasksCompleted}'
+                      : (node.status == RoadmapTaskStatus.completed
+                            ? l10n.skillCompleted
+                            : l10n.skillInProgress),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: textTheme.titleSmall?.copyWith(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                    color: colors.onSurface,
+                  ),
                 ),
               ),
               Text(

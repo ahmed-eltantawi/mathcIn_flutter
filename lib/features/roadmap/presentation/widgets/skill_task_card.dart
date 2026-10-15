@@ -8,11 +8,19 @@ class SkillTaskCard extends StatefulWidget {
   const SkillTaskCard({
     super.key,
     required this.task,
-    required this.onToggleComplete,
+    this.onToggleComplete,
+    this.isBusy = false,
   });
 
   final SkillTask task;
-  final VoidCallback onToggleComplete;
+
+  /// Null disables completion interaction: completed tasks, tasks without
+  /// a backend id, and tasks with a request in flight pass null.
+  final VoidCallback? onToggleComplete;
+
+  /// Shows a progress indicator in the checkbox. Interaction stays
+  /// disabled while true.
+  final bool isBusy;
 
   @override
   State<SkillTaskCard> createState() => _SkillTaskCardState();
@@ -68,6 +76,7 @@ class _SkillTaskCardState extends State<SkillTaskCard> {
                   task: widget.task,
                   isExpanded: _isExpanded,
                   onToggleComplete: widget.onToggleComplete,
+                  isBusy: widget.isBusy,
                 ),
                 AnimatedSize(
                   duration: const Duration(milliseconds: 250),
@@ -89,12 +98,14 @@ class _TaskHeaderRow extends StatelessWidget {
   const _TaskHeaderRow({
     required this.task,
     required this.isExpanded,
-    required this.onToggleComplete,
+    this.onToggleComplete,
+    this.isBusy = false,
   });
 
   final SkillTask task;
   final bool isExpanded;
-  final VoidCallback onToggleComplete;
+  final VoidCallback? onToggleComplete;
+  final bool isBusy;
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +117,7 @@ class _TaskHeaderRow extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         GestureDetector(
-          onTap: onToggleComplete,
+          onTap: isBusy ? null : onToggleComplete,
           behavior: HitTestBehavior.opaque,
           child: Container(
             width: 26.r,
@@ -119,7 +130,15 @@ class _TaskHeaderRow extends StatelessWidget {
                 width: 2.w,
               ),
             ),
-            child: isCompleted
+            child: isBusy
+                ? Padding(
+                    padding: EdgeInsets.all(5.r),
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.w,
+                      color: colors.primary,
+                    ),
+                  )
+                : isCompleted
                 ? Icon(Icons.check_rounded, size: 16.r, color: Colors.white)
                 : null,
           ),

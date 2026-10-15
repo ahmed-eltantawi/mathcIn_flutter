@@ -16,10 +16,18 @@ class OfflineFailure extends Failure {
 }
 
 class ServerFailure extends Failure {
-  const ServerFailure({super.message = 'There was a problem with the server'});
+  const ServerFailure({
+    super.message = 'There was a problem with the server',
+    this.fieldErrors = const {},
+  });
+
+  /// Field-level validation messages keyed by field name (`errors.<field>`
+  /// from the API). Empty when the failure is not a validation failure.
+  /// Excluded from [props] because Dart maps compare by identity.
+  final Map<String, List<String>> fieldErrors;
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [message];
 }
 
 class CacheFailure extends Failure {

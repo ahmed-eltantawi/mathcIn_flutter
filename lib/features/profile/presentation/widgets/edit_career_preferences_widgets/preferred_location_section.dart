@@ -22,9 +22,9 @@ class PreferredLocationSection extends StatelessWidget {
   final String city;
   final bool openToRelocation;
 
-  final VoidCallback onCountryPressed;
-  final VoidCallback onStatePressed;
-  final VoidCallback onCityPressed;
+  final VoidCallback? onCountryPressed;
+  final VoidCallback? onStatePressed;
+  final VoidCallback? onCityPressed;
   final ValueChanged<bool?> onOpenToRelocationChanged;
 
   @override

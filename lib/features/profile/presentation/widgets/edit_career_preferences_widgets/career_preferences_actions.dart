@@ -6,11 +6,13 @@ class CareerPreferencesActions extends StatelessWidget {
   const CareerPreferencesActions({
     required this.onSavePressed,
     required this.onCancelPressed,
+    this.isSaving = false,
     super.key,
   });
 
   final VoidCallback onSavePressed;
   final VoidCallback onCancelPressed;
+  final bool isSaving;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class CareerPreferencesActions extends StatelessWidget {
           width: double.infinity,
           height: 52.h,
           child: FilledButton(
-            onPressed: onSavePressed,
+            onPressed: isSaving ? null : onSavePressed,
             style: FilledButton.styleFrom(
               backgroundColor: colors.primary,
               foregroundColor: colors.onPrimary,
@@ -32,18 +34,24 @@ class CareerPreferencesActions extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10.r),
               ),
             ),
-            child: Text(
-              locale.savePreferences,
-              style: theme.textTheme.labelLarge?.copyWith(
-                color: colors.onPrimary,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+            child: isSaving
+                ? SizedBox(
+                    width: 24.r,
+                    height: 24.r,
+                    child: const CircularProgressIndicator(strokeWidth: 2.5),
+                  )
+                : Text(
+                    locale.savePreferences,
+                    style: theme.textTheme.labelLarge?.copyWith(
+                      color: colors.onPrimary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
           ),
         ),
         SizedBox(height: 10.h),
         TextButton(
-          onPressed: onCancelPressed,
+          onPressed: isSaving ? null : onCancelPressed,
           child: Text(
             locale.cancel,
             style: theme.textTheme.bodyMedium?.copyWith(
