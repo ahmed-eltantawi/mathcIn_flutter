@@ -288,7 +288,7 @@ void main() {
       await roadmapCubit.loadRoadmaps();
       await pumpList(
         tester,
-        RoadmapEntity(
+        const RoadmapEntity(
           id: 1,
           title: 'R',
           milestones: [
@@ -340,7 +340,7 @@ void main() {
       await roadmapCubit.loadRoadmaps();
       await pumpList(
         tester,
-        RoadmapEntity(
+        const RoadmapEntity(
           id: 1,
           title: 'R',
           milestones: [

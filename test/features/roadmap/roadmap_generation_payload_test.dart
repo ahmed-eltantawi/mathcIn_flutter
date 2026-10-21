@@ -142,7 +142,7 @@ void main() {
     });
 
     test('legacy flat milestones still parse', () {
-      final roadmap = RoadmapModel.fromJson({
+      final roadmap = RoadmapModel.fromJson(const {
         'id': 1,
         'title': 'Legacy',
         'target_role': 'Cloud Architect',
@@ -166,7 +166,7 @@ void main() {
     });
 
     test('string progress and string target fall back safely', () {
-      final roadmap = RoadmapModel.fromJson({
+      final roadmap = RoadmapModel.fromJson(const {
         'id': 2,
         'title': 'Mixed',
         'progress': '45.5',
@@ -197,7 +197,7 @@ void main() {
     });
 
     test('XP metrics parse independently from the roadmap hierarchy', () {
-      final metrics = RoadmapXpMetricsModel.fromJson({
+      final metrics = RoadmapXpMetricsModel.fromJson(const {
         'roadmap_id': 14,
         'roadmap_title': 'Career Roadmap: Flutter',
         'status': 'in_progress',
