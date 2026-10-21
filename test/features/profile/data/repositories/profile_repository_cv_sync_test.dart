@@ -32,7 +32,10 @@ class _FakeProfileRemote extends Fake implements ProfileRemoteDataSource {
   }
 
   @override
-  Future<CvUploadReceiptModel?> uploadCv(CvUploadInput input) async {
+  Future<CvUploadReceiptModel?> uploadCv(
+    CvUploadInput input, {
+    void Function(int sentBytes, int totalBytes)? onSendProgress,
+  }) async {
     uploadCalls++;
     return receiptToReturn;
   }

@@ -16,6 +16,7 @@ class CvProfileCard extends StatelessWidget {
     this.onView,
     this.onReplace,
     this.isUploading = false,
+    this.uploadProgress = 0,
     super.key,
   });
 
@@ -31,6 +32,9 @@ class CvProfileCard extends StatelessWidget {
 
   /// Shows a subtle progress indicator without replacing the card.
   final bool isUploading;
+
+  /// 0..1 upload fraction; 0 renders an indeterminate indicator.
+  final double uploadProgress;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +54,9 @@ class CvProfileCard extends StatelessWidget {
 
           if (isUploading) ...[
             SizedBox(height: 12.h),
-            const LinearProgressIndicator(),
+            LinearProgressIndicator(
+              value: uploadProgress > 0 ? uploadProgress.clamp(0.0, 1.0) : null,
+            ),
           ],
 
           SizedBox(height: 12.h),

@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:MatchIn/core/functions/require_auth.dart';
 import 'package:MatchIn/core/functions/share_job.dart';
+import 'package:MatchIn/core/routing/cubit/main_navigation_cubit.dart';
 import 'package:MatchIn/core/services/shared_preferences_service.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/applications_cubit.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/applications_state.dart';
@@ -30,9 +33,7 @@ class SavedJobsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<SavedJobsCubit>(
-          create: (_) => getIt<SavedJobsCubit>(),
-        ),
+        BlocProvider<SavedJobsCubit>(create: (_) => getIt<SavedJobsCubit>()),
         BlocProvider<ApplicationsCubit>(
           create: (_) => getIt<ApplicationsCubit>(),
         ),
@@ -52,6 +53,11 @@ class _SavedJobsContent extends StatefulWidget {
 class _SavedJobsContentState extends State<_SavedJobsContent> {
   SavedTabType _activeTab = SavedTabType.saved;
   final ScrollController _scrollController = ScrollController();
+  StreamSubscription<int>? _navSubscription;
+
+  /// Index of this screen in the main bottom navigation
+  /// (see MainNavigationWidget tab order / openSavedJobs).
+  static const int _savedTabIndex = 1;
 
   @override
   void initState() {
@@ -67,11 +73,34 @@ class _SavedJobsContentState extends State<_SavedJobsContent> {
       }
       context.read<SavedJobsCubit>().fetchSavedJobs();
       context.read<ApplicationsCubit>().fetchApplications();
+      // Replay any durable save/unsave ops queued while offline; the
+      // list refreshes automatically when sync makes progress.
+      context.read<SavedJobsCubit>().syncPendingJobs();
     });
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // The IndexedStack keeps this screen alive across tab switches:
+    // refresh from the local source of truth (and replay queued ops)
+    // every time the tab becomes visible, so bookmarks toggled on
+    // Home/Search/Details appear without reopening the app.
+    _navSubscription ??= context.read<MainNavigationCubit>().stream.listen(
+      _onTabChangedExternally,
+    );
+  }
+
+  void _onTabChangedExternally(int index) {
+    if (!mounted || index != _savedTabIndex) return;
+    final cubit = context.read<SavedJobsCubit>();
+    cubit.fetchSavedJobs(isRefresh: true);
+    cubit.syncPendingJobs();
+  }
+
+  @override
   void dispose() {
+    _navSubscription?.cancel();
     _scrollController.dispose();
     super.dispose();
   }
@@ -99,7 +128,8 @@ class _SavedJobsContentState extends State<_SavedJobsContent> {
     if (jobEntity.isExternalApply) {
       final website = jobEntity.websiteUrl?.trim() ?? '';
       final uri = Uri.tryParse(website);
-      final isValid = uri != null &&
+      final isValid =
+          uri != null &&
           uri.isAbsolute &&
           (uri.scheme == 'http' || uri.scheme == 'https');
       if (!isValid) {
@@ -168,6 +198,12 @@ class _SavedJobsContentState extends State<_SavedJobsContent> {
                         // Future sort/filter integration
                       },
                     ),
+
+                    // Pending-sync banner (durable offline intentions)
+                    if (isSavedTab &&
+                        savedState is SavedJobsLoaded &&
+                        savedState.pendingCount > 0)
+                      _PendingSyncBanner(pendingCount: savedState.pendingCount),
 
                     // List Content
                     Expanded(
@@ -364,6 +400,53 @@ class _SavedJobsContentState extends State<_SavedJobsContent> {
 
         return const SizedBox.shrink();
       },
+    );
+  }
+}
+
+/// Non-blocking banner for durably queued save/unsave intentions.
+/// The list underneath always reflects local truth; the retry action
+/// replays the queue in the foreground.
+class _PendingSyncBanner extends StatelessWidget {
+  const _PendingSyncBanner({required this.pendingCount});
+
+  final int pendingCount;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(16.w, 0, 16.w, 8.h),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+      decoration: BoxDecoration(
+        color: context.colors.surfaceContainerHighest.withValues(alpha: 0.6),
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            Icons.cloud_off_rounded,
+            size: 16.r,
+            color: context.colors.onSurfaceVariant,
+          ),
+          SizedBox(width: 8.w),
+          Expanded(
+            child: Text(
+              S.of(context).offlineStatusShowingSaved,
+              style: context.textTheme.bodySmall?.copyWith(
+                fontSize: 12.sp,
+                color: context.colors.onSurfaceVariant,
+                fontWeight: FontWeight.w600,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          TextButton(
+            onPressed: () => context.read<SavedJobsCubit>().syncPendingJobs(),
+            child: Text('${S.of(context).retry} ($pendingCount)'),
+          ),
+        ],
+      ),
     );
   }
 }

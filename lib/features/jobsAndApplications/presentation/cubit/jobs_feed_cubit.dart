@@ -10,6 +10,8 @@ import 'package:MatchIn/features/jobsAndApplications/domain/use_case/refresh_job
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/search_jobs_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/use_case/toggle_save_job_use_case.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_state.dart';
+import 'package:MatchIn/features/saved/domain/entities/saved_job_entity.dart';
+import 'package:MatchIn/features/saved/domain/repositories/saved_jobs_repository.dart';
 
 class JobsFeedCubit extends Cubit<JobsFeedState> {
   JobsFeedCubit({
@@ -19,6 +21,7 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
     required this.refreshJobsUseCase,
     required this.toggleSaveJobUseCase,
     required this.applyForJobUseCase,
+    this.savedJobsRepository,
   }) : super(const JobsFeedInitial());
 
   final GetJobsUseCase getJobsUseCase;
@@ -27,6 +30,12 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
   final RefreshJobsUseCase refreshJobsUseCase;
   final ToggleSaveJobUseCase toggleSaveJobUseCase;
   final ApplyForJobUseCase applyForJobUseCase;
+
+  /// Optional durable bookmark ledger. When present, bookmark toggles
+  /// persist local-first through the saved-jobs repository (shared source
+  /// of truth with the Saved screen) instead of memory-only optimism.
+  /// Null in legacy/test setups, which keep the previous behavior.
+  final SavedJobsRepository? savedJobsRepository;
 
   JobFilterParams _currentFilterParams = const JobFilterParams();
   Timer? _debounceTimer;
@@ -53,8 +62,7 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
       params: _currentFilterParams,
     );
     final cachedEntity = cachedResult.fold((_) => null, (entity) => entity);
-    final hasCache =
-        cachedEntity != null && cachedEntity.jobs.isNotEmpty;
+    final hasCache = cachedEntity != null && cachedEntity.jobs.isNotEmpty;
     if (hasCache) {
       emit(
         JobsFeedLoaded(
@@ -180,23 +188,22 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
           ? await getJobsUseCase(params: newParams)
           : await searchJobsUseCase(query: trimmed, params: newParams);
 
-      result.fold(
-        (failure) => emit(JobsFeedError(failure.message)),
-        (paginatedEntity) {
-          if (paginatedEntity.jobs.isEmpty) {
-            emit(const JobsFeedEmpty());
-          } else {
-            emit(
-              JobsFeedLoaded(
-                jobs: paginatedEntity.jobs,
-                pagination: paginatedEntity.pagination,
-                filterParams: newParams,
-                isFromCache: paginatedEntity.isFromCache,
-              ),
-            );
-          }
-        },
-      );
+      result.fold((failure) => emit(JobsFeedError(failure.message)), (
+        paginatedEntity,
+      ) {
+        if (paginatedEntity.jobs.isEmpty) {
+          emit(const JobsFeedEmpty());
+        } else {
+          emit(
+            JobsFeedLoaded(
+              jobs: paginatedEntity.jobs,
+              pagination: paginatedEntity.pagination,
+              filterParams: newParams,
+              isFromCache: paginatedEntity.isFromCache,
+            ),
+          );
+        }
+      });
     });
   }
 
@@ -287,6 +294,22 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
     final currentIsSaved = targetJob.isSaved;
     final desiredIsSaved = !currentIsSaved;
 
+    // --- Local-first path: persist the intent durably through the shared
+    // --- saved-jobs ledger before any network attempt, so the bookmark
+    // --- survives offline use and restarts on every screen.
+    final savedRepo = savedJobsRepository;
+    final savedJob = savedRepo == null
+        ? null
+        : SavedJobEntity.fromJobEntity(targetJob, isSaved: desiredIsSaved);
+    if (savedRepo != null && savedJob != null) {
+      await _toggleViaSavedLedger(
+        jobId: jobId,
+        savedJob: savedJob,
+        desiredIsSaved: desiredIsSaved,
+      );
+      return;
+    }
+
     // --- Optimistic UI update: flip the icon immediately, without waiting
     // --- for local persistence or the remote save/unsave request.
     _pendingSaveJobIds.add(jobId);
@@ -316,7 +339,12 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
             }
             return job;
           }).toList();
-          emit(latestState.copyWith(jobs: revertedJobs, errorMessage: failure.message));
+          emit(
+            latestState.copyWith(
+              jobs: revertedJobs,
+              errorMessage: failure.message,
+            ),
+          );
         }
       },
       (updatedEntity) {
@@ -330,11 +358,85 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
               }
               return job;
             }).toList();
-            emit(latestState.copyWith(jobs: reconciledJobs, errorMessage: null));
+            emit(
+              latestState.copyWith(jobs: reconciledJobs, errorMessage: null),
+            );
           }
         }
       },
     );
+  }
+
+  /// Local-first bookmark toggle through the shared durable ledger:
+  /// the icon flips immediately, the intent persists + queues before any
+  /// network attempt, and a delayed response can never revert it (the
+  /// ledger is the source of truth both screens read).
+  Future<void> _toggleViaSavedLedger({
+    required String jobId,
+    required SavedJobEntity savedJob,
+    required bool desiredIsSaved,
+  }) async {
+    if (_pendingSaveJobIds.contains(jobId)) return;
+    _pendingSaveJobIds.add(jobId);
+    try {
+      final optimistic = _jobsWithSavedFlag(jobId, desiredIsSaved);
+      if (optimistic == null) return;
+      emit(optimistic);
+
+      final repo = savedJobsRepository!;
+      if (desiredIsSaved) {
+        await repo.setSavedJob(savedJob);
+      } else {
+        await repo.setUnsavedJob(savedJob.id);
+      }
+      if (isClosed) return;
+      // Reconcile from the durable ledger (never from a stale response).
+      await _reconcileFromLedger(jobId);
+      // Best-effort background sync; failures stay queued for retry.
+      await repo.syncPendingOps();
+      if (isClosed) return;
+      await _reconcileFromLedger(jobId);
+    } finally {
+      _pendingSaveJobIds.remove(jobId);
+    }
+  }
+
+  /// Re-reads the bookmark flag for [jobId] from the durable ledger.
+  Future<void> _reconcileFromLedger(String jobId) async {
+    final repo = savedJobsRepository;
+    if (repo == null || isClosed) return;
+    final currentState = state;
+    if (currentState is! JobsFeedLoaded) return;
+    try {
+      final localJobs = await repo.getLocalSavedJobs();
+      if (isClosed) return;
+      final savedIds = localJobs.map((job) => job.id.toString()).toSet();
+      final latestState = state;
+      if (latestState is! JobsFeedLoaded) return;
+      final reconciled = latestState.jobs.map((job) {
+        if (job.id == jobId) {
+          return job.copyWith(isSaved: savedIds.contains(jobId));
+        }
+        return job;
+      }).toList();
+      emit(latestState.copyWith(jobs: reconciled, errorMessage: null));
+    } catch (_) {
+      // Ledger reads never break the feed: the optimistic icon stands.
+    }
+  }
+
+  /// Returns the loaded state with [jobId]'s flag flipped, or null when
+  /// the feed is not showing a loaded list.
+  JobsFeedState? _jobsWithSavedFlag(String jobId, bool isSaved) {
+    final currentState = state;
+    if (currentState is! JobsFeedLoaded) return null;
+    final optimisticJobs = currentState.jobs.map((job) {
+      if (job.id == jobId) {
+        return job.copyWith(isSaved: isSaved);
+      }
+      return job;
+    }).toList();
+    return currentState.copyWith(jobs: optimisticJobs, errorMessage: null);
   }
 
   void updateJobSavedStatus({required String jobId, required bool isSaved}) {

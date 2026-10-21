@@ -130,7 +130,12 @@ class _TaskHeaderRow extends StatelessWidget {
                 width: 2.w,
               ),
             ),
-            child: isBusy
+            child: isCompleted
+                // Completed styling wins over the in-flight spinner: an
+                // optimistically completed task already reflects local
+                // truth, and it cannot be tapped again while busy.
+                ? Icon(Icons.check_rounded, size: 16.r, color: Colors.white)
+                : isBusy
                 ? Padding(
                     padding: EdgeInsets.all(5.r),
                     child: CircularProgressIndicator(
@@ -138,8 +143,6 @@ class _TaskHeaderRow extends StatelessWidget {
                       color: colors.primary,
                     ),
                   )
-                : isCompleted
-                ? Icon(Icons.check_rounded, size: 16.r, color: Colors.white)
                 : null,
           ),
         ),

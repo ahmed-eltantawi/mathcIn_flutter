@@ -12,7 +12,12 @@ import 'package:MatchIn/features/profile/domain/entities/profile_user_entity.dar
 import 'package:MatchIn/features/profile/domain/repositories/profile_repository.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/get_cached_candidate_profile_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/get_candidate_profile_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/download_cv_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/get_cv_history_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/get_cv_status_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/get_local_cv_file_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/retry_cv_extraction_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/verify_extraction_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/get_pending_cv_upload_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/retry_pending_cv_upload_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/upload_cv_use_case.dart';
@@ -81,8 +86,9 @@ class FakePromptRepository extends Fake implements ProfileRepository {
 
   @override
   Future<Either<Failure, CvUploadReceipt?>> uploadCv(
-    CvUploadInput input,
-  ) async {
+    CvUploadInput input, {
+    void Function(int sentBytes, int totalBytes)? onSendProgress,
+  }) async {
     return const Right(null);
   }
 
@@ -144,6 +150,11 @@ Future<void> _pumpProfile(
         repository: repo,
       ),
       getLocalCvFileUseCase: GetLocalCvFileUseCase(repository: repo),
+      getCvStatusUseCase: GetCvStatusUseCase(repository: repo),
+      getCvHistoryUseCase: GetCvHistoryUseCase(repository: repo),
+      retryCvExtractionUseCase: RetryCvExtractionUseCase(repository: repo),
+      verifyExtractionUseCase: VerifyExtractionUseCase(repository: repo),
+      downloadCvUseCase: DownloadCvUseCase(repository: repo),
     ),
   );
   getIt.registerSingleton<FilePickerService>(_StubPicker());

@@ -19,7 +19,11 @@ import 'package:MatchIn/features/profile/domain/entities/candidate_profile_entit
 import 'package:MatchIn/features/profile/domain/entities/candidate_project_entity.dart';
 import 'package:MatchIn/features/profile/domain/entities/candidate_skill_entity.dart';
 import 'package:MatchIn/features/profile/domain/entities/career_preference_entity.dart';
+import 'package:MatchIn/features/profile/domain/entities/cv_document_entity.dart';
+import 'package:MatchIn/features/profile/domain/entities/cv_extraction_status_entity.dart';
+import 'package:MatchIn/features/profile/domain/entities/cv_file_download_entity.dart';
 import 'package:MatchIn/features/profile/domain/entities/cv_local_file.dart';
+import 'package:MatchIn/features/profile/domain/entities/cv_verify_params.dart';
 import 'package:MatchIn/features/profile/domain/entities/cv_pending_upload.dart';
 import 'package:MatchIn/features/profile/domain/entities/cv_upload_input.dart';
 import 'package:MatchIn/features/profile/domain/entities/cv_upload_receipt.dart';
@@ -555,8 +559,9 @@ class ProfileRepositoryImpl implements ProfileRepository {
   // CV Upload
   @override
   Future<Either<Failure, CvUploadReceipt?>> uploadCv(
-    CvUploadInput input,
-  ) async {
+    CvUploadInput input, {
+    void Function(int sentBytes, int totalBytes)? onSendProgress,
+  }) async {
     final userId = localDataSource.currentUserScopeId();
     final now = DateTime.now().millisecondsSinceEpoch;
 
@@ -574,7 +579,10 @@ class ProfileRepositoryImpl implements ProfileRepository {
     }
 
     try {
-      final receipt = await remoteDataSource.uploadCv(input);
+      final receipt = await remoteDataSource.uploadCv(
+        input,
+        onSendProgress: onSendProgress,
+      );
 
       await _saveCachedCvFile(
         input.fileName,
@@ -705,6 +713,117 @@ class ProfileRepositoryImpl implements ProfileRepository {
       return const Right(null);
     } catch (e) {
       return Left(CacheFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, CvExtractionStatusEntity>> getCvStatus(
+    int cvDocumentId,
+  ) async {
+    if (!await networkInfo.isConnected) {
+      return const Left(OfflineFailure());
+    }
+    try {
+      final status = await remoteDataSource.getCvStatus(cvDocumentId);
+      return Right(status);
+    } on ServerException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.errorModel.errorMessage,
+          fieldErrors: e.errorModel.fieldErrors,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<CvDocumentEntity>>> getCvHistory() async {
+    if (!await networkInfo.isConnected) {
+      return const Left(OfflineFailure());
+    }
+    try {
+      final documents = await remoteDataSource.getCvHistory();
+      return Right(documents);
+    } on ServerException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.errorModel.errorMessage,
+          fieldErrors: e.errorModel.fieldErrors,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, CvExtractionStatusEntity>> retryCvExtraction(
+    int cvDocumentId,
+  ) async {
+    if (!await networkInfo.isConnected) {
+      return const Left(OfflineFailure());
+    }
+    try {
+      final status = await remoteDataSource.retryCvExtraction(cvDocumentId);
+      return Right(status);
+    } on ServerException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.errorModel.errorMessage,
+          fieldErrors: e.errorModel.fieldErrors,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> verifyExtraction(CvVerifyParams params) async {
+    if (!await networkInfo.isConnected) {
+      return const Left(OfflineFailure());
+    }
+    try {
+      await remoteDataSource.verifyExtraction(params);
+      return const Right(unit);
+    } on ServerException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.errorModel.errorMessage,
+          fieldErrors: e.errorModel.fieldErrors,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, CvFileDownloadEntity>> downloadCv({
+    int? cvDocumentId,
+  }) async {
+    if (!await networkInfo.isConnected) {
+      return const Left(OfflineFailure());
+    }
+    try {
+      final file = await remoteDataSource.downloadCv(
+        cvDocumentId: cvDocumentId,
+      );
+      if (file.bytes.isEmpty) {
+        return const Left(ServerFailure(message: 'Empty CV file response'));
+      }
+      return Right(file);
+    } on ServerException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.errorModel.errorMessage,
+          fieldErrors: e.errorModel.fieldErrors,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
     }
   }
 

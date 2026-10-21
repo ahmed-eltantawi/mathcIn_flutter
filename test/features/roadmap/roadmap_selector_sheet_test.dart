@@ -6,7 +6,9 @@ import 'package:MatchIn/features/roadmap/domain/entities/roadmap_entity.dart';
 import 'package:MatchIn/features/roadmap/domain/entities/roadmap_pagination_entity.dart';
 import 'package:MatchIn/features/roadmap/domain/entities/roadmaps_params.dart';
 import 'package:MatchIn/features/roadmap/domain/repositories/roadmap_repository.dart';
+import 'package:MatchIn/features/roadmap/domain/use_cases/get_cached_roadmap_use_case.dart';
 import 'package:MatchIn/features/roadmap/domain/use_cases/get_roadmap_details_use_case.dart';
+import 'package:MatchIn/features/roadmap/domain/use_cases/sync_roadmap_ops_use_case.dart';
 import 'package:MatchIn/features/roadmap/domain/use_cases/get_roadmaps_use_case.dart';
 import 'package:MatchIn/features/roadmap/domain/use_cases/generate_roadmap_use_case.dart';
 import 'package:MatchIn/features/roadmap/domain/use_cases/refresh_roadmap_use_case.dart';
@@ -82,6 +84,8 @@ Future<RoadmapCubit> _readyCubit(FakeSheetRepository repo) async {
     getRoadmapDetailsUseCase: GetRoadmapDetailsUseCase(repository: repo),
     generateRoadmapUseCase: GenerateRoadmapUseCase(repository: repo),
     refreshRoadmapUseCase: RefreshRoadmapUseCase(repository: repo),
+    getCachedRoadmapUseCase: GetCachedRoadmapUseCase(repository: repo),
+    syncRoadmapOpsUseCase: SyncRoadmapOpsUseCase(repository: repo),
   );
   addTearDown(cubit.close);
   await cubit.loadRoadmaps();

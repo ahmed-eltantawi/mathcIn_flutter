@@ -15,4 +15,4 @@
 -keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod
 
 # Keep GetIt & Dio
--keep class com.example.MatchIn.** { *; }
+-keep class com.app.MatchIn.** { *; }

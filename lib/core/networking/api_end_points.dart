@@ -83,6 +83,27 @@ abstract class EndPoint {
   // CV Upload
   static const String cvUpload = 'cv/upload';
 
+  // CV extraction status, history, and retry (background parsing).
+  static String cvStatus(int cvDocumentId) => 'cv/status/$cvDocumentId';
+
+  static const String cvHistory = 'cv/history';
+
+  static String cvRetry(int cvDocumentId) => 'cv/retry/$cvDocumentId';
+
+  // CV extraction verification.
+  static String cvVerifyExtraction(dynamic extractionId) =>
+      'cv/extractions/$extractionId/verify';
+
+  // CV binary preview/download (native format, inline disposition).
+  static const String cvPreview = 'cv/preview';
+
+  static String cvPreviewDocument(dynamic cvDocumentId) =>
+      'cv/preview/$cvDocumentId';
+
+  static const String cvFile = 'cv/file';
+
+  static String cvFileDocument(dynamic cvDocumentId) => 'cv/file/$cvDocumentId';
+
   // Career Preferences
   static const String careerPreferences = 'candidate/career-preferences';
 
@@ -95,6 +116,10 @@ abstract class EndPoint {
 
   static String roadmapTaskComplete(int roadmapTaskId) =>
       'roadmap-tasks/$roadmapTaskId/complete';
+
+  static const String roadmapXp = 'roadmaps/xp';
+
+  static String roadmapDetailsXp(int roadmapId) => 'roadmaps/$roadmapId/xp';
 
   // Notifications
   static const String notifications = 'notifications';

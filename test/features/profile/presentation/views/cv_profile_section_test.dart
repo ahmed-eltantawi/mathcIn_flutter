@@ -6,6 +6,8 @@ import 'package:MatchIn/core/services/picked_file.dart';
 import 'package:MatchIn/core/services/services_locator.dart';
 import 'package:MatchIn/features/profile/domain/entities/candidate_profile_entity.dart';
 import 'package:MatchIn/features/profile/domain/entities/cv_document_entity.dart';
+import 'package:MatchIn/features/profile/domain/entities/cv_extraction_status_entity.dart';
+import 'package:MatchIn/features/profile/domain/entities/cv_file_download_entity.dart';
 import 'package:MatchIn/features/profile/domain/entities/cv_local_file.dart';
 import 'package:MatchIn/features/profile/domain/entities/cv_pending_upload.dart';
 import 'package:MatchIn/features/profile/domain/entities/cv_processing_status.dart';
@@ -15,10 +17,15 @@ import 'package:MatchIn/features/profile/domain/entities/profile_user_entity.dar
 import 'package:MatchIn/features/profile/domain/repositories/profile_repository.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/get_cached_candidate_profile_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/get_candidate_profile_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/download_cv_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/get_cv_history_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/get_cv_status_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/get_local_cv_file_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/get_pending_cv_upload_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/retry_cv_extraction_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/retry_pending_cv_upload_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/upload_cv_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/verify_extraction_use_case.dart';
 import 'package:MatchIn/features/profile/presentation/cubits/cv_cubit/cv_upload_cubit.dart';
 import 'package:MatchIn/features/profile/presentation/cubits/profile_cubit/profile_cubit.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/profile_screen_widgets/cv_widgets/cv_profile_section.dart';
@@ -49,8 +56,9 @@ class FakeSectionRepository extends Fake implements ProfileRepository {
 
   @override
   Future<Either<Failure, CvUploadReceipt?>> uploadCv(
-    CvUploadInput input,
-  ) async {
+    CvUploadInput input, {
+    void Function(int sentBytes, int totalBytes)? onSendProgress,
+  }) async {
     return uploadResult!;
   }
 
@@ -67,6 +75,31 @@ class FakeSectionRepository extends Fake implements ProfileRepository {
   @override
   Future<Either<Failure, CvLocalFile?>> getLocalCvFile() async {
     return const Right(null);
+  }
+
+  @override
+  Future<Either<Failure, CvExtractionStatusEntity>> getCvStatus(
+    int cvDocumentId,
+  ) async {
+    // Terminal by default: no polling timer survives into pumpAndSettle.
+    return const Right(
+      CvExtractionStatusEntity(
+        documentId: 2,
+        status: CvProcessingStatus.analyzed,
+      ),
+    );
+  }
+
+  @override
+  Future<Either<Failure, List<CvDocumentEntity>>> getCvHistory() async {
+    return const Right([]);
+  }
+
+  @override
+  Future<Either<Failure, CvFileDownloadEntity>> downloadCv({
+    int? cvDocumentId,
+  }) async {
+    return const Left(OfflineFailure());
   }
 }
 
@@ -125,6 +158,11 @@ Future<void> pumpSection(
         repository: repo,
       ),
       getLocalCvFileUseCase: GetLocalCvFileUseCase(repository: repo),
+      getCvStatusUseCase: GetCvStatusUseCase(repository: repo),
+      getCvHistoryUseCase: GetCvHistoryUseCase(repository: repo),
+      retryCvExtractionUseCase: RetryCvExtractionUseCase(repository: repo),
+      verifyExtractionUseCase: VerifyExtractionUseCase(repository: repo),
+      downloadCvUseCase: DownloadCvUseCase(repository: repo),
     ),
   );
 
@@ -186,7 +224,9 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('CV uploaded successfully'), findsOneWidget);
-      expect(repo.profileCalls, 1);
+      // Upload refresh + extraction-completion refresh (terminal status
+      // arrives on the first poll in this fake).
+      expect(repo.profileCalls, 2);
     });
 
     testWidgets('upload failure shows feedback and preserves the old CV', (
@@ -233,7 +273,8 @@ void main() {
       expect(find.text('my-cv.pdf'), findsOneWidget);
       expect(find.text('Upload your CV'), findsNothing);
       expect(find.text('View CV'), findsOneWidget);
-      expect(repo.profileCalls, 1);
+      // Upload refresh + extraction-completion refresh.
+      expect(repo.profileCalls, 2);
     });
 
     testWidgets('persisted CV without a filename still shows uploaded UI', (

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:MatchIn/core/errors/error_model.dart';
 import 'package:MatchIn/core/errors/exceptions.dart';
 import 'package:MatchIn/core/networking/api_consumer.dart';
@@ -39,6 +41,7 @@ class FakeApiConsumer implements ApiConsumer {
     Map<String, dynamic>? queryParameters,
     Object? data,
     bool isFormData = false,
+    void Function(int sentBytes, int totalBytes)? onSendProgress,
   }) async {
     if (getError != null) throw getError!;
     lastPostPath = path;
@@ -66,6 +69,14 @@ class FakeApiConsumer implements ApiConsumer {
     if (getError != null) throw getError!;
     return patchResponse ?? getResponse;
   }
+
+  @override
+  Future<({Uint8List bytes, String? fileName, String? mimeType})> downloadBytes(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    throw UnimplementedError();
+  }
 }
 
 void main() {
@@ -74,8 +85,9 @@ void main() {
 
   setUp(() {
     fakeApiConsumer = FakeApiConsumer();
-    remoteDataSource =
-        ApplicationsRemoteDataSourceImpl(apiConsumer: fakeApiConsumer);
+    remoteDataSource = ApplicationsRemoteDataSourceImpl(
+      apiConsumer: fakeApiConsumer,
+    );
   });
 
   group('ApplicationsRemoteDataSourceImpl Unit Tests', () {
@@ -156,24 +168,23 @@ void main() {
       );
     });
 
-    test('applyToJob omits unset optional fields instead of inventing them',
-        () async {
-      fakeApiConsumer.postResponse = {
-        'status': 'success',
-        'data': {
-          'id': '11',
-          'type': 'applications',
-          'attributes': {'status': 'applied'},
-        },
-      };
+    test(
+      'applyToJob omits unset optional fields instead of inventing them',
+      () async {
+        fakeApiConsumer.postResponse = {
+          'status': 'success',
+          'data': {
+            'id': '11',
+            'type': 'applications',
+            'attributes': {'status': 'applied'},
+          },
+        };
 
-      await remoteDataSource.applyToJob(jobId: 7);
+        await remoteDataSource.applyToJob(jobId: 7);
 
-      expect(
-        fakeApiConsumer.lastPostData,
-        equals({'job_post_id': 7}),
-      );
-    });
+        expect(fakeApiConsumer.lastPostData, equals({'job_post_id': 7}));
+      },
+    );
 
     test('withdrawApplication returns updated ApplicationModel', () async {
       fakeApiConsumer.postResponse = {

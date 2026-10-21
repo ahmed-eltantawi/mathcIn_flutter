@@ -7,6 +7,7 @@ import 'package:MatchIn/features/roadmap/domain/entities/roadmap_entity.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/roadmap_cubit/roadmap_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/skill_task_cubit/skill_task_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/treasure_cubit/treasure_cubit.dart';
+import 'package:MatchIn/features/roadmap/presentation/manager/xp_cubit/xp_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/utils/roadmap_node_mapper.dart';
 import 'package:MatchIn/features/roadmap/presentation/widgets/roadmap_content_widget.dart';
 import 'package:MatchIn/features/roadmap/presentation/widgets/generate_roadmap_sheet.dart';
@@ -44,6 +45,8 @@ class RoadmapViewBody extends StatelessWidget {
               context,
               details: state.details,
               rewardedAdXp: state.rewardedAdXp,
+              isOffline: state.isOffline,
+              pendingOpsCount: state.pendingOpsCount,
             );
           case RoadmapGenerating():
             if (state.details == null) {
@@ -53,6 +56,8 @@ class RoadmapViewBody extends StatelessWidget {
               context,
               details: state.details!,
               rewardedAdXp: state.rewardedAdXp,
+              isOffline: false,
+              pendingOpsCount: 0,
             );
           case RoadmapGenerateFailure():
             if (state.details == null) return _emptyView(context);
@@ -60,6 +65,8 @@ class RoadmapViewBody extends StatelessWidget {
               context,
               details: state.details!,
               rewardedAdXp: state.rewardedAdXp,
+              isOffline: false,
+              pendingOpsCount: 0,
             );
           case RoadmapAiRefreshing():
             if (state.details == null) {
@@ -69,6 +76,8 @@ class RoadmapViewBody extends StatelessWidget {
               context,
               details: state.details!,
               rewardedAdXp: state.rewardedAdXp,
+              isOffline: false,
+              pendingOpsCount: 0,
             );
           case RoadmapAiRefreshFailure():
             if (state.details == null) return _emptyView(context);
@@ -76,6 +85,8 @@ class RoadmapViewBody extends StatelessWidget {
               context,
               details: state.details!,
               rewardedAdXp: state.rewardedAdXp,
+              isOffline: false,
+              pendingOpsCount: 0,
             );
           case RoadmapFailure():
             return AppErrorWidget(
@@ -125,31 +136,93 @@ class RoadmapViewBody extends StatelessWidget {
     BuildContext context, {
     required RoadmapEntity details,
     required int rewardedAdXp,
+    required bool isOffline,
+    required int pendingOpsCount,
   }) {
     final locale = S.of(context);
     final mapped = RoadmapNodeMapper.mapMilestones(
       details.milestones,
       durationLabel: (hours) => locale.estimatedHours(hours),
     );
+    // Empty/malformed payloads never crash: a proper localized empty
+    // state replaces the winding path only when no valid nodes exist.
+    if (mapped.isEmpty) return _emptyView(context);
     return Column(
       children: [
         _selectorBar(context, details),
+        if (isOffline || pendingOpsCount > 0)
+          _pendingSyncBanner(context, pendingOpsCount),
         Expanded(
           child: BlocBuilder<TreasureCubit, TreasureState>(
             builder: (context, treasureState) {
-              final collectedTreasures = treasureState is TreasureLoaded
+              // The ledger is scoped per roadmap; ignore ledgers that
+              // belong to a previously selected roadmap.
+              final collectedTreasures =
+                  treasureState is TreasureLoaded &&
+                      treasureState.roadmapId == details.id
                   ? treasureState.collectedTreasures
                   : <int>{};
 
-              return RoadmapContentWidget(
-                nodes: mapped,
-                collectedTreasures: collectedTreasures,
-                rewardedAdXp: rewardedAdXp,
+              return BlocBuilder<RoadmapXpCubit, RoadmapXpState>(
+                builder: (context, xpState) {
+                  return RoadmapContentWidget(
+                    nodes: mapped,
+                    collectedTreasures: collectedTreasures,
+                    rewardedAdXp: rewardedAdXp,
+                    candidateXp: xpState is XpLoaded
+                        ? xpState.candidateXp
+                        : null,
+                  );
+                },
               );
             },
           ),
         ),
       ],
+    );
+  }
+
+  /// Non-blocking cached-data/pending-sync banner. Valid cached nodes
+  /// stay visible underneath; the retry action replays the durable queue
+  /// in the foreground (safe manual path alongside background sync).
+  Widget _pendingSyncBanner(BuildContext context, int pendingOpsCount) {
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+    final locale = S.of(context);
+    return Container(
+      margin: EdgeInsets.fromLTRB(16.w, 0, 16.w, 8.h),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+      decoration: BoxDecoration(
+        color: colors.surfaceContainerHighest.withValues(alpha: 0.6),
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            Icons.cloud_off_rounded,
+            size: 16.r,
+            color: colors.onSurfaceVariant,
+          ),
+          SizedBox(width: 8.w),
+          Expanded(
+            child: Text(
+              locale.offlineStatusShowingSaved,
+              style: theme.textTheme.bodySmall?.copyWith(
+                fontSize: 12.sp,
+                color: colors.onSurfaceVariant,
+                fontWeight: FontWeight.w600,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          if (pendingOpsCount > 0)
+            TextButton(
+              onPressed: () => context.read<RoadmapCubit>().syncPending(),
+              child: Text('${locale.retry} ($pendingOpsCount)'),
+            ),
+        ],
+      ),
     );
   }
 

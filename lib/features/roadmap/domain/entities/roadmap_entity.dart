@@ -24,6 +24,30 @@ class RoadmapEntity extends Equatable {
   final List<RoadmapMilestone> milestones;
   final String? createdAt;
 
+  RoadmapEntity copyWith({
+    int? id,
+    int? candidateId,
+    String? targetRole,
+    String? title,
+    String? description,
+    String? status,
+    double? completionPercentage,
+    List<RoadmapMilestone>? milestones,
+    String? createdAt,
+  }) {
+    return RoadmapEntity(
+      id: id ?? this.id,
+      candidateId: candidateId ?? this.candidateId,
+      targetRole: targetRole ?? this.targetRole,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      status: status ?? this.status,
+      completionPercentage: completionPercentage ?? this.completionPercentage,
+      milestones: milestones ?? this.milestones,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
   @override
   List<Object?> get props => [
     id,

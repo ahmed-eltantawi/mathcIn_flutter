@@ -20,6 +20,7 @@ class _RecordingApiConsumer extends Fake implements ApiConsumer {
     Map<String, dynamic>? queryParameters,
     Object? data,
     bool isFormData = false,
+    void Function(int sentBytes, int totalBytes)? onSendProgress,
   }) async {
     postCalls++;
     throw UnimplementedError();

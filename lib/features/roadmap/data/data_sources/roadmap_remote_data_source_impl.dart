@@ -1,9 +1,13 @@
 import 'package:MatchIn/core/networking/api_consumer.dart';
 import 'package:MatchIn/core/networking/api_end_points.dart';
 import 'package:MatchIn/features/roadmap/data/data_sources/roadmap_remote_data_source.dart';
+import 'package:MatchIn/features/roadmap/data/models/award_xp_response_model.dart';
+import 'package:MatchIn/features/roadmap/data/models/candidate_xp_model.dart';
 import 'package:MatchIn/features/roadmap/data/models/roadmap_model.dart';
 import 'package:MatchIn/features/roadmap/data/models/roadmap_pagination_model.dart';
 import 'package:MatchIn/features/roadmap/data/models/roadmap_task_model.dart';
+import 'package:MatchIn/features/roadmap/data/models/roadmap_xp_metrics_model.dart';
+import 'package:MatchIn/features/roadmap/domain/entities/award_xp_params.dart';
 import 'package:MatchIn/features/roadmap/domain/entities/complete_roadmap_task_params.dart';
 import 'package:MatchIn/features/roadmap/domain/entities/generate_roadmap_params.dart';
 import 'package:MatchIn/features/roadmap/domain/entities/refresh_roadmap_params.dart';
@@ -124,5 +128,61 @@ class RoadmapRemoteDataSourceImpl implements RoadmapRemoteDataSource {
     }
 
     return RoadmapModel.fromJson(data);
+  }
+
+  @override
+  Future<CandidateXpModel> getCandidateXp({int? roadmapId}) async {
+    final response = await apiConsumer.get(
+      EndPoint.roadmapXp,
+      queryParameters: roadmapId == null ? null : {'roadmap_id': roadmapId},
+    );
+
+    if (response is! Map<String, dynamic>) {
+      throw const FormatException('Invalid candidate XP response format');
+    }
+
+    final data = response['data'];
+    if (data is! Map<String, dynamic>) {
+      throw const FormatException('Invalid candidate XP data format');
+    }
+
+    return CandidateXpModel.fromJson(data);
+  }
+
+  @override
+  Future<RoadmapXpMetricsModel> getRoadmapXp(int roadmapId) async {
+    final response = await apiConsumer.get(
+      EndPoint.roadmapDetailsXp(roadmapId),
+    );
+
+    if (response is! Map<String, dynamic>) {
+      throw const FormatException('Invalid roadmap XP response format');
+    }
+
+    final data = response['data'];
+    if (data is! Map<String, dynamic>) {
+      throw const FormatException('Invalid roadmap XP data format');
+    }
+
+    return RoadmapXpMetricsModel.fromJson(data);
+  }
+
+  @override
+  Future<AwardXpResponseModel> awardXp(AwardXpParams params) async {
+    final response = await apiConsumer.patch(
+      EndPoint.roadmapXp,
+      data: params.toJson(),
+    );
+
+    if (response is! Map<String, dynamic>) {
+      throw const FormatException('Invalid award XP response format');
+    }
+
+    final data = response['data'];
+    if (data is! Map<String, dynamic>) {
+      throw const FormatException('Invalid award XP data format');
+    }
+
+    return AwardXpResponseModel.fromJson(data);
   }
 }

@@ -48,1178 +48,947 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-    "aFewMoreQuestions": MessageLookupByLibrary.simpleMessage(
-      "A few more questions",
-    ),
-    "academicHistory": MessageLookupByLibrary.simpleMessage("Academic History"),
-    "academicHistoryDescription": MessageLookupByLibrary.simpleMessage(
-      "Keep your education history accurate and up to date.",
-    ),
-    "accessYourPathways": MessageLookupByLibrary.simpleMessage(
-      "Access your verified career pathways and opportunities.",
-    ),
-    "account": MessageLookupByLibrary.simpleMessage("ACCOUNT"),
-    "adDismissedNoReward": MessageLookupByLibrary.simpleMessage(
-      "Ad closed early. No XP awarded.",
-    ),
-    "adNotAvailable": MessageLookupByLibrary.simpleMessage("Ad Not Available"),
-    "adRewardSuccess": MessageLookupByLibrary.simpleMessage(
-      "🎉 Congratulations! You earned +50 XP!",
-    ),
-    "add": MessageLookupByLibrary.simpleMessage("Add"),
-    "addExperience": MessageLookupByLibrary.simpleMessage("Add experience"),
-    "addNewEducation": MessageLookupByLibrary.simpleMessage(
-      "Add New Education",
-    ),
-    "addNewExperience": MessageLookupByLibrary.simpleMessage(
-      "Add New Experience",
-    ),
-    "addNewProject": MessageLookupByLibrary.simpleMessage(" Add New Project"),
-    "addNewSkill": MessageLookupByLibrary.simpleMessage("Add New Skill"),
-    "addProjectDetails": MessageLookupByLibrary.simpleMessage(
-      "Add Project Details",
-    ),
-    "addSkill": MessageLookupByLibrary.simpleMessage("+ Add skill"),
-    "addSkillHint": MessageLookupByLibrary.simpleMessage(
-      "Add a skill (e.g. Docker, GraphQL)",
-    ),
-    "addedManually": MessageLookupByLibrary.simpleMessage("Added manually"),
-    "aiAssistant": MessageLookupByLibrary.simpleMessage("AI Assistant"),
-    "aiAssistantSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Ask me about jobs, resumes, interviews, or your career.",
-    ),
-    "aiIsTyping": MessageLookupByLibrary.simpleMessage("AI is thinking..."),
-    "all": MessageLookupByLibrary.simpleMessage("All"),
-    "allMarkedAsRead": MessageLookupByLibrary.simpleMessage(
-      "All notifications marked as read",
-    ),
-    "almostComplete": MessageLookupByLibrary.simpleMessage("Almost complete"),
-    "alreadyHaveAccount": MessageLookupByLibrary.simpleMessage(
-      "Already have an account?",
-    ),
-    "alreadySubmitted": MessageLookupByLibrary.simpleMessage(
-      "Already submitted",
-    ),
-    "analyzed": MessageLookupByLibrary.simpleMessage("Analyzed"),
-    "analyzing": MessageLookupByLibrary.simpleMessage("Analyzing"),
-    "answerEmployerQuestions": MessageLookupByLibrary.simpleMessage(
-      "Answer the employer’s questions to continue your application.",
-    ),
-    "application": MessageLookupByLibrary.simpleMessage("Application"),
-    "applicationDetails": MessageLookupByLibrary.simpleMessage(
-      "Application Details",
-    ),
-    "applicationMethod": MessageLookupByLibrary.simpleMessage(
-      "Application method",
-    ),
-    "applicationQuestions": MessageLookupByLibrary.simpleMessage(
-      "Application Questions",
-    ),
-    "applicationStatus": MessageLookupByLibrary.simpleMessage(
-      "Application status",
-    ),
-    "applicationStatusDescription": MessageLookupByLibrary.simpleMessage(
-      "Your TechNova application is now In Review.",
-    ),
-    "applicationStatusUpdated": MessageLookupByLibrary.simpleMessage(
-      "Application status updated",
-    ),
-    "applicationSubmitted": MessageLookupByLibrary.simpleMessage(
-      "Application submitted!",
-    ),
-    "applicationSubmittedSuccessfully": MessageLookupByLibrary.simpleMessage(
-      "Application submitted successfully.",
-    ),
-    "applicationTimeline": MessageLookupByLibrary.simpleMessage(
-      "Application Timeline",
-    ),
-    "applications": MessageLookupByLibrary.simpleMessage("Applications"),
-    "applied": MessageLookupByLibrary.simpleMessage("Applied"),
-    "applyForRole": MessageLookupByLibrary.simpleMessage("Apply for Role"),
-    "applyNow": MessageLookupByLibrary.simpleMessage("Apply Now"),
-    "applyingFor": MessageLookupByLibrary.simpleMessage("Applying for"),
-    "arabic": MessageLookupByLibrary.simpleMessage("Arabic"),
-    "archived": MessageLookupByLibrary.simpleMessage("Archived"),
-    "askAnything": MessageLookupByLibrary.simpleMessage("Ask anything..."),
-    "askCareerMentorDescription": MessageLookupByLibrary.simpleMessage(
-      "Ask your Career Mentor what to focus on while you wait.",
-    ),
-    "askChatBot": MessageLookupByLibrary.simpleMessage("Ask Chat Bot"),
-    "at": MessageLookupByLibrary.simpleMessage("at"),
-    "avatarUploadUnavailable": MessageLookupByLibrary.simpleMessage(
-      "Avatar upload is not available yet.",
-    ),
-    "back": MessageLookupByLibrary.simpleMessage("Back"),
-    "backOnline": MessageLookupByLibrary.simpleMessage("Back online"),
-    "backToJobs": MessageLookupByLibrary.simpleMessage("Back to Jobs"),
-    "backToLogin": MessageLookupByLibrary.simpleMessage("Back to login"),
-    "buildMyRoadmap": MessageLookupByLibrary.simpleMessage("Build My Roadmap"),
-    "cairo": MessageLookupByLibrary.simpleMessage("Cairo"),
-    "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
-    "candidateProfile": MessageLookupByLibrary.simpleMessage(
-      "Candidate Profile",
-    ),
-    "careerGoal": MessageLookupByLibrary.simpleMessage("Career Goal"),
-    "careerGoalHelper": MessageLookupByLibrary.simpleMessage(
-      "Tell us briefly what you want to achieve next.",
-    ),
-    "careerGoalHint": MessageLookupByLibrary.simpleMessage(
-      "e.g. Gain professional Flutter experience and contribute to high-impact mobile products.",
-    ),
-    "careerGroundingContext": MessageLookupByLibrary.simpleMessage(
-      "Grounded on your verified skills, experience, and target roles.",
-    ),
-    "careerGrowth": MessageLookupByLibrary.simpleMessage("Career Growth"),
-    "careerGrowthPrompt": MessageLookupByLibrary.simpleMessage(
-      "What steps should I take to become a Senior Mobile Architect?",
-    ),
-    "careerMentor": MessageLookupByLibrary.simpleMessage("AI Career Mentor"),
-    "careerPreferences": MessageLookupByLibrary.simpleMessage(
-      "Career Preferences",
-    ),
-    "careerPreferencesIntroDescription": MessageLookupByLibrary.simpleMessage(
-      "Your preferences help SkillMatch recommend more relevant opportunities.",
-    ),
-    "careerPreferencesIntroTitle": MessageLookupByLibrary.simpleMessage(
-      "Tell us what you\'re looking for",
-    ),
-    "careerPreferencesSavedSuccessfully": MessageLookupByLibrary.simpleMessage(
-      "Career preferences saved successfully",
-    ),
-    "careerProfile": MessageLookupByLibrary.simpleMessage("Career profile"),
-    "change": MessageLookupByLibrary.simpleMessage("Change"),
-    "changeLanguageLater": MessageLookupByLibrary.simpleMessage(
-      "You can change it later in Settings",
-    ),
-    "changePassword": MessageLookupByLibrary.simpleMessage("Change Password"),
-    "changePasswordDescription": MessageLookupByLibrary.simpleMessage(
-      "Your new password must be at least 8 characters long and contain uppercase, lowercase, number, and special character.",
-    ),
-    "changePasswordSuccess": MessageLookupByLibrary.simpleMessage(
-      "Password changed successfully",
-    ),
-    "changePhoto": MessageLookupByLibrary.simpleMessage("Change photo"),
-    "characters": MessageLookupByLibrary.simpleMessage("characters"),
-    "chatBot": MessageLookupByLibrary.simpleMessage("Chat Bot"),
-    "chatHistory": MessageLookupByLibrary.simpleMessage("Chat History"),
-    "chatSuggestion1": MessageLookupByLibrary.simpleMessage(
-      "Explain Flutter BLoC pattern",
-    ),
-    "chatSuggestion2": MessageLookupByLibrary.simpleMessage(
-      "Help me prepare for an interview",
-    ),
-    "chatSuggestion3": MessageLookupByLibrary.simpleMessage(
-      "Review my career roadmap",
-    ),
-    "chatSuggestion4": MessageLookupByLibrary.simpleMessage(
-      "What skills should I learn next?",
-    ),
-    "chooseAnother": MessageLookupByLibrary.simpleMessage("Choose Another"),
-    "chooseFile": MessageLookupByLibrary.simpleMessage("Choose File"),
-    "chooseFromGallery": MessageLookupByLibrary.simpleMessage(
-      "Choose from Gallery",
-    ),
-    "chooseStrongPassword": MessageLookupByLibrary.simpleMessage(
-      "Choose a strong password you haven’t used before.",
-    ),
-    "chooseYourLanguage": MessageLookupByLibrary.simpleMessage(
-      "Choose your language",
-    ),
-    "city": MessageLookupByLibrary.simpleMessage("City"),
-    "clear": MessageLookupByLibrary.simpleMessage("Clear"),
-    "clearAllChats": MessageLookupByLibrary.simpleMessage("Clear All Chats"),
-    "company": MessageLookupByLibrary.simpleMessage("Company"),
-    "companyHint": MessageLookupByLibrary.simpleMessage(
-      "e.g. Studio Craft Ltd.",
-    ),
-    "completeProfilePrompt": MessageLookupByLibrary.simpleMessage(
-      "Complete your profile to start adding your education, experience, skills, and more.",
-    ),
-    "completeRegistration": MessageLookupByLibrary.simpleMessage(
-      "Complete Registration",
-    ),
-    "completedPercentage": m0,
-    "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
-    "confirmClearAllChats": MessageLookupByLibrary.simpleMessage(
-      "Are you sure you want to clear all chats? This action cannot be undone.",
-    ),
-    "confirmDeleteChat": MessageLookupByLibrary.simpleMessage(
-      "Are you sure you want to delete this chat? This action cannot be undone.",
-    ),
-    "confirmNewPassword": MessageLookupByLibrary.simpleMessage(
-      "Confirm new password",
-    ),
-    "confirmPassword": MessageLookupByLibrary.simpleMessage("Confirm Password"),
-    "confirmPasswordHint": MessageLookupByLibrary.simpleMessage(
-      "Re-enter your password",
-    ),
-    "confirmRefresh": MessageLookupByLibrary.simpleMessage("Confirm Refresh"),
-    "connectionSlowRetrying": MessageLookupByLibrary.simpleMessage(
-      "Connection is slow. Retrying...",
-    ),
-    "contactAddressPlaceholder": MessageLookupByLibrary.simpleMessage(
-      "100 Innovation Boulevard, Tech Park, Suite 400",
-    ),
-    "contactAddressTitle": MessageLookupByLibrary.simpleMessage(
-      "Office Location",
-    ),
-    "contactEmailPlaceholder": MessageLookupByLibrary.simpleMessage(
-      "support@skillmatch.com",
-    ),
-    "contactEmailTitle": MessageLookupByLibrary.simpleMessage("Email Support"),
-    "contactHoursPlaceholder": MessageLookupByLibrary.simpleMessage(
-      "Monday - Friday, 9:00 AM - 6:00 PM",
-    ),
-    "contactHoursTitle": MessageLookupByLibrary.simpleMessage("Support Hours"),
-    "contactPhonePlaceholder": MessageLookupByLibrary.simpleMessage(
-      "+1 (555) 019-2834",
-    ),
-    "contactPhoneTitle": MessageLookupByLibrary.simpleMessage("Phone Number"),
-    "contactUs": MessageLookupByLibrary.simpleMessage("Contact Us"),
-    "contextPreview": MessageLookupByLibrary.simpleMessage("Candidate Context"),
-    "continueAsGuest": MessageLookupByLibrary.simpleMessage(
-      "Continue as Guest",
-    ),
-    "continueText": MessageLookupByLibrary.simpleMessage("Continue"),
-    "continueWithGoogle": MessageLookupByLibrary.simpleMessage(
-      "Continue with Google",
-    ),
-    "contract": MessageLookupByLibrary.simpleMessage("Contract"),
-    "copiedToClipboard": MessageLookupByLibrary.simpleMessage(
-      "Copied to clipboard",
-    ),
-    "copy": MessageLookupByLibrary.simpleMessage("Copy"),
-    "copyright": MessageLookupByLibrary.simpleMessage(
-      "© 2025 SkillMatch. All rights reserved.",
-    ),
-    "country": MessageLookupByLibrary.simpleMessage("Country"),
-    "coverNote": MessageLookupByLibrary.simpleMessage("Cover Note"),
-    "coverNoteHint": MessageLookupByLibrary.simpleMessage(
-      "Add a short message about why you’re interested in this role.",
-    ),
-    "createAccount": MessageLookupByLibrary.simpleMessage("Create Account"),
-    "createNewPassword": MessageLookupByLibrary.simpleMessage(
-      "Create a new password",
-    ),
-    "createProfile": MessageLookupByLibrary.simpleMessage("Create Profile"),
-    "csOrRelated": MessageLookupByLibrary.simpleMessage("CS or related"),
-    "currentPassword": MessageLookupByLibrary.simpleMessage("Current Password"),
-    "currentRecords": MessageLookupByLibrary.simpleMessage("Current Records"),
-    "currentStatus": MessageLookupByLibrary.simpleMessage("CURRENT STATUS"),
-    "currentlyStudyingHere": MessageLookupByLibrary.simpleMessage(
-      "Currently studying here",
-    ),
-    "currentlyWorkHere": MessageLookupByLibrary.simpleMessage(
-      "I currently work here",
-    ),
-    "cv": MessageLookupByLibrary.simpleMessage("CV"),
-    "cvAnalysisCompleted": MessageLookupByLibrary.simpleMessage(
-      "CV analysis completed",
-    ),
-    "cvAnalysisDescription": MessageLookupByLibrary.simpleMessage(
-      "We extracted 12 skills and updated your career profile.",
-    ),
-    "cvEmptyFile": MessageLookupByLibrary.simpleMessage(
-      "The selected file is empty.",
-    ),
-    "cvFileTooLarge": MessageLookupByLibrary.simpleMessage(
-      "The file is too large. Maximum size is 5 MB.",
-    ),
-    "cvPendingUpload": MessageLookupByLibrary.simpleMessage(
-      "Saved on this device — will upload when you\'re back online",
-    ),
-    "cvRefreshFailed": MessageLookupByLibrary.simpleMessage(
-      "CV uploaded, but the profile could not be refreshed.",
-    ),
-    "cvResume": MessageLookupByLibrary.simpleMessage("CV / Résumé"),
-    "cvSkillsDescription": MessageLookupByLibrary.simpleMessage(
-      "Extracted automatically from your uploaded resume.",
-    ),
-    "cvUnsupportedFileType": MessageLookupByLibrary.simpleMessage(
-      "Unsupported file type. Please choose a PDF or DOCX file.",
-    ),
-    "cvUploadNotice": MessageLookupByLibrary.simpleMessage(
-      "Next, you can upload your CV (optional).",
-    ),
-    "cvUploadRequirements": MessageLookupByLibrary.simpleMessage(
-      "PDF or DOCX • Max 5 MB",
-    ),
-    "cvUploadSuccessful": MessageLookupByLibrary.simpleMessage(
-      "CV uploaded successfully",
-    ),
-    "cvViewFailed": MessageLookupByLibrary.simpleMessage(
-      "Could not open the CV document.",
-    ),
-    "dark": MessageLookupByLibrary.simpleMessage("Dark"),
-    "dateOfBirth": MessageLookupByLibrary.simpleMessage("Date of birth"),
-    "daysAgo": m1,
-    "degree": MessageLookupByLibrary.simpleMessage("Degree"),
-    "degreeHint": MessageLookupByLibrary.simpleMessage(
-      "e.g. Master of Science, Bachelor of Arts",
-    ),
-    "delete": MessageLookupByLibrary.simpleMessage("Delete"),
-    "deleteChat": MessageLookupByLibrary.simpleMessage("Delete Chat"),
-    "deleteEducation": MessageLookupByLibrary.simpleMessage("Delete education"),
-    "deleteEducationConfirm": MessageLookupByLibrary.simpleMessage(
-      "Are you sure you want to delete this education? This action cannot be undone.",
-    ),
-    "deleteExperience": MessageLookupByLibrary.simpleMessage(
-      "Delete experience",
-    ),
-    "deleteExperienceConfirm": MessageLookupByLibrary.simpleMessage(
-      "Are you sure you want to delete this experience? This action cannot be undone.",
-    ),
-    "deleteProject": MessageLookupByLibrary.simpleMessage("Delete project"),
-    "deleteProjectConfirm": MessageLookupByLibrary.simpleMessage(
-      "Are you sure you want to delete this project? This action cannot be undone.",
-    ),
-    "description": MessageLookupByLibrary.simpleMessage("Description"),
-    "draft": MessageLookupByLibrary.simpleMessage("Draft"),
-    "edit": MessageLookupByLibrary.simpleMessage("Edit"),
-    "editEducation": MessageLookupByLibrary.simpleMessage("Edit education"),
-    "editExperience": MessageLookupByLibrary.simpleMessage("Edit experience"),
-    "editNote": MessageLookupByLibrary.simpleMessage("Edit Note"),
-    "editProfile": MessageLookupByLibrary.simpleMessage("Edit Profile"),
-    "editProjectDetails": MessageLookupByLibrary.simpleMessage(
-      "Edit Project Details",
-    ),
-    "editTitle": MessageLookupByLibrary.simpleMessage("Rename Chat"),
-    "editorialScore": MessageLookupByLibrary.simpleMessage("EDITORIAL SCORE"),
-    "education": MessageLookupByLibrary.simpleMessage("Education"),
-    "educationDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
-      "Education deleted successfully",
-    ),
-    "educationSavedSuccessfully": MessageLookupByLibrary.simpleMessage(
-      "Education saved successfully",
-    ),
-    "email": MessageLookupByLibrary.simpleMessage("Email"),
-    "emailAddress": MessageLookupByLibrary.simpleMessage("Email Address"),
-    "emailHint": MessageLookupByLibrary.simpleMessage(
-      "Enter your email address",
-    ),
-    "employmentType": MessageLookupByLibrary.simpleMessage("Employment type"),
-    "endDate": MessageLookupByLibrary.simpleMessage("End Date"),
-    "endYearExpected": MessageLookupByLibrary.simpleMessage(
-      "End year (or expected)",
-    ),
-    "english": MessageLookupByLibrary.simpleMessage("English"),
-    "enterNewTitle": MessageLookupByLibrary.simpleMessage("Enter new title"),
-    "enterVerificationCode": MessageLookupByLibrary.simpleMessage(
-      "Enter verification code",
-    ),
-    "entryLevel": MessageLookupByLibrary.simpleMessage("Entry Level"),
-    "estimatedHours": m2,
-    "excellent": MessageLookupByLibrary.simpleMessage("Excellent"),
-    "expectedMonthlySalary": MessageLookupByLibrary.simpleMessage(
-      "What is your expected monthly salary?",
-    ),
-    "expectedSalary": MessageLookupByLibrary.simpleMessage("Expected salary"),
-    "experience": MessageLookupByLibrary.simpleMessage("Experience"),
-    "experienceCompletenessHint": MessageLookupByLibrary.simpleMessage(
-      "Add more details about your responsibilities and impact. Specific achievements increase recruiter discovery.",
-    ),
-    "experienceDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
-      "Experience deleted successfully",
-    ),
-    "experienceLevel": MessageLookupByLibrary.simpleMessage("Experience Level"),
-    "experienceManagementDescription": MessageLookupByLibrary.simpleMessage(
-      "Add details about your responsibilities and impact.",
-    ),
-    "experienceSavedSuccessfully": MessageLookupByLibrary.simpleMessage(
-      "Experience saved successfully",
-    ),
-    "experienceWithBloc": MessageLookupByLibrary.simpleMessage(
-      "Experience with Bloc",
-    ),
-    "failed": MessageLookupByLibrary.simpleMessage("Failed"),
-    "failedToLoadAd": MessageLookupByLibrary.simpleMessage("Failed to Load Ad"),
-    "failedToSendMessage": MessageLookupByLibrary.simpleMessage(
-      "Failed to send message. Please try again.",
-    ),
-    "fairMatch": MessageLookupByLibrary.simpleMessage("Fair Match"),
-    "female": MessageLookupByLibrary.simpleMessage("Female"),
-    "fieldOfStudy": MessageLookupByLibrary.simpleMessage("Field of Study"),
-    "fieldOfStudyHint": MessageLookupByLibrary.simpleMessage(
-      "e.g. Software Engineering, Information Systems",
-    ),
-    "filterAll": MessageLookupByLibrary.simpleMessage("All"),
-    "filterUnread": MessageLookupByLibrary.simpleMessage("Unread"),
-    "finalConfirmation": MessageLookupByLibrary.simpleMessage(
-      "Final Confirmation",
-    ),
-    "finalDecisionAndOnboarding": MessageLookupByLibrary.simpleMessage(
-      "Final decision and onboarding",
-    ),
-    "flexible": MessageLookupByLibrary.simpleMessage("Flexible"),
-    "flutterOpportunities": MessageLookupByLibrary.simpleMessage(
-      "We found 8 Flutter opportunities based on your skills.",
-    ),
-    "focusOnTwoHighPrioritySkills": MessageLookupByLibrary.simpleMessage(
-      "Focus on 2 high-priority skills",
-    ),
-    "followUs": MessageLookupByLibrary.simpleMessage("Follow Us"),
-    "followUsDescription": MessageLookupByLibrary.simpleMessage(
-      "Connect with us across our social channels to stay updated with opportunities and news.",
-    ),
-    "forgotPassword": MessageLookupByLibrary.simpleMessage("Forgot password?"),
-    "foundInCvAndProjects": MessageLookupByLibrary.simpleMessage(
-      "Found in your CV and projects",
-    ),
-    "foundInYourSkills": MessageLookupByLibrary.simpleMessage(
-      "Found in your skills",
-    ),
-    "fourHoursAgo": MessageLookupByLibrary.simpleMessage("4 hrs ago"),
-    "freelance": MessageLookupByLibrary.simpleMessage("Freelance"),
-    "fromCv": MessageLookupByLibrary.simpleMessage("From CV"),
-    "fromYourCv": MessageLookupByLibrary.simpleMessage("From your CV"),
-    "fullName": MessageLookupByLibrary.simpleMessage("Full Name"),
-    "fullTime": MessageLookupByLibrary.simpleMessage("Full-time"),
-    "gender": MessageLookupByLibrary.simpleMessage("Gender"),
-    "generateRoadmap": MessageLookupByLibrary.simpleMessage("Generate Roadmap"),
-    "generatingRoadmap": MessageLookupByLibrary.simpleMessage(
-      "Generating roadmap...",
-    ),
-    "generationFailed": MessageLookupByLibrary.simpleMessage(
-      "Roadmap generation failed",
-    ),
-    "generationSuccess": MessageLookupByLibrary.simpleMessage(
-      "Roadmap generated successfully",
-    ),
-    "getExplainableMatch": MessageLookupByLibrary.simpleMessage(
-      "Get an explainable match",
-    ),
-    "getExplainableMatchDesc": MessageLookupByLibrary.simpleMessage(
-      "Not just a score — strengths, gaps, and clear next actions.",
-    ),
-    "getInTouch": MessageLookupByLibrary.simpleMessage("Get in touch with us"),
-    "getStarted": MessageLookupByLibrary.simpleMessage("Get Started"),
-    "github": MessageLookupByLibrary.simpleMessage("GitHub"),
-    "githubRepositoryUrl": MessageLookupByLibrary.simpleMessage(
-      "GitHub Repository URL",
-    ),
-    "good": MessageLookupByLibrary.simpleMessage("Good"),
-    "goodMatch": MessageLookupByLibrary.simpleMessage("Good Match"),
-    "gpaHint": MessageLookupByLibrary.simpleMessage(
-      "e.g. 3.4 / 4.0 or First Class",
-    ),
-    "gpaOptional": MessageLookupByLibrary.simpleMessage("GPA (Optional)"),
-    "greetingUser": m3,
-    "guestModeMessage": MessageLookupByLibrary.simpleMessage(
-      "Please log in to access this feature.",
-    ),
-    "guestModeTitle": MessageLookupByLibrary.simpleMessage(
-      "You are in guest mode",
-    ),
-    "help": MessageLookupByLibrary.simpleMessage("Help"),
-    "helpfulAdvantage": MessageLookupByLibrary.simpleMessage(
-      "Helpful advantage",
-    ),
-    "highPriority": MessageLookupByLibrary.simpleMessage("High priority"),
-    "home": MessageLookupByLibrary.simpleMessage("Home"),
-    "hoursAgo": m4,
-    "howCanIHelpYouToday": MessageLookupByLibrary.simpleMessage(
-      "How can I help you today?",
-    ),
-    "hybrid": MessageLookupByLibrary.simpleMessage("Hybrid"),
-    "iAgreeToTerms": MessageLookupByLibrary.simpleMessage(
-      "I agree to the Terms & Privacy Policy",
-    ),
-    "imageTooLarge": MessageLookupByLibrary.simpleMessage(
-      "Image is too large. Maximum size is 5 MB.",
-    ),
-    "inReview": MessageLookupByLibrary.simpleMessage("In Review"),
-    "institutionHint": MessageLookupByLibrary.simpleMessage(
-      "Search or enter institution name",
-    ),
-    "internship": MessageLookupByLibrary.simpleMessage("Internship"),
-    "interview": MessageLookupByLibrary.simpleMessage("Interview"),
-    "interviewPrep": MessageLookupByLibrary.simpleMessage("Interview Prep"),
-    "interviewPrepPrompt": MessageLookupByLibrary.simpleMessage(
-      "What are the top technical interview questions for Dart and Flutter?",
-    ),
-    "invalidDateRange": MessageLookupByLibrary.simpleMessage(
-      "End date must be on or after the start date",
-    ),
-    "invalidImageType": MessageLookupByLibrary.simpleMessage(
-      "Unsupported image type. Use JPG, PNG, or WEBP.",
-    ),
-    "invalidJobId": MessageLookupByLibrary.simpleMessage("Invalid job ID."),
-    "invalidVerificationCode": MessageLookupByLibrary.simpleMessage(
-      "Invalid verification code",
-    ),
-    "jobDetails": MessageLookupByLibrary.simpleMessage("Job Details"),
-    "jobFitAnalysis": MessageLookupByLibrary.simpleMessage("Job Fit Analysis"),
-    "jobFitAnalysisPrompt": MessageLookupByLibrary.simpleMessage(
-      "How does MatchIn calculate my job match percentage?",
-    ),
-    "jobRequirements": MessageLookupByLibrary.simpleMessage("Job requirements"),
-    "jobTitle": MessageLookupByLibrary.simpleMessage("Job title"),
-    "jobTitleHint": MessageLookupByLibrary.simpleMessage(
-      "e.g. Lead Product Designer",
-    ),
-    "jobType": MessageLookupByLibrary.simpleMessage("Job type"),
-    "jobs": MessageLookupByLibrary.simpleMessage("Jobs"),
-    "jobsMatchDescription": MessageLookupByLibrary.simpleMessage(
-      "Explore opportunities based on your skills and career preferences.",
-    ),
-    "jobsMatchYourProfile": MessageLookupByLibrary.simpleMessage(
-      "We found jobs that match your profile",
-    ),
-    "junior": MessageLookupByLibrary.simpleMessage("Junior"),
-    "juniorFlutterDeveloper": MessageLookupByLibrary.simpleMessage(
-      "Junior Flutter Developer",
-    ),
-    "justNow": MessageLookupByLibrary.simpleMessage("Just now"),
-    "keepMeSignedIn": MessageLookupByLibrary.simpleMessage("Keep me signed in"),
-    "keepTrackerUpdated": MessageLookupByLibrary.simpleMessage(
-      "Keep your tracker updated when you hear back from the employer.",
-    ),
-    "keyAchievements": MessageLookupByLibrary.simpleMessage("Key Achievements"),
-    "keyAchievementsHelper": MessageLookupByLibrary.simpleMessage(
-      "Add measurable outcomes when possible (e.g. reduced load time by 30%).",
-    ),
-    "keyAchievementsHint": MessageLookupByLibrary.simpleMessage(
-      "e.g. Optimized database queries reducing API latency by 42%...",
-    ),
-    "language": MessageLookupByLibrary.simpleMessage("Language"),
-    "learningTasks": MessageLookupByLibrary.simpleMessage("LEARNING TASKS"),
-    "light": MessageLookupByLibrary.simpleMessage("Light"),
-    "linkedin": MessageLookupByLibrary.simpleMessage("LinkedIn"),
-    "loadMore": MessageLookupByLibrary.simpleMessage("Load More"),
-    "loadingAd": MessageLookupByLibrary.simpleMessage("Loading Ad..."),
-    "loadingNotifications": MessageLookupByLibrary.simpleMessage(
-      "Loading notifications...",
-    ),
-    "location": MessageLookupByLibrary.simpleMessage("Location"),
-    "locationHint": MessageLookupByLibrary.simpleMessage(
-      "e.g. London, UK or Cairo, Egypt",
-    ),
-    "logOut": MessageLookupByLibrary.simpleMessage("Log Out"),
-    "logOutConfirmationMessage": MessageLookupByLibrary.simpleMessage(
-      "Are you sure you want to log out of your account?",
-    ),
-    "logOutConfirmationTitle": MessageLookupByLibrary.simpleMessage("Log Out"),
-    "login": MessageLookupByLibrary.simpleMessage("Login"),
-    "loginSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Access your verified career pathways and opportunities.",
-    ),
-    "male": MessageLookupByLibrary.simpleMessage("Male"),
-    "manageAllSkills": MessageLookupByLibrary.simpleMessage(
-      "Manage all skills",
-    ),
-    "markAllAsRead": MessageLookupByLibrary.simpleMessage("Mark all as read"),
-    "markAllRead": MessageLookupByLibrary.simpleMessage("Mark all read"),
-    "markAsRead": MessageLookupByLibrary.simpleMessage("Mark as read"),
-    "match": MessageLookupByLibrary.simpleMessage("Match"),
-    "matchExplanation": MessageLookupByLibrary.simpleMessage(
-      "You’re a good fit for this role. Your Flutter and API experience match the core requirements, but testing and CI/CD are important gaps.",
-    ),
-    "matchSevenOfNine": MessageLookupByLibrary.simpleMessage(
-      "You match 7 of 9 important requirements.",
-    ),
-    "matches": MessageLookupByLibrary.simpleMessage("matches"),
-    "mentionedInJobRequirements": MessageLookupByLibrary.simpleMessage(
-      "Mentioned in job requirements",
-    ),
-    "midLevel": MessageLookupByLibrary.simpleMessage("Mid-Level"),
-    "militaryCompleted": MessageLookupByLibrary.simpleMessage("Completed"),
-    "militaryExempted": MessageLookupByLibrary.simpleMessage("Exempted"),
-    "militaryFinalExemption": MessageLookupByLibrary.simpleMessage(
-      "Final Exemption",
-    ),
-    "militaryPostponed": MessageLookupByLibrary.simpleMessage("Postponed"),
-    "militaryStatus": MessageLookupByLibrary.simpleMessage("Military Status"),
-    "minutesAgo": m5,
-    "monthYearHint": MessageLookupByLibrary.simpleMessage("MM / YYYY"),
-    "monthsAgo": m6,
-    "mostRelevant": MessageLookupByLibrary.simpleMessage("Most relevant"),
-    "multiSelect": MessageLookupByLibrary.simpleMessage("Multi-select"),
-    "myCareerRoadmap": MessageLookupByLibrary.simpleMessage(
-      "My Career Roadmap",
-    ),
-    "needHelpWithNextSteps": MessageLookupByLibrary.simpleMessage(
-      "Need help with next steps?",
-    ),
-    "needsImprovement": MessageLookupByLibrary.simpleMessage(
-      "Needs Improvement",
-    ),
-    "newChat": MessageLookupByLibrary.simpleMessage("New Chat"),
-    "newHere": MessageLookupByLibrary.simpleMessage("New here?"),
-    "newJobsMatchProfile": MessageLookupByLibrary.simpleMessage(
-      "New jobs match your profile",
-    ),
-    "newPassword": MessageLookupByLibrary.simpleMessage("New password"),
-    "next": MessageLookupByLibrary.simpleMessage("Next"),
-    "nextApplicationQuestions": MessageLookupByLibrary.simpleMessage(
-      "Next: Application questions",
-    ),
-    "niceToHave": MessageLookupByLibrary.simpleMessage("Nice to have"),
-    "noApplicationsYet": MessageLookupByLibrary.simpleMessage(
-      "No applications yet",
-    ),
-    "noConversationsYet": MessageLookupByLibrary.simpleMessage(
-      "No conversations yet",
-    ),
-    "noCoverNoteAdded": MessageLookupByLibrary.simpleMessage(
-      "No cover note added",
-    ),
-    "noEducationYet": MessageLookupByLibrary.simpleMessage(
-      "No education added yet",
-    ),
-    "noEducationYetDesc": MessageLookupByLibrary.simpleMessage(
-      "Add your first education record using the form below.",
-    ),
-    "noExperienceYet": MessageLookupByLibrary.simpleMessage(
-      "No experience added yet",
-    ),
-    "noExperienceYetDesc": MessageLookupByLibrary.simpleMessage(
-      "Add your first work experience using the form below.",
-    ),
-    "noFileSelected": MessageLookupByLibrary.simpleMessage("No file selected"),
-    "noHistoryYet": MessageLookupByLibrary.simpleMessage("No history yet"),
-    "noInternetConnection": MessageLookupByLibrary.simpleMessage(
-      "No internet connection",
-    ),
-    "noJobsFound": MessageLookupByLibrary.simpleMessage("No jobs found"),
-    "noLearningTasks": MessageLookupByLibrary.simpleMessage(
-      "No learning tasks defined for this skill yet.",
-    ),
-    "noNotifications": MessageLookupByLibrary.simpleMessage(
-      "No notifications yet",
-    ),
-    "noNotificationsDesc": MessageLookupByLibrary.simpleMessage(
-      "We\'ll let you know when important updates arrive.",
-    ),
-    "noProjectsYet": MessageLookupByLibrary.simpleMessage(
-      "No projects added yet",
-    ),
-    "noProjectsYetDesc": MessageLookupByLibrary.simpleMessage(
-      "Add your first project using the button above.",
-    ),
-    "noRoadmaps": MessageLookupByLibrary.simpleMessage("No roadmaps yet"),
-    "noSavedJobsYet": MessageLookupByLibrary.simpleMessage("No saved jobs yet"),
-    "noUnreadNotifications": MessageLookupByLibrary.simpleMessage(
-      "No unread notifications",
-    ),
-    "notNow": MessageLookupByLibrary.simpleMessage("Not now"),
-    "notes": MessageLookupByLibrary.simpleMessage("Notes"),
-    "notesHint": MessageLookupByLibrary.simpleMessage(
-      "e.g. Focus on distributed systems",
-    ),
-    "notificationMarkedAsRead": MessageLookupByLibrary.simpleMessage(
-      "Notification marked as read",
-    ),
-    "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
-    "notificationsTitle": MessageLookupByLibrary.simpleMessage("Notifications"),
-    "offer": MessageLookupByLibrary.simpleMessage("Offer"),
-    "offlineStatusShowingSaved": MessageLookupByLibrary.simpleMessage(
-      "You\'re offline. Showing saved data.",
-    ),
-    "older": MessageLookupByLibrary.simpleMessage("Older"),
-    "onSite": MessageLookupByLibrary.simpleMessage("On-site"),
-    "onboardingBullet1": MessageLookupByLibrary.simpleMessage(
-      "Upload your CV for instant AI parsing",
-    ),
-    "onboardingBullet2": MessageLookupByLibrary.simpleMessage(
-      "Select target roles and skills",
-    ),
-    "onboardingBullet3": MessageLookupByLibrary.simpleMessage(
-      "Get matched with high-fit opportunities",
-    ),
-    "ongoingProject": MessageLookupByLibrary.simpleMessage("Ongoing project"),
-    "onlyOnTrustedDevices": MessageLookupByLibrary.simpleMessage(
-      "Only on trusted devices",
-    ),
-    "openMenu": MessageLookupByLibrary.simpleMessage("Open menu"),
-    "openToOpportunitiesAnywhere": MessageLookupByLibrary.simpleMessage(
-      "I’m open to opportunities anywhere",
-    ),
-    "opportunities": MessageLookupByLibrary.simpleMessage("opportunities"),
-    "optional": MessageLookupByLibrary.simpleMessage("Optional"),
-    "or": MessageLookupByLibrary.simpleMessage("or"),
-    "otpCodeDidNotMatch": MessageLookupByLibrary.simpleMessage(
-      "That code didn\'t match. Check the message and try again.",
-    ),
-    "otpVerifying": MessageLookupByLibrary.simpleMessage("Verifying…"),
-    "partTime": MessageLookupByLibrary.simpleMessage("Part-time"),
-    "password": MessageLookupByLibrary.simpleMessage("Password"),
-    "passwordChangedSuccessDesc": MessageLookupByLibrary.simpleMessage(
-      "Your password has been changed successfully. You can now log in with your new password.",
-    ),
-    "passwordChangedSuccessfully": MessageLookupByLibrary.simpleMessage(
-      "Password changed successfully",
-    ),
-    "passwordHint": MessageLookupByLibrary.simpleMessage("Enter your password"),
-    "passwordLengthHint": MessageLookupByLibrary.simpleMessage(
-      "Use at least 8 characters.",
-    ),
-    "passwordRequirements": MessageLookupByLibrary.simpleMessage(
-      "Password requirements",
-    ),
-    "passwordsDoNotMatch": MessageLookupByLibrary.simpleMessage(
-      "Passwords do not match",
-    ),
-    "pendingEmployerScreening": MessageLookupByLibrary.simpleMessage(
-      "Pending employer screening",
-    ),
-    "personalInformation": MessageLookupByLibrary.simpleMessage(
-      "Personal Information",
-    ),
-    "phoneHint": MessageLookupByLibrary.simpleMessage(
-      "Enter your phone number",
-    ),
-    "phoneNumber": MessageLookupByLibrary.simpleMessage("Phone Number"),
-    "phoneNumberLabel": MessageLookupByLibrary.simpleMessage("Phone number"),
-    "pleaseAcceptTerms": MessageLookupByLibrary.simpleMessage(
-      "Please accept the Terms & Privacy Policy",
-    ),
-    "pleaseCheckYourInternetConnection": MessageLookupByLibrary.simpleMessage(
-      "Please check your internet connection and try again",
-    ),
-    "plus50Xp": MessageLookupByLibrary.simpleMessage("+50 XP"),
-    "popular": MessageLookupByLibrary.simpleMessage("Popular"),
-    "portfolioLinkHint": MessageLookupByLibrary.simpleMessage(
-      "https://github.com/username or portfolio",
-    ),
-    "portfolioOrProjectLink": MessageLookupByLibrary.simpleMessage(
-      "Portfolio or Project Link (Optional)",
-    ),
-    "postedTwoDaysAgo": MessageLookupByLibrary.simpleMessage(
-      "Posted 2 days ago",
-    ),
-    "preferNotToSay": MessageLookupByLibrary.simpleMessage("Prefer not to say"),
-    "preferences": MessageLookupByLibrary.simpleMessage("PREFERENCES"),
-    "preferred": MessageLookupByLibrary.simpleMessage("Preferred"),
-    "preferredLocation": MessageLookupByLibrary.simpleMessage(
-      "Preferred location",
-    ),
-    "preferredWorkMode": MessageLookupByLibrary.simpleMessage(
-      "Which work mode do you prefer?",
-    ),
-    "preferredWorkModeLabel": MessageLookupByLibrary.simpleMessage(
-      "Preferred work mode",
-    ),
-    "previewPhoto": MessageLookupByLibrary.simpleMessage("Preview Photo"),
-    "previous7Days": MessageLookupByLibrary.simpleMessage("Previous 7 days"),
-    "privacyAndSupport": MessageLookupByLibrary.simpleMessage(
-      "PRIVACY & SUPPORT",
-    ),
-    "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
-    "professionalInformation": MessageLookupByLibrary.simpleMessage(
-      "Professional Information",
-    ),
-    "professionalLinks": MessageLookupByLibrary.simpleMessage(
-      "Professional Links",
-    ),
-    "profile": MessageLookupByLibrary.simpleMessage("Profile"),
-    "profileMatchQuality": MessageLookupByLibrary.simpleMessage(
-      "Profile Match Quality",
-    ),
-    "profileSynced": MessageLookupByLibrary.simpleMessage("Profile synced"),
-    "projectDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
-      "Project deleted successfully",
-    ),
-    "projectDescriptionHelper": MessageLookupByLibrary.simpleMessage(
-      "Describe goals and tech stack",
-    ),
-    "projectDescriptionHint": MessageLookupByLibrary.simpleMessage(
-      "Describe goals, your role, and overall product purpose...",
-    ),
-    "projectName": MessageLookupByLibrary.simpleMessage("Project Name"),
-    "projectNameHint": MessageLookupByLibrary.simpleMessage(
-      "e.g. HealthTracker Companion",
-    ),
-    "projectSavedSuccessfully": MessageLookupByLibrary.simpleMessage(
-      "Project saved successfully",
-    ),
-    "projectUrl": MessageLookupByLibrary.simpleMessage("Project URL"),
-    "projects": MessageLookupByLibrary.simpleMessage("Projects"),
-    "projectsImprovementHint": MessageLookupByLibrary.simpleMessage(
-      "Add project links and measurable outcomes to strengthen your profile.",
-    ),
-    "ready": MessageLookupByLibrary.simpleMessage("Ready"),
-    "readyToFindYourNextOpportunity": MessageLookupByLibrary.simpleMessage(
-      "Ready to find your next opportunity?",
-    ),
-    "recommendedForYou": MessageLookupByLibrary.simpleMessage(
-      "Recommended for you",
-    ),
-    "recruiterReview": MessageLookupByLibrary.simpleMessage("Recruiter review"),
-    "recruiterVisibility": MessageLookupByLibrary.simpleMessage(
-      "Recruiter Visibility",
-    ),
-    "recruiterVisibilityDescription": MessageLookupByLibrary.simpleMessage(
-      "Candidates with fully detailed academic credentials receive more recruiter visibility on SkillMatch.",
-    ),
-    "refreshReasonHint": MessageLookupByLibrary.simpleMessage(
-      "What would you like to focus on?",
-    ),
-    "refreshReasonLabel": MessageLookupByLibrary.simpleMessage(
-      "Reason for refresh (optional)",
-    ),
-    "refreshRoadmap": MessageLookupByLibrary.simpleMessage("Refresh Roadmap"),
-    "refreshRoadmapDescription": MessageLookupByLibrary.simpleMessage(
-      "Refresh the selected roadmap using the latest available information.",
-    ),
-    "refreshRoadmapWarning": MessageLookupByLibrary.simpleMessage(
-      "Refreshing may change your roadmap milestones and tasks.",
-    ),
-    "refreshingRoadmap": MessageLookupByLibrary.simpleMessage(
-      "Refreshing roadmap...",
-    ),
-    "registerWithGoogle": MessageLookupByLibrary.simpleMessage(
-      "Continue with Google",
-    ),
-    "relatedSkills": MessageLookupByLibrary.simpleMessage("Related skills"),
-    "relatedSkillsHint": MessageLookupByLibrary.simpleMessage(
-      "Type related skills",
-    ),
-    "remote": MessageLookupByLibrary.simpleMessage("Remote"),
-    "replaceCv": MessageLookupByLibrary.simpleMessage("Replace CV"),
-    "reqAtLeastOneNumber": MessageLookupByLibrary.simpleMessage(
-      "At least one number",
-    ),
-    "reqAtLeastOneSpecial": MessageLookupByLibrary.simpleMessage(
-      "At least one special character",
-    ),
-    "reqMin8Chars": MessageLookupByLibrary.simpleMessage(
-      "At least 8 characters",
-    ),
-    "required": MessageLookupByLibrary.simpleMessage("Required"),
-    "requiredForThisRole": MessageLookupByLibrary.simpleMessage(
-      "Required for this role",
-    ),
-    "requiredSkills": MessageLookupByLibrary.simpleMessage("Required skills"),
-    "resendCode": MessageLookupByLibrary.simpleMessage("Resend Code"),
-    "resendCodeIn": MessageLookupByLibrary.simpleMessage("Resend code in"),
-    "resetPassword": MessageLookupByLibrary.simpleMessage("Reset password"),
-    "responsibilitiesDescription": MessageLookupByLibrary.simpleMessage(
-      "Responsibilities / Description",
-    ),
-    "responsibilitiesHint": MessageLookupByLibrary.simpleMessage(
-      "Outline your primary duties, notable team initiatives, and concrete impact.",
-    ),
-    "resumeOptimization": MessageLookupByLibrary.simpleMessage(
-      "Resume Optimization",
-    ),
-    "resumeOptimizationPrompt": MessageLookupByLibrary.simpleMessage(
-      "How can I optimize my CV for Flutter developer roles?",
-    ),
-    "retry": MessageLookupByLibrary.simpleMessage("Retry"),
-    "reviewApplication": MessageLookupByLibrary.simpleMessage(
-      "Review Application",
-    ),
-    "reviewBeforeSubmission": MessageLookupByLibrary.simpleMessage(
-      "You will review all details before final submission.",
-    ),
-    "reviewBeforeSubmitting": MessageLookupByLibrary.simpleMessage(
-      "Review before submitting",
-    ),
-    "reviewBeforeSubmittingDescription": MessageLookupByLibrary.simpleMessage(
-      "Make sure your information is correct. You can go back and edit anything before submitting.",
-    ),
-    "reviewCv": MessageLookupByLibrary.simpleMessage("Review CV"),
-    "reviewInformationBeforeContinuing": MessageLookupByLibrary.simpleMessage(
-      "Review your information before continuing.",
-    ),
-    "rewardEarned": MessageLookupByLibrary.simpleMessage("Reward Earned!"),
-    "roadMap": MessageLookupByLibrary.simpleMessage("RoadMap"),
-    "roadmap": MessageLookupByLibrary.simpleMessage("Roadmap"),
-    "roadmapAiRefreshFailed": MessageLookupByLibrary.simpleMessage(
-      "Failed to refresh roadmap",
-    ),
-    "roadmapBasedOnJob": MessageLookupByLibrary.simpleMessage(
-      "Your roadmap will be based on this job and your current skills.",
-    ),
-    "roadmapMatchDescription": MessageLookupByLibrary.simpleMessage(
-      "Build a personalized roadmap to work on Testing and CI/CD and become a stronger candidate for this role.",
-    ),
-    "roadmapRefreshFailed": MessageLookupByLibrary.simpleMessage(
-      "Couldn\'t refresh roadmap details",
-    ),
-    "roadmapRefreshedSuccessfully": MessageLookupByLibrary.simpleMessage(
-      "Roadmap refreshed successfully",
-    ),
-    "roadmapSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Track your progress and build essential skills",
-    ),
-    "roadmapUpdated": MessageLookupByLibrary.simpleMessage(
-      "Your roadmap has been updated",
-    ),
-    "salaryHelper": MessageLookupByLibrary.simpleMessage(
-      "Enter your expected gross monthly salary.",
-    ),
-    "salaryHint": MessageLookupByLibrary.simpleMessage("e.g. 24,000"),
-    "save": MessageLookupByLibrary.simpleMessage("Save"),
-    "saveChanges": MessageLookupByLibrary.simpleMessage("Save Changes"),
-    "saveEducation": MessageLookupByLibrary.simpleMessage("Save education"),
-    "saveExperience": MessageLookupByLibrary.simpleMessage("Save experience"),
-    "saveJobFailed": MessageLookupByLibrary.simpleMessage(
-      "Couldn\'t save the job. Please try again.",
-    ),
-    "savePreferences": MessageLookupByLibrary.simpleMessage("Save Preferences"),
-    "saveProject": MessageLookupByLibrary.simpleMessage("Save Project"),
-    "savedJobs": MessageLookupByLibrary.simpleMessage("Saved Jobs"),
-    "schoolUniversity": MessageLookupByLibrary.simpleMessage(
-      "School / University",
-    ),
-    "searchJobs": MessageLookupByLibrary.simpleMessage(
-      "Search jobs, companies, or skills",
-    ),
-    "searchJobsTitle": MessageLookupByLibrary.simpleMessage("Search Jobs"),
-    "secondsSuffix": MessageLookupByLibrary.simpleMessage("s"),
-    "sectionCompleteness": MessageLookupByLibrary.simpleMessage(
-      "Section completeness",
-    ),
-    "secureProtectionText": MessageLookupByLibrary.simpleMessage(
-      "SkillMatch securely protects your verified credentials and application histories.",
-    ),
-    "securityBadge": MessageLookupByLibrary.simpleMessage(
-      "SkillMatch securely protects your verified credentials and application histories.",
-    ),
-    "seeAll": MessageLookupByLibrary.simpleMessage("See all"),
-    "select": MessageLookupByLibrary.simpleMessage("Select"),
-    "selectLanguage": MessageLookupByLibrary.simpleMessage("Select Language"),
-    "selectRoadmap": MessageLookupByLibrary.simpleMessage("Select Roadmap"),
-    "selectTheme": MessageLookupByLibrary.simpleMessage("Select Theme"),
-    "sendMessage": MessageLookupByLibrary.simpleMessage("Send message"),
-    "sendingMessage": MessageLookupByLibrary.simpleMessage(
-      "Sending message...",
-    ),
-    "senior": MessageLookupByLibrary.simpleMessage("Senior"),
-    "sentCodeToEmail": MessageLookupByLibrary.simpleMessage(
-      "We sent a 6-digit code to your email.",
-    ),
-    "serverError": MessageLookupByLibrary.simpleMessage(
-      "There was a problem with the server.",
-    ),
-    "settings": MessageLookupByLibrary.simpleMessage("Settings"),
-    "setupCareerProfile": MessageLookupByLibrary.simpleMessage(
-      "Setup your career profile",
-    ),
-    "setupCareerProfileDesc": MessageLookupByLibrary.simpleMessage(
-      "Tell us about your skills and goals to get better recommendations.",
-    ),
-    "shareJobLinkUnavailable": MessageLookupByLibrary.simpleMessage(
-      "Job link is not available for this job.",
-    ),
-    "showingCachedNotifications": MessageLookupByLibrary.simpleMessage(
-      "Showing cached notifications (Offline)",
-    ),
-    "signUpWithGoogle": MessageLookupByLibrary.simpleMessage(
-      "Sign up with Google",
-    ),
-    "skillCompleted": MessageLookupByLibrary.simpleMessage("Skill Completed"),
-    "skillInProgress": MessageLookupByLibrary.simpleMessage(
-      "Skill In Progress",
-    ),
-    "skillMatchPortal": MessageLookupByLibrary.simpleMessage(
-      "SKILLMATCH PORTAL",
-    ),
-    "skillmatchPortal": MessageLookupByLibrary.simpleMessage(
-      "SKILLMATCH PORTAL",
-    ),
-    "skills": MessageLookupByLibrary.simpleMessage("Skills"),
-    "skillsCount": m7,
-    "skillsLabel": MessageLookupByLibrary.simpleMessage("Skills:"),
-    "skillsProfile": MessageLookupByLibrary.simpleMessage("Skills Profile"),
-    "skillsProfileDescription": MessageLookupByLibrary.simpleMessage(
-      "Skills help SkillMatch understand which opportunities fit you.",
-    ),
-    "skillsToImprove": MessageLookupByLibrary.simpleMessage(
-      "Skills to improve",
-    ),
-    "skip": MessageLookupByLibrary.simpleMessage("Skip"),
-    "smartCareerDiscoveryPlatform": MessageLookupByLibrary.simpleMessage(
-      "Smart Career Discovery",
-    ),
-    "somethingWentWrong": MessageLookupByLibrary.simpleMessage(
-      "Something went wrong",
-    ),
-    "sortedByRecent": MessageLookupByLibrary.simpleMessage("Sorted by recent"),
-    "source": MessageLookupByLibrary.simpleMessage("Source"),
-    "start": MessageLookupByLibrary.simpleMessage("Start"),
-    "startDate": MessageLookupByLibrary.simpleMessage("Start Date"),
-    "startFirstConversation": MessageLookupByLibrary.simpleMessage(
-      "Start your first conversation below",
-    ),
-    "startYear": MessageLookupByLibrary.simpleMessage("Start year"),
-    "stateGovernorate": MessageLookupByLibrary.simpleMessage(
-      "State / Governorate",
-    ),
-    "stepFourConfirmation": MessageLookupByLibrary.simpleMessage(
-      "STEP 4 OF 4 • CONFIRMATION",
-    ),
-    "stepOf": MessageLookupByLibrary.simpleMessage("of"),
-    "stepThreeOfThree": MessageLookupByLibrary.simpleMessage("Step 3 of 3"),
-    "strongMatch": MessageLookupByLibrary.simpleMessage("Strong Match"),
-    "student": MessageLookupByLibrary.simpleMessage("Student"),
-    "submissionConfirmationNotice": MessageLookupByLibrary.simpleMessage(
-      "By submitting, you confirm that the information provided is accurate and complies with our community guidelines.",
-    ),
-    "submitApplication": MessageLookupByLibrary.simpleMessage(
-      "Submit Application",
-    ),
-    "submittedJustNow": MessageLookupByLibrary.simpleMessage(
-      "Submitted just now",
-    ),
-    "submittedSuccessfully": MessageLookupByLibrary.simpleMessage(
-      "has been submitted successfully.",
-    ),
-    "submittedTodayTime": MessageLookupByLibrary.simpleMessage(
-      "Submitted today at 10:32 AM",
-    ),
-    "suggestedPrompts": MessageLookupByLibrary.simpleMessage(
-      "Suggested Prompts",
-    ),
-    "suggestedQuestions": MessageLookupByLibrary.simpleMessage(
-      "Suggested Questions",
-    ),
-    "suggestedRoles": MessageLookupByLibrary.simpleMessage("Suggested Roles"),
-    "suggestions": MessageLookupByLibrary.simpleMessage("Suggestions"),
-    "supportingDocumentOptional": MessageLookupByLibrary.simpleMessage(
-      "Supporting Document (Optional)",
-    ),
-    "system": MessageLookupByLibrary.simpleMessage("System"),
-    "takePhoto": MessageLookupByLibrary.simpleMessage("Take Photo"),
-    "targetRole": MessageLookupByLibrary.simpleMessage("Target role"),
-    "targetRoleHint": MessageLookupByLibrary.simpleMessage(
-      "e.g. Backend Engineer",
-    ),
-    "taskCompleted": MessageLookupByLibrary.simpleMessage(
-      "Task completed successfully",
-    ),
-    "taskCompletionFailed": MessageLookupByLibrary.simpleMessage(
-      "Task completion failed",
-    ),
-    "tasksCompleted": MessageLookupByLibrary.simpleMessage("Tasks completed"),
-    "technicalCultureFitStage": MessageLookupByLibrary.simpleMessage(
-      "Technical & culture fit stage",
-    ),
-    "technologies": MessageLookupByLibrary.simpleMessage("Technologies"),
-    "technologiesHint": MessageLookupByLibrary.simpleMessage(
-      "e.g. TypeScript, GraphQL",
-    ),
-    "technologiesSkills": MessageLookupByLibrary.simpleMessage(
-      "Technologies / Skills",
-    ),
-    "technologiesWorkedWith": MessageLookupByLibrary.simpleMessage(
-      "Which technologies have you worked with?",
-    ),
-    "tenMinutesAgo": MessageLookupByLibrary.simpleMessage("10 min ago"),
-    "termsAndConditions": MessageLookupByLibrary.simpleMessage(
-      "Terms & Conditions",
-    ),
-    "testingPrioritySkill": MessageLookupByLibrary.simpleMessage(
-      "Testing is now one of your highest-priority skills.",
-    ),
-    "theme": MessageLookupByLibrary.simpleMessage("Theme"),
-    "timeline": MessageLookupByLibrary.simpleMessage("Timeline"),
-    "today": MessageLookupByLibrary.simpleMessage("TODAY"),
-    "todayAtTime": MessageLookupByLibrary.simpleMessage("Today • 10:32 AM"),
-    "trackApplication": MessageLookupByLibrary.simpleMessage(
-      "Track Application",
-    ),
-    "trackingApplication": MessageLookupByLibrary.simpleMessage(
-      "Tracking Application",
-    ),
-    "tryAgain": MessageLookupByLibrary.simpleMessage("Try Again"),
-    "turnCvIntoOpportunities": MessageLookupByLibrary.simpleMessage(
-      "Turn your CV into opportunities",
-    ),
-    "turnCvIntoOpportunitiesDesc": MessageLookupByLibrary.simpleMessage(
-      "See why a job fits you, what you’re missing, and what to do next.",
-    ),
-    "twoDaysAgo": MessageLookupByLibrary.simpleMessage("2 days ago"),
-    "twoHoursAgo": MessageLookupByLibrary.simpleMessage("2 hrs ago"),
-    "updateStatus": MessageLookupByLibrary.simpleMessage("Update Status"),
-    "updatedFiveDaysAgo": MessageLookupByLibrary.simpleMessage(
-      "Updated 5 days ago",
-    ),
-    "updatedJustNow": MessageLookupByLibrary.simpleMessage("Updated just now"),
-    "uploadFile": MessageLookupByLibrary.simpleMessage("Upload File"),
-    "uploadFileHint": MessageLookupByLibrary.simpleMessage(
-      "PDF or DOCX • Max 5 MB",
-    ),
-    "uploadYourCv": MessageLookupByLibrary.simpleMessage("Upload your CV"),
-    "uploaded": MessageLookupByLibrary.simpleMessage("Uploaded"),
-    "use8PlusCharacters": MessageLookupByLibrary.simpleMessage(
-      "Use 8+ characters",
-    ),
-    "useDifferentEmail": MessageLookupByLibrary.simpleMessage(
-      "Use a different email",
-    ),
-    "usedInTwoProjects": MessageLookupByLibrary.simpleMessage(
-      "Used in 2 projects",
-    ),
-    "userFallback": MessageLookupByLibrary.simpleMessage("User"),
-    "userFieldsNotSavedYet": MessageLookupByLibrary.simpleMessage(
-      "Name and phone number can\'t be saved yet and were not sent to the server.",
-    ),
-    "verificationCodeLabel": MessageLookupByLibrary.simpleMessage(
-      "VERIFICATION CODE",
-    ),
-    "verifiedQualifications": MessageLookupByLibrary.simpleMessage(
-      "Verified Qualifications",
-    ),
-    "verify": MessageLookupByLibrary.simpleMessage("Verify"),
-    "view": MessageLookupByLibrary.simpleMessage("View"),
-    "viewApplication": MessageLookupByLibrary.simpleMessage("View Application"),
-    "viewCv": MessageLookupByLibrary.simpleMessage("View CV"),
-    "viewFullJobDescription": MessageLookupByLibrary.simpleMessage(
-      "View full job description",
-    ),
-    "viewGithubRepository": MessageLookupByLibrary.simpleMessage(
-      "View GitHub repository",
-    ),
-    "viewJob": MessageLookupByLibrary.simpleMessage("View Job"),
-    "viewJobs": MessageLookupByLibrary.simpleMessage("View Jobs"),
-    "viewLiveProject": MessageLookupByLibrary.simpleMessage(
-      "View live project",
-    ),
-    "viewMatches": MessageLookupByLibrary.simpleMessage("View Matches"),
-    "viewProject": MessageLookupByLibrary.simpleMessage("View project"),
-    "viewRoadmap": MessageLookupByLibrary.simpleMessage("View Roadmap"),
-    "viewTimeline": MessageLookupByLibrary.simpleMessage("View timeline"),
-    "waitingForRecruiterResponse": MessageLookupByLibrary.simpleMessage(
-      "Waiting for a response from the recruiter.",
-    ),
-    "wantToImproveYourMatch": MessageLookupByLibrary.simpleMessage(
-      "Want to improve your match?",
-    ),
-    "watchAd": MessageLookupByLibrary.simpleMessage("Watch Ad"),
-    "watchAdEarnXp": MessageLookupByLibrary.simpleMessage(
-      "Watch Ad & Earn 50 XP",
-    ),
-    "weeksAgo": m8,
-    "welcomeBack": MessageLookupByLibrary.simpleMessage("Welcome Back!"),
-    "whatYouAlreadyMatch": MessageLookupByLibrary.simpleMessage(
-      "What you already match",
-    ),
-    "whyInterestedHint": MessageLookupByLibrary.simpleMessage(
-      "Describe what excites you about TechNova and this position...",
-    ),
-    "whyInterestedRequired": MessageLookupByLibrary.simpleMessage(
-      "Why are you interested in this role? *",
-    ),
-    "withdrawApplication": MessageLookupByLibrary.simpleMessage(
-      "Withdraw Application",
-    ),
-    "withinThreeBusinessDays": MessageLookupByLibrary.simpleMessage(
-      "Within 3 business days",
-    ),
-    "workMode": MessageLookupByLibrary.simpleMessage("Work mode"),
-    "yearsAgo": m9,
-    "yesterday": MessageLookupByLibrary.simpleMessage("YESTERDAY"),
-    "yesterdayTime": MessageLookupByLibrary.simpleMessage(
-      "Yesterday • 3:45 PM",
-    ),
-    "yourApplicationFor": MessageLookupByLibrary.simpleMessage(
-      "Your application for",
-    ),
-    "yourInformation": MessageLookupByLibrary.simpleMessage("Your Information"),
-    "yourMatch": MessageLookupByLibrary.simpleMessage("Your Match"),
-    "zeroToTwoYears": MessageLookupByLibrary.simpleMessage("0–2 years"),
-    "zeroToTwoYearsExp": MessageLookupByLibrary.simpleMessage("0–2 yrs exp"),
-  };
+        "aFewMoreQuestions":
+            MessageLookupByLibrary.simpleMessage("A few more questions"),
+        "academicHistory":
+            MessageLookupByLibrary.simpleMessage("Academic History"),
+        "academicHistoryDescription": MessageLookupByLibrary.simpleMessage(
+            "Keep your education history accurate and up to date."),
+        "accessYourPathways": MessageLookupByLibrary.simpleMessage(
+            "Access your verified career pathways and opportunities."),
+        "account": MessageLookupByLibrary.simpleMessage("ACCOUNT"),
+        "adDismissedNoReward": MessageLookupByLibrary.simpleMessage(
+            "Ad closed early. No XP awarded."),
+        "adNotAvailable":
+            MessageLookupByLibrary.simpleMessage("Ad Not Available"),
+        "adRewardSuccess": MessageLookupByLibrary.simpleMessage(
+            "🎉 Congratulations! You earned +50 XP!"),
+        "add": MessageLookupByLibrary.simpleMessage("Add"),
+        "addExperience": MessageLookupByLibrary.simpleMessage("Add experience"),
+        "addNewEducation":
+            MessageLookupByLibrary.simpleMessage("Add New Education"),
+        "addNewExperience":
+            MessageLookupByLibrary.simpleMessage("Add New Experience"),
+        "addNewProject":
+            MessageLookupByLibrary.simpleMessage(" Add New Project"),
+        "addNewSkill": MessageLookupByLibrary.simpleMessage("Add New Skill"),
+        "addProjectDetails":
+            MessageLookupByLibrary.simpleMessage("Add Project Details"),
+        "addSkill": MessageLookupByLibrary.simpleMessage("+ Add skill"),
+        "addSkillHint": MessageLookupByLibrary.simpleMessage(
+            "Add a skill (e.g. Docker, GraphQL)"),
+        "addedManually": MessageLookupByLibrary.simpleMessage("Added manually"),
+        "aiAssistant": MessageLookupByLibrary.simpleMessage("AI Assistant"),
+        "aiAssistantSubtitle": MessageLookupByLibrary.simpleMessage(
+            "Ask me about jobs, resumes, interviews, or your career."),
+        "aiIsTyping": MessageLookupByLibrary.simpleMessage("AI is thinking..."),
+        "all": MessageLookupByLibrary.simpleMessage("All"),
+        "allMarkedAsRead": MessageLookupByLibrary.simpleMessage(
+            "All notifications marked as read"),
+        "almostComplete":
+            MessageLookupByLibrary.simpleMessage("Almost complete"),
+        "alreadyHaveAccount":
+            MessageLookupByLibrary.simpleMessage("Already have an account?"),
+        "alreadySubmitted":
+            MessageLookupByLibrary.simpleMessage("Already submitted"),
+        "analyzed": MessageLookupByLibrary.simpleMessage("Analyzed"),
+        "analyzing": MessageLookupByLibrary.simpleMessage("Analyzing"),
+        "answerEmployerQuestions": MessageLookupByLibrary.simpleMessage(
+            "Answer the employer’s questions to continue your application."),
+        "application": MessageLookupByLibrary.simpleMessage("Application"),
+        "applicationDetails":
+            MessageLookupByLibrary.simpleMessage("Application Details"),
+        "applicationMethod":
+            MessageLookupByLibrary.simpleMessage("Application method"),
+        "applicationQuestions":
+            MessageLookupByLibrary.simpleMessage("Application Questions"),
+        "applicationStatus":
+            MessageLookupByLibrary.simpleMessage("Application status"),
+        "applicationStatusDescription": MessageLookupByLibrary.simpleMessage(
+            "Your TechNova application is now In Review."),
+        "applicationStatusUpdated":
+            MessageLookupByLibrary.simpleMessage("Application status updated"),
+        "applicationSubmitted":
+            MessageLookupByLibrary.simpleMessage("Application submitted!"),
+        "applicationSubmittedSuccessfully":
+            MessageLookupByLibrary.simpleMessage(
+                "Application submitted successfully."),
+        "applicationTimeline":
+            MessageLookupByLibrary.simpleMessage("Application Timeline"),
+        "applications": MessageLookupByLibrary.simpleMessage("Applications"),
+        "applied": MessageLookupByLibrary.simpleMessage("Applied"),
+        "applyForRole": MessageLookupByLibrary.simpleMessage("Apply for Role"),
+        "applyNow": MessageLookupByLibrary.simpleMessage("Apply Now"),
+        "applyingFor": MessageLookupByLibrary.simpleMessage("Applying for"),
+        "arabic": MessageLookupByLibrary.simpleMessage("Arabic"),
+        "archived": MessageLookupByLibrary.simpleMessage("Archived"),
+        "askAnything": MessageLookupByLibrary.simpleMessage("Ask anything..."),
+        "askCareerMentorDescription": MessageLookupByLibrary.simpleMessage(
+            "Ask your Career Mentor what to focus on while you wait."),
+        "askChatBot": MessageLookupByLibrary.simpleMessage("Ask Chat Bot"),
+        "at": MessageLookupByLibrary.simpleMessage("at"),
+        "avatarUploadUnavailable": MessageLookupByLibrary.simpleMessage(
+            "Avatar upload is not available yet."),
+        "back": MessageLookupByLibrary.simpleMessage("Back"),
+        "backOnline": MessageLookupByLibrary.simpleMessage("Back online"),
+        "backToJobs": MessageLookupByLibrary.simpleMessage("Back to Jobs"),
+        "backToLogin": MessageLookupByLibrary.simpleMessage("Back to login"),
+        "buildMyRoadmap":
+            MessageLookupByLibrary.simpleMessage("Build My Roadmap"),
+        "cairo": MessageLookupByLibrary.simpleMessage("Cairo"),
+        "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "candidateProfile":
+            MessageLookupByLibrary.simpleMessage("Candidate Profile"),
+        "careerGoal": MessageLookupByLibrary.simpleMessage("Career Goal"),
+        "careerGoalHelper": MessageLookupByLibrary.simpleMessage(
+            "Tell us briefly what you want to achieve next."),
+        "careerGoalHint": MessageLookupByLibrary.simpleMessage(
+            "e.g. Gain professional Flutter experience and contribute to high-impact mobile products."),
+        "careerGroundingContext": MessageLookupByLibrary.simpleMessage(
+            "Grounded on your verified skills, experience, and target roles."),
+        "careerGrowth": MessageLookupByLibrary.simpleMessage("Career Growth"),
+        "careerGrowthPrompt": MessageLookupByLibrary.simpleMessage(
+            "What steps should I take to become a Senior Mobile Architect?"),
+        "careerMentor":
+            MessageLookupByLibrary.simpleMessage("AI Career Mentor"),
+        "careerPreferences":
+            MessageLookupByLibrary.simpleMessage("Career Preferences"),
+        "careerPreferencesIntroDescription": MessageLookupByLibrary.simpleMessage(
+            "Your preferences help SkillMatch recommend more relevant opportunities."),
+        "careerPreferencesIntroTitle": MessageLookupByLibrary.simpleMessage(
+            "Tell us what you\'re looking for"),
+        "careerPreferencesSavedSuccessfully":
+            MessageLookupByLibrary.simpleMessage(
+                "Career preferences saved successfully"),
+        "careerProfile": MessageLookupByLibrary.simpleMessage("Career profile"),
+        "change": MessageLookupByLibrary.simpleMessage("Change"),
+        "changeLanguageLater": MessageLookupByLibrary.simpleMessage(
+            "You can change it later in Settings"),
+        "changePassword":
+            MessageLookupByLibrary.simpleMessage("Change Password"),
+        "changePasswordDescription": MessageLookupByLibrary.simpleMessage(
+            "Your new password must be at least 8 characters long and contain uppercase, lowercase, number, and special character."),
+        "changePasswordSuccess": MessageLookupByLibrary.simpleMessage(
+            "Password changed successfully"),
+        "changePhoto": MessageLookupByLibrary.simpleMessage("Change photo"),
+        "characters": MessageLookupByLibrary.simpleMessage("characters"),
+        "chatBot": MessageLookupByLibrary.simpleMessage("Chat Bot"),
+        "chatHistory": MessageLookupByLibrary.simpleMessage("Chat History"),
+        "chatSuggestion1": MessageLookupByLibrary.simpleMessage(
+            "Explain Flutter BLoC pattern"),
+        "chatSuggestion2": MessageLookupByLibrary.simpleMessage(
+            "Help me prepare for an interview"),
+        "chatSuggestion3":
+            MessageLookupByLibrary.simpleMessage("Review my career roadmap"),
+        "chatSuggestion4": MessageLookupByLibrary.simpleMessage(
+            "What skills should I learn next?"),
+        "chooseAnother": MessageLookupByLibrary.simpleMessage("Choose Another"),
+        "chooseFile": MessageLookupByLibrary.simpleMessage("Choose File"),
+        "chooseFromGallery":
+            MessageLookupByLibrary.simpleMessage("Choose from Gallery"),
+        "chooseStrongPassword": MessageLookupByLibrary.simpleMessage(
+            "Choose a strong password you haven’t used before."),
+        "chooseYourLanguage":
+            MessageLookupByLibrary.simpleMessage("Choose your language"),
+        "city": MessageLookupByLibrary.simpleMessage("City"),
+        "clear": MessageLookupByLibrary.simpleMessage("Clear"),
+        "clearAllChats":
+            MessageLookupByLibrary.simpleMessage("Clear All Chats"),
+        "company": MessageLookupByLibrary.simpleMessage("Company"),
+        "companyHint":
+            MessageLookupByLibrary.simpleMessage("e.g. Studio Craft Ltd."),
+        "completeProfilePrompt": MessageLookupByLibrary.simpleMessage(
+            "Complete your profile to start adding your education, experience, skills, and more."),
+        "completeRegistration":
+            MessageLookupByLibrary.simpleMessage("Complete Registration"),
+        "completedPercentage": m0,
+        "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
+        "confirmClearAllChats": MessageLookupByLibrary.simpleMessage(
+            "Are you sure you want to clear all chats? This action cannot be undone."),
+        "confirmDeleteChat": MessageLookupByLibrary.simpleMessage(
+            "Are you sure you want to delete this chat? This action cannot be undone."),
+        "confirmNewPassword":
+            MessageLookupByLibrary.simpleMessage("Confirm new password"),
+        "confirmPassword":
+            MessageLookupByLibrary.simpleMessage("Confirm Password"),
+        "confirmPasswordHint":
+            MessageLookupByLibrary.simpleMessage("Re-enter your password"),
+        "confirmRefresh":
+            MessageLookupByLibrary.simpleMessage("Confirm Refresh"),
+        "connectionSlowRetrying": MessageLookupByLibrary.simpleMessage(
+            "Connection is slow. Retrying..."),
+        "contactAddressPlaceholder": MessageLookupByLibrary.simpleMessage(
+            "100 Innovation Boulevard, Tech Park, Suite 400"),
+        "contactAddressTitle":
+            MessageLookupByLibrary.simpleMessage("Office Location"),
+        "contactEmailPlaceholder":
+            MessageLookupByLibrary.simpleMessage("support@skillmatch.com"),
+        "contactEmailTitle":
+            MessageLookupByLibrary.simpleMessage("Email Support"),
+        "contactHoursPlaceholder": MessageLookupByLibrary.simpleMessage(
+            "Monday - Friday, 9:00 AM - 6:00 PM"),
+        "contactHoursTitle":
+            MessageLookupByLibrary.simpleMessage("Support Hours"),
+        "contactPhonePlaceholder":
+            MessageLookupByLibrary.simpleMessage("+1 (555) 019-2834"),
+        "contactPhoneTitle":
+            MessageLookupByLibrary.simpleMessage("Phone Number"),
+        "contactUs": MessageLookupByLibrary.simpleMessage("Contact Us"),
+        "contextPreview":
+            MessageLookupByLibrary.simpleMessage("Candidate Context"),
+        "continueAsGuest":
+            MessageLookupByLibrary.simpleMessage("Continue as Guest"),
+        "continueText": MessageLookupByLibrary.simpleMessage("Continue"),
+        "continueWithGoogle":
+            MessageLookupByLibrary.simpleMessage("Continue with Google"),
+        "contract": MessageLookupByLibrary.simpleMessage("Contract"),
+        "copiedToClipboard":
+            MessageLookupByLibrary.simpleMessage("Copied to clipboard"),
+        "copy": MessageLookupByLibrary.simpleMessage("Copy"),
+        "copyright": MessageLookupByLibrary.simpleMessage(
+            "© 2025 SkillMatch. All rights reserved."),
+        "country": MessageLookupByLibrary.simpleMessage("Country"),
+        "coverNote": MessageLookupByLibrary.simpleMessage("Cover Note"),
+        "coverNoteHint": MessageLookupByLibrary.simpleMessage(
+            "Add a short message about why you’re interested in this role."),
+        "createAccount": MessageLookupByLibrary.simpleMessage("Create Account"),
+        "createNewPassword":
+            MessageLookupByLibrary.simpleMessage("Create a new password"),
+        "createProfile": MessageLookupByLibrary.simpleMessage("Create Profile"),
+        "csOrRelated": MessageLookupByLibrary.simpleMessage("CS or related"),
+        "currentPassword":
+            MessageLookupByLibrary.simpleMessage("Current Password"),
+        "currentRecords":
+            MessageLookupByLibrary.simpleMessage("Current Records"),
+        "currentStatus": MessageLookupByLibrary.simpleMessage("CURRENT STATUS"),
+        "currentlyStudyingHere":
+            MessageLookupByLibrary.simpleMessage("Currently studying here"),
+        "currentlyWorkHere":
+            MessageLookupByLibrary.simpleMessage("I currently work here"),
+        "cv": MessageLookupByLibrary.simpleMessage("CV"),
+        "cvAnalysisCompleted":
+            MessageLookupByLibrary.simpleMessage("CV analysis completed"),
+        "cvAnalysisDescription": MessageLookupByLibrary.simpleMessage(
+            "We extracted 12 skills and updated your career profile."),
+        "cvEmptyFile":
+            MessageLookupByLibrary.simpleMessage("The selected file is empty."),
+        "cvFileTooLarge": MessageLookupByLibrary.simpleMessage(
+            "The file is too large. Maximum size is 5 MB."),
+        "cvPendingUpload": MessageLookupByLibrary.simpleMessage(
+            "Saved on this device — will upload when you\'re back online"),
+        "cvRefreshFailed": MessageLookupByLibrary.simpleMessage(
+            "CV uploaded, but the profile could not be refreshed."),
+        "cvResume": MessageLookupByLibrary.simpleMessage("CV / Résumé"),
+        "cvSkillsDescription": MessageLookupByLibrary.simpleMessage(
+            "Extracted automatically from your uploaded resume."),
+        "cvUnsupportedFileType": MessageLookupByLibrary.simpleMessage(
+            "Unsupported file type. Please choose a PDF or DOCX file."),
+        "cvUploadNotice": MessageLookupByLibrary.simpleMessage(
+            "Next, you can upload your CV (optional)."),
+        "cvUploadRequirements":
+            MessageLookupByLibrary.simpleMessage("PDF or DOCX • Max 5 MB"),
+        "cvUploadSuccessful":
+            MessageLookupByLibrary.simpleMessage("CV uploaded successfully"),
+        "cvViewFailed": MessageLookupByLibrary.simpleMessage(
+            "Could not open the CV document."),
+        "dark": MessageLookupByLibrary.simpleMessage("Dark"),
+        "dateOfBirth": MessageLookupByLibrary.simpleMessage("Date of birth"),
+        "daysAgo": m1,
+        "degree": MessageLookupByLibrary.simpleMessage("Degree"),
+        "degreeHint": MessageLookupByLibrary.simpleMessage(
+            "e.g. Master of Science, Bachelor of Arts"),
+        "delete": MessageLookupByLibrary.simpleMessage("Delete"),
+        "deleteChat": MessageLookupByLibrary.simpleMessage("Delete Chat"),
+        "deleteEducation":
+            MessageLookupByLibrary.simpleMessage("Delete education"),
+        "deleteEducationConfirm": MessageLookupByLibrary.simpleMessage(
+            "Are you sure you want to delete this education? This action cannot be undone."),
+        "deleteExperience":
+            MessageLookupByLibrary.simpleMessage("Delete experience"),
+        "deleteExperienceConfirm": MessageLookupByLibrary.simpleMessage(
+            "Are you sure you want to delete this experience? This action cannot be undone."),
+        "deleteProject": MessageLookupByLibrary.simpleMessage("Delete project"),
+        "deleteProjectConfirm": MessageLookupByLibrary.simpleMessage(
+            "Are you sure you want to delete this project? This action cannot be undone."),
+        "description": MessageLookupByLibrary.simpleMessage("Description"),
+        "draft": MessageLookupByLibrary.simpleMessage("Draft"),
+        "edit": MessageLookupByLibrary.simpleMessage("Edit"),
+        "editEducation": MessageLookupByLibrary.simpleMessage("Edit education"),
+        "editExperience":
+            MessageLookupByLibrary.simpleMessage("Edit experience"),
+        "editNote": MessageLookupByLibrary.simpleMessage("Edit Note"),
+        "editProfile": MessageLookupByLibrary.simpleMessage("Edit Profile"),
+        "editProjectDetails":
+            MessageLookupByLibrary.simpleMessage("Edit Project Details"),
+        "editTitle": MessageLookupByLibrary.simpleMessage("Rename Chat"),
+        "editorialScore":
+            MessageLookupByLibrary.simpleMessage("EDITORIAL SCORE"),
+        "education": MessageLookupByLibrary.simpleMessage("Education"),
+        "educationDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
+            "Education deleted successfully"),
+        "educationSavedSuccessfully": MessageLookupByLibrary.simpleMessage(
+            "Education saved successfully"),
+        "email": MessageLookupByLibrary.simpleMessage("Email"),
+        "emailAddress": MessageLookupByLibrary.simpleMessage("Email Address"),
+        "emailHint":
+            MessageLookupByLibrary.simpleMessage("Enter your email address"),
+        "employmentType":
+            MessageLookupByLibrary.simpleMessage("Employment type"),
+        "endDate": MessageLookupByLibrary.simpleMessage("End Date"),
+        "endYearExpected":
+            MessageLookupByLibrary.simpleMessage("End year (or expected)"),
+        "english": MessageLookupByLibrary.simpleMessage("English"),
+        "enterNewTitle":
+            MessageLookupByLibrary.simpleMessage("Enter new title"),
+        "enterVerificationCode":
+            MessageLookupByLibrary.simpleMessage("Enter verification code"),
+        "entryLevel": MessageLookupByLibrary.simpleMessage("Entry Level"),
+        "estimatedHours": m2,
+        "excellent": MessageLookupByLibrary.simpleMessage("Excellent"),
+        "expectedMonthlySalary": MessageLookupByLibrary.simpleMessage(
+            "What is your expected monthly salary?"),
+        "expectedSalary":
+            MessageLookupByLibrary.simpleMessage("Expected salary"),
+        "experience": MessageLookupByLibrary.simpleMessage("Experience"),
+        "experienceCompletenessHint": MessageLookupByLibrary.simpleMessage(
+            "Add more details about your responsibilities and impact. Specific achievements increase recruiter discovery."),
+        "experienceDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
+            "Experience deleted successfully"),
+        "experienceLevel":
+            MessageLookupByLibrary.simpleMessage("Experience Level"),
+        "experienceManagementDescription": MessageLookupByLibrary.simpleMessage(
+            "Add details about your responsibilities and impact."),
+        "experienceSavedSuccessfully": MessageLookupByLibrary.simpleMessage(
+            "Experience saved successfully"),
+        "experienceWithBloc":
+            MessageLookupByLibrary.simpleMessage("Experience with Bloc"),
+        "failed": MessageLookupByLibrary.simpleMessage("Failed"),
+        "failedToLoadAd":
+            MessageLookupByLibrary.simpleMessage("Failed to Load Ad"),
+        "failedToSendMessage": MessageLookupByLibrary.simpleMessage(
+            "Failed to send message. Please try again."),
+        "fairMatch": MessageLookupByLibrary.simpleMessage("Fair Match"),
+        "female": MessageLookupByLibrary.simpleMessage("Female"),
+        "fieldOfStudy": MessageLookupByLibrary.simpleMessage("Field of Study"),
+        "fieldOfStudyHint": MessageLookupByLibrary.simpleMessage(
+            "e.g. Software Engineering, Information Systems"),
+        "filterAll": MessageLookupByLibrary.simpleMessage("All"),
+        "filterUnread": MessageLookupByLibrary.simpleMessage("Unread"),
+        "finalConfirmation":
+            MessageLookupByLibrary.simpleMessage("Final Confirmation"),
+        "finalDecisionAndOnboarding": MessageLookupByLibrary.simpleMessage(
+            "Final decision and onboarding"),
+        "flexible": MessageLookupByLibrary.simpleMessage("Flexible"),
+        "flutterOpportunities": MessageLookupByLibrary.simpleMessage(
+            "We found 8 Flutter opportunities based on your skills."),
+        "focusOnTwoHighPrioritySkills": MessageLookupByLibrary.simpleMessage(
+            "Focus on 2 high-priority skills"),
+        "followUs": MessageLookupByLibrary.simpleMessage("Follow Us"),
+        "followUsDescription": MessageLookupByLibrary.simpleMessage(
+            "Connect with us across our social channels to stay updated with opportunities and news."),
+        "forgotPassword":
+            MessageLookupByLibrary.simpleMessage("Forgot password?"),
+        "foundInCvAndProjects": MessageLookupByLibrary.simpleMessage(
+            "Found in your CV and projects"),
+        "foundInYourSkills":
+            MessageLookupByLibrary.simpleMessage("Found in your skills"),
+        "fourHoursAgo": MessageLookupByLibrary.simpleMessage("4 hrs ago"),
+        "freelance": MessageLookupByLibrary.simpleMessage("Freelance"),
+        "fromCv": MessageLookupByLibrary.simpleMessage("From CV"),
+        "fromYourCv": MessageLookupByLibrary.simpleMessage("From your CV"),
+        "fullName": MessageLookupByLibrary.simpleMessage("Full Name"),
+        "fullTime": MessageLookupByLibrary.simpleMessage("Full-time"),
+        "gender": MessageLookupByLibrary.simpleMessage("Gender"),
+        "generateRoadmap":
+            MessageLookupByLibrary.simpleMessage("Generate Roadmap"),
+        "generatingRoadmap":
+            MessageLookupByLibrary.simpleMessage("Generating roadmap..."),
+        "generationFailed":
+            MessageLookupByLibrary.simpleMessage("Roadmap generation failed"),
+        "generationSuccess": MessageLookupByLibrary.simpleMessage(
+            "Roadmap generated successfully"),
+        "getExplainableMatch":
+            MessageLookupByLibrary.simpleMessage("Get an explainable match"),
+        "getExplainableMatchDesc": MessageLookupByLibrary.simpleMessage(
+            "Not just a score — strengths, gaps, and clear next actions."),
+        "getInTouch":
+            MessageLookupByLibrary.simpleMessage("Get in touch with us"),
+        "getStarted": MessageLookupByLibrary.simpleMessage("Get Started"),
+        "github": MessageLookupByLibrary.simpleMessage("GitHub"),
+        "githubRepositoryUrl":
+            MessageLookupByLibrary.simpleMessage("GitHub Repository URL"),
+        "good": MessageLookupByLibrary.simpleMessage("Good"),
+        "goodMatch": MessageLookupByLibrary.simpleMessage("Good Match"),
+        "gpaHint": MessageLookupByLibrary.simpleMessage(
+            "e.g. 3.4 / 4.0 or First Class"),
+        "gpaOptional": MessageLookupByLibrary.simpleMessage("GPA (Optional)"),
+        "greetingUser": m3,
+        "guestModeMessage": MessageLookupByLibrary.simpleMessage(
+            "Please log in to access this feature."),
+        "guestModeTitle":
+            MessageLookupByLibrary.simpleMessage("You are in guest mode"),
+        "help": MessageLookupByLibrary.simpleMessage("Help"),
+        "helpfulAdvantage":
+            MessageLookupByLibrary.simpleMessage("Helpful advantage"),
+        "highPriority": MessageLookupByLibrary.simpleMessage("High priority"),
+        "home": MessageLookupByLibrary.simpleMessage("Home"),
+        "hoursAgo": m4,
+        "howCanIHelpYouToday":
+            MessageLookupByLibrary.simpleMessage("How can I help you today?"),
+        "hybrid": MessageLookupByLibrary.simpleMessage("Hybrid"),
+        "iAgreeToTerms": MessageLookupByLibrary.simpleMessage(
+            "I agree to the Terms & Privacy Policy"),
+        "imageTooLarge": MessageLookupByLibrary.simpleMessage(
+            "Image is too large. Maximum size is 5 MB."),
+        "inReview": MessageLookupByLibrary.simpleMessage("In Review"),
+        "institutionHint": MessageLookupByLibrary.simpleMessage(
+            "Search or enter institution name"),
+        "internship": MessageLookupByLibrary.simpleMessage("Internship"),
+        "interview": MessageLookupByLibrary.simpleMessage("Interview"),
+        "interviewPrep": MessageLookupByLibrary.simpleMessage("Interview Prep"),
+        "interviewPrepPrompt": MessageLookupByLibrary.simpleMessage(
+            "What are the top technical interview questions for Dart and Flutter?"),
+        "invalidDateRange": MessageLookupByLibrary.simpleMessage(
+            "End date must be on or after the start date"),
+        "invalidImageType": MessageLookupByLibrary.simpleMessage(
+            "Unsupported image type. Use JPG, PNG, or WEBP."),
+        "invalidJobId": MessageLookupByLibrary.simpleMessage("Invalid job ID."),
+        "invalidVerificationCode":
+            MessageLookupByLibrary.simpleMessage("Invalid verification code"),
+        "jobDetails": MessageLookupByLibrary.simpleMessage("Job Details"),
+        "jobFitAnalysis":
+            MessageLookupByLibrary.simpleMessage("Job Fit Analysis"),
+        "jobFitAnalysisPrompt": MessageLookupByLibrary.simpleMessage(
+            "How does MatchIn calculate my job match percentage?"),
+        "jobRequirements":
+            MessageLookupByLibrary.simpleMessage("Job requirements"),
+        "jobTitle": MessageLookupByLibrary.simpleMessage("Job title"),
+        "jobTitleHint":
+            MessageLookupByLibrary.simpleMessage("e.g. Lead Product Designer"),
+        "jobType": MessageLookupByLibrary.simpleMessage("Job type"),
+        "jobs": MessageLookupByLibrary.simpleMessage("Jobs"),
+        "jobsMatchDescription": MessageLookupByLibrary.simpleMessage(
+            "Explore opportunities based on your skills and career preferences."),
+        "jobsMatchYourProfile": MessageLookupByLibrary.simpleMessage(
+            "We found jobs that match your profile"),
+        "junior": MessageLookupByLibrary.simpleMessage("Junior"),
+        "juniorFlutterDeveloper":
+            MessageLookupByLibrary.simpleMessage("Junior Flutter Developer"),
+        "justNow": MessageLookupByLibrary.simpleMessage("Just now"),
+        "keepMeSignedIn":
+            MessageLookupByLibrary.simpleMessage("Keep me signed in"),
+        "keepTrackerUpdated": MessageLookupByLibrary.simpleMessage(
+            "Keep your tracker updated when you hear back from the employer."),
+        "keyAchievements":
+            MessageLookupByLibrary.simpleMessage("Key Achievements"),
+        "keyAchievementsHelper": MessageLookupByLibrary.simpleMessage(
+            "Add measurable outcomes when possible (e.g. reduced load time by 30%)."),
+        "keyAchievementsHint": MessageLookupByLibrary.simpleMessage(
+            "e.g. Optimized database queries reducing API latency by 42%..."),
+        "language": MessageLookupByLibrary.simpleMessage("Language"),
+        "learningTasks": MessageLookupByLibrary.simpleMessage("LEARNING TASKS"),
+        "light": MessageLookupByLibrary.simpleMessage("Light"),
+        "linkedin": MessageLookupByLibrary.simpleMessage("LinkedIn"),
+        "loadMore": MessageLookupByLibrary.simpleMessage("Load More"),
+        "loadingAd": MessageLookupByLibrary.simpleMessage("Loading Ad..."),
+        "loadingNotifications":
+            MessageLookupByLibrary.simpleMessage("Loading notifications..."),
+        "location": MessageLookupByLibrary.simpleMessage("Location"),
+        "locationHint": MessageLookupByLibrary.simpleMessage(
+            "e.g. London, UK or Cairo, Egypt"),
+        "logOut": MessageLookupByLibrary.simpleMessage("Log Out"),
+        "logOutConfirmationMessage": MessageLookupByLibrary.simpleMessage(
+            "Are you sure you want to log out of your account?"),
+        "logOutConfirmationTitle":
+            MessageLookupByLibrary.simpleMessage("Log Out"),
+        "login": MessageLookupByLibrary.simpleMessage("Login"),
+        "loginSubtitle": MessageLookupByLibrary.simpleMessage(
+            "Access your verified career pathways and opportunities."),
+        "male": MessageLookupByLibrary.simpleMessage("Male"),
+        "manageAllSkills":
+            MessageLookupByLibrary.simpleMessage("Manage all skills"),
+        "markAllAsRead":
+            MessageLookupByLibrary.simpleMessage("Mark all as read"),
+        "markAllRead": MessageLookupByLibrary.simpleMessage("Mark all read"),
+        "markAsRead": MessageLookupByLibrary.simpleMessage("Mark as read"),
+        "match": MessageLookupByLibrary.simpleMessage("Match"),
+        "matchExplanation": MessageLookupByLibrary.simpleMessage(
+            "You’re a good fit for this role. Your Flutter and API experience match the core requirements, but testing and CI/CD are important gaps."),
+        "matchSevenOfNine": MessageLookupByLibrary.simpleMessage(
+            "You match 7 of 9 important requirements."),
+        "matches": MessageLookupByLibrary.simpleMessage("matches"),
+        "mentionedInJobRequirements": MessageLookupByLibrary.simpleMessage(
+            "Mentioned in job requirements"),
+        "midLevel": MessageLookupByLibrary.simpleMessage("Mid-Level"),
+        "militaryCompleted": MessageLookupByLibrary.simpleMessage("Completed"),
+        "militaryExempted": MessageLookupByLibrary.simpleMessage("Exempted"),
+        "militaryFinalExemption":
+            MessageLookupByLibrary.simpleMessage("Final Exemption"),
+        "militaryPostponed": MessageLookupByLibrary.simpleMessage("Postponed"),
+        "militaryStatus":
+            MessageLookupByLibrary.simpleMessage("Military Status"),
+        "minutesAgo": m5,
+        "monthYearHint": MessageLookupByLibrary.simpleMessage("MM / YYYY"),
+        "monthsAgo": m6,
+        "mostRelevant": MessageLookupByLibrary.simpleMessage("Most relevant"),
+        "multiSelect": MessageLookupByLibrary.simpleMessage("Multi-select"),
+        "myCareerRoadmap":
+            MessageLookupByLibrary.simpleMessage("My Career Roadmap"),
+        "needHelpWithNextSteps":
+            MessageLookupByLibrary.simpleMessage("Need help with next steps?"),
+        "needsImprovement":
+            MessageLookupByLibrary.simpleMessage("Needs Improvement"),
+        "newChat": MessageLookupByLibrary.simpleMessage("New Chat"),
+        "newHere": MessageLookupByLibrary.simpleMessage("New here?"),
+        "newJobsMatchProfile":
+            MessageLookupByLibrary.simpleMessage("New jobs match your profile"),
+        "newPassword": MessageLookupByLibrary.simpleMessage("New password"),
+        "next": MessageLookupByLibrary.simpleMessage("Next"),
+        "nextApplicationQuestions":
+            MessageLookupByLibrary.simpleMessage("Next: Application questions"),
+        "niceToHave": MessageLookupByLibrary.simpleMessage("Nice to have"),
+        "noApplicationsYet":
+            MessageLookupByLibrary.simpleMessage("No applications yet"),
+        "noConversationsYet":
+            MessageLookupByLibrary.simpleMessage("No conversations yet"),
+        "noCoverNoteAdded":
+            MessageLookupByLibrary.simpleMessage("No cover note added"),
+        "noEducationYet":
+            MessageLookupByLibrary.simpleMessage("No education added yet"),
+        "noEducationYetDesc": MessageLookupByLibrary.simpleMessage(
+            "Add your first education record using the form below."),
+        "noExperienceYet":
+            MessageLookupByLibrary.simpleMessage("No experience added yet"),
+        "noExperienceYetDesc": MessageLookupByLibrary.simpleMessage(
+            "Add your first work experience using the form below."),
+        "noFileSelected":
+            MessageLookupByLibrary.simpleMessage("No file selected"),
+        "noHistoryYet": MessageLookupByLibrary.simpleMessage("No history yet"),
+        "noInternetConnection":
+            MessageLookupByLibrary.simpleMessage("No internet connection"),
+        "noJobsFound": MessageLookupByLibrary.simpleMessage("No jobs found"),
+        "noLearningTasks": MessageLookupByLibrary.simpleMessage(
+            "No learning tasks defined for this skill yet."),
+        "noNotifications":
+            MessageLookupByLibrary.simpleMessage("No notifications yet"),
+        "noNotificationsDesc": MessageLookupByLibrary.simpleMessage(
+            "We\'ll let you know when important updates arrive."),
+        "noProjectsYet":
+            MessageLookupByLibrary.simpleMessage("No projects added yet"),
+        "noProjectsYetDesc": MessageLookupByLibrary.simpleMessage(
+            "Add your first project using the button above."),
+        "noRoadmaps": MessageLookupByLibrary.simpleMessage("No roadmaps yet"),
+        "noSavedJobsYet":
+            MessageLookupByLibrary.simpleMessage("No saved jobs yet"),
+        "noUnreadNotifications":
+            MessageLookupByLibrary.simpleMessage("No unread notifications"),
+        "notNow": MessageLookupByLibrary.simpleMessage("Not now"),
+        "notes": MessageLookupByLibrary.simpleMessage("Notes"),
+        "notesHint": MessageLookupByLibrary.simpleMessage(
+            "e.g. Focus on distributed systems"),
+        "notificationMarkedAsRead":
+            MessageLookupByLibrary.simpleMessage("Notification marked as read"),
+        "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
+        "notificationsTitle":
+            MessageLookupByLibrary.simpleMessage("Notifications"),
+        "offer": MessageLookupByLibrary.simpleMessage("Offer"),
+        "offlineStatusShowingSaved": MessageLookupByLibrary.simpleMessage(
+            "You\'re offline. Showing saved data."),
+        "older": MessageLookupByLibrary.simpleMessage("Older"),
+        "onSite": MessageLookupByLibrary.simpleMessage("On-site"),
+        "onboardingBullet1": MessageLookupByLibrary.simpleMessage(
+            "Upload your CV for instant AI parsing"),
+        "onboardingBullet2": MessageLookupByLibrary.simpleMessage(
+            "Select target roles and skills"),
+        "onboardingBullet3": MessageLookupByLibrary.simpleMessage(
+            "Get matched with high-fit opportunities"),
+        "ongoingProject":
+            MessageLookupByLibrary.simpleMessage("Ongoing project"),
+        "onlyOnTrustedDevices":
+            MessageLookupByLibrary.simpleMessage("Only on trusted devices"),
+        "openMenu": MessageLookupByLibrary.simpleMessage("Open menu"),
+        "openToOpportunitiesAnywhere": MessageLookupByLibrary.simpleMessage(
+            "I’m open to opportunities anywhere"),
+        "opportunities": MessageLookupByLibrary.simpleMessage("opportunities"),
+        "optional": MessageLookupByLibrary.simpleMessage("Optional"),
+        "or": MessageLookupByLibrary.simpleMessage("or"),
+        "otpCodeDidNotMatch": MessageLookupByLibrary.simpleMessage(
+            "That code didn\'t match. Check the message and try again."),
+        "otpVerifying": MessageLookupByLibrary.simpleMessage("Verifying…"),
+        "partTime": MessageLookupByLibrary.simpleMessage("Part-time"),
+        "password": MessageLookupByLibrary.simpleMessage("Password"),
+        "passwordChangedSuccessDesc": MessageLookupByLibrary.simpleMessage(
+            "Your password has been changed successfully. You can now log in with your new password."),
+        "passwordChangedSuccessfully": MessageLookupByLibrary.simpleMessage(
+            "Password changed successfully"),
+        "passwordHint":
+            MessageLookupByLibrary.simpleMessage("Enter your password"),
+        "passwordLengthHint":
+            MessageLookupByLibrary.simpleMessage("Use at least 8 characters."),
+        "passwordRequirements":
+            MessageLookupByLibrary.simpleMessage("Password requirements"),
+        "passwordsDoNotMatch":
+            MessageLookupByLibrary.simpleMessage("Passwords do not match"),
+        "pendingEmployerScreening":
+            MessageLookupByLibrary.simpleMessage("Pending employer screening"),
+        "personalInformation":
+            MessageLookupByLibrary.simpleMessage("Personal Information"),
+        "phoneHint":
+            MessageLookupByLibrary.simpleMessage("Enter your phone number"),
+        "phoneNumber": MessageLookupByLibrary.simpleMessage("Phone Number"),
+        "phoneNumberLabel":
+            MessageLookupByLibrary.simpleMessage("Phone number"),
+        "pleaseAcceptTerms": MessageLookupByLibrary.simpleMessage(
+            "Please accept the Terms & Privacy Policy"),
+        "pleaseCheckYourInternetConnection":
+            MessageLookupByLibrary.simpleMessage(
+                "Please check your internet connection and try again"),
+        "plus50Xp": MessageLookupByLibrary.simpleMessage("+50 XP"),
+        "popular": MessageLookupByLibrary.simpleMessage("Popular"),
+        "portfolioLinkHint": MessageLookupByLibrary.simpleMessage(
+            "https://github.com/username or portfolio"),
+        "portfolioOrProjectLink": MessageLookupByLibrary.simpleMessage(
+            "Portfolio or Project Link (Optional)"),
+        "postedTwoDaysAgo":
+            MessageLookupByLibrary.simpleMessage("Posted 2 days ago"),
+        "preferNotToSay":
+            MessageLookupByLibrary.simpleMessage("Prefer not to say"),
+        "preferences": MessageLookupByLibrary.simpleMessage("PREFERENCES"),
+        "preferred": MessageLookupByLibrary.simpleMessage("Preferred"),
+        "preferredLocation":
+            MessageLookupByLibrary.simpleMessage("Preferred location"),
+        "preferredWorkMode": MessageLookupByLibrary.simpleMessage(
+            "Which work mode do you prefer?"),
+        "preferredWorkModeLabel":
+            MessageLookupByLibrary.simpleMessage("Preferred work mode"),
+        "previewPhoto": MessageLookupByLibrary.simpleMessage("Preview Photo"),
+        "previous7Days":
+            MessageLookupByLibrary.simpleMessage("Previous 7 days"),
+        "privacyAndSupport":
+            MessageLookupByLibrary.simpleMessage("PRIVACY & SUPPORT"),
+        "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
+        "professionalInformation":
+            MessageLookupByLibrary.simpleMessage("Professional Information"),
+        "professionalLinks":
+            MessageLookupByLibrary.simpleMessage("Professional Links"),
+        "profile": MessageLookupByLibrary.simpleMessage("Profile"),
+        "profileMatchQuality":
+            MessageLookupByLibrary.simpleMessage("Profile Match Quality"),
+        "profileSynced": MessageLookupByLibrary.simpleMessage("Profile synced"),
+        "projectDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
+            "Project deleted successfully"),
+        "projectDescriptionHelper": MessageLookupByLibrary.simpleMessage(
+            "Describe goals and tech stack"),
+        "projectDescriptionHint": MessageLookupByLibrary.simpleMessage(
+            "Describe goals, your role, and overall product purpose..."),
+        "projectName": MessageLookupByLibrary.simpleMessage("Project Name"),
+        "projectNameHint": MessageLookupByLibrary.simpleMessage(
+            "e.g. HealthTracker Companion"),
+        "projectSavedSuccessfully":
+            MessageLookupByLibrary.simpleMessage("Project saved successfully"),
+        "projectUrl": MessageLookupByLibrary.simpleMessage("Project URL"),
+        "projects": MessageLookupByLibrary.simpleMessage("Projects"),
+        "projectsImprovementHint": MessageLookupByLibrary.simpleMessage(
+            "Add project links and measurable outcomes to strengthen your profile."),
+        "ready": MessageLookupByLibrary.simpleMessage("Ready"),
+        "readyToFindYourNextOpportunity": MessageLookupByLibrary.simpleMessage(
+            "Ready to find your next opportunity?"),
+        "recommendedForYou":
+            MessageLookupByLibrary.simpleMessage("Recommended for you"),
+        "recruiterReview":
+            MessageLookupByLibrary.simpleMessage("Recruiter review"),
+        "recruiterVisibility":
+            MessageLookupByLibrary.simpleMessage("Recruiter Visibility"),
+        "recruiterVisibilityDescription": MessageLookupByLibrary.simpleMessage(
+            "Candidates with fully detailed academic credentials receive more recruiter visibility on SkillMatch."),
+        "refreshReasonHint": MessageLookupByLibrary.simpleMessage(
+            "What would you like to focus on?"),
+        "refreshReasonLabel": MessageLookupByLibrary.simpleMessage(
+            "Reason for refresh (optional)"),
+        "refreshRoadmap":
+            MessageLookupByLibrary.simpleMessage("Refresh Roadmap"),
+        "refreshRoadmapDescription": MessageLookupByLibrary.simpleMessage(
+            "Refresh the selected roadmap using the latest available information."),
+        "refreshRoadmapWarning": MessageLookupByLibrary.simpleMessage(
+            "Refreshing may change your roadmap milestones and tasks."),
+        "refreshingRoadmap":
+            MessageLookupByLibrary.simpleMessage("Refreshing roadmap..."),
+        "registerWithGoogle":
+            MessageLookupByLibrary.simpleMessage("Continue with Google"),
+        "relatedSkills": MessageLookupByLibrary.simpleMessage("Related skills"),
+        "relatedSkillsHint":
+            MessageLookupByLibrary.simpleMessage("Type related skills"),
+        "remote": MessageLookupByLibrary.simpleMessage("Remote"),
+        "replaceCv": MessageLookupByLibrary.simpleMessage("Replace CV"),
+        "reqAtLeastOneNumber":
+            MessageLookupByLibrary.simpleMessage("At least one number"),
+        "reqAtLeastOneSpecial": MessageLookupByLibrary.simpleMessage(
+            "At least one special character"),
+        "reqMin8Chars":
+            MessageLookupByLibrary.simpleMessage("At least 8 characters"),
+        "required": MessageLookupByLibrary.simpleMessage("Required"),
+        "requiredForThisRole":
+            MessageLookupByLibrary.simpleMessage("Required for this role"),
+        "requiredSkills":
+            MessageLookupByLibrary.simpleMessage("Required skills"),
+        "resendCode": MessageLookupByLibrary.simpleMessage("Resend Code"),
+        "resendCodeIn": MessageLookupByLibrary.simpleMessage("Resend code in"),
+        "resetPassword": MessageLookupByLibrary.simpleMessage("Reset password"),
+        "responsibilitiesDescription": MessageLookupByLibrary.simpleMessage(
+            "Responsibilities / Description"),
+        "responsibilitiesHint": MessageLookupByLibrary.simpleMessage(
+            "Outline your primary duties, notable team initiatives, and concrete impact."),
+        "resumeOptimization":
+            MessageLookupByLibrary.simpleMessage("Resume Optimization"),
+        "resumeOptimizationPrompt": MessageLookupByLibrary.simpleMessage(
+            "How can I optimize my CV for Flutter developer roles?"),
+        "retry": MessageLookupByLibrary.simpleMessage("Retry"),
+        "reviewApplication":
+            MessageLookupByLibrary.simpleMessage("Review Application"),
+        "reviewBeforeSubmission": MessageLookupByLibrary.simpleMessage(
+            "You will review all details before final submission."),
+        "reviewBeforeSubmitting":
+            MessageLookupByLibrary.simpleMessage("Review before submitting"),
+        "reviewBeforeSubmittingDescription": MessageLookupByLibrary.simpleMessage(
+            "Make sure your information is correct. You can go back and edit anything before submitting."),
+        "reviewCv": MessageLookupByLibrary.simpleMessage("Review CV"),
+        "reviewInformationBeforeContinuing":
+            MessageLookupByLibrary.simpleMessage(
+                "Review your information before continuing."),
+        "rewardEarned": MessageLookupByLibrary.simpleMessage("Reward Earned!"),
+        "roadMap": MessageLookupByLibrary.simpleMessage("RoadMap"),
+        "roadmap": MessageLookupByLibrary.simpleMessage("Roadmap"),
+        "roadmapAiRefreshFailed":
+            MessageLookupByLibrary.simpleMessage("Failed to refresh roadmap"),
+        "roadmapBasedOnJob": MessageLookupByLibrary.simpleMessage(
+            "Your roadmap will be based on this job and your current skills."),
+        "roadmapMatchDescription": MessageLookupByLibrary.simpleMessage(
+            "Build a personalized roadmap to work on Testing and CI/CD and become a stronger candidate for this role."),
+        "roadmapRefreshFailed": MessageLookupByLibrary.simpleMessage(
+            "Couldn\'t refresh roadmap details"),
+        "roadmapRefreshedSuccessfully": MessageLookupByLibrary.simpleMessage(
+            "Roadmap refreshed successfully"),
+        "roadmapSubtitle": MessageLookupByLibrary.simpleMessage(
+            "Track your progress and build essential skills"),
+        "roadmapUpdated": MessageLookupByLibrary.simpleMessage(
+            "Your roadmap has been updated"),
+        "salaryHelper": MessageLookupByLibrary.simpleMessage(
+            "Enter your expected gross monthly salary."),
+        "salaryHint": MessageLookupByLibrary.simpleMessage("e.g. 24,000"),
+        "save": MessageLookupByLibrary.simpleMessage("Save"),
+        "saveChanges": MessageLookupByLibrary.simpleMessage("Save Changes"),
+        "saveEducation": MessageLookupByLibrary.simpleMessage("Save education"),
+        "saveExperience":
+            MessageLookupByLibrary.simpleMessage("Save experience"),
+        "saveJobFailed": MessageLookupByLibrary.simpleMessage(
+            "Couldn\'t save the job. Please try again."),
+        "savePreferences":
+            MessageLookupByLibrary.simpleMessage("Save Preferences"),
+        "saveProject": MessageLookupByLibrary.simpleMessage("Save Project"),
+        "savedJobs": MessageLookupByLibrary.simpleMessage("Saved Jobs"),
+        "schoolUniversity":
+            MessageLookupByLibrary.simpleMessage("School / University"),
+        "searchJobs": MessageLookupByLibrary.simpleMessage(
+            "Search jobs, companies, or skills"),
+        "searchJobsTitle": MessageLookupByLibrary.simpleMessage("Search Jobs"),
+        "secondsSuffix": MessageLookupByLibrary.simpleMessage("s"),
+        "sectionCompleteness":
+            MessageLookupByLibrary.simpleMessage("Section completeness"),
+        "secureProtectionText": MessageLookupByLibrary.simpleMessage(
+            "SkillMatch securely protects your verified credentials and application histories."),
+        "securityBadge": MessageLookupByLibrary.simpleMessage(
+            "SkillMatch securely protects your verified credentials and application histories."),
+        "seeAll": MessageLookupByLibrary.simpleMessage("See all"),
+        "select": MessageLookupByLibrary.simpleMessage("Select"),
+        "selectLanguage":
+            MessageLookupByLibrary.simpleMessage("Select Language"),
+        "selectRoadmap": MessageLookupByLibrary.simpleMessage("Select Roadmap"),
+        "selectTheme": MessageLookupByLibrary.simpleMessage("Select Theme"),
+        "sendMessage": MessageLookupByLibrary.simpleMessage("Send message"),
+        "sendingMessage":
+            MessageLookupByLibrary.simpleMessage("Sending message..."),
+        "senior": MessageLookupByLibrary.simpleMessage("Senior"),
+        "sentCodeToEmail": MessageLookupByLibrary.simpleMessage(
+            "We sent a 6-digit code to your email."),
+        "serverError": MessageLookupByLibrary.simpleMessage(
+            "There was a problem with the server."),
+        "settings": MessageLookupByLibrary.simpleMessage("Settings"),
+        "setupCareerProfile":
+            MessageLookupByLibrary.simpleMessage("Setup your career profile"),
+        "setupCareerProfileDesc": MessageLookupByLibrary.simpleMessage(
+            "Tell us about your skills and goals to get better recommendations."),
+        "shareJobLinkUnavailable": MessageLookupByLibrary.simpleMessage(
+            "Job link is not available for this job."),
+        "showingCachedNotifications": MessageLookupByLibrary.simpleMessage(
+            "Showing cached notifications (Offline)"),
+        "signUpWithGoogle":
+            MessageLookupByLibrary.simpleMessage("Sign up with Google"),
+        "skillCompleted":
+            MessageLookupByLibrary.simpleMessage("Skill Completed"),
+        "skillInProgress":
+            MessageLookupByLibrary.simpleMessage("Skill In Progress"),
+        "skillMatchPortal":
+            MessageLookupByLibrary.simpleMessage("SKILLMATCH PORTAL"),
+        "skillmatchPortal":
+            MessageLookupByLibrary.simpleMessage("SKILLMATCH PORTAL"),
+        "skills": MessageLookupByLibrary.simpleMessage("Skills"),
+        "skillsCount": m7,
+        "skillsLabel": MessageLookupByLibrary.simpleMessage("Skills:"),
+        "skillsProfile": MessageLookupByLibrary.simpleMessage("Skills Profile"),
+        "skillsProfileDescription": MessageLookupByLibrary.simpleMessage(
+            "Skills help SkillMatch understand which opportunities fit you."),
+        "skillsToImprove":
+            MessageLookupByLibrary.simpleMessage("Skills to improve"),
+        "skip": MessageLookupByLibrary.simpleMessage("Skip"),
+        "smartCareerDiscoveryPlatform":
+            MessageLookupByLibrary.simpleMessage("Smart Career Discovery"),
+        "somethingWentWrong":
+            MessageLookupByLibrary.simpleMessage("Something went wrong"),
+        "sortedByRecent":
+            MessageLookupByLibrary.simpleMessage("Sorted by recent"),
+        "source": MessageLookupByLibrary.simpleMessage("Source"),
+        "start": MessageLookupByLibrary.simpleMessage("Start"),
+        "startDate": MessageLookupByLibrary.simpleMessage("Start Date"),
+        "startFirstConversation": MessageLookupByLibrary.simpleMessage(
+            "Start your first conversation below"),
+        "startYear": MessageLookupByLibrary.simpleMessage("Start year"),
+        "stateGovernorate":
+            MessageLookupByLibrary.simpleMessage("State / Governorate"),
+        "stepFourConfirmation":
+            MessageLookupByLibrary.simpleMessage("STEP 4 OF 4 • CONFIRMATION"),
+        "stepOf": MessageLookupByLibrary.simpleMessage("of"),
+        "stepThreeOfThree": MessageLookupByLibrary.simpleMessage("Step 3 of 3"),
+        "strongMatch": MessageLookupByLibrary.simpleMessage("Strong Match"),
+        "student": MessageLookupByLibrary.simpleMessage("Student"),
+        "submissionConfirmationNotice": MessageLookupByLibrary.simpleMessage(
+            "By submitting, you confirm that the information provided is accurate and complies with our community guidelines."),
+        "submitApplication":
+            MessageLookupByLibrary.simpleMessage("Submit Application"),
+        "submittedJustNow":
+            MessageLookupByLibrary.simpleMessage("Submitted just now"),
+        "submittedSuccessfully": MessageLookupByLibrary.simpleMessage(
+            "has been submitted successfully."),
+        "submittedTodayTime":
+            MessageLookupByLibrary.simpleMessage("Submitted today at 10:32 AM"),
+        "suggestedPrompts":
+            MessageLookupByLibrary.simpleMessage("Suggested Prompts"),
+        "suggestedQuestions":
+            MessageLookupByLibrary.simpleMessage("Suggested Questions"),
+        "suggestedRoles":
+            MessageLookupByLibrary.simpleMessage("Suggested Roles"),
+        "suggestions": MessageLookupByLibrary.simpleMessage("Suggestions"),
+        "supportingDocumentOptional": MessageLookupByLibrary.simpleMessage(
+            "Supporting Document (Optional)"),
+        "system": MessageLookupByLibrary.simpleMessage("System"),
+        "takePhoto": MessageLookupByLibrary.simpleMessage("Take Photo"),
+        "targetRole": MessageLookupByLibrary.simpleMessage("Target role"),
+        "targetRoleHint":
+            MessageLookupByLibrary.simpleMessage("e.g. Backend Engineer"),
+        "taskCompleted":
+            MessageLookupByLibrary.simpleMessage("Task completed successfully"),
+        "taskCompletionFailed":
+            MessageLookupByLibrary.simpleMessage("Task completion failed"),
+        "tasksCompleted":
+            MessageLookupByLibrary.simpleMessage("Tasks completed"),
+        "technicalCultureFitStage": MessageLookupByLibrary.simpleMessage(
+            "Technical & culture fit stage"),
+        "technologies": MessageLookupByLibrary.simpleMessage("Technologies"),
+        "technologiesHint":
+            MessageLookupByLibrary.simpleMessage("e.g. TypeScript, GraphQL"),
+        "technologiesSkills":
+            MessageLookupByLibrary.simpleMessage("Technologies / Skills"),
+        "technologiesWorkedWith": MessageLookupByLibrary.simpleMessage(
+            "Which technologies have you worked with?"),
+        "tenMinutesAgo": MessageLookupByLibrary.simpleMessage("10 min ago"),
+        "termsAndConditions":
+            MessageLookupByLibrary.simpleMessage("Terms & Conditions"),
+        "testingPrioritySkill": MessageLookupByLibrary.simpleMessage(
+            "Testing is now one of your highest-priority skills."),
+        "theme": MessageLookupByLibrary.simpleMessage("Theme"),
+        "timeline": MessageLookupByLibrary.simpleMessage("Timeline"),
+        "today": MessageLookupByLibrary.simpleMessage("TODAY"),
+        "todayAtTime": MessageLookupByLibrary.simpleMessage("Today • 10:32 AM"),
+        "trackApplication":
+            MessageLookupByLibrary.simpleMessage("Track Application"),
+        "trackingApplication":
+            MessageLookupByLibrary.simpleMessage("Tracking Application"),
+        "tryAgain": MessageLookupByLibrary.simpleMessage("Try Again"),
+        "turnCvIntoOpportunities": MessageLookupByLibrary.simpleMessage(
+            "Turn your CV into opportunities"),
+        "turnCvIntoOpportunitiesDesc": MessageLookupByLibrary.simpleMessage(
+            "See why a job fits you, what you’re missing, and what to do next."),
+        "twoDaysAgo": MessageLookupByLibrary.simpleMessage("2 days ago"),
+        "twoHoursAgo": MessageLookupByLibrary.simpleMessage("2 hrs ago"),
+        "updateStatus": MessageLookupByLibrary.simpleMessage("Update Status"),
+        "updatedFiveDaysAgo":
+            MessageLookupByLibrary.simpleMessage("Updated 5 days ago"),
+        "updatedJustNow":
+            MessageLookupByLibrary.simpleMessage("Updated just now"),
+        "uploadFile": MessageLookupByLibrary.simpleMessage("Upload File"),
+        "uploadFileHint":
+            MessageLookupByLibrary.simpleMessage("PDF or DOCX • Max 5 MB"),
+        "uploadYourCv": MessageLookupByLibrary.simpleMessage("Upload your CV"),
+        "uploaded": MessageLookupByLibrary.simpleMessage("Uploaded"),
+        "use8PlusCharacters":
+            MessageLookupByLibrary.simpleMessage("Use 8+ characters"),
+        "useDifferentEmail":
+            MessageLookupByLibrary.simpleMessage("Use a different email"),
+        "usedInTwoProjects":
+            MessageLookupByLibrary.simpleMessage("Used in 2 projects"),
+        "userFallback": MessageLookupByLibrary.simpleMessage("User"),
+        "userFieldsNotSavedYet": MessageLookupByLibrary.simpleMessage(
+            "Name and phone number can\'t be saved yet and were not sent to the server."),
+        "verificationCodeLabel":
+            MessageLookupByLibrary.simpleMessage("VERIFICATION CODE"),
+        "verifiedQualifications":
+            MessageLookupByLibrary.simpleMessage("Verified Qualifications"),
+        "verify": MessageLookupByLibrary.simpleMessage("Verify"),
+        "view": MessageLookupByLibrary.simpleMessage("View"),
+        "viewApplication":
+            MessageLookupByLibrary.simpleMessage("View Application"),
+        "viewCv": MessageLookupByLibrary.simpleMessage("View CV"),
+        "viewFullJobDescription":
+            MessageLookupByLibrary.simpleMessage("View full job description"),
+        "viewGithubRepository":
+            MessageLookupByLibrary.simpleMessage("View GitHub repository"),
+        "viewJob": MessageLookupByLibrary.simpleMessage("View Job"),
+        "viewJobs": MessageLookupByLibrary.simpleMessage("View Jobs"),
+        "viewLiveProject":
+            MessageLookupByLibrary.simpleMessage("View live project"),
+        "viewMatches": MessageLookupByLibrary.simpleMessage("View Matches"),
+        "viewProject": MessageLookupByLibrary.simpleMessage("View project"),
+        "viewRoadmap": MessageLookupByLibrary.simpleMessage("View Roadmap"),
+        "viewTimeline": MessageLookupByLibrary.simpleMessage("View timeline"),
+        "waitingForRecruiterResponse": MessageLookupByLibrary.simpleMessage(
+            "Waiting for a response from the recruiter."),
+        "wantToImproveYourMatch":
+            MessageLookupByLibrary.simpleMessage("Want to improve your match?"),
+        "watchAd": MessageLookupByLibrary.simpleMessage("Watch Ad"),
+        "watchAdEarnXp":
+            MessageLookupByLibrary.simpleMessage("Watch Ad & Earn 50 XP"),
+        "weeksAgo": m8,
+        "welcomeBack": MessageLookupByLibrary.simpleMessage("Welcome Back!"),
+        "whatYouAlreadyMatch":
+            MessageLookupByLibrary.simpleMessage("What you already match"),
+        "whyInterestedHint": MessageLookupByLibrary.simpleMessage(
+            "Describe what excites you about TechNova and this position..."),
+        "whyInterestedRequired": MessageLookupByLibrary.simpleMessage(
+            "Why are you interested in this role? *"),
+        "withdrawApplication":
+            MessageLookupByLibrary.simpleMessage("Withdraw Application"),
+        "withinThreeBusinessDays":
+            MessageLookupByLibrary.simpleMessage("Within 3 business days"),
+        "workMode": MessageLookupByLibrary.simpleMessage("Work mode"),
+        "yearsAgo": m9,
+        "yesterday": MessageLookupByLibrary.simpleMessage("YESTERDAY"),
+        "yesterdayTime":
+            MessageLookupByLibrary.simpleMessage("Yesterday • 3:45 PM"),
+        "yourApplicationFor":
+            MessageLookupByLibrary.simpleMessage("Your application for"),
+        "yourInformation":
+            MessageLookupByLibrary.simpleMessage("Your Information"),
+        "yourMatch": MessageLookupByLibrary.simpleMessage("Your Match"),
+        "zeroToTwoYears": MessageLookupByLibrary.simpleMessage("0–2 years"),
+        "zeroToTwoYearsExp": MessageLookupByLibrary.simpleMessage("0–2 yrs exp")
+      };
 }

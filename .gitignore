@@ -53,3 +53,6 @@ app.*.map.json
 # Local AI assistant configuration
 .ai/
 AGENTS.md
+
+# Key properties file
+/android/key.properties

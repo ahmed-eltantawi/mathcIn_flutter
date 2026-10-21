@@ -11,12 +11,18 @@ import 'package:MatchIn/features/roadmap/domain/entities/roadmap_pagination_enti
 import 'package:MatchIn/features/roadmap/domain/entities/roadmap_task.dart';
 import 'package:MatchIn/features/roadmap/domain/entities/roadmaps_params.dart';
 import 'package:MatchIn/features/roadmap/domain/repositories/roadmap_repository.dart';
+import 'package:MatchIn/features/roadmap/domain/use_cases/award_xp_use_case.dart';
 import 'package:MatchIn/features/roadmap/domain/use_cases/generate_roadmap_use_case.dart';
+import 'package:MatchIn/features/roadmap/domain/use_cases/get_cached_roadmap_use_case.dart';
+import 'package:MatchIn/features/roadmap/domain/use_cases/get_candidate_xp_use_case.dart';
+import 'package:MatchIn/features/roadmap/domain/use_cases/get_roadmap_xp_use_case.dart';
+import 'package:MatchIn/features/roadmap/domain/use_cases/sync_roadmap_ops_use_case.dart';
 import 'package:MatchIn/features/roadmap/domain/use_cases/refresh_roadmap_use_case.dart';
 import 'package:MatchIn/features/roadmap/domain/use_cases/get_roadmap_details_use_case.dart';
 import 'package:MatchIn/features/roadmap/domain/use_cases/get_roadmaps_use_case.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/roadmap_cubit/roadmap_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/treasure_cubit/treasure_cubit.dart';
+import 'package:MatchIn/features/roadmap/presentation/manager/xp_cubit/xp_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/widgets/generate_roadmap_sheet.dart';
 import 'package:MatchIn/features/roadmap/presentation/widgets/roadmap_view_body.dart';
 import 'package:MatchIn/generated/l10n.dart';
@@ -108,6 +114,8 @@ Future<RoadmapCubit> _buildCubit(FakeGenerateRepository repo) async {
     getRoadmapDetailsUseCase: GetRoadmapDetailsUseCase(repository: repo),
     generateRoadmapUseCase: GenerateRoadmapUseCase(repository: repo),
     refreshRoadmapUseCase: RefreshRoadmapUseCase(repository: repo),
+    getCachedRoadmapUseCase: GetCachedRoadmapUseCase(repository: repo),
+    syncRoadmapOpsUseCase: SyncRoadmapOpsUseCase(repository: repo),
   );
   addTearDown(cubit.close);
   return cubit;
@@ -274,13 +282,16 @@ void main() {
       );
       final cubit = await _buildCubit(repo);
       SharedPreferences.setMockInitialValues({});
-      final prefs = await SharedPreferences.getInstance();
       final treasureCubit = TreasureCubit(
-        sharedPreferencesService: SharedPreferencesService(
-          SharedPreferencesHelper(preferences: prefs),
-        ),
+        repository: repo,
+        awardXpUseCase: AwardXpUseCase(repository: repo),
       );
       addTearDown(treasureCubit.close);
+      final xpCubit = RoadmapXpCubit(
+        getCandidateXpUseCase: GetCandidateXpUseCase(repository: repo),
+        getRoadmapXpUseCase: GetRoadmapXpUseCase(repository: repo),
+      );
+      addTearDown(xpCubit.close);
 
       await tester.pumpWidget(
         ScreenUtilInit(
@@ -298,6 +309,7 @@ void main() {
                 providers: [
                   BlocProvider.value(value: cubit),
                   BlocProvider.value(value: treasureCubit),
+                  BlocProvider.value(value: xpCubit),
                 ],
                 child: const RoadmapViewBody(),
               ),

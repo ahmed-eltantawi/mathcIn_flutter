@@ -6,10 +6,15 @@ import 'package:MatchIn/features/profile/domain/entities/cv_pending_upload.dart'
 import 'package:MatchIn/features/profile/domain/entities/cv_upload_input.dart';
 import 'package:MatchIn/features/profile/domain/entities/cv_upload_receipt.dart';
 import 'package:MatchIn/features/profile/domain/repositories/profile_repository.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/download_cv_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/get_cv_history_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/get_cv_status_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/get_local_cv_file_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/get_pending_cv_upload_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/retry_cv_extraction_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/retry_pending_cv_upload_use_case.dart';
 import 'package:MatchIn/features/profile/domain/use_cases/upload_cv_use_case.dart';
+import 'package:MatchIn/features/profile/domain/use_cases/verify_extraction_use_case.dart';
 import 'package:MatchIn/features/profile/presentation/cubits/cv_cubit/cv_upload_cubit.dart';
 import 'package:MatchIn/features/profile/presentation/cubits/cv_cubit/cv_upload_state.dart';
 import 'package:bloc_test/bloc_test.dart';
@@ -24,8 +29,9 @@ class FakeCvRepository extends Fake implements ProfileRepository {
 
   @override
   Future<Either<Failure, CvUploadReceipt?>> uploadCv(
-    CvUploadInput input,
-  ) async {
+    CvUploadInput input, {
+    void Function(int sentBytes, int totalBytes)? onSendProgress,
+  }) async {
     return uploadResult!;
   }
 
@@ -68,6 +74,11 @@ CvUploadCubit buildCubit(FakeCvRepository repo) => CvUploadCubit(
   getPendingCvUploadUseCase: GetPendingCvUploadUseCase(repository: repo),
   retryPendingCvUploadUseCase: RetryPendingCvUploadUseCase(repository: repo),
   getLocalCvFileUseCase: GetLocalCvFileUseCase(repository: repo),
+  getCvStatusUseCase: GetCvStatusUseCase(repository: repo),
+  getCvHistoryUseCase: GetCvHistoryUseCase(repository: repo),
+  retryCvExtractionUseCase: RetryCvExtractionUseCase(repository: repo),
+  verifyExtractionUseCase: VerifyExtractionUseCase(repository: repo),
+  downloadCvUseCase: DownloadCvUseCase(repository: repo),
 );
 
 void main() {
@@ -183,10 +194,7 @@ void main() {
       },
       seed: () => const CvUploadPending(fileName: 'cv.pdf'),
       act: (cubit) => cubit.retryPending(),
-      expect: () => const [
-        CvUploading(),
-        CvUploadPending(fileName: 'cv.pdf'),
-      ],
+      expect: () => const [CvUploading(), CvUploadPending(fileName: 'cv.pdf')],
     );
 
     blocTest<CvUploadCubit, CvUploadState>(

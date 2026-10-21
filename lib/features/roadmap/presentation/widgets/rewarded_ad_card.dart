@@ -156,7 +156,9 @@ class _RewardedAdCardState extends State<RewardedAdCard> {
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                   decoration: BoxDecoration(
-                    color: context.semanticColors.success.withValues(alpha: 0.15),
+                    color: context.semanticColors.success.withValues(
+                      alpha: 0.15,
+                    ),
                     borderRadius: BorderRadius.circular(6.r),
                   ),
                   child: Text(

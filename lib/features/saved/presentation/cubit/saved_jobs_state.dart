@@ -23,6 +23,7 @@ class SavedJobsLoaded extends SavedJobsState {
     required this.hasMore,
     this.total = 0,
     this.isLoadingMore = false,
+    this.pendingCount = 0,
   });
 
   final List<SavedJobEntity> jobs;
@@ -31,12 +32,16 @@ class SavedJobsLoaded extends SavedJobsState {
   final int total;
   final bool isLoadingMore;
 
+  /// Durably queued save/unsave operations awaiting background sync.
+  final int pendingCount;
+
   SavedJobsLoaded copyWith({
     List<SavedJobEntity>? jobs,
     int? currentPage,
     bool? hasMore,
     int? total,
     bool? isLoadingMore,
+    int? pendingCount,
   }) {
     return SavedJobsLoaded(
       jobs: jobs ?? this.jobs,
@@ -44,11 +49,19 @@ class SavedJobsLoaded extends SavedJobsState {
       hasMore: hasMore ?? this.hasMore,
       total: total ?? this.total,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+      pendingCount: pendingCount ?? this.pendingCount,
     );
   }
 
   @override
-  List<Object?> get props => [jobs, currentPage, hasMore, total, isLoadingMore];
+  List<Object?> get props => [
+    jobs,
+    currentPage,
+    hasMore,
+    total,
+    isLoadingMore,
+    pendingCount,
+  ];
 }
 
 class SavedJobsError extends SavedJobsState {

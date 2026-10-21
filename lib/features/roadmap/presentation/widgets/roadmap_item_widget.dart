@@ -31,9 +31,10 @@ class RoadmapItemWidget extends StatelessWidget {
     if (item.isTreasure) {
       final milestoneIndex = item.milestoneIndex!;
       final targetIndex = item.targetNodeIndex!;
-      final isUnlocked =
-          targetIndex < nodes.length &&
-          nodes[targetIndex].status == RoadmapTaskStatus.completed;
+      // Eligibility derives from actual completion state of the leading
+      // task nodes (all first milestoneIndex*5 completed), not from a
+      // single position check.
+      final isUnlocked = RoadmapItem.isMilestoneUnlocked(nodes, milestoneIndex);
       final isClaimed = collectedTreasures.contains(milestoneIndex);
 
       return TreasureBoxNodeWidget(

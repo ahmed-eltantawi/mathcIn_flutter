@@ -22,6 +22,30 @@ String _completionFailureMessage(S l10n, SkillTaskCompleteFailure state) {
   return l10n.taskCompletionFailed;
 }
 
+/// Re-reads the selected roadmap (network first, durable cache fallback
+/// so offline completions appear immediately), with a manual retry action
+/// when nothing could be refreshed.
+Future<void> _refreshDetails(BuildContext context) async {
+  final l10n = S.of(context);
+  final roadmapCubit = context.read<RoadmapCubit>();
+  final refreshed = await roadmapCubit.refreshSelectedRoadmapDetails();
+  if (!context.mounted) return;
+  if (!refreshed) {
+    context.showErrorSnackBar(
+      l10n.roadmapRefreshFailed,
+      action: SnackBarAction(
+        label: l10n.tryAgain,
+        onPressed: () async {
+          final retried = await roadmapCubit.refreshSelectedRoadmapDetails();
+          if (!retried && context.mounted) {
+            context.showErrorSnackBar(l10n.roadmapRefreshFailed);
+          }
+        },
+      ),
+    );
+  }
+}
+
 class SkillDetailsSheet extends StatelessWidget {
   const SkillDetailsSheet({super.key, required this.node});
 
@@ -115,32 +139,35 @@ class SkillDetailsSheet extends StatelessWidget {
                           listener: (context, skillState) async {
                             final taskId = int.tryParse(task.id);
                             if (taskId == null) return;
+                            if (skillState is SkillTaskOptimisticUpdate &&
+                                skillState.taskId == taskId) {
+                              // Instant paint from the durable local cache:
+                              // no network wait, no screen change needed.
+                              await context
+                                  .read<RoadmapCubit>()
+                                  .refreshFromLocalCache();
+                              return;
+                            }
                             if (skillState is SkillTaskCompleteSuccess &&
                                 skillState.taskId == taskId) {
                               context.showSuccessSnackBar(l10n.taskCompleted);
-                              final roadmapCubit = context.read<RoadmapCubit>();
-                              final refreshed = await roadmapCubit
-                                  .refreshSelectedRoadmapDetails();
-                              if (!context.mounted) return;
-                              if (!refreshed) {
-                                context.showErrorSnackBar(
-                                  l10n.roadmapRefreshFailed,
-                                  action: SnackBarAction(
-                                    label: l10n.tryAgain,
-                                    onPressed: () async {
-                                      final retried = await roadmapCubit
-                                          .refreshSelectedRoadmapDetails();
-                                      if (!retried && context.mounted) {
-                                        context.showErrorSnackBar(
-                                          l10n.roadmapRefreshFailed,
-                                        );
-                                      }
-                                    },
-                                  ),
-                                );
-                              }
+                              await _refreshDetails(context);
+                            } else if (skillState is SkillTaskQueuedOffline &&
+                                skillState.taskId == taskId) {
+                              // Persisted locally + queued: refresh from
+                              // the local source of truth immediately.
+                              context.showInfoSnackBar(
+                                l10n.offlineStatusShowingSaved,
+                              );
+                              await _refreshDetails(context);
                             } else if (skillState is SkillTaskCompleteFailure &&
                                 skillState.taskId == taskId) {
+                              // The optimistic mark was rolled back: repaint
+                              // local truth, then explain the failure.
+                              await context
+                                  .read<RoadmapCubit>()
+                                  .refreshFromLocalCache();
+                              if (!context.mounted) return;
                               context.showErrorSnackBar(
                                 _completionFailureMessage(l10n, skillState),
                               );
@@ -156,6 +183,9 @@ class SkillDetailsSheet extends StatelessWidget {
                             // No completion may start while an AI refresh is
                             // in flight: refreshed IDs may supersede this one.
                             final aiRefreshing = state is RoadmapAiRefreshing;
+                            final roadmapId = context
+                                .read<RoadmapCubit>()
+                                .selectedRoadmapId;
                             return SkillTaskCard(
                               key: ValueKey(task.id),
                               task: task,
@@ -164,7 +194,10 @@ class SkillDetailsSheet extends StatelessWidget {
                                   canComplete && !isBusy && !aiRefreshing
                                   ? () => context
                                         .read<SkillTaskCubit>()
-                                        .completeTask(taskId: taskId)
+                                        .completeTask(
+                                          taskId: taskId,
+                                          roadmapId: roadmapId,
+                                        )
                                   : null,
                             );
                           },

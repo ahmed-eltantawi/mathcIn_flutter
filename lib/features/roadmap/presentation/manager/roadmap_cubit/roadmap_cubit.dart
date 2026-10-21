@@ -5,18 +5,23 @@ import 'package:MatchIn/features/roadmap/domain/entities/refresh_roadmap_params.
 import 'package:MatchIn/features/roadmap/domain/entities/roadmap_entity.dart';
 import 'package:MatchIn/features/roadmap/domain/entities/roadmaps_params.dart';
 import 'package:MatchIn/features/roadmap/domain/use_cases/generate_roadmap_use_case.dart';
+import 'package:MatchIn/features/roadmap/domain/use_cases/get_cached_roadmap_use_case.dart';
 import 'package:MatchIn/features/roadmap/domain/use_cases/refresh_roadmap_use_case.dart';
 import 'package:MatchIn/features/roadmap/domain/use_cases/get_roadmap_details_use_case.dart';
 import 'package:MatchIn/features/roadmap/domain/use_cases/get_roadmaps_use_case.dart';
+import 'package:MatchIn/features/roadmap/domain/use_cases/sync_roadmap_ops_use_case.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'roadmap_state.dart';
 
-/// Remote-only roadmap flow: list → select → details.
+/// Offline-first roadmap flow: list → select → details.
 ///
-/// No mock fallback, no local data cache. UI-only XP
-/// ([rewardedAdXp]) stays in [SharedPreferencesService].
+/// Cached roadmaps render immediately; the network refreshes them in the
+/// background and the UI updates reactively when fresh data arrives.
+/// Offline mutations stay queued durably and [syncPending] replays them
+/// when connectivity returns. UI-only XP ([rewardedAdXp]) stays in
+/// [SharedPreferencesService].
 class RoadmapCubit extends Cubit<RoadmapState> {
   RoadmapCubit({
     required this.sharedPreferencesService,
@@ -24,6 +29,8 @@ class RoadmapCubit extends Cubit<RoadmapState> {
     required this.getRoadmapDetailsUseCase,
     required this.generateRoadmapUseCase,
     required this.refreshRoadmapUseCase,
+    required this.getCachedRoadmapUseCase,
+    required this.syncRoadmapOpsUseCase,
   }) : super(RoadmapInitial());
 
   final SharedPreferencesService sharedPreferencesService;
@@ -31,6 +38,8 @@ class RoadmapCubit extends Cubit<RoadmapState> {
   final GetRoadmapDetailsUseCase getRoadmapDetailsUseCase;
   final GenerateRoadmapUseCase generateRoadmapUseCase;
   final RefreshRoadmapUseCase refreshRoadmapUseCase;
+  final GetCachedRoadmapUseCase getCachedRoadmapUseCase;
+  final SyncRoadmapOpsUseCase syncRoadmapOpsUseCase;
 
   List<RoadmapEntity> _cachedRoadmaps = [];
   int _currentPage = 1;
@@ -42,6 +51,7 @@ class RoadmapCubit extends Cubit<RoadmapState> {
   bool _generating = false;
   bool _refreshingList = false;
   bool _aiRefreshing = false;
+  bool _syncing = false;
 
   /// Roadmaps loaded so far, for the selector sheet.
   List<RoadmapEntity> get cachedRoadmaps =>
@@ -52,9 +62,41 @@ class RoadmapCubit extends Cubit<RoadmapState> {
   bool get hasMorePages => _currentPage < _lastPage;
 
   /// Loads the first page and auto-selects the first roadmap.
-  /// Awaits the chained details load so callers observe settled state.
+  /// Cached roadmaps render instantly and are never hidden behind a
+  /// loading spinner: the network refreshes them silently in the
+  /// background. Awaits the chained details load so callers observe
+  /// settled state.
   Future<void> loadRoadmaps() async {
     if (state is RoadmapsLoading) return;
+    final cached = await _safeCachedRoadmaps();
+    if (isClosed) return;
+    if (cached != null && cached.isNotEmpty) {
+      _cachedRoadmaps = cached;
+      _currentPage = 1;
+      _lastPage = 1;
+      _total = cached.length;
+      final pending = await _safePendingCount();
+      if (isClosed) return;
+      emit(
+        RoadmapsSuccess(
+          roadmaps: List<RoadmapEntity>.unmodifiable(_cachedRoadmaps),
+          currentPage: _currentPage,
+          lastPage: _lastPage,
+          total: _total,
+          isOffline: true,
+          pendingOpsCount: pending,
+        ),
+      );
+      if (_selectedRoadmapId == null) {
+        await selectRoadmap(_cachedRoadmaps.first.id);
+        if (isClosed) return;
+      }
+      // Silent background refresh: fresh rows update the snapshot (the
+      // selector sheet reads it directly) without flashing loading over
+      // valid cached content.
+      await _refreshListSilently();
+      return;
+    }
     emit(RoadmapsLoading());
 
     final result = await getRoadmapsUseCase(params: const RoadmapsParams());
@@ -62,7 +104,21 @@ class RoadmapCubit extends Cubit<RoadmapState> {
 
     int? autoSelectId;
     result.fold(
-      (failure) => emit(RoadmapFailure(errorMessage: failure.message)),
+      (failure) {
+        if (_cachedRoadmaps.isNotEmpty) {
+          emit(
+            RoadmapsSuccess(
+              roadmaps: List<RoadmapEntity>.unmodifiable(_cachedRoadmaps),
+              currentPage: _currentPage,
+              lastPage: _lastPage,
+              total: _total,
+              isOffline: failure is OfflineFailure,
+            ),
+          );
+        } else {
+          emit(RoadmapFailure(errorMessage: failure.message));
+        }
+      },
       (page) {
         _cachedRoadmaps = page.roadmaps;
         _currentPage = page.pagination.currentPage;
@@ -109,23 +165,18 @@ class RoadmapCubit extends Cubit<RoadmapState> {
         appended = true;
       });
       if (!appended) return false;
+      final pending = await _safePendingCount();
+      if (isClosed) return false;
       emit(
         RoadmapsSuccess(
           roadmaps: List<RoadmapEntity>.unmodifiable(_cachedRoadmaps),
           currentPage: _currentPage,
           lastPage: _lastPage,
           total: _total,
+          pendingOpsCount: pending,
         ),
       );
-      final lastDetails = _lastDetails;
-      if (lastDetails != null) {
-        emit(
-          RoadmapDetailsSuccess(
-            details: lastDetails,
-            rewardedAdXp: sharedPreferencesService.getRewardedAdXp(),
-          ),
-        );
-      }
+      await _restoreDetails();
       return true;
     } finally {
       _loadingMore = false;
@@ -141,19 +192,56 @@ class RoadmapCubit extends Cubit<RoadmapState> {
   }
 
   /// Loads one roadmap's details with milestones and tasks.
-  /// Ignored while an AI refresh is active so an older GET response
-  /// cannot overwrite a newer successful refresh.
+  /// Cached details render instantly; the network refreshes them in the
+  /// background without hiding valid cache. Ignored while an AI refresh
+  /// is active so an older GET response cannot overwrite a newer
+  /// successful refresh.
   Future<void> loadRoadmapDetails(int roadmapId) async {
     if (_aiRefreshing) return;
     if (state is RoadmapLoading) return;
-    emit(RoadmapLoading());
+    final cached = await _safeCachedDetails(roadmapId);
+    if (isClosed) return;
+    if (cached != null) {
+      _lastDetails = cached;
+      final pending = await _safePendingCount();
+      if (isClosed) return;
+      emit(
+        RoadmapDetailsSuccess(
+          details: cached,
+          rewardedAdXp: sharedPreferencesService.getRewardedAdXp(),
+          isOffline: true,
+          pendingOpsCount: pending,
+        ),
+      );
+    } else {
+      emit(RoadmapLoading());
+    }
 
     final result = await getRoadmapDetailsUseCase(roadmapId);
     if (isClosed) return;
 
     result.fold(
-      (failure) => emit(RoadmapFailure(errorMessage: failure.message)),
+      (failure) {
+        if (_lastDetails != null && _selectedRoadmapId == roadmapId) {
+          emit(
+            RoadmapDetailsSuccess(
+              details: _lastDetails!,
+              rewardedAdXp: sharedPreferencesService.getRewardedAdXp(),
+              isOffline: failure is OfflineFailure,
+              pendingOpsCount: 0,
+            ),
+          );
+          _refreshPendingCount();
+        } else if (_lastDetails == null) {
+          emit(RoadmapFailure(errorMessage: failure.message));
+        }
+      },
       (details) {
+        // Stale-response guard: a superseded selection must not
+        // overwrite the current view. No selection means no race.
+        if (_selectedRoadmapId != null && _selectedRoadmapId != roadmapId) {
+          return;
+        }
         _lastDetails = details;
         emit(
           RoadmapDetailsSuccess(
@@ -161,6 +249,7 @@ class RoadmapCubit extends Cubit<RoadmapState> {
             rewardedAdXp: sharedPreferencesService.getRewardedAdXp(),
           ),
         );
+        _refreshPendingCount();
       },
     );
   }
@@ -179,7 +268,8 @@ class RoadmapCubit extends Cubit<RoadmapState> {
   /// Silently refreshes the selected roadmap's details (used after a
   /// task completion): on success the fresh details are emitted; on
   /// failure nothing is emitted so the displayed roadmap is preserved.
-  /// Returns true when the details were refreshed.
+  /// Offline it re-reads the durable local cache so queued completions
+  /// appear immediately. Returns true when the details were refreshed.
   Future<bool> refreshSelectedRoadmapDetails() async {
     final selectedId = _selectedRoadmapId;
     if (selectedId == null) return false;
@@ -188,18 +278,74 @@ class RoadmapCubit extends Cubit<RoadmapState> {
     final result = await getRoadmapDetailsUseCase(selectedId);
     if (isClosed) return false;
     var refreshed = false;
+    var fromNetwork = false;
     result.fold((_) {}, (details) {
       _lastDetails = details;
       refreshed = true;
+      fromNetwork = true;
     });
-    if (!refreshed) return false;
+    if (!refreshed) {
+      // Offline or failed refresh: fall back to the durable cache, which
+      // already holds locally applied completions.
+      final cached = await _safeCachedDetails(selectedId);
+      if (isClosed || cached == null) return false;
+      _lastDetails = cached;
+      refreshed = true;
+    }
+    final pending = await _safePendingCount();
+    if (isClosed) return false;
     emit(
       RoadmapDetailsSuccess(
         details: _lastDetails!,
         rewardedAdXp: sharedPreferencesService.getRewardedAdXp(),
+        isOffline: !fromNetwork,
+        pendingOpsCount: pending,
       ),
     );
     return true;
+  }
+
+  /// Re-reads the selected roadmap from the durable local cache and
+  /// emits it immediately without any network wait. Callers invoke it
+  /// right after mutating local state (optimistic paint, rollback
+  /// repaint, queued offline mutation), so the cache is the freshest
+  /// source at that point. Returns true when local details were emitted.
+  Future<bool> refreshFromLocalCache() async {
+    final selectedId = _selectedRoadmapId;
+    if (selectedId == null) return false;
+    final cached = await _safeCachedDetails(selectedId);
+    if (isClosed || cached == null) return false;
+    _lastDetails = cached;
+    final pending = await _safePendingCount();
+    if (isClosed) return false;
+    emit(
+      RoadmapDetailsSuccess(
+        details: cached,
+        rewardedAdXp: sharedPreferencesService.getRewardedAdXp(),
+        pendingOpsCount: pending,
+      ),
+    );
+    return true;
+  }
+
+  /// Replays durable pending ops (manual retry + connectivity-restore
+  /// path). Refreshes the displayed details when sync made progress.
+  /// Returns true when at least one op synchronized.
+  Future<bool> syncPending() async {
+    if (_syncing) return false;
+    _syncing = true;
+    try {
+      final report = await syncRoadmapOpsUseCase();
+      if (isClosed) return false;
+      if (report.didWork) {
+        await refreshSelectedRoadmapDetails();
+        return true;
+      }
+      await _refreshPendingCount();
+      return false;
+    } finally {
+      _syncing = false;
+    }
   }
 
   /// Reloads the first page for the selector sheet without disturbing
@@ -230,15 +376,7 @@ class RoadmapCubit extends Cubit<RoadmapState> {
           total: _total,
         ),
       );
-      final lastDetails = _lastDetails;
-      if (lastDetails != null) {
-        emit(
-          RoadmapDetailsSuccess(
-            details: lastDetails,
-            rewardedAdXp: sharedPreferencesService.getRewardedAdXp(),
-          ),
-        );
-      }
+      await _restoreDetails();
       return true;
     } finally {
       _refreshingList = false;
@@ -363,8 +501,14 @@ class RoadmapCubit extends Cubit<RoadmapState> {
 
       final lastDetails = _lastDetails;
       if (state is RoadmapDetailsSuccess && lastDetails != null) {
+        final current = state as RoadmapDetailsSuccess;
         emit(
-          RoadmapDetailsSuccess(details: lastDetails, rewardedAdXp: updatedXp),
+          RoadmapDetailsSuccess(
+            details: lastDetails,
+            rewardedAdXp: updatedXp,
+            isOffline: current.isOffline,
+            pendingOpsCount: current.pendingOpsCount,
+          ),
         );
       } else if (_selectedRoadmapId != null) {
         await loadRoadmapDetails(_selectedRoadmapId!);
@@ -373,6 +517,80 @@ class RoadmapCubit extends Cubit<RoadmapState> {
       }
     } catch (e) {
       emit(RoadmapFailure(errorMessage: e.toString()));
+    }
+  }
+
+  //! ===== Durable-cache + sync helpers =====
+
+  /// Re-fetches the first page without emitting: the snapshot backing the
+  /// selector sheet stays current while whatever is on screen (usually
+  /// the details view) is never replaced by loading.
+  Future<void> _refreshListSilently() async {
+    final result = await getRoadmapsUseCase(params: const RoadmapsParams());
+    if (isClosed) return;
+    result.fold((_) {}, (page) {
+      _cachedRoadmaps = page.roadmaps;
+      _currentPage = page.pagination.currentPage;
+      _lastPage = page.pagination.lastPage;
+      _total = page.pagination.total;
+    });
+  }
+
+  Future<List<RoadmapEntity>?> _safeCachedRoadmaps() async {
+    try {
+      return await getCachedRoadmapUseCase.cachedRoadmaps();
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<RoadmapEntity?> _safeCachedDetails(int roadmapId) async {
+    try {
+      return await getCachedRoadmapUseCase.cachedRoadmapDetails(roadmapId);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<int> _safePendingCount() async {
+    try {
+      return await syncRoadmapOpsUseCase.pendingCount();
+    } catch (_) {
+      return 0;
+    }
+  }
+
+  Future<void> _refreshPendingCount() async {
+    if (isClosed) return;
+    final current = state;
+    if (current is! RoadmapDetailsSuccess) return;
+    final pending = await _safePendingCount();
+    if (isClosed) return;
+    final latest = state;
+    if (latest is RoadmapDetailsSuccess && latest.pendingOpsCount != pending) {
+      emit(
+        RoadmapDetailsSuccess(
+          details: latest.details,
+          rewardedAdXp: latest.rewardedAdXp,
+          isOffline: latest.isOffline,
+          pendingOpsCount: pending,
+        ),
+      );
+    }
+  }
+
+  Future<void> _restoreDetails() async {
+    final lastDetails = _lastDetails;
+    if (lastDetails != null && !isClosed) {
+      final pending = await _safePendingCount();
+      if (isClosed) return;
+      emit(
+        RoadmapDetailsSuccess(
+          details: lastDetails,
+          rewardedAdXp: sharedPreferencesService.getRewardedAdXp(),
+          pendingOpsCount: pending,
+        ),
+      );
     }
   }
 }

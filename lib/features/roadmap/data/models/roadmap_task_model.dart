@@ -15,10 +15,27 @@ class RoadmapTaskModel extends RoadmapTask {
       id: _parseId(json['id']) ?? 0,
       title: json['title']?.toString() ?? '',
       description: json['description']?.toString(),
-      estimatedHours: (json['estimated_hours'] as num?)?.toInt(),
+      estimatedHours: _parseHours(json['estimated_hours']),
       isCompleted: _parseBool(json['is_completed']) ?? false,
       completedAt: json['completed_at']?.toString(),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      if (description != null) 'description': description,
+      if (estimatedHours != null) 'estimated_hours': estimatedHours,
+      'is_completed': isCompleted,
+      if (completedAt != null) 'completed_at': completedAt,
+    };
+  }
+
+  static int? _parseHours(dynamic value) {
+    if (value is num) return value.toInt();
+    if (value is String) return int.tryParse(value.trim());
+    return null;
   }
 
   static int? _parseId(dynamic value) {

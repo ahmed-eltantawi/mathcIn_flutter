@@ -9,7 +9,10 @@ class UploadCvUseCase {
 
   final ProfileRepository repository;
 
-  Future<Either<Failure, CvUploadReceipt?>> call(CvUploadInput input) {
-    return repository.uploadCv(input);
+  Future<Either<Failure, CvUploadReceipt?>> call(
+    CvUploadInput input, {
+    void Function(int sentBytes, int totalBytes)? onSendProgress,
+  }) {
+    return repository.uploadCv(input, onSendProgress: onSendProgress);
   }
 }

@@ -11,6 +11,11 @@ abstract class CacheKey {
   static const String collectedTreasures = 'collectedTreasures';
   static const String completedTaskIds = 'completedTaskIds';
   static const String rewardedAdXp = 'rewardedAdXp';
+  static const String cachedRoadmaps = 'cached_roadmaps';
+  static const String cachedRoadmapDetailsPrefix = 'cached_roadmap_details_';
+  static const String roadmapSyncQueuePrefix = 'roadmap_sync_queue_';
+  static const String candidateXp = 'candidate_xp';
+  static const String roadmapXpPrefix = 'roadmap_xp_';
   static const String chatSessions = 'chatSessions';
   static const String chatMessagesPrefix = 'chatMessages_';
   static const String jobsFeedPrefix = 'jobs_feed_';

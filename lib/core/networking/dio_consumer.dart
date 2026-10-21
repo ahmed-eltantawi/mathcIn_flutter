@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:MatchIn/core/errors/error_model.dart';
 import 'package:MatchIn/core/errors/exceptions.dart';
 import 'package:MatchIn/core/networking/api_consumer.dart';
@@ -114,6 +116,7 @@ class DioConsumer extends ApiConsumer {
     Map<String, dynamic>? queryParameters,
     dynamic data,
     bool isFormData = false,
+    void Function(int sentBytes, int totalBytes)? onSendProgress,
   }) async {
     _requireResolvedBaseUrl();
     try {
@@ -121,6 +124,7 @@ class DioConsumer extends ApiConsumer {
         path,
         queryParameters: queryParameters,
         data: isFormData ? FormData.fromMap(data) : data,
+        onSendProgress: onSendProgress,
       );
       return response.data;
     } on DioException catch (e) {
@@ -168,5 +172,65 @@ class DioConsumer extends ApiConsumer {
     } on DioException catch (e) {
       handleDioExceptions(e);
     }
+  }
+
+  //? ---------- Download bytes ----------
+  @override
+  Future<({Uint8List bytes, String? fileName, String? mimeType})> downloadBytes(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    _requireResolvedBaseUrl();
+    try {
+      final response = await dio.get(
+        path,
+        queryParameters: queryParameters,
+        options: Options(responseType: ResponseType.bytes),
+      );
+      final data = response.data;
+      final Uint8List bytes;
+      if (data is Uint8List) {
+        bytes = data;
+      } else if (data is List<int>) {
+        bytes = Uint8List.fromList(data);
+      } else {
+        throw const FormatException('Invalid binary response format');
+      }
+      final headers = response.headers;
+      return (
+        bytes: bytes,
+        fileName: _fileNameFrom(headers.value('content-disposition')),
+        mimeType: headers.value('content-type')?.split(';').first.trim(),
+      );
+    } on DioException catch (e) {
+      handleDioExceptions(e);
+      throw const FormatException('Invalid binary response format');
+    }
+  }
+
+  /// Extracts `filename=` from a `Content-Disposition` header value.
+  static String? _fileNameFrom(String? contentDisposition) {
+    if (contentDisposition == null || contentDisposition.isEmpty) {
+      return null;
+    }
+    final match = RegExp(
+      'filename[^;=]*=([^;]+)',
+      caseSensitive: false,
+    ).firstMatch(contentDisposition);
+    var name = match?.group(1)?.trim() ?? '';
+    if (name.length >= 2 && name.startsWith('"') && name.endsWith('"')) {
+      name = name.substring(1, name.length - 1);
+    }
+    // RFC 5987 encoded form: UTF-8''percent-encoded.
+    final prefix = RegExp("^[^']*'[^']*'");
+    if (prefix.hasMatch(name) && name.contains('%')) {
+      try {
+        final decoded = Uri.decodeComponent(name.replaceFirst(prefix, ''));
+        if (decoded.trim().isNotEmpty) name = decoded.trim();
+      } catch (_) {
+        // Keep the raw token when decoding fails.
+      }
+    }
+    return name.isEmpty ? null : name;
   }
 }

@@ -21,21 +21,41 @@ final class RoadmapsSuccess extends RoadmapState {
     required this.currentPage,
     required this.lastPage,
     required this.total,
+    this.isOffline = false,
+    this.pendingOpsCount = 0,
   });
 
   final List<RoadmapEntity> roadmaps;
   final int currentPage;
   final int lastPage;
   final int total;
+
+  /// True when served from the durable cache while offline.
+  final bool isOffline;
+
+  /// Durably queued mutations awaiting background sync.
+  final int pendingOpsCount;
 }
 
 /// Selected roadmap details. The node path maps [details] to visual
 /// nodes in the view layer.
 final class RoadmapDetailsSuccess extends RoadmapState {
-  RoadmapDetailsSuccess({required this.details, this.rewardedAdXp = 0});
+  RoadmapDetailsSuccess({
+    required this.details,
+    this.rewardedAdXp = 0,
+    this.isOffline = false,
+    this.pendingOpsCount = 0,
+  });
 
   final RoadmapEntity details;
   final int rewardedAdXp;
+
+  /// True when served from the durable cache while offline or after a
+  /// failed refresh (valid cached data stays visible).
+  final bool isOffline;
+
+  /// Durably queued mutations awaiting background sync.
+  final int pendingOpsCount;
 }
 
 /// AI generation in progress. Carries the currently displayed content

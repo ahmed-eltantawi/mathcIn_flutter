@@ -1,7 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -1053,7 +1052,12 @@ class S {
 
   /// `Load More`
   String get loadMore {
-    return Intl.message('Load More', name: 'loadMore', desc: '', args: []);
+    return Intl.message(
+      'Load More',
+      name: 'loadMore',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `{hours}h`
@@ -4730,17 +4734,32 @@ class S {
 
   /// `Gender`
   String get gender {
-    return Intl.message('Gender', name: 'gender', desc: '', args: []);
+    return Intl.message(
+      'Gender',
+      name: 'gender',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Male`
   String get male {
-    return Intl.message('Male', name: 'male', desc: '', args: []);
+    return Intl.message(
+      'Male',
+      name: 'male',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Female`
   String get female {
-    return Intl.message('Female', name: 'female', desc: '', args: []);
+    return Intl.message(
+      'Female',
+      name: 'female',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Prefer not to say`
@@ -4805,7 +4824,12 @@ class S {
 
   /// `Take Photo`
   String get takePhoto {
-    return Intl.message('Take Photo', name: 'takePhoto', desc: '', args: []);
+    return Intl.message(
+      'Take Photo',
+      name: 'takePhoto',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Choose from Gallery`
@@ -4920,7 +4944,12 @@ class S {
 
   /// `Degree`
   String get degree {
-    return Intl.message('Degree', name: 'degree', desc: '', args: []);
+    return Intl.message(
+      'Degree',
+      name: 'degree',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `e.g. Master of Science, Bachelor of Arts`
@@ -4975,7 +5004,12 @@ class S {
 
   /// `Start year`
   String get startYear {
-    return Intl.message('Start year', name: 'startYear', desc: '', args: []);
+    return Intl.message(
+      'Start year',
+      name: 'startYear',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `End year (or expected)`
@@ -4990,7 +5024,12 @@ class S {
 
   /// `Select`
   String get select {
-    return Intl.message('Select', name: 'select', desc: '', args: []);
+    return Intl.message(
+      'Select',
+      name: 'select',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Currently studying here`
@@ -5135,7 +5174,12 @@ class S {
 
   /// `Job title`
   String get jobTitle {
-    return Intl.message('Job title', name: 'jobTitle', desc: '', args: []);
+    return Intl.message(
+      'Job title',
+      name: 'jobTitle',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `e.g. Lead Product Designer`
@@ -5150,7 +5194,12 @@ class S {
 
   /// `Company`
   String get company {
-    return Intl.message('Company', name: 'company', desc: '', args: []);
+    return Intl.message(
+      'Company',
+      name: 'company',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `e.g. Studio Craft Ltd.`
@@ -5175,7 +5224,12 @@ class S {
 
   /// `Location`
   String get location {
-    return Intl.message('Location', name: 'location', desc: '', args: []);
+    return Intl.message(
+      'Location',
+      name: 'location',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `e.g. London, UK or Cairo, Egypt`
@@ -5320,7 +5374,12 @@ class S {
 
   /// `Help`
   String get help {
-    return Intl.message('Help', name: 'help', desc: '', args: []);
+    return Intl.message(
+      'Help',
+      name: 'help',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Profile synced`
@@ -5455,7 +5514,12 @@ class S {
 
   /// `Skills:`
   String get skillsLabel {
-    return Intl.message('Skills:', name: 'skillsLabel', desc: '', args: []);
+    return Intl.message(
+      'Skills:',
+      name: 'skillsLabel',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `No applications yet`
@@ -5820,27 +5884,52 @@ class S {
 
   /// `Back online`
   String get backOnline {
-    return Intl.message('Back online', name: 'backOnline', desc: '', args: []);
+    return Intl.message(
+      'Back online',
+      name: 'backOnline',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `User`
   String get userFallback {
-    return Intl.message('User', name: 'userFallback', desc: '', args: []);
+    return Intl.message(
+      'User',
+      name: 'userFallback',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Retry`
   String get retry {
-    return Intl.message('Retry', name: 'retry', desc: '', args: []);
+    return Intl.message(
+      'Retry',
+      name: 'retry',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Save`
   String get save {
-    return Intl.message('Save', name: 'save', desc: '', args: []);
+    return Intl.message(
+      'Save',
+      name: 'save',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Rename Chat`
   String get editTitle {
-    return Intl.message('Rename Chat', name: 'editTitle', desc: '', args: []);
+    return Intl.message(
+      'Rename Chat',
+      name: 'editTitle',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Enter new title`
@@ -5885,7 +5974,12 @@ class S {
 
   /// `Archived`
   String get archived {
-    return Intl.message('Archived', name: 'archived', desc: '', args: []);
+    return Intl.message(
+      'Archived',
+      name: 'archived',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Grounded on your verified skills, experience, and target roles.`

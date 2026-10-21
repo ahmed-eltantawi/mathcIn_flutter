@@ -78,6 +78,33 @@ class SavedJobEntity extends Equatable {
     );
   }
 
+  /// Builds a savable entity from feed/details/search job data.
+  /// Returns null when [job] carries no numeric backend id, so callers
+  /// fall back to the legacy remote-only path instead of queueing an
+  /// unidentifiable operation.
+  static SavedJobEntity? fromJobEntity(JobEntity job, {required bool isSaved}) {
+    final id = int.tryParse(job.id.trim());
+    if (id == null) return null;
+    return SavedJobEntity(
+      id: id,
+      title: job.title,
+      company: job.companyName,
+      companyLogoUrl: job.companyLogoUrl,
+      companyEntity: job.company,
+      location: job.location,
+      workMode: job.workMode,
+      experience: job.experienceLevel,
+      jobType: job.employmentType,
+      postedDate: job.postedDate.toIso8601String(),
+      skills: List<String>.of(job.skills),
+      requiredSkills: job.requiredSkills,
+      preferredSkills: job.preferredSkills,
+      isExpired: job.isExpired,
+      matchPercentage: job.matchPercentage,
+      isSaved: isSaved,
+    );
+  }
+
   JobEntity toJobEntity() {
     return JobEntity(
       id: id.toString(),

@@ -4,6 +4,8 @@ import 'package:MatchIn/core/cache/shared_preferences_helper.dart';
 import 'package:MatchIn/core/errors/failures.dart';
 import 'package:MatchIn/core/services/shared_preferences_service.dart';
 import 'package:MatchIn/features/roadmap/domain/entities/complete_roadmap_task_params.dart';
+import 'package:MatchIn/features/roadmap/domain/entities/award_xp_params.dart';
+import 'package:MatchIn/features/roadmap/domain/entities/award_xp_response_entity.dart';
 import 'package:MatchIn/features/roadmap/domain/entities/refresh_roadmap_params.dart';
 import 'package:MatchIn/features/roadmap/domain/entities/generate_roadmap_params.dart';
 import 'package:MatchIn/features/roadmap/domain/entities/paginated_roadmaps_entity.dart';
@@ -13,11 +15,14 @@ import 'package:MatchIn/features/roadmap/domain/entities/roadmap_pagination_enti
 import 'package:MatchIn/features/roadmap/domain/entities/roadmap_task.dart';
 import 'package:MatchIn/features/roadmap/domain/entities/roadmaps_params.dart';
 import 'package:MatchIn/features/roadmap/domain/repositories/roadmap_repository.dart';
+import 'package:MatchIn/features/roadmap/domain/use_cases/award_xp_use_case.dart';
 import 'package:MatchIn/features/roadmap/domain/use_cases/complete_roadmap_task_use_case.dart';
+import 'package:MatchIn/features/roadmap/domain/use_cases/get_cached_roadmap_use_case.dart';
 import 'package:MatchIn/features/roadmap/domain/use_cases/get_roadmap_details_use_case.dart';
 import 'package:MatchIn/features/roadmap/domain/use_cases/get_roadmaps_use_case.dart';
 import 'package:MatchIn/features/roadmap/domain/use_cases/generate_roadmap_use_case.dart';
 import 'package:MatchIn/features/roadmap/domain/use_cases/refresh_roadmap_use_case.dart';
+import 'package:MatchIn/features/roadmap/domain/use_cases/sync_roadmap_ops_use_case.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/roadmap_cubit/roadmap_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/skill_task_cubit/skill_task_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/treasure_cubit/treasure_cubit.dart';
@@ -38,6 +43,10 @@ class FakeRoadmapRepository extends Fake implements RoadmapRepository {
   int refreshCalls = 0;
   CompleteRoadmapTaskParams? lastCompleteParams;
   RefreshRoadmapParams? lastRefreshParams;
+  Either<Failure, AwardXpResponseEntity>? awardXpResult;
+  int awardXpCalls = 0;
+  final Map<int, Set<int>> collectedLedgers = {};
+  final Map<int, Set<int>> syncedLedgers = {};
 
   @override
   Future<Either<Failure, PaginatedRoadmapsEntity>> getRoadmaps({
@@ -79,6 +88,30 @@ class FakeRoadmapRepository extends Fake implements RoadmapRepository {
     refreshCalls++;
     lastRefreshParams = params;
     return refreshResult!;
+  }
+
+  @override
+  Future<Set<int>> getCollectedTreasures(int roadmapId) async {
+    return Set<int>.of(collectedLedgers[roadmapId] ?? const {});
+  }
+
+  @override
+  Future<void> collectTreasure(int roadmapId, int milestoneIndex) async {
+    collectedLedgers.putIfAbsent(roadmapId, () => <int>{}).add(milestoneIndex);
+  }
+
+  @override
+  Future<Set<int>> getSyncedTreasures(int roadmapId) async {
+    return Set<int>.of(syncedLedgers[roadmapId] ?? const {});
+  }
+
+  @override
+  Future<Either<Failure, AwardXpResponseEntity>> awardXp(
+    AwardXpParams params, {
+    required String opKey,
+  }) async {
+    awardXpCalls++;
+    return awardXpResult ?? const Left(OfflineFailure());
   }
 }
 
@@ -164,6 +197,13 @@ RoadmapCubit buildRoadmapCubit(
   getRoadmapDetailsUseCase: GetRoadmapDetailsUseCase(repository: repo),
   generateRoadmapUseCase: GenerateRoadmapUseCase(repository: repo),
   refreshRoadmapUseCase: RefreshRoadmapUseCase(repository: repo),
+  getCachedRoadmapUseCase: GetCachedRoadmapUseCase(repository: repo),
+  syncRoadmapOpsUseCase: SyncRoadmapOpsUseCase(repository: repo),
+);
+
+TreasureCubit buildTreasureCubit(FakeRoadmapRepository repo) => TreasureCubit(
+  repository: repo,
+  awardXpUseCase: AwardXpUseCase(repository: repo),
 );
 
 void main() {
@@ -171,6 +211,7 @@ void main() {
 
   late SharedPreferencesService sharedPreferencesService;
   late TreasureCubit treasureCubit;
+  late FakeRoadmapRepository treasureRepo;
   late SkillTaskCubit skillTaskCubit;
   late FakeRoadmapRepository skillTaskRepo;
 
@@ -180,14 +221,14 @@ void main() {
     final helper = SharedPreferencesHelper(preferences: prefs);
     sharedPreferencesService = SharedPreferencesService(helper);
 
-    treasureCubit = TreasureCubit(
-      sharedPreferencesService: sharedPreferencesService,
-    );
+    treasureRepo = FakeRoadmapRepository();
+    treasureCubit = buildTreasureCubit(treasureRepo);
     skillTaskRepo = FakeRoadmapRepository();
     skillTaskCubit = SkillTaskCubit(
       completeRoadmapTaskUseCase: CompleteRoadmapTaskUseCase(
         repository: skillTaskRepo,
       ),
+      repository: skillTaskRepo,
     );
   });
 
@@ -419,13 +460,37 @@ void main() {
       await cubit.close();
     });
 
-    test('TreasureCubit loads and claims treasure milestone', () async {
-      treasureCubit.loadCollectedTreasures();
+    test('TreasureCubit loads and claims a per-roadmap milestone', () async {
+      await treasureCubit.loadLedger(1);
       expect(treasureCubit.state, isA<TreasureLoaded>());
+      expect(
+        (treasureCubit.state as TreasureLoaded).collectedTreasures,
+        isEmpty,
+      );
 
-      await treasureCubit.claimTreasureReward(1);
+      // Award XP is offline in this fake (AwardXpUseCase → Fake repo
+      // throws): the box still collects exactly once with XP pending.
+      final isNew = await treasureCubit.claimTreasure(
+        roadmapId: 1,
+        milestoneIndex: 1,
+      );
+      expect(isNew, isTrue);
       final state = treasureCubit.state as TreasureLoaded;
+      expect(state.roadmapId, 1);
       expect(state.collectedTreasures.contains(1), isTrue);
+
+      // Repeat claims are no-ops (no duplicate reward, no SnackBar).
+      expect(
+        await treasureCubit.claimTreasure(roadmapId: 1, milestoneIndex: 1),
+        isFalse,
+      );
+
+      // Ledgers are scoped per roadmap.
+      await treasureCubit.loadLedger(2);
+      expect(
+        (treasureCubit.state as TreasureLoaded).collectedTreasures,
+        isEmpty,
+      );
     });
 
     test('SkillTaskCubit completes a task through the backend', () async {
@@ -473,14 +538,14 @@ void main() {
       await skillTaskCubit.close();
     });
 
-    test('SkillTaskCubit surfaces offline failure', () async {
+    test('SkillTaskCubit queues offline instead of failing', () async {
       skillTaskRepo.completeResult = const Left(OfflineFailure());
 
-      await skillTaskCubit.completeTask(taskId: 7);
+      await skillTaskCubit.completeTask(taskId: 7, roadmapId: 1);
 
       final state = skillTaskCubit.state;
-      expect(state, isA<SkillTaskCompleteFailure>());
-      expect((state as SkillTaskCompleteFailure).message, 'You are offline');
+      expect(state, isA<SkillTaskQueuedOffline>());
+      expect((state as SkillTaskQueuedOffline).taskId, 7);
       await skillTaskCubit.close();
     });
 
@@ -490,6 +555,7 @@ void main() {
         completeRoadmapTaskUseCase: CompleteRoadmapTaskUseCase(
           repository: gatedRepo,
         ),
+        repository: gatedRepo,
       );
 
       unawaited(cubit.completeTask(taskId: 7));

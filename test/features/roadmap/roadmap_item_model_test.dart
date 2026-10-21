@@ -1,13 +1,20 @@
-import 'package:MatchIn/features/roadmap/data/models/mockup_roadmap_node.dart';
 import 'package:MatchIn/features/roadmap/data/models/roadmap_item_model.dart';
+import 'package:MatchIn/features/roadmap/data/models/roadmap_node.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+/// Local fixture (replaces the removed static mock list): ten plain nodes.
+List<RoadmapNode> tenNodes() => List.generate(
+  10,
+  (i) => RoadmapNode(title: 'Node $i', status: RoadmapTaskStatus.active),
+);
 
 void main() {
   group('RoadmapItem.buildItems', () {
     test('inserts a treasure after every 5 nodes', () {
-      final items = RoadmapItem.buildItems(roadmapNodes);
+      final nodes = tenNodes();
+      final items = RoadmapItem.buildItems(nodes);
 
-      expect(roadmapNodes.length, 10);
+      expect(nodes.length, 10);
       expect(items.length, 12);
 
       final treasures = items.where((item) => item.isTreasure).toList();
@@ -19,12 +26,13 @@ void main() {
     });
 
     test('preserves node order and original indices', () {
-      final items = RoadmapItem.buildItems(roadmapNodes);
-      final nodes = items.where((item) => !item.isTreasure).toList();
+      final nodes = tenNodes();
+      final items = RoadmapItem.buildItems(nodes);
+      final rendered = items.where((item) => !item.isTreasure).toList();
 
-      expect(nodes.length, 10);
-      for (var i = 0; i < nodes.length; i++) {
-        expect(nodes[i].taskIndex, i);
+      expect(rendered.length, 10);
+      for (var i = 0; i < rendered.length; i++) {
+        expect(rendered[i].taskIndex, i);
       }
     });
   });

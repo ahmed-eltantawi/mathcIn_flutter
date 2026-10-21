@@ -1,4 +1,5 @@
 import 'package:MatchIn/features/roadmap/data/models/roadmap_node.dart';
+import 'package:MatchIn/features/roadmap/domain/entities/candidate_xp_entity.dart';
 import 'package:MatchIn/features/roadmap/presentation/widgets/rewarded_ad_card.dart';
 import 'package:MatchIn/features/roadmap/presentation/widgets/roadmap_list_widget.dart';
 import 'package:MatchIn/features/roadmap/presentation/widgets/roadmap_xp_bar.dart';
@@ -11,11 +12,15 @@ class RoadmapContentWidget extends StatelessWidget {
     required this.nodes,
     this.collectedTreasures = const {},
     this.rewardedAdXp = 0,
+    this.candidateXp,
   });
 
   final List<RoadmapNode> nodes;
   final Set<int> collectedTreasures;
   final int rewardedAdXp;
+
+  /// Authoritative server XP for the level headline (null while loading).
+  final CandidateXpEntity? candidateXp;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +33,7 @@ class RoadmapContentWidget extends StatelessWidget {
             nodes: nodes,
             collectedTreasures: collectedTreasures,
             rewardedAdXp: rewardedAdXp,
+            candidateXp: candidateXp,
           ),
         ),
 

@@ -16,6 +16,8 @@ import 'package:MatchIn/features/roadmap/domain/entities/roadmap_task.dart';
 import 'package:MatchIn/features/roadmap/domain/entities/roadmaps_params.dart';
 import 'package:MatchIn/features/roadmap/domain/repositories/roadmap_repository.dart';
 import 'package:MatchIn/features/roadmap/domain/use_cases/complete_roadmap_task_use_case.dart';
+import 'package:MatchIn/features/roadmap/domain/use_cases/get_cached_roadmap_use_case.dart';
+import 'package:MatchIn/features/roadmap/domain/use_cases/sync_roadmap_ops_use_case.dart';
 import 'package:MatchIn/features/roadmap/domain/use_cases/get_roadmap_details_use_case.dart';
 import 'package:MatchIn/features/roadmap/domain/use_cases/get_roadmaps_use_case.dart';
 import 'package:MatchIn/features/roadmap/domain/use_cases/generate_roadmap_use_case.dart';
@@ -172,9 +174,12 @@ Future<_SheetHarness> _pumpHost(
     getRoadmapDetailsUseCase: GetRoadmapDetailsUseCase(repository: repo),
     generateRoadmapUseCase: GenerateRoadmapUseCase(repository: repo),
     refreshRoadmapUseCase: RefreshRoadmapUseCase(repository: repo),
+    getCachedRoadmapUseCase: GetCachedRoadmapUseCase(repository: repo),
+    syncRoadmapOpsUseCase: SyncRoadmapOpsUseCase(repository: repo),
   );
   final skillTaskCubit = SkillTaskCubit(
     completeRoadmapTaskUseCase: CompleteRoadmapTaskUseCase(repository: repo),
+    repository: repo,
   );
   addTearDown(roadmapCubit.close);
   addTearDown(skillTaskCubit.close);

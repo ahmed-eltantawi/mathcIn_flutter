@@ -15,6 +15,8 @@ import 'package:MatchIn/features/roadmap/domain/entities/roadmaps_params.dart';
 import 'package:MatchIn/features/roadmap/domain/entities/generate_roadmap_params.dart';
 import 'package:MatchIn/features/roadmap/domain/repositories/roadmap_repository.dart';
 import 'package:MatchIn/features/roadmap/domain/use_cases/complete_roadmap_task_use_case.dart';
+import 'package:MatchIn/features/roadmap/domain/use_cases/get_cached_roadmap_use_case.dart';
+import 'package:MatchIn/features/roadmap/domain/use_cases/sync_roadmap_ops_use_case.dart';
 import 'package:MatchIn/features/roadmap/domain/use_cases/get_roadmap_details_use_case.dart';
 import 'package:MatchIn/features/roadmap/domain/use_cases/get_roadmaps_use_case.dart';
 import 'package:MatchIn/features/roadmap/domain/use_cases/generate_roadmap_use_case.dart';
@@ -129,9 +131,13 @@ const _completedDetails = RoadmapEntity(
   ],
 );
 
+/// Task-shaped node as produced by [RoadmapNodeMapper] (one node per
+/// backend task): the sheet resolves it by task id against refreshed
+/// details, so completion state updates after the silent refresh.
 const _sheetNode = RoadmapNode(
-  id: '1',
-  title: 'Containers',
+  id: '7',
+  title: 'Docker lab',
+  subtitle: 'Containers',
   status: RoadmapTaskStatus.active,
   tasks: [SkillTask(id: '7', title: 'Docker lab', duration: '6h')],
 );
@@ -164,9 +170,12 @@ Future<_FlowHarness> _pumpSheet(
     getRoadmapDetailsUseCase: GetRoadmapDetailsUseCase(repository: repo),
     generateRoadmapUseCase: GenerateRoadmapUseCase(repository: repo),
     refreshRoadmapUseCase: RefreshRoadmapUseCase(repository: repo),
+    getCachedRoadmapUseCase: GetCachedRoadmapUseCase(repository: repo),
+    syncRoadmapOpsUseCase: SyncRoadmapOpsUseCase(repository: repo),
   );
   final skillTaskCubit = SkillTaskCubit(
     completeRoadmapTaskUseCase: CompleteRoadmapTaskUseCase(repository: repo),
+    repository: repo,
   );
   addTearDown(roadmapCubit.close);
   addTearDown(skillTaskCubit.close);
@@ -285,8 +294,9 @@ void main() {
       expect(repo.completeCalls, 1);
       // No silent refresh after a failed PATCH.
       expect(repo.detailsCalls, 1);
-      // Sheet stays mounted on the same task, still incomplete.
-      expect(find.text('Docker lab'), findsOneWidget);
+      // Sheet stays mounted on the same task, still incomplete: the task
+      // title renders both as the sheet header and as its task row.
+      expect(find.text('Docker lab'), findsNWidgets(2));
       expect(find.byIcon(Icons.check_rounded), findsNothing);
     });
 
@@ -307,11 +317,14 @@ void main() {
         getRoadmapDetailsUseCase: GetRoadmapDetailsUseCase(repository: repo),
         generateRoadmapUseCase: GenerateRoadmapUseCase(repository: repo),
         refreshRoadmapUseCase: RefreshRoadmapUseCase(repository: repo),
+        getCachedRoadmapUseCase: GetCachedRoadmapUseCase(repository: repo),
+        syncRoadmapOpsUseCase: SyncRoadmapOpsUseCase(repository: repo),
       );
       final skillTaskCubit = SkillTaskCubit(
         completeRoadmapTaskUseCase: CompleteRoadmapTaskUseCase(
           repository: repo,
         ),
+        repository: repo,
       );
       addTearDown(roadmapCubit.close);
       addTearDown(skillTaskCubit.close);

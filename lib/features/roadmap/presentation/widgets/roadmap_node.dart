@@ -150,6 +150,8 @@ class _RoadmapTaskNodeState extends State<RoadmapTaskNode> {
           width: 140.w,
           child: Text(
             widget.node.title,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
             style: textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.w700,
@@ -164,6 +166,8 @@ class _RoadmapTaskNodeState extends State<RoadmapTaskNode> {
             width: 140.w,
             child: Text(
               widget.node.subtitle!,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
               style: textTheme.bodySmall?.copyWith(
                 fontSize: 11.sp,

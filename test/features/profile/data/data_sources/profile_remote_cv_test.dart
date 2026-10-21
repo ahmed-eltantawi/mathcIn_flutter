@@ -42,6 +42,7 @@ class FakeCvApiConsumer implements ApiConsumer {
     Map<String, dynamic>? queryParameters,
     Object? data,
     bool isFormData = false,
+    void Function(int sentBytes, int totalBytes)? onSendProgress,
   }) async {
     if (postError != null) throw postError!;
     lastPostPath = path;
@@ -66,6 +67,14 @@ class FakeCvApiConsumer implements ApiConsumer {
     Map<String, dynamic>? queryParameters,
     Object? data,
     bool isFormData = false,
+  }) async {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<({Uint8List bytes, String? fileName, String? mimeType})> downloadBytes(
+    String path, {
+    Map<String, dynamic>? queryParameters,
   }) async {
     throw UnimplementedError();
   }

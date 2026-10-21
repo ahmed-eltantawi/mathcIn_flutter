@@ -1,6 +1,7 @@
 import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:MatchIn/core/utils/app_colors.dart';
 import 'package:MatchIn/features/roadmap/data/models/roadmap_node.dart';
+import 'package:MatchIn/features/roadmap/domain/entities/candidate_xp_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -10,11 +11,17 @@ class RoadmapXpBar extends StatelessWidget {
     required this.nodes,
     this.collectedTreasures = const {},
     this.rewardedAdXp = 0,
+    this.candidateXp,
   });
 
   final List<RoadmapNode> nodes;
   final Set<int> collectedTreasures;
   final int rewardedAdXp;
+
+  /// Authoritative server XP (cached offline). Shown as the level/total
+  /// headline; the progress fill keeps the local node-based computation
+  /// as an offline-capable fallback.
+  final CandidateXpEntity? candidateXp;
 
   @override
   Widget build(BuildContext context) {
@@ -128,6 +135,10 @@ class RoadmapXpBar extends StatelessWidget {
               ),
             ],
           ),
+          if (candidateXp != null && candidateXp!.totalXp > 0) ...[
+            SizedBox(height: 8.h),
+            _ServerLevelRow(candidateXp: candidateXp!),
+          ],
 
           SizedBox(height: 10.h),
 
@@ -165,6 +176,42 @@ class RoadmapXpBar extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// Authoritative server level headline (level, title, total XP).
+class _ServerLevelRow extends StatelessWidget {
+  const _ServerLevelRow({required this.candidateXp});
+
+  final CandidateXpEntity candidateXp;
+
+  @override
+  Widget build(BuildContext context) {
+    final title = candidateXp.levelTitle.trim();
+    return Row(
+      children: [
+        Icon(
+          Icons.emoji_events_rounded,
+          size: 14.r,
+          color: context.colors.primary,
+        ),
+        SizedBox(width: 6.w),
+        Expanded(
+          child: Text(
+            title.isEmpty
+                ? 'Level ${candidateXp.level} · ${candidateXp.totalXp} XP'
+                : 'Level ${candidateXp.level} · $title · ${candidateXp.totalXp} XP',
+            style: TextStyle(
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w700,
+              color: context.colors.onSurfaceVariant,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
     );
   }
 }

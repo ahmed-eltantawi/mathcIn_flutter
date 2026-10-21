@@ -186,8 +186,16 @@ class _RoadmapListWidgetState extends State<RoadmapListWidget> {
   void _onTreasureClaimSuccess({
     required BuildContext context,
     required int milestoneIndex,
-  }) {
-    context.read<TreasureCubit>().claimTreasureReward(milestoneIndex);
+  }) async {
+    // Scope the reward to the selected roadmap; the success SnackBar
+    // shows only on the first collection (repeat taps are no-ops).
+    final roadmapId = context.read<RoadmapCubit>().selectedRoadmapId;
+    if (roadmapId == null) return;
+    final isNew = await context.read<TreasureCubit>().claimTreasure(
+      roadmapId: roadmapId,
+      milestoneIndex: milestoneIndex,
+    );
+    if (!context.mounted || !isNew) return;
     context.showSuccessSnackBar('🎉 Milestone Claimed! +50 XP Added!');
   }
 

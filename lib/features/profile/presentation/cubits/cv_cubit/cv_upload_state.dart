@@ -1,3 +1,4 @@
+import 'package:MatchIn/features/profile/domain/entities/cv_extraction_entity.dart';
 import 'package:MatchIn/features/profile/domain/entities/cv_upload_receipt.dart';
 import 'package:equatable/equatable.dart';
 
@@ -13,7 +14,13 @@ final class CvUploadInitial extends CvUploadState {
 }
 
 final class CvUploading extends CvUploadState {
-  const CvUploading();
+  const CvUploading({this.progress = 0});
+
+  /// 0..1 fraction from the networking layer; 0 while indeterminate.
+  final double progress;
+
+  @override
+  List<Object?> get props => [progress];
 }
 
 /// A CV picked while offline and stored locally, waiting for upload.
@@ -53,4 +60,81 @@ final class CvUploadFailure extends CvUploadState {
 
   @override
   List<Object?> get props => [message, canRetry];
+}
+
+/// Background extraction is being polled for [docId].
+/// Upload acceptance (HTTP 201) is not completion: this state tracks
+/// the follow-up status checks separately from the upload request.
+/// [fileName] carries the locally known upload name forward so the card
+/// never flashes back to the empty state while polling.
+final class CvExtractionPolling extends CvUploadState {
+  const CvExtractionPolling({
+    required this.docId,
+    this.attempts = 0,
+    this.fileName,
+  });
+
+  final int docId;
+  final int attempts;
+  final String? fileName;
+
+  @override
+  List<Object?> get props => [docId, attempts, fileName];
+}
+
+/// Extraction finished with reviewable content (or none, when the
+/// backend completed without parsed data).
+final class CvExtractionCompleted extends CvUploadState {
+  const CvExtractionCompleted({
+    required this.docId,
+    this.extraction,
+    this.fileName,
+  });
+
+  final int docId;
+  final CvExtractionEntity? extraction;
+  final String? fileName;
+
+  @override
+  List<Object?> get props => [docId, extraction, fileName];
+}
+
+/// Extraction failed definitively (or polling timed out). [canRetry]
+/// re-arms server-side extraction via `POST /cv/retry/{doc}` — distinct
+/// from re-uploading the file.
+final class CvExtractionFailed extends CvUploadState {
+  const CvExtractionFailed({
+    required this.docId,
+    required this.message,
+    this.canRetry = true,
+    this.fileName,
+  });
+
+  final int docId;
+  final String message;
+  final bool canRetry;
+  final String? fileName;
+
+  @override
+  List<Object?> get props => [docId, message, canRetry, fileName];
+}
+
+final class CvVerifying extends CvUploadState {
+  const CvVerifying();
+}
+
+final class CvVerified extends CvUploadState {
+  const CvVerified();
+}
+
+final class CvVerifyFailure extends CvUploadState {
+  const CvVerifyFailure({required this.message, this.fieldErrors = const {}});
+
+  final String message;
+
+  /// Field-level validation messages from a 422 response, keyed by field.
+  final Map<String, List<String>> fieldErrors;
+
+  @override
+  List<Object?> get props => [message];
 }

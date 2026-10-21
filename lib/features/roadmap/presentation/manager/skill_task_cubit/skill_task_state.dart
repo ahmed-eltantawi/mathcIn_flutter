@@ -52,3 +52,34 @@ final class SkillTaskCompleteFailure extends SkillTaskState {
   @override
   final Set<int> completingTaskIds;
 }
+
+/// The intended completion was applied to the durable local cache and
+/// the UI should repaint from local truth immediately (no network wait).
+/// The PATCH confirmation is still in flight; success or rollback
+/// follows through the existing states.
+final class SkillTaskOptimisticUpdate extends SkillTaskState {
+  const SkillTaskOptimisticUpdate({
+    required this.taskId,
+    this.completingTaskIds = const {},
+  });
+
+  final int taskId;
+
+  @override
+  final Set<int> completingTaskIds;
+}
+
+/// The completion was applied to the durable local cache and queued for
+/// background sync. The UI should refresh from local data immediately
+/// and surface a pending-sync indicator rather than an error.
+final class SkillTaskQueuedOffline extends SkillTaskState {
+  const SkillTaskQueuedOffline({
+    required this.taskId,
+    this.completingTaskIds = const {},
+  });
+
+  final int taskId;
+
+  @override
+  final Set<int> completingTaskIds;
+}

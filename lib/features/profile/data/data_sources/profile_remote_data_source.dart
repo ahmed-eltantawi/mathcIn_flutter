@@ -2,6 +2,9 @@ import 'package:MatchIn/features/profile/data/models/candidate_profile_model.dar
 import 'package:MatchIn/features/profile/data/models/candidate_project_model.dart';
 import 'package:MatchIn/features/profile/data/models/candidate_skill_model.dart';
 import 'package:MatchIn/features/profile/data/models/career_preference_model.dart';
+import 'package:MatchIn/features/profile/data/models/cv_document_model.dart';
+import 'package:MatchIn/features/profile/data/models/cv_extraction_status_model.dart';
+import 'package:MatchIn/features/profile/data/models/cv_file_download.dart';
 import 'package:MatchIn/features/profile/data/models/cv_upload_receipt_model.dart';
 import 'package:MatchIn/features/profile/data/models/education_model.dart';
 import 'package:MatchIn/features/profile/data/models/experience_model.dart';
@@ -13,6 +16,7 @@ import 'package:MatchIn/features/profile/domain/entities/add_education_params.da
 import 'package:MatchIn/features/profile/domain/entities/add_experience_params.dart';
 import 'package:MatchIn/features/profile/domain/entities/avatar_upload_input.dart';
 import 'package:MatchIn/features/profile/domain/entities/cv_upload_input.dart';
+import 'package:MatchIn/features/profile/domain/entities/cv_verify_params.dart';
 import 'package:MatchIn/features/profile/domain/entities/save_career_preferences_params.dart';
 import 'package:MatchIn/features/profile/domain/entities/update_candidate_profile_params.dart';
 import 'package:MatchIn/features/profile/domain/entities/update_candidate_project_params.dart';
@@ -85,7 +89,34 @@ abstract interface class ProfileRemoteDataSource {
   /// Returns null when the upload succeeded (2xx) but the response
   /// carries no usable receipt. Callers must refresh the Main Profile
   /// from GET instead of fabricating document data.
-  Future<CvUploadReceiptModel?> uploadCv(CvUploadInput input);
+  Future<CvUploadReceiptModel?> uploadCv(
+    CvUploadInput input, {
+    void Function(int sentBytes, int totalBytes)? onSendProgress,
+  });
+
+  /// Background extraction status for one CV document
+  /// (`GET /cv/status/{cvDocument}`). Never throws for unknown status
+  /// tokens: they map to [CvProcessingStatus.unknown].
+  Future<CvExtractionStatusModel> getCvStatus(int cvDocumentId);
+
+  /// CV upload history (`GET /cv/history`), newest first when the
+  /// backend orders it. Empty when the backend reports no documents.
+  Future<List<CvDocumentModel>> getCvHistory();
+
+  /// Retries extraction for a failed document
+  /// (`POST /cv/retry/{cvDocument}`). Acceptance is not completion:
+  /// callers must poll [getCvStatus] afterwards.
+  Future<CvExtractionStatusModel> retryCvExtraction(int cvDocumentId);
+
+  /// Confirms reviewed extraction data
+  /// (`POST /cv/extractions/{extraction}/verify`). Uses the real
+  /// backend extraction id carried by [params]; never invents one.
+  Future<void> verifyExtraction(CvVerifyParams params);
+
+  /// Authenticated binary CV fetch (never JSON-decoded). Prefers the
+  /// inline preview endpoint and falls back to the native file endpoint
+  /// when the backend answers 404.
+  Future<CvFileDownload> downloadCv({int? cvDocumentId});
 
   // Avatar Upload
   /// Uploads the candidate avatar image.

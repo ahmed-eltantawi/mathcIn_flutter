@@ -1,13 +1,17 @@
+import 'package:MatchIn/core/cache/shared_preferences_helper.dart';
 import 'package:MatchIn/core/errors/error_model.dart';
 import 'package:MatchIn/core/errors/exceptions.dart';
 import 'package:MatchIn/core/errors/failures.dart';
 import 'package:MatchIn/core/networking/network_info.dart';
+import 'package:MatchIn/features/roadmap/data/data_sources/roadmap_local_data_source.dart';
+import 'package:MatchIn/features/roadmap/data/data_sources/roadmap_local_data_source_impl.dart';
 import 'package:MatchIn/features/roadmap/data/data_sources/roadmap_remote_data_source.dart';
 import 'package:MatchIn/features/roadmap/data/models/roadmap_model.dart';
 import 'package:MatchIn/features/roadmap/data/repositories/roadmap_repository_impl.dart';
 import 'package:MatchIn/features/roadmap/domain/entities/refresh_roadmap_params.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FakeRefreshRemoteDataSource extends Fake
     implements RoadmapRemoteDataSource {
@@ -33,15 +37,24 @@ class FakeNetworkInfo extends Fake implements NetworkInfo {
 }
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   late FakeRefreshRemoteDataSource fakeRemote;
   late FakeNetworkInfo fakeNetworkInfo;
+  late RoadmapLocalDataSource fakeLocal;
   late RoadmapRepositoryImpl repository;
 
-  setUp(() {
+  setUp(() async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
     fakeRemote = FakeRefreshRemoteDataSource();
     fakeNetworkInfo = FakeNetworkInfo();
+    fakeLocal = RoadmapLocalDataSourceImpl(
+      sharedPreferencesHelper: SharedPreferencesHelper(preferences: prefs),
+    );
     repository = RoadmapRepositoryImpl(
       remoteDataSource: fakeRemote,
+      localDataSource: fakeLocal,
       networkInfo: fakeNetworkInfo,
     );
   });

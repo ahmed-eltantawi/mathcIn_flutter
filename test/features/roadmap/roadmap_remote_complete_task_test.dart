@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:MatchIn/core/errors/error_model.dart';
 import 'package:MatchIn/core/errors/exceptions.dart';
 import 'package:MatchIn/core/networking/api_consumer.dart';
@@ -40,6 +42,7 @@ class FakeCompleteApiConsumer extends Fake implements ApiConsumer {
     Map<String, dynamic>? queryParameters,
     Object? data,
     bool isFormData = false,
+    void Function(int sentBytes, int totalBytes)? onSendProgress,
   }) async {
     throw UnimplementedError();
   }
@@ -60,6 +63,14 @@ class FakeCompleteApiConsumer extends Fake implements ApiConsumer {
     Map<String, dynamic>? queryParameters,
     Object? data,
     bool isFormData = false,
+  }) async {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<({Uint8List bytes, String? fileName, String? mimeType})> downloadBytes(
+    String path, {
+    Map<String, dynamic>? queryParameters,
   }) async {
     throw UnimplementedError();
   }

@@ -48,1140 +48,944 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-    "aFewMoreQuestions": MessageLookupByLibrary.simpleMessage(
-      "بعض الأسئلة الإضافية",
-    ),
-    "academicHistory": MessageLookupByLibrary.simpleMessage("السجل الأكاديمي"),
-    "academicHistoryDescription": MessageLookupByLibrary.simpleMessage(
-      "حافظ على تحديث ودقة سجلك التعليمي.",
-    ),
-    "accessYourPathways": MessageLookupByLibrary.simpleMessage(
-      "قم بالوصول إلى مساراتك المهنية الموثقة والفرص المتاحة.",
-    ),
-    "account": MessageLookupByLibrary.simpleMessage("الحساب"),
-    "adDismissedNoReward": MessageLookupByLibrary.simpleMessage(
-      "تم إغلاق الإعلان مبكرًا. لم يتم إضافة XP.",
-    ),
-    "adNotAvailable": MessageLookupByLibrary.simpleMessage(
-      "الإعلان غير متاح حالياً",
-    ),
-    "adRewardSuccess": MessageLookupByLibrary.simpleMessage(
-      "🎉 تهانينا! لقد حصلت على +50 XP!",
-    ),
-    "add": MessageLookupByLibrary.simpleMessage("إضافة"),
-    "addExperience": MessageLookupByLibrary.simpleMessage("إضافة خبرة"),
-    "addNewEducation": MessageLookupByLibrary.simpleMessage(
-      "إضافة مؤهل تعليمي",
-    ),
-    "addNewExperience": MessageLookupByLibrary.simpleMessage(
-      "إضافة خبرة جديدة",
-    ),
-    "addNewProject": MessageLookupByLibrary.simpleMessage("+ إضافة مشروع جديد"),
-    "addNewSkill": MessageLookupByLibrary.simpleMessage("إضافة مهارة جديدة"),
-    "addProjectDetails": MessageLookupByLibrary.simpleMessage(
-      "إضافة تفاصيل المشروع",
-    ),
-    "addSkill": MessageLookupByLibrary.simpleMessage("+ إضافة مهارة"),
-    "addSkillHint": MessageLookupByLibrary.simpleMessage(
-      "أضف مهارة (مثال: Docker, GraphQL)",
-    ),
-    "addedManually": MessageLookupByLibrary.simpleMessage("تمت إضافتها يدويًا"),
-    "aiAssistant": MessageLookupByLibrary.simpleMessage("المساعد الذكي"),
-    "aiAssistantSubtitle": MessageLookupByLibrary.simpleMessage(
-      "اسألني عن الوظائف، السير الذاتية، المقابلات، أو مسارك المهني.",
-    ),
-    "aiIsTyping": MessageLookupByLibrary.simpleMessage(
-      "الذكاء الاصطناعي يفكر...",
-    ),
-    "all": MessageLookupByLibrary.simpleMessage("الكل"),
-    "allMarkedAsRead": MessageLookupByLibrary.simpleMessage(
-      "تم تعيين جميع الإشعارات كمقروءة",
-    ),
-    "almostComplete": MessageLookupByLibrary.simpleMessage("شبه مكتمل"),
-    "alreadyHaveAccount": MessageLookupByLibrary.simpleMessage(
-      "لديك حساب بالفعل؟",
-    ),
-    "alreadySubmitted": MessageLookupByLibrary.simpleMessage(
-      "تم التقديم بالفعل",
-    ),
-    "analyzed": MessageLookupByLibrary.simpleMessage("تم التحليل"),
-    "analyzing": MessageLookupByLibrary.simpleMessage("جارٍ التحليل"),
-    "answerEmployerQuestions": MessageLookupByLibrary.simpleMessage(
-      "أجب عن أسئلة صاحب العمل لمتابعة طلب التقديم.",
-    ),
-    "application": MessageLookupByLibrary.simpleMessage("طلب التقديم"),
-    "applicationDetails": MessageLookupByLibrary.simpleMessage(
-      "تفاصيل طلب التقديم",
-    ),
-    "applicationMethod": MessageLookupByLibrary.simpleMessage("طريقة التقديم"),
-    "applicationQuestions": MessageLookupByLibrary.simpleMessage(
-      "أسئلة التقديم",
-    ),
-    "applicationStatus": MessageLookupByLibrary.simpleMessage("حالة التقديم"),
-    "applicationStatusDescription": MessageLookupByLibrary.simpleMessage(
-      "طلبك لدى TechNova قيد المراجعة الآن.",
-    ),
-    "applicationStatusUpdated": MessageLookupByLibrary.simpleMessage(
-      "تم تحديث حالة التقديم",
-    ),
-    "applicationSubmitted": MessageLookupByLibrary.simpleMessage(
-      "تم إرسال طلبك!",
-    ),
-    "applicationSubmittedSuccessfully": MessageLookupByLibrary.simpleMessage(
-      "تم تقديم الطلب بنجاح.",
-    ),
-    "applicationTimeline": MessageLookupByLibrary.simpleMessage(
-      "مراحل طلب التقديم",
-    ),
-    "applications": MessageLookupByLibrary.simpleMessage("التقديمات"),
-    "applied": MessageLookupByLibrary.simpleMessage("تم التقديم"),
-    "applyForRole": MessageLookupByLibrary.simpleMessage("التقديم للوظيفة"),
-    "applyNow": MessageLookupByLibrary.simpleMessage("قدّم الآن"),
-    "applyingFor": MessageLookupByLibrary.simpleMessage("التقديم على"),
-    "arabic": MessageLookupByLibrary.simpleMessage("العربية"),
-    "archived": MessageLookupByLibrary.simpleMessage("مؤرشفة"),
-    "askAnything": MessageLookupByLibrary.simpleMessage("اسأل أي شيء..."),
-    "askCareerMentorDescription": MessageLookupByLibrary.simpleMessage(
-      "اسأل مرشدك المهني عما يمكنك التركيز عليه أثناء الانتظار.",
-    ),
-    "askChatBot": MessageLookupByLibrary.simpleMessage("اسأل المساعد"),
-    "at": MessageLookupByLibrary.simpleMessage("في"),
-    "avatarUploadUnavailable": MessageLookupByLibrary.simpleMessage(
-      "رفع الصورة غير متاح بعد.",
-    ),
-    "back": MessageLookupByLibrary.simpleMessage("رجوع"),
-    "backOnline": MessageLookupByLibrary.simpleMessage("تمت استعادة الاتصال"),
-    "backToJobs": MessageLookupByLibrary.simpleMessage("العودة للوظائف"),
-    "backToLogin": MessageLookupByLibrary.simpleMessage("العودة لتسجيل الدخول"),
-    "buildMyRoadmap": MessageLookupByLibrary.simpleMessage(
-      "إنشاء خارطة الطريق",
-    ),
-    "cairo": MessageLookupByLibrary.simpleMessage("القاهرة"),
-    "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
-    "candidateProfile": MessageLookupByLibrary.simpleMessage("ملف المرشح"),
-    "careerGoal": MessageLookupByLibrary.simpleMessage("الهدف المهني"),
-    "careerGoalHelper": MessageLookupByLibrary.simpleMessage(
-      "قولنا باختصار إيه اللي عايز توصله في الخطوة الجاية.",
-    ),
-    "careerGoalHint": MessageLookupByLibrary.simpleMessage(
-      "مثال: اكتساب خبرة احترافية في Flutter والمشاركة في تطوير منتجات موبايل مؤثرة.",
-    ),
-    "careerGroundingContext": MessageLookupByLibrary.simpleMessage(
-      "مبني على مهاراتك الموثقة، خبراتك، وأدوارك المستهدفة.",
-    ),
-    "careerGrowth": MessageLookupByLibrary.simpleMessage("التطوير المهني"),
-    "careerGrowthPrompt": MessageLookupByLibrary.simpleMessage(
-      "ما الخطوات التي يجب اتخاذها لأصبح مهندس تطبيقات أول؟",
-    ),
-    "careerMentor": MessageLookupByLibrary.simpleMessage("المرشد المهني الذكي"),
-    "careerPreferences": MessageLookupByLibrary.simpleMessage("تفضيلات مهنية"),
-    "careerPreferencesIntroDescription": MessageLookupByLibrary.simpleMessage(
-      "تفضيلاتك بتساعد SkillMatch يرشحلك فرص أنسب ليك.",
-    ),
-    "careerPreferencesIntroTitle": MessageLookupByLibrary.simpleMessage(
-      "قولنا إنت بتدور على إيه",
-    ),
-    "careerPreferencesSavedSuccessfully": MessageLookupByLibrary.simpleMessage(
-      "تم حفظ التفضيلات المهنية بنجاح",
-    ),
-    "careerProfile": MessageLookupByLibrary.simpleMessage("الملف المهني"),
-    "change": MessageLookupByLibrary.simpleMessage("تغيير"),
-    "changeLanguageLater": MessageLookupByLibrary.simpleMessage(
-      "You can change it later in Settings",
-    ),
-    "changePassword": MessageLookupByLibrary.simpleMessage("تغيير كلمة المرور"),
-    "changePasswordDescription": MessageLookupByLibrary.simpleMessage(
-      "يجب أن تتكون كلمة المرور الجديدة من 8 أحرف على الأقل وتحتوي على حرف كبير وصغير ورقم ورمز خاص.",
-    ),
-    "changePasswordSuccess": MessageLookupByLibrary.simpleMessage(
-      "تم تغيير كلمة المرور بنجاح",
-    ),
-    "changePhoto": MessageLookupByLibrary.simpleMessage("تغيير الصورة"),
-    "characters": MessageLookupByLibrary.simpleMessage("حرف"),
-    "chatBot": MessageLookupByLibrary.simpleMessage("المساعد الذكي"),
-    "chatHistory": MessageLookupByLibrary.simpleMessage("سجل المحادثات"),
-    "chatSuggestion1": MessageLookupByLibrary.simpleMessage(
-      "اشرح نمط Flutter BLoC",
-    ),
-    "chatSuggestion2": MessageLookupByLibrary.simpleMessage(
-      "ساعدني في الاستعداد لمقابلة عمل",
-    ),
-    "chatSuggestion3": MessageLookupByLibrary.simpleMessage(
-      "راجع خارطة طريقي المهنية",
-    ),
-    "chatSuggestion4": MessageLookupByLibrary.simpleMessage(
-      "ما المهارات التي يجب أن أتعلمها؟",
-    ),
-    "chooseAnother": MessageLookupByLibrary.simpleMessage("اختر صورة أخرى"),
-    "chooseFile": MessageLookupByLibrary.simpleMessage("اختر ملفًا"),
-    "chooseFromGallery": MessageLookupByLibrary.simpleMessage("اختر من المعرض"),
-    "chooseStrongPassword": MessageLookupByLibrary.simpleMessage(
-      "اختر كلمة مرور قوية لم تستخدمها من قبل.",
-    ),
-    "chooseYourLanguage": MessageLookupByLibrary.simpleMessage(
-      "Choose your language",
-    ),
-    "city": MessageLookupByLibrary.simpleMessage("المدينة"),
-    "clear": MessageLookupByLibrary.simpleMessage("مسح"),
-    "clearAllChats": MessageLookupByLibrary.simpleMessage("مسح جميع المحادثات"),
-    "company": MessageLookupByLibrary.simpleMessage("الشركة"),
-    "companyHint": MessageLookupByLibrary.simpleMessage("مثال: شركة Tech"),
-    "completeProfilePrompt": MessageLookupByLibrary.simpleMessage(
-      "أكمل ملفك الشخصي لبدء إضافة تعليمك وخبراتك ومهاراتك والمزيد.",
-    ),
-    "completeRegistration": MessageLookupByLibrary.simpleMessage(
-      "إكمال التسجيل",
-    ),
-    "completedPercentage": m0,
-    "confirm": MessageLookupByLibrary.simpleMessage("تأكيد"),
-    "confirmClearAllChats": MessageLookupByLibrary.simpleMessage(
-      "هل أنت متأكد أنك تريد مسح جميع المحادثات؟ لا يمكن التراجع عن هذا الإجراء.",
-    ),
-    "confirmDeleteChat": MessageLookupByLibrary.simpleMessage(
-      "هل أنت متأكد أنك تريد حذف هذه المحادثة؟ لا يمكن التراجع عن هذا الإجراء.",
-    ),
-    "confirmNewPassword": MessageLookupByLibrary.simpleMessage(
-      "تأكيد كلمة المرور الجديدة",
-    ),
-    "confirmPassword": MessageLookupByLibrary.simpleMessage(
-      "تأكيد كلمة المرور",
-    ),
-    "confirmPasswordHint": MessageLookupByLibrary.simpleMessage(
-      "أعد إدخال كلمة المرور",
-    ),
-    "confirmRefresh": MessageLookupByLibrary.simpleMessage("تأكيد التحديث"),
-    "connectionSlowRetrying": MessageLookupByLibrary.simpleMessage(
-      "الاتصال بطيء. جارٍ إعادة المحاولة...",
-    ),
-    "contactAddressPlaceholder": MessageLookupByLibrary.simpleMessage(
-      "١٠٠ جادة الابتكار، مجمع التكنولوجيا، جناح ٤٠٠",
-    ),
-    "contactAddressTitle": MessageLookupByLibrary.simpleMessage("مقر المكتب"),
-    "contactEmailPlaceholder": MessageLookupByLibrary.simpleMessage(
-      "support@skillmatch.com",
-    ),
-    "contactEmailTitle": MessageLookupByLibrary.simpleMessage(
-      "الدعم عبر البريد الإلكتروني",
-    ),
-    "contactHoursPlaceholder": MessageLookupByLibrary.simpleMessage(
-      "الاثنين - الجمعة، ٩:٠٠ ص - ٦:٠٠ م",
-    ),
-    "contactHoursTitle": MessageLookupByLibrary.simpleMessage("ساعات العمل"),
-    "contactPhonePlaceholder": MessageLookupByLibrary.simpleMessage(
-      "+1 (555) 019-2834",
-    ),
-    "contactPhoneTitle": MessageLookupByLibrary.simpleMessage("رقم الهاتف"),
-    "contactUs": MessageLookupByLibrary.simpleMessage("تواصل معنا"),
-    "contextPreview": MessageLookupByLibrary.simpleMessage("سياق المرشح"),
-    "continueAsGuest": MessageLookupByLibrary.simpleMessage("الدخول كضيف"),
-    "continueText": MessageLookupByLibrary.simpleMessage("متابعة"),
-    "continueWithGoogle": MessageLookupByLibrary.simpleMessage(
-      "المتابعة مع Google",
-    ),
-    "contract": MessageLookupByLibrary.simpleMessage("عقد"),
-    "copiedToClipboard": MessageLookupByLibrary.simpleMessage(
-      "تم النسخ إلى الحافظة",
-    ),
-    "copy": MessageLookupByLibrary.simpleMessage("نسخ"),
-    "copyright": MessageLookupByLibrary.simpleMessage(
-      "© 2025 SkillMatch. جميع الحقوق محفوظة.",
-    ),
-    "country": MessageLookupByLibrary.simpleMessage("الدولة"),
-    "coverNote": MessageLookupByLibrary.simpleMessage("رسالة تعريفية"),
-    "coverNoteHint": MessageLookupByLibrary.simpleMessage(
-      "أضف رسالة قصيرة توضح سبب اهتمامك بهذه الوظيفة.",
-    ),
-    "createAccount": MessageLookupByLibrary.simpleMessage("إنشاء حساب"),
-    "createNewPassword": MessageLookupByLibrary.simpleMessage(
-      "إنشاء كلمة مرور جديدة",
-    ),
-    "createProfile": MessageLookupByLibrary.simpleMessage("إنشاء الملف الشخصي"),
-    "csOrRelated": MessageLookupByLibrary.simpleMessage(
-      "علوم حاسب أو مجال ذو صلة",
-    ),
-    "currentPassword": MessageLookupByLibrary.simpleMessage(
-      "كلمة المرور الحالية",
-    ),
-    "currentRecords": MessageLookupByLibrary.simpleMessage("السجلات الحالية"),
-    "currentStatus": MessageLookupByLibrary.simpleMessage("الحالة الحالية"),
-    "currentlyStudyingHere": MessageLookupByLibrary.simpleMessage(
-      "أدرس هنا حاليًا",
-    ),
-    "currentlyWorkHere": MessageLookupByLibrary.simpleMessage(
-      "أعمل هنا حاليًا",
-    ),
-    "cv": MessageLookupByLibrary.simpleMessage("السيرة الذاتية"),
-    "cvAnalysisCompleted": MessageLookupByLibrary.simpleMessage(
-      "اكتمل تحليل السيرة الذاتية",
-    ),
-    "cvAnalysisDescription": MessageLookupByLibrary.simpleMessage(
-      "استخرجنا 12 مهارة وقمنا بتحديث ملفك المهني.",
-    ),
-    "cvEmptyFile": MessageLookupByLibrary.simpleMessage("الملف المحدد فارغ."),
-    "cvFileTooLarge": MessageLookupByLibrary.simpleMessage(
-      "حجم الملف كبير جدًا. الحد الأقصى هو 5 MB.",
-    ),
-    "cvPendingUpload": MessageLookupByLibrary.simpleMessage(
-      "تم الحفظ على هذا الجهاز — سيتم الرفع عند عودة الاتصال",
-    ),
-    "cvRefreshFailed": MessageLookupByLibrary.simpleMessage(
-      "تم رفع السيرة الذاتية، ولكن تعذر تحديث الملف.",
-    ),
-    "cvResume": MessageLookupByLibrary.simpleMessage("السيرة الذاتية"),
-    "cvSkillsDescription": MessageLookupByLibrary.simpleMessage(
-      "تم استخراج المهارات تلقائيًا من السيرة الذاتية المرفوعة.",
-    ),
-    "cvUnsupportedFileType": MessageLookupByLibrary.simpleMessage(
-      "نوع الملف غير مدعوم. يرجى اختيار ملف PDF أو DOCX.",
-    ),
-    "cvUploadNotice": MessageLookupByLibrary.simpleMessage(
-      "بعدين تقدر ترفع سيرتك الذاتية (اختياري).",
-    ),
-    "cvUploadRequirements": MessageLookupByLibrary.simpleMessage(
-      "PDF أو DOCX • بحد أقصى 5 MB",
-    ),
-    "cvUploadSuccessful": MessageLookupByLibrary.simpleMessage(
-      "تم رفع السيرة الذاتية بنجاح",
-    ),
-    "cvViewFailed": MessageLookupByLibrary.simpleMessage(
-      "تعذر فتح مستند السيرة الذاتية.",
-    ),
-    "dark": MessageLookupByLibrary.simpleMessage("داكن"),
-    "dateOfBirth": MessageLookupByLibrary.simpleMessage("تاريخ الميلاد"),
-    "daysAgo": m1,
-    "degree": MessageLookupByLibrary.simpleMessage("الدرجة العلمية"),
-    "degreeHint": MessageLookupByLibrary.simpleMessage(
-      "مثال: بكالوريوس علوم أو ماجستير",
-    ),
-    "delete": MessageLookupByLibrary.simpleMessage("حذف"),
-    "deleteChat": MessageLookupByLibrary.simpleMessage("حذف المحادثة"),
-    "deleteEducation": MessageLookupByLibrary.simpleMessage("حذف التعليم"),
-    "deleteEducationConfirm": MessageLookupByLibrary.simpleMessage(
-      "هل أنت متأكد أنك تريد حذف هذا التعليم؟ لا يمكن التراجع عن هذا الإجراء.",
-    ),
-    "deleteExperience": MessageLookupByLibrary.simpleMessage("حذف الخبرة"),
-    "deleteExperienceConfirm": MessageLookupByLibrary.simpleMessage(
-      "هل أنت متأكد أنك تريد حذف هذه الخبرة؟ لا يمكن التراجع عن هذا الإجراء.",
-    ),
-    "deleteProject": MessageLookupByLibrary.simpleMessage("حذف المشروع"),
-    "deleteProjectConfirm": MessageLookupByLibrary.simpleMessage(
-      "هل أنت متأكد أنك تريد حذف هذا المشروع؟ لا يمكن التراجع عن هذا الإجراء.",
-    ),
-    "description": MessageLookupByLibrary.simpleMessage("الوصف"),
-    "draft": MessageLookupByLibrary.simpleMessage("مسودة"),
-    "edit": MessageLookupByLibrary.simpleMessage("تعديل"),
-    "editEducation": MessageLookupByLibrary.simpleMessage("تعديل التعليم"),
-    "editExperience": MessageLookupByLibrary.simpleMessage("تعديل الخبرة"),
-    "editNote": MessageLookupByLibrary.simpleMessage("تعديل الملاحظة"),
-    "editProfile": MessageLookupByLibrary.simpleMessage("تعديل الملف"),
-    "editProjectDetails": MessageLookupByLibrary.simpleMessage(
-      "تعديل تفاصيل المشروع",
-    ),
-    "editTitle": MessageLookupByLibrary.simpleMessage("تعديل عنوان المحادثة"),
-    "editorialScore": MessageLookupByLibrary.simpleMessage(
-      "درجة اكتمال المحتوى",
-    ),
-    "education": MessageLookupByLibrary.simpleMessage("التعليم"),
-    "educationDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
-      "تم حذف التعليم بنجاح",
-    ),
-    "educationSavedSuccessfully": MessageLookupByLibrary.simpleMessage(
-      "تم حفظ التعليم بنجاح",
-    ),
-    "email": MessageLookupByLibrary.simpleMessage("البريد الإلكتروني"),
-    "emailAddress": MessageLookupByLibrary.simpleMessage("البريد الإلكتروني"),
-    "emailHint": MessageLookupByLibrary.simpleMessage("أدخل بريدك الإلكتروني"),
-    "employmentType": MessageLookupByLibrary.simpleMessage("نوع التوظيف"),
-    "endDate": MessageLookupByLibrary.simpleMessage("تاريخ النهاية"),
-    "endYearExpected": MessageLookupByLibrary.simpleMessage(
-      "سنة النهاية (أو المتوقعة)",
-    ),
-    "english": MessageLookupByLibrary.simpleMessage("الإنجليزية"),
-    "enterNewTitle": MessageLookupByLibrary.simpleMessage(
-      "أدخل العنوان الجديد",
-    ),
-    "enterVerificationCode": MessageLookupByLibrary.simpleMessage(
-      "أدخل رمز التحقق",
-    ),
-    "entryLevel": MessageLookupByLibrary.simpleMessage("مستوى مبتدئ"),
-    "estimatedHours": m2,
-    "excellent": MessageLookupByLibrary.simpleMessage("ممتاز"),
-    "expectedMonthlySalary": MessageLookupByLibrary.simpleMessage(
-      "ما الراتب الشهري المتوقع؟",
-    ),
-    "expectedSalary": MessageLookupByLibrary.simpleMessage("الراتب المتوقع"),
-    "experience": MessageLookupByLibrary.simpleMessage("الخبرة"),
-    "experienceCompletenessHint": MessageLookupByLibrary.simpleMessage(
-      "أضف المزيد من التفاصيل حول مسؤولياتك وتأثيرك. الإنجازات المحددة تساعد على زيادة ظهورك لمسؤولي التوظيف.",
-    ),
-    "experienceDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
-      "تم حذف الخبرة بنجاح",
-    ),
-    "experienceLevel": MessageLookupByLibrary.simpleMessage("مستوى الخبرة"),
-    "experienceManagementDescription": MessageLookupByLibrary.simpleMessage(
-      "أضف تفاصيل عن مسؤولياتك وتأثيرك في العمل.",
-    ),
-    "experienceSavedSuccessfully": MessageLookupByLibrary.simpleMessage(
-      "تم حفظ الخبرة بنجاح",
-    ),
-    "experienceWithBloc": MessageLookupByLibrary.simpleMessage("خبرة في Bloc"),
-    "failed": MessageLookupByLibrary.simpleMessage("فشل"),
-    "failedToLoadAd": MessageLookupByLibrary.simpleMessage("فشل تحميل الإعلان"),
-    "failedToSendMessage": MessageLookupByLibrary.simpleMessage(
-      "فشل إرسال الرسالة. الرجاء المحاولة مرة أخرى.",
-    ),
-    "fairMatch": MessageLookupByLibrary.simpleMessage("تطابق متوسط"),
-    "female": MessageLookupByLibrary.simpleMessage("أنثى"),
-    "fieldOfStudy": MessageLookupByLibrary.simpleMessage("مجال الدراسة"),
-    "fieldOfStudyHint": MessageLookupByLibrary.simpleMessage(
-      "مثال: هندسة البرمجيات أو نظم المعلومات",
-    ),
-    "filterAll": MessageLookupByLibrary.simpleMessage("الكل"),
-    "filterUnread": MessageLookupByLibrary.simpleMessage("غير مقروء"),
-    "finalConfirmation": MessageLookupByLibrary.simpleMessage(
-      "التأكيد النهائي",
-    ),
-    "finalDecisionAndOnboarding": MessageLookupByLibrary.simpleMessage(
-      "القرار النهائي وبدء العمل",
-    ),
-    "flexible": MessageLookupByLibrary.simpleMessage("مرن"),
-    "flutterOpportunities": MessageLookupByLibrary.simpleMessage(
-      "وجدنا 8 فرص Flutter بناءً على مهاراتك.",
-    ),
-    "focusOnTwoHighPrioritySkills": MessageLookupByLibrary.simpleMessage(
-      "ركز على مهارتين بأولوية عالية",
-    ),
-    "followUs": MessageLookupByLibrary.simpleMessage("تابعنا"),
-    "followUsDescription": MessageLookupByLibrary.simpleMessage(
-      "تواصل معنا عبر منصات التواصل الاجتماعي لمتابعة كل جديد والاطلاع على الفرص.",
-    ),
-    "forgotPassword": MessageLookupByLibrary.simpleMessage("نسيت كلمة المرور؟"),
-    "foundInCvAndProjects": MessageLookupByLibrary.simpleMessage(
-      "موجودة في سيرتك الذاتية ومشاريعك",
-    ),
-    "foundInYourSkills": MessageLookupByLibrary.simpleMessage(
-      "موجودة ضمن مهاراتك",
-    ),
-    "fourHoursAgo": MessageLookupByLibrary.simpleMessage("منذ 4 ساعات"),
-    "freelance": MessageLookupByLibrary.simpleMessage("عمل حر"),
-    "fromCv": MessageLookupByLibrary.simpleMessage("من السيرة الذاتية"),
-    "fromYourCv": MessageLookupByLibrary.simpleMessage("من سيرتك الذاتية"),
-    "fullName": MessageLookupByLibrary.simpleMessage("الاسم الكامل"),
-    "fullTime": MessageLookupByLibrary.simpleMessage("دوام كامل"),
-    "gender": MessageLookupByLibrary.simpleMessage("النوع"),
-    "generateRoadmap": MessageLookupByLibrary.simpleMessage("إنشاء خارطة طريق"),
-    "generatingRoadmap": MessageLookupByLibrary.simpleMessage(
-      "جارٍ إنشاء خارطة الطريق...",
-    ),
-    "generationFailed": MessageLookupByLibrary.simpleMessage(
-      "فشل إنشاء خارطة الطريق",
-    ),
-    "generationSuccess": MessageLookupByLibrary.simpleMessage(
-      "تم إنشاء خارطة الطريق بنجاح",
-    ),
-    "getExplainableMatch": MessageLookupByLibrary.simpleMessage(
-      "احصل على توافق واضح ومفصل",
-    ),
-    "getExplainableMatchDesc": MessageLookupByLibrary.simpleMessage(
-      "ليس مجرد نسبة مئوية — بل نقاط قوة وفجوات وخطوات عمل واضحة.",
-    ),
-    "getInTouch": MessageLookupByLibrary.simpleMessage("تواصل معنا"),
-    "getStarted": MessageLookupByLibrary.simpleMessage("ابدأ الآن"),
-    "github": MessageLookupByLibrary.simpleMessage("GitHub"),
-    "githubRepositoryUrl": MessageLookupByLibrary.simpleMessage(
-      "رابط مستودع GitHub",
-    ),
-    "good": MessageLookupByLibrary.simpleMessage("جيد"),
-    "goodMatch": MessageLookupByLibrary.simpleMessage("توافق جيد"),
-    "gpaHint": MessageLookupByLibrary.simpleMessage("مثال: 3.4 / 4.0"),
-    "gpaOptional": MessageLookupByLibrary.simpleMessage("التقدير (اختياري)"),
-    "greetingUser": m3,
-    "guestModeMessage": MessageLookupByLibrary.simpleMessage(
-      "يرجى تسجيل الدخول للوصول إلى هذه الميزة.",
-    ),
-    "guestModeTitle": MessageLookupByLibrary.simpleMessage("أنت في وضع الضيف"),
-    "help": MessageLookupByLibrary.simpleMessage("مساعدة"),
-    "helpfulAdvantage": MessageLookupByLibrary.simpleMessage(
-      "ميزة إضافية مفيدة",
-    ),
-    "highPriority": MessageLookupByLibrary.simpleMessage("أولوية عالية"),
-    "home": MessageLookupByLibrary.simpleMessage("الرئيسية"),
-    "hoursAgo": m4,
-    "howCanIHelpYouToday": MessageLookupByLibrary.simpleMessage(
-      "كيف يمكنني مساعدتك اليوم؟",
-    ),
-    "hybrid": MessageLookupByLibrary.simpleMessage("هجين"),
-    "iAgreeToTerms": MessageLookupByLibrary.simpleMessage(
-      "أوافق على الشروط وسياسة الخصوصية",
-    ),
-    "imageTooLarge": MessageLookupByLibrary.simpleMessage(
-      "حجم الصورة كبير جدًا. الحد الأقصى 5 ميجابايت.",
-    ),
-    "inReview": MessageLookupByLibrary.simpleMessage("قيد المراجعة"),
-    "institutionHint": MessageLookupByLibrary.simpleMessage(
-      "ابحث أو أدخل اسم المؤسسة",
-    ),
-    "internship": MessageLookupByLibrary.simpleMessage("تدريب"),
-    "interview": MessageLookupByLibrary.simpleMessage("المقابلة"),
-    "interviewPrep": MessageLookupByLibrary.simpleMessage("التحضير للمقابلات"),
-    "interviewPrepPrompt": MessageLookupByLibrary.simpleMessage(
-      "ما هي أهم أسئلة المقابلات الفنية لـ Dart و Flutter؟",
-    ),
-    "invalidDateRange": MessageLookupByLibrary.simpleMessage(
-      "يجب أن يكون تاريخ الانتهاء مساويًا لتاريخ البدء أو بعده",
-    ),
-    "invalidImageType": MessageLookupByLibrary.simpleMessage(
-      "نوع الصورة غير مدعوم. استخدم JPG أو PNG أو WEBP.",
-    ),
-    "invalidJobId": MessageLookupByLibrary.simpleMessage(
-      "معرّف الوظيفة غير صالح.",
-    ),
-    "invalidVerificationCode": MessageLookupByLibrary.simpleMessage(
-      "رمز التحقق غير صحيح",
-    ),
-    "jobDetails": MessageLookupByLibrary.simpleMessage("تفاصيل الوظيفة"),
-    "jobFitAnalysis": MessageLookupByLibrary.simpleMessage(
-      "تحليل ملاءمة الوظائف",
-    ),
-    "jobFitAnalysisPrompt": MessageLookupByLibrary.simpleMessage(
-      "كيف يحسب ماتش إن نسبة توافق الوظيفة معي؟",
-    ),
-    "jobRequirements": MessageLookupByLibrary.simpleMessage("متطلبات الوظيفة"),
-    "jobTitle": MessageLookupByLibrary.simpleMessage("المسمى الوظيفي"),
-    "jobTitleHint": MessageLookupByLibrary.simpleMessage("مثال: مطور Flutter"),
-    "jobType": MessageLookupByLibrary.simpleMessage("نوع الوظيفة"),
-    "jobs": MessageLookupByLibrary.simpleMessage("الوظائف"),
-    "jobsMatchDescription": MessageLookupByLibrary.simpleMessage(
-      "استكشف الفرص المناسبة لمهاراتك وتفضيلاتك المهنية.",
-    ),
-    "jobsMatchYourProfile": MessageLookupByLibrary.simpleMessage(
-      "وجدنا وظائف تناسب ملفك الشخصي",
-    ),
-    "junior": MessageLookupByLibrary.simpleMessage("Junior"),
-    "juniorFlutterDeveloper": MessageLookupByLibrary.simpleMessage(
-      "مطور Flutter مبتدئ",
-    ),
-    "justNow": MessageLookupByLibrary.simpleMessage("الآن"),
-    "keepMeSignedIn": MessageLookupByLibrary.simpleMessage("ابقَ متصلاً"),
-    "keepTrackerUpdated": MessageLookupByLibrary.simpleMessage(
-      "حدّث حالة طلبك عندما يصلك رد من صاحب العمل.",
-    ),
-    "keyAchievements": MessageLookupByLibrary.simpleMessage("أهم النتائج"),
-    "keyAchievementsHelper": MessageLookupByLibrary.simpleMessage(
-      "ضيف نتائج قابلة للقياس لما يكون ممكن، زي تقليل وقت التحميل بنسبة 30%.",
-    ),
-    "keyAchievementsHint": MessageLookupByLibrary.simpleMessage(
-      "مثال: تحسين استعلامات قاعدة البيانات وتقليل زمن الـ API بنسبة 42%...",
-    ),
-    "language": MessageLookupByLibrary.simpleMessage("اللغة"),
-    "learningTasks": MessageLookupByLibrary.simpleMessage("مهام التعلم"),
-    "light": MessageLookupByLibrary.simpleMessage("فاتح"),
-    "linkedin": MessageLookupByLibrary.simpleMessage("LinkedIn"),
-    "loadMore": MessageLookupByLibrary.simpleMessage("تحميل المزيد"),
-    "loadingAd": MessageLookupByLibrary.simpleMessage("جارٍ تحميل الإعلان..."),
-    "loadingNotifications": MessageLookupByLibrary.simpleMessage(
-      "جارٍ تحميل الإشعارات...",
-    ),
-    "location": MessageLookupByLibrary.simpleMessage("الموقع"),
-    "locationHint": MessageLookupByLibrary.simpleMessage("مثال: القاهرة، مصر"),
-    "logOut": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
-    "logOutConfirmationMessage": MessageLookupByLibrary.simpleMessage(
-      "هل أنت متأكد من أنك تريد تسجيل الخروج من حسابك؟",
-    ),
-    "logOutConfirmationTitle": MessageLookupByLibrary.simpleMessage(
-      "تسجيل الخروج",
-    ),
-    "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
-    "loginSubtitle": MessageLookupByLibrary.simpleMessage(
-      "ادخل على مساراتك المهنية والفرص المتاحة.",
-    ),
-    "male": MessageLookupByLibrary.simpleMessage("ذكر"),
-    "manageAllSkills": MessageLookupByLibrary.simpleMessage(
-      "إدارة كل المهارات",
-    ),
-    "markAllAsRead": MessageLookupByLibrary.simpleMessage("تعيين الكل كمقروء"),
-    "markAllRead": MessageLookupByLibrary.simpleMessage("تحديد الكل كمقروء"),
-    "markAsRead": MessageLookupByLibrary.simpleMessage("تعيين كمقروء"),
-    "match": MessageLookupByLibrary.simpleMessage("توافق"),
-    "matchExplanation": MessageLookupByLibrary.simpleMessage(
-      "أنت مناسب لهذه الوظيفة. خبرتك في Flutter وواجهات API تتوافق مع المتطلبات الأساسية، لكن الاختبار وCI/CD من المهارات المهمة التي تحتاج إلى تطوير.",
-    ),
-    "matchSevenOfNine": MessageLookupByLibrary.simpleMessage(
-      "أنت متوافق مع 7 من أصل 9 متطلبات مهمة.",
-    ),
-    "matches": MessageLookupByLibrary.simpleMessage("وظيفة مناسبة"),
-    "mentionedInJobRequirements": MessageLookupByLibrary.simpleMessage(
-      "مذكورة في متطلبات الوظيفة",
-    ),
-    "midLevel": MessageLookupByLibrary.simpleMessage("Mid-Level"),
-    "militaryCompleted": MessageLookupByLibrary.simpleMessage("أدى الخدمة"),
-    "militaryExempted": MessageLookupByLibrary.simpleMessage("معفى"),
-    "militaryFinalExemption": MessageLookupByLibrary.simpleMessage(
-      "إعفاء نهائي",
-    ),
-    "militaryPostponed": MessageLookupByLibrary.simpleMessage("مؤجل"),
-    "militaryStatus": MessageLookupByLibrary.simpleMessage("الحالة العسكرية"),
-    "minutesAgo": m5,
-    "monthYearHint": MessageLookupByLibrary.simpleMessage("شهر / سنة"),
-    "monthsAgo": m6,
-    "mostRelevant": MessageLookupByLibrary.simpleMessage("الأكثر ملاءمة"),
-    "multiSelect": MessageLookupByLibrary.simpleMessage("اختيارات متعددة"),
-    "myCareerRoadmap": MessageLookupByLibrary.simpleMessage(
-      "خارطة طريقي المهنية",
-    ),
-    "needHelpWithNextSteps": MessageLookupByLibrary.simpleMessage(
-      "تحتاج مساعدة في الخطوات القادمة؟",
-    ),
-    "needsImprovement": MessageLookupByLibrary.simpleMessage("يحتاج تحسين"),
-    "newChat": MessageLookupByLibrary.simpleMessage("محادثة جديدة"),
-    "newHere": MessageLookupByLibrary.simpleMessage("مستخدم جديد؟"),
-    "newJobsMatchProfile": MessageLookupByLibrary.simpleMessage(
-      "وظائف جديدة تناسب ملفك",
-    ),
-    "newPassword": MessageLookupByLibrary.simpleMessage("كلمة المرور الجديدة"),
-    "next": MessageLookupByLibrary.simpleMessage("التالي"),
-    "nextApplicationQuestions": MessageLookupByLibrary.simpleMessage(
-      "التالي: أسئلة التقديم",
-    ),
-    "niceToHave": MessageLookupByLibrary.simpleMessage("ميزة إضافية"),
-    "noApplicationsYet": MessageLookupByLibrary.simpleMessage(
-      "لا توجد طلبات تقديم بعد",
-    ),
-    "noConversationsYet": MessageLookupByLibrary.simpleMessage(
-      "لا توجد محادثات بعد",
-    ),
-    "noCoverNoteAdded": MessageLookupByLibrary.simpleMessage(
-      "لم تتم إضافة رسالة تعريفية",
-    ),
-    "noEducationYet": MessageLookupByLibrary.simpleMessage(
-      "لم تتم إضافة أي تعليم بعد",
-    ),
-    "noEducationYetDesc": MessageLookupByLibrary.simpleMessage(
-      "أضف سجلك التعليمي الأول باستخدام النموذج أدناه.",
-    ),
-    "noExperienceYet": MessageLookupByLibrary.simpleMessage(
-      "لم تتم إضافة أي خبرة بعد",
-    ),
-    "noExperienceYetDesc": MessageLookupByLibrary.simpleMessage(
-      "أضف خبرتك العملية الأولى باستخدام النموذج أدناه.",
-    ),
-    "noFileSelected": MessageLookupByLibrary.simpleMessage("لم يتم اختيار ملف"),
-    "noHistoryYet": MessageLookupByLibrary.simpleMessage("لا يوجد سجل بعد"),
-    "noInternetConnection": MessageLookupByLibrary.simpleMessage(
-      "لا يوجد اتصال بالإنترنت",
-    ),
-    "noJobsFound": MessageLookupByLibrary.simpleMessage("لا توجد وظائف متاحة"),
-    "noLearningTasks": MessageLookupByLibrary.simpleMessage(
-      "لا توجد مهام تعلم محددة لهذه المهارة بعد.",
-    ),
-    "noNotifications": MessageLookupByLibrary.simpleMessage(
-      "لا توجد إشعارات بعد",
-    ),
-    "noNotificationsDesc": MessageLookupByLibrary.simpleMessage(
-      "سنخطرك عندما تصلك تحديثات جديدة ومهمة.",
-    ),
-    "noProjectsYet": MessageLookupByLibrary.simpleMessage(
-      "لم تتم إضافة أي مشاريع بعد",
-    ),
-    "noProjectsYetDesc": MessageLookupByLibrary.simpleMessage(
-      "أضف مشروعك الأول باستخدام الزر أعلاه.",
-    ),
-    "noRoadmaps": MessageLookupByLibrary.simpleMessage(
-      "لا توجد خارطات طريق بعد",
-    ),
-    "noSavedJobsYet": MessageLookupByLibrary.simpleMessage(
-      "لا يوجد وظائف متاحة حالياً",
-    ),
-    "noUnreadNotifications": MessageLookupByLibrary.simpleMessage(
-      "لا توجد إشعارات غير مقروءة",
-    ),
-    "notNow": MessageLookupByLibrary.simpleMessage("ليس الآن"),
-    "notes": MessageLookupByLibrary.simpleMessage("الملاحظات"),
-    "notesHint": MessageLookupByLibrary.simpleMessage(
-      "مثال: التركيز على الأنظمة الموزعة",
-    ),
-    "notificationMarkedAsRead": MessageLookupByLibrary.simpleMessage(
-      "تم تعيين الإشعار كمقروء",
-    ),
-    "notifications": MessageLookupByLibrary.simpleMessage("الإشعارات"),
-    "notificationsTitle": MessageLookupByLibrary.simpleMessage("الإشعارات"),
-    "offer": MessageLookupByLibrary.simpleMessage("العرض"),
-    "offlineStatusShowingSaved": MessageLookupByLibrary.simpleMessage(
-      "أنت غير متصل بالإنترنت. يتم عرض البيانات المحفوظة.",
-    ),
-    "older": MessageLookupByLibrary.simpleMessage("أقدم"),
-    "onSite": MessageLookupByLibrary.simpleMessage("من مقر العمل"),
-    "onboardingBullet1": MessageLookupByLibrary.simpleMessage(
-      "ارفع سيرتك الذاتية لتحليل فوري بالذكاء الاصطناعي",
-    ),
-    "onboardingBullet2": MessageLookupByLibrary.simpleMessage(
-      "حدد المسميات الوظيفية والمهارات المستهدفة",
-    ),
-    "onboardingBullet3": MessageLookupByLibrary.simpleMessage(
-      "احصل على أفضل الفرص المتوافقة معك بدقة",
-    ),
-    "ongoingProject": MessageLookupByLibrary.simpleMessage("المشروع مستمر"),
-    "onlyOnTrustedDevices": MessageLookupByLibrary.simpleMessage(
-      "على الأجهزة الموثوقة فقط",
-    ),
-    "openMenu": MessageLookupByLibrary.simpleMessage("فتح القائمة"),
-    "openToOpportunitiesAnywhere": MessageLookupByLibrary.simpleMessage(
-      "مستعد لفرص في أي مكان",
-    ),
-    "opportunities": MessageLookupByLibrary.simpleMessage("فرصة"),
-    "optional": MessageLookupByLibrary.simpleMessage("اختياري"),
-    "or": MessageLookupByLibrary.simpleMessage("أو"),
-    "otpCodeDidNotMatch": MessageLookupByLibrary.simpleMessage(
-      "لم يتطابق الرمز. تحقق من الرسالة وحاول مرة أخرى.",
-    ),
-    "otpVerifying": MessageLookupByLibrary.simpleMessage("جاري التحقق…"),
-    "partTime": MessageLookupByLibrary.simpleMessage("دوام جزئي"),
-    "password": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
-    "passwordChangedSuccessDesc": MessageLookupByLibrary.simpleMessage(
-      "تم تغيير كلمة المرور بنجاح. يمكنك الآن تسجيل الدخول بكلمة المرور الجديدة.",
-    ),
-    "passwordChangedSuccessfully": MessageLookupByLibrary.simpleMessage(
-      "تم تغيير كلمة المرور بنجاح",
-    ),
-    "passwordHint": MessageLookupByLibrary.simpleMessage("أدخل كلمة المرور"),
-    "passwordLengthHint": MessageLookupByLibrary.simpleMessage(
-      "استخدم 8 أحرف على الأقل.",
-    ),
-    "passwordRequirements": MessageLookupByLibrary.simpleMessage(
-      "متطلبات كلمة المرور",
-    ),
-    "passwordsDoNotMatch": MessageLookupByLibrary.simpleMessage(
-      "كلمتا المرور غير متطابقتين",
-    ),
-    "pendingEmployerScreening": MessageLookupByLibrary.simpleMessage(
-      "بانتظار مراجعة صاحب العمل",
-    ),
-    "personalInformation": MessageLookupByLibrary.simpleMessage(
-      "المعلومات الشخصية",
-    ),
-    "phoneHint": MessageLookupByLibrary.simpleMessage("أدخل رقم هاتفك"),
-    "phoneNumber": MessageLookupByLibrary.simpleMessage("رقم الهاتف"),
-    "phoneNumberLabel": MessageLookupByLibrary.simpleMessage("رقم الهاتف"),
-    "pleaseAcceptTerms": MessageLookupByLibrary.simpleMessage(
-      "يرجى الموافقة على الشروط وسياسة الخصوصية",
-    ),
-    "pleaseCheckYourInternetConnection": MessageLookupByLibrary.simpleMessage(
-      "يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى",
-    ),
-    "plus50Xp": MessageLookupByLibrary.simpleMessage("+50 XP"),
-    "popular": MessageLookupByLibrary.simpleMessage("شائع"),
-    "portfolioLinkHint": MessageLookupByLibrary.simpleMessage(
-      "https://github.com/username أو رابط معرض الأعمال",
-    ),
-    "portfolioOrProjectLink": MessageLookupByLibrary.simpleMessage(
-      "رابط معرض الأعمال أو المشروع (اختياري)",
-    ),
-    "postedTwoDaysAgo": MessageLookupByLibrary.simpleMessage("نُشرت منذ يومين"),
-    "preferNotToSay": MessageLookupByLibrary.simpleMessage("أفضل عدم الإفصاح"),
-    "preferences": MessageLookupByLibrary.simpleMessage("التفضيلات"),
-    "preferred": MessageLookupByLibrary.simpleMessage("المفضل"),
-    "preferredLocation": MessageLookupByLibrary.simpleMessage("الموقع المفضل"),
-    "preferredWorkMode": MessageLookupByLibrary.simpleMessage(
-      "ما نمط العمل الذي تفضله؟",
-    ),
-    "preferredWorkModeLabel": MessageLookupByLibrary.simpleMessage(
-      "نمط العمل المفضل",
-    ),
-    "previewPhoto": MessageLookupByLibrary.simpleMessage("معاينة الصورة"),
-    "previous7Days": MessageLookupByLibrary.simpleMessage("السابق 7 يوما"),
-    "privacyAndSupport": MessageLookupByLibrary.simpleMessage(
-      "الخصوصية والدعم",
-    ),
-    "privacyPolicy": MessageLookupByLibrary.simpleMessage("سياسة الخصوصية"),
-    "professionalInformation": MessageLookupByLibrary.simpleMessage(
-      "المعلومات المهنية",
-    ),
-    "professionalLinks": MessageLookupByLibrary.simpleMessage(
-      "الروابط المهنية",
-    ),
-    "profile": MessageLookupByLibrary.simpleMessage("الملف الشخصي"),
-    "profileMatchQuality": MessageLookupByLibrary.simpleMessage(
-      "جودة الملف الشخصي",
-    ),
-    "profileSynced": MessageLookupByLibrary.simpleMessage("تمت مزامنة الملف"),
-    "projectDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
-      "تم حذف المشروع بنجاح",
-    ),
-    "projectDescriptionHelper": MessageLookupByLibrary.simpleMessage(
-      "وضّح أهداف المشروع والتقنيات المستخدمة",
-    ),
-    "projectDescriptionHint": MessageLookupByLibrary.simpleMessage(
-      "اكتب أهداف المشروع، دورك، والغرض الأساسي منه...",
-    ),
-    "projectName": MessageLookupByLibrary.simpleMessage("اسم المشروع"),
-    "projectNameHint": MessageLookupByLibrary.simpleMessage(
-      "مثال: HealthTracker Companion",
-    ),
-    "projectSavedSuccessfully": MessageLookupByLibrary.simpleMessage(
-      "تم حفظ المشروع بنجاح",
-    ),
-    "projectUrl": MessageLookupByLibrary.simpleMessage("رابط المشروع"),
-    "projects": MessageLookupByLibrary.simpleMessage("المشاريع"),
-    "projectsImprovementHint": MessageLookupByLibrary.simpleMessage(
-      "ضيف روابط للمشاريع ونتائج قابلة للقياس علشان تقوّي بروفايلك.",
-    ),
-    "ready": MessageLookupByLibrary.simpleMessage("جاهزة"),
-    "readyToFindYourNextOpportunity": MessageLookupByLibrary.simpleMessage(
-      "جاهز للعثور على فرصتك القادمة؟",
-    ),
-    "recommendedForYou": MessageLookupByLibrary.simpleMessage("مقترحة لك"),
-    "recruiterReview": MessageLookupByLibrary.simpleMessage(
-      "مراجعة مسؤول التوظيف",
-    ),
-    "recruiterVisibility": MessageLookupByLibrary.simpleMessage(
-      "الظهور لمسؤولي التوظيف",
-    ),
-    "recruiterVisibilityDescription": MessageLookupByLibrary.simpleMessage(
-      "يساعد اكتمال بياناتك الأكاديمية على زيادة ظهور ملفك لمسؤولي التوظيف على SkillMatch.",
-    ),
-    "refreshReasonHint": MessageLookupByLibrary.simpleMessage(
-      "ما الذي تريد التركيز عليه؟",
-    ),
-    "refreshReasonLabel": MessageLookupByLibrary.simpleMessage(
-      "سبب التحديث (اختياري)",
-    ),
-    "refreshRoadmap": MessageLookupByLibrary.simpleMessage(
-      "تحديث خارطة الطريق",
-    ),
-    "refreshRoadmapDescription": MessageLookupByLibrary.simpleMessage(
-      "حدّث خارطة الطريق المحددة باستخدام أحدث المعلومات المتاحة.",
-    ),
-    "refreshRoadmapWarning": MessageLookupByLibrary.simpleMessage(
-      "قد يؤدي التحديث إلى تغيير مراحل خارطة الطريق ومهامها.",
-    ),
-    "refreshingRoadmap": MessageLookupByLibrary.simpleMessage(
-      "جارٍ تحديث خارطة الطريق...",
-    ),
-    "registerWithGoogle": MessageLookupByLibrary.simpleMessage(
-      "المتابعة مع Google",
-    ),
-    "relatedSkills": MessageLookupByLibrary.simpleMessage("المهارات ذات الصلة"),
-    "relatedSkillsHint": MessageLookupByLibrary.simpleMessage(
-      "اكتب المهارات ذات الصلة",
-    ),
-    "remote": MessageLookupByLibrary.simpleMessage("عن بُعد"),
-    "replaceCv": MessageLookupByLibrary.simpleMessage("استبدال السيرة الذاتية"),
-    "reqAtLeastOneNumber": MessageLookupByLibrary.simpleMessage(
-      "رقم واحد على الأقل",
-    ),
-    "reqAtLeastOneSpecial": MessageLookupByLibrary.simpleMessage(
-      "رمز خاص واحد على الأقل",
-    ),
-    "reqMin8Chars": MessageLookupByLibrary.simpleMessage("8 أحرف على الأقل"),
-    "required": MessageLookupByLibrary.simpleMessage("مطلوب"),
-    "requiredForThisRole": MessageLookupByLibrary.simpleMessage(
-      "مطلوبة لهذه الوظيفة",
-    ),
-    "requiredSkills": MessageLookupByLibrary.simpleMessage("المهارات المطلوبة"),
-    "resendCode": MessageLookupByLibrary.simpleMessage("إعادة إرسال الرمز"),
-    "resendCodeIn": MessageLookupByLibrary.simpleMessage(
-      "إعادة إرسال الرمز خلال",
-    ),
-    "resetPassword": MessageLookupByLibrary.simpleMessage(
-      "إعادة تعيين كلمة المرور",
-    ),
-    "responsibilitiesDescription": MessageLookupByLibrary.simpleMessage(
-      "المسؤوليات / الوصف",
-    ),
-    "responsibilitiesHint": MessageLookupByLibrary.simpleMessage(
-      "اكتب مسؤولياتك الأساسية وأبرز مساهماتك وتأثيرك.",
-    ),
-    "resumeOptimization": MessageLookupByLibrary.simpleMessage(
-      "تحسين السيرة الذاتية",
-    ),
-    "resumeOptimizationPrompt": MessageLookupByLibrary.simpleMessage(
-      "كيف يمكنني تحسين سيرتي الذاتية لوظائف مطور فلاتر؟",
-    ),
-    "retry": MessageLookupByLibrary.simpleMessage("إعادة المحاولة"),
-    "reviewApplication": MessageLookupByLibrary.simpleMessage("مراجعة الطلب"),
-    "reviewBeforeSubmission": MessageLookupByLibrary.simpleMessage(
-      "ستراجع جميع التفاصيل قبل الإرسال النهائي.",
-    ),
-    "reviewBeforeSubmitting": MessageLookupByLibrary.simpleMessage(
-      "راجع طلبك قبل الإرسال",
-    ),
-    "reviewBeforeSubmittingDescription": MessageLookupByLibrary.simpleMessage(
-      "تأكد من صحة معلوماتك. يمكنك الرجوع وتعديل أي شيء قبل إرسال الطلب.",
-    ),
-    "reviewCv": MessageLookupByLibrary.simpleMessage("مراجعة السيرة الذاتية"),
-    "reviewInformationBeforeContinuing": MessageLookupByLibrary.simpleMessage(
-      "راجع معلوماتك قبل المتابعة.",
-    ),
-    "rewardEarned": MessageLookupByLibrary.simpleMessage(
-      "تم الحصول على المكافأة!",
-    ),
-    "roadMap": MessageLookupByLibrary.simpleMessage("خارطة الطريق"),
-    "roadmap": MessageLookupByLibrary.simpleMessage("خارطة الطريق"),
-    "roadmapAiRefreshFailed": MessageLookupByLibrary.simpleMessage(
-      "فشل تحديث خارطة الطريق",
-    ),
-    "roadmapBasedOnJob": MessageLookupByLibrary.simpleMessage(
-      "ستعتمد خارطة الطريق على هذه الوظيفة ومهاراتك الحالية.",
-    ),
-    "roadmapMatchDescription": MessageLookupByLibrary.simpleMessage(
-      "أنشئ خارطة طريق مخصصة للعمل على Testing وCI/CD لتصبح مرشحًا أقوى لهذه الوظيفة.",
-    ),
-    "roadmapRefreshFailed": MessageLookupByLibrary.simpleMessage(
-      "تعذر تحديث تفاصيل خارطة الطريق",
-    ),
-    "roadmapRefreshedSuccessfully": MessageLookupByLibrary.simpleMessage(
-      "تم تحديث خارطة الطريق بنجاح",
-    ),
-    "roadmapSubtitle": MessageLookupByLibrary.simpleMessage(
-      "تتبع تقدمك وطوّر مهاراتك الأساسية",
-    ),
-    "roadmapUpdated": MessageLookupByLibrary.simpleMessage(
-      "تم تحديث خارطة طريقك",
-    ),
-    "salaryHelper": MessageLookupByLibrary.simpleMessage(
-      "أدخل إجمالي راتبك الشهري المتوقع.",
-    ),
-    "salaryHint": MessageLookupByLibrary.simpleMessage("مثال: 24,000"),
-    "save": MessageLookupByLibrary.simpleMessage("حفظ"),
-    "saveChanges": MessageLookupByLibrary.simpleMessage("حفظ التغييرات"),
-    "saveEducation": MessageLookupByLibrary.simpleMessage("حفظ التعليم"),
-    "saveExperience": MessageLookupByLibrary.simpleMessage("حفظ الخبرة"),
-    "saveJobFailed": MessageLookupByLibrary.simpleMessage(
-      "تعذر حفظ الوظيفة. يرجى المحاولة مرة أخرى.",
-    ),
-    "savePreferences": MessageLookupByLibrary.simpleMessage("حفظ التفضيلات"),
-    "saveProject": MessageLookupByLibrary.simpleMessage("حفظ المشروع"),
-    "savedJobs": MessageLookupByLibrary.simpleMessage("الوظائف المحفوظة"),
-    "schoolUniversity": MessageLookupByLibrary.simpleMessage(
-      "المدرسة / الجامعة",
-    ),
-    "searchJobs": MessageLookupByLibrary.simpleMessage(
-      "ابحث عن وظيفة أو شركة أو مهارة",
-    ),
-    "searchJobsTitle": MessageLookupByLibrary.simpleMessage("البحث عن وظائف"),
-    "secondsSuffix": MessageLookupByLibrary.simpleMessage("ث"),
-    "sectionCompleteness": MessageLookupByLibrary.simpleMessage("اكتمال القسم"),
-    "secureProtectionText": MessageLookupByLibrary.simpleMessage(
-      "يحمي SkillMatch بياناتك وتاريخ تقديمك بشكل آمن.",
-    ),
-    "securityBadge": MessageLookupByLibrary.simpleMessage(
-      "سكيل ماتش يحمي بياناتك وسجل تقديماتك بأمان.",
-    ),
-    "seeAll": MessageLookupByLibrary.simpleMessage("عرض الكل"),
-    "select": MessageLookupByLibrary.simpleMessage("اختر"),
-    "selectLanguage": MessageLookupByLibrary.simpleMessage("اختر اللغة"),
-    "selectRoadmap": MessageLookupByLibrary.simpleMessage("اختر خارطة الطريق"),
-    "selectTheme": MessageLookupByLibrary.simpleMessage("اختر المظهر"),
-    "sendMessage": MessageLookupByLibrary.simpleMessage("إرسال رسالة"),
-    "sendingMessage": MessageLookupByLibrary.simpleMessage("جارٍ الإرسال..."),
-    "senior": MessageLookupByLibrary.simpleMessage("Senior"),
-    "sentCodeToEmail": MessageLookupByLibrary.simpleMessage(
-      "لقد أرسلنا رمزاً مكوناً من 6 أرقام إلى بريدك الإلكتروني.",
-    ),
-    "serverError": MessageLookupByLibrary.simpleMessage("حدث خطأ في الخادم."),
-    "settings": MessageLookupByLibrary.simpleMessage("الإعدادات"),
-    "setupCareerProfile": MessageLookupByLibrary.simpleMessage(
-      "أكمل ملفك المهني",
-    ),
-    "setupCareerProfileDesc": MessageLookupByLibrary.simpleMessage(
-      "أخبرنا بمهاراتك وأهدافك للحصول على توصيات وظيفية أفضل.",
-    ),
-    "shareJobLinkUnavailable": MessageLookupByLibrary.simpleMessage(
-      "رابط الوظيفة غير متوفر لهذه الوظيفة.",
-    ),
-    "showingCachedNotifications": MessageLookupByLibrary.simpleMessage(
-      "عرض الإشعارات المحفوظة (غير متصل)",
-    ),
-    "signUpWithGoogle": MessageLookupByLibrary.simpleMessage(
-      "التسجيل مع Google",
-    ),
-    "skillCompleted": MessageLookupByLibrary.simpleMessage("تم اكتمال المهارة"),
-    "skillInProgress": MessageLookupByLibrary.simpleMessage(
-      "المهارة قيد التقدم",
-    ),
-    "skillMatchPortal": MessageLookupByLibrary.simpleMessage("بوابة سكيل ماتش"),
-    "skillmatchPortal": MessageLookupByLibrary.simpleMessage(
-      "بوابة SKILLMATCH",
-    ),
-    "skills": MessageLookupByLibrary.simpleMessage("المهارات"),
-    "skillsCount": m7,
-    "skillsLabel": MessageLookupByLibrary.simpleMessage("المهارات:"),
-    "skillsProfile": MessageLookupByLibrary.simpleMessage("ملف المهارات"),
-    "skillsProfileDescription": MessageLookupByLibrary.simpleMessage(
-      "مهاراتك بتساعد SkillMatch يحدد الفرص الأنسب ليك.",
-    ),
-    "skillsToImprove": MessageLookupByLibrary.simpleMessage(
-      "مهارات تحتاج إلى تطوير",
-    ),
-    "skip": MessageLookupByLibrary.simpleMessage("تخطي"),
-    "smartCareerDiscoveryPlatform": MessageLookupByLibrary.simpleMessage(
-      "اكتشاف مهني ذكي",
-    ),
-    "somethingWentWrong": MessageLookupByLibrary.simpleMessage("حدث خطأ ما"),
-    "sortedByRecent": MessageLookupByLibrary.simpleMessage("مرتبة حسب الأحدث"),
-    "source": MessageLookupByLibrary.simpleMessage("المصدر"),
-    "start": MessageLookupByLibrary.simpleMessage("ابدأ"),
-    "startDate": MessageLookupByLibrary.simpleMessage("تاريخ البداية"),
-    "startFirstConversation": MessageLookupByLibrary.simpleMessage(
-      "ابدأ محادثتك الأولى أدناه",
-    ),
-    "startYear": MessageLookupByLibrary.simpleMessage("سنة البداية"),
-    "stateGovernorate": MessageLookupByLibrary.simpleMessage("المحافظة"),
-    "stepFourConfirmation": MessageLookupByLibrary.simpleMessage(
-      "الخطوة 4 من 4 • التأكيد",
-    ),
-    "stepOf": MessageLookupByLibrary.simpleMessage("من"),
-    "stepThreeOfThree": MessageLookupByLibrary.simpleMessage("الخطوة 3 من 3"),
-    "strongMatch": MessageLookupByLibrary.simpleMessage("توافق قوي"),
-    "student": MessageLookupByLibrary.simpleMessage("طالب"),
-    "submissionConfirmationNotice": MessageLookupByLibrary.simpleMessage(
-      "بإرسال الطلب، فإنك تؤكد أن المعلومات المقدمة صحيحة ومتوافقة مع إرشادات المجتمع.",
-    ),
-    "submitApplication": MessageLookupByLibrary.simpleMessage("إرسال الطلب"),
-    "submittedJustNow": MessageLookupByLibrary.simpleMessage("تم الإرسال الآن"),
-    "submittedSuccessfully": MessageLookupByLibrary.simpleMessage("بنجاح."),
-    "submittedTodayTime": MessageLookupByLibrary.simpleMessage(
-      "تم التقديم اليوم الساعة 10:32 ص",
-    ),
-    "suggestedPrompts": MessageLookupByLibrary.simpleMessage(
-      "اقتراحات للمتابعة",
-    ),
-    "suggestedQuestions": MessageLookupByLibrary.simpleMessage("أسئلة مقترحة"),
-    "suggestedRoles": MessageLookupByLibrary.simpleMessage("وظائف مقترحة"),
-    "suggestions": MessageLookupByLibrary.simpleMessage("مقترحات"),
-    "supportingDocumentOptional": MessageLookupByLibrary.simpleMessage(
-      "مستند داعم (اختياري)",
-    ),
-    "system": MessageLookupByLibrary.simpleMessage("تلقائي (النظام)"),
-    "takePhoto": MessageLookupByLibrary.simpleMessage("التقط صورة"),
-    "targetRole": MessageLookupByLibrary.simpleMessage("الوظيفة المستهدفة"),
-    "targetRoleHint": MessageLookupByLibrary.simpleMessage(
-      "مثال: مهندس backend",
-    ),
-    "taskCompleted": MessageLookupByLibrary.simpleMessage(
-      "تم إكمال المهمة بنجاح",
-    ),
-    "taskCompletionFailed": MessageLookupByLibrary.simpleMessage(
-      "فشل إكمال المهمة",
-    ),
-    "tasksCompleted": MessageLookupByLibrary.simpleMessage("مهام مكتملة"),
-    "technicalCultureFitStage": MessageLookupByLibrary.simpleMessage(
-      "مرحلة التقييم التقني والثقافي",
-    ),
-    "technologies": MessageLookupByLibrary.simpleMessage("التقنيات"),
-    "technologiesHint": MessageLookupByLibrary.simpleMessage(
-      "مثال: TypeScript, GraphQL",
-    ),
-    "technologiesSkills": MessageLookupByLibrary.simpleMessage(
-      "التقنيات / المهارات",
-    ),
-    "technologiesWorkedWith": MessageLookupByLibrary.simpleMessage(
-      "ما التقنيات التي عملت بها؟",
-    ),
-    "tenMinutesAgo": MessageLookupByLibrary.simpleMessage("منذ 10 دقائق"),
-    "termsAndConditions": MessageLookupByLibrary.simpleMessage(
-      "الشروط والأحكام",
-    ),
-    "testingPrioritySkill": MessageLookupByLibrary.simpleMessage(
-      "أصبح الاختبار الآن من مهاراتك ذات الأولوية الأعلى.",
-    ),
-    "theme": MessageLookupByLibrary.simpleMessage("المظهر"),
-    "timeline": MessageLookupByLibrary.simpleMessage("الوقت"),
-    "today": MessageLookupByLibrary.simpleMessage("اليوم"),
-    "todayAtTime": MessageLookupByLibrary.simpleMessage("اليوم • 10:32 ص"),
-    "trackApplication": MessageLookupByLibrary.simpleMessage("متابعة الطلب"),
-    "trackingApplication": MessageLookupByLibrary.simpleMessage(
-      "متابعة طلب التقديم",
-    ),
-    "tryAgain": MessageLookupByLibrary.simpleMessage("إعادة المحاولة"),
-    "turnCvIntoOpportunities": MessageLookupByLibrary.simpleMessage(
-      "حوّل سيرتك الذاتية إلى فرص",
-    ),
-    "turnCvIntoOpportunitiesDesc": MessageLookupByLibrary.simpleMessage(
-      "اكتشف لماذا تناسبك الوظيفة، وما ينقصك، والخطوات التالية.",
-    ),
-    "twoDaysAgo": MessageLookupByLibrary.simpleMessage("منذ يومين"),
-    "twoHoursAgo": MessageLookupByLibrary.simpleMessage("منذ ساعتين"),
-    "updateStatus": MessageLookupByLibrary.simpleMessage("تحديث الحالة"),
-    "updatedFiveDaysAgo": MessageLookupByLibrary.simpleMessage(
-      "تم التحديث منذ 5 أيام",
-    ),
-    "updatedJustNow": MessageLookupByLibrary.simpleMessage("تم التحديث الآن"),
-    "uploadFile": MessageLookupByLibrary.simpleMessage("رفع ملف"),
-    "uploadFileHint": MessageLookupByLibrary.simpleMessage(
-      "PDF أو DOCX • بحد أقصى 5 MB",
-    ),
-    "uploadYourCv": MessageLookupByLibrary.simpleMessage("ارفع سيرتك الذاتية"),
-    "uploaded": MessageLookupByLibrary.simpleMessage("تم الرفع"),
-    "use8PlusCharacters": MessageLookupByLibrary.simpleMessage(
-      "استخدم 8 أحرف على الأقل",
-    ),
-    "useDifferentEmail": MessageLookupByLibrary.simpleMessage(
-      "استخدام بريد إلكتروني آخر",
-    ),
-    "usedInTwoProjects": MessageLookupByLibrary.simpleMessage(
-      "استخدمتها في مشروعين",
-    ),
-    "userFallback": MessageLookupByLibrary.simpleMessage("المستخدم"),
-    "userFieldsNotSavedYet": MessageLookupByLibrary.simpleMessage(
-      "لا يمكن حفظ الاسم ورقم الهاتف بعد، ولم يتم إرسالهما إلى الخادم.",
-    ),
-    "verificationCodeLabel": MessageLookupByLibrary.simpleMessage("رمز التحقق"),
-    "verifiedQualifications": MessageLookupByLibrary.simpleMessage("المؤهلات"),
-    "verify": MessageLookupByLibrary.simpleMessage("تحقق"),
-    "view": MessageLookupByLibrary.simpleMessage("عرض"),
-    "viewApplication": MessageLookupByLibrary.simpleMessage("عرض التقديم"),
-    "viewCv": MessageLookupByLibrary.simpleMessage("عرض السيرة الذاتية"),
-    "viewFullJobDescription": MessageLookupByLibrary.simpleMessage(
-      "عرض الوصف الكامل للوظيفة",
-    ),
-    "viewGithubRepository": MessageLookupByLibrary.simpleMessage(
-      "عرض مستودع GitHub",
-    ),
-    "viewJob": MessageLookupByLibrary.simpleMessage("عرض الوظيفة"),
-    "viewJobs": MessageLookupByLibrary.simpleMessage("عرض الوظائف"),
-    "viewLiveProject": MessageLookupByLibrary.simpleMessage("عرض المشروع"),
-    "viewMatches": MessageLookupByLibrary.simpleMessage("عرض الوظائف المناسبة"),
-    "viewProject": MessageLookupByLibrary.simpleMessage("عرض المشروع"),
-    "viewRoadmap": MessageLookupByLibrary.simpleMessage("عرض خارطة الطريق"),
-    "viewTimeline": MessageLookupByLibrary.simpleMessage("عرض التسلسل الزمني"),
-    "waitingForRecruiterResponse": MessageLookupByLibrary.simpleMessage(
-      "بانتظار رد مسؤول التوظيف.",
-    ),
-    "wantToImproveYourMatch": MessageLookupByLibrary.simpleMessage(
-      "هل تريد تحسين توافقك؟",
-    ),
-    "watchAd": MessageLookupByLibrary.simpleMessage("شاهد إعلانًا"),
-    "watchAdEarnXp": MessageLookupByLibrary.simpleMessage(
-      "شاهد إعلانًا واحصل على 50 XP",
-    ),
-    "weeksAgo": m8,
-    "welcomeBack": MessageLookupByLibrary.simpleMessage("مرحباً بعودتك!"),
-    "whatYouAlreadyMatch": MessageLookupByLibrary.simpleMessage(
-      "المهارات المتوافقة لديك",
-    ),
-    "whyInterestedHint": MessageLookupByLibrary.simpleMessage(
-      "اشرح ما الذي يثير اهتمامك في TechNova وهذه الوظيفة...",
-    ),
-    "whyInterestedRequired": MessageLookupByLibrary.simpleMessage(
-      "لماذا أنت مهتم بهذه الوظيفة؟ *",
-    ),
-    "withdrawApplication": MessageLookupByLibrary.simpleMessage(
-      "سحب طلب التقديم",
-    ),
-    "withinThreeBusinessDays": MessageLookupByLibrary.simpleMessage(
-      "خلال 3 أيام عمل",
-    ),
-    "workMode": MessageLookupByLibrary.simpleMessage("طريقة العمل"),
-    "yearsAgo": m9,
-    "yesterday": MessageLookupByLibrary.simpleMessage("أمس"),
-    "yesterdayTime": MessageLookupByLibrary.simpleMessage("أمس • 3:45 م"),
-    "yourApplicationFor": MessageLookupByLibrary.simpleMessage(
-      "تم إرسال طلبك لوظيفة",
-    ),
-    "yourInformation": MessageLookupByLibrary.simpleMessage("معلوماتك"),
-    "yourMatch": MessageLookupByLibrary.simpleMessage("مدى توافقك"),
-    "zeroToTwoYears": MessageLookupByLibrary.simpleMessage("0–2 سنة"),
-    "zeroToTwoYearsExp": MessageLookupByLibrary.simpleMessage("خبرة 0–2 سنة"),
-  };
+        "aFewMoreQuestions":
+            MessageLookupByLibrary.simpleMessage("بعض الأسئلة الإضافية"),
+        "academicHistory":
+            MessageLookupByLibrary.simpleMessage("السجل الأكاديمي"),
+        "academicHistoryDescription": MessageLookupByLibrary.simpleMessage(
+            "حافظ على تحديث ودقة سجلك التعليمي."),
+        "accessYourPathways": MessageLookupByLibrary.simpleMessage(
+            "قم بالوصول إلى مساراتك المهنية الموثقة والفرص المتاحة."),
+        "account": MessageLookupByLibrary.simpleMessage("الحساب"),
+        "adDismissedNoReward": MessageLookupByLibrary.simpleMessage(
+            "تم إغلاق الإعلان مبكرًا. لم يتم إضافة XP."),
+        "adNotAvailable":
+            MessageLookupByLibrary.simpleMessage("الإعلان غير متاح حالياً"),
+        "adRewardSuccess": MessageLookupByLibrary.simpleMessage(
+            "🎉 تهانينا! لقد حصلت على +50 XP!"),
+        "add": MessageLookupByLibrary.simpleMessage("إضافة"),
+        "addExperience": MessageLookupByLibrary.simpleMessage("إضافة خبرة"),
+        "addNewEducation":
+            MessageLookupByLibrary.simpleMessage("إضافة مؤهل تعليمي"),
+        "addNewExperience":
+            MessageLookupByLibrary.simpleMessage("إضافة خبرة جديدة"),
+        "addNewProject":
+            MessageLookupByLibrary.simpleMessage("+ إضافة مشروع جديد"),
+        "addNewSkill":
+            MessageLookupByLibrary.simpleMessage("إضافة مهارة جديدة"),
+        "addProjectDetails":
+            MessageLookupByLibrary.simpleMessage("إضافة تفاصيل المشروع"),
+        "addSkill": MessageLookupByLibrary.simpleMessage("+ إضافة مهارة"),
+        "addSkillHint": MessageLookupByLibrary.simpleMessage(
+            "أضف مهارة (مثال: Docker, GraphQL)"),
+        "addedManually":
+            MessageLookupByLibrary.simpleMessage("تمت إضافتها يدويًا"),
+        "aiAssistant": MessageLookupByLibrary.simpleMessage("المساعد الذكي"),
+        "aiAssistantSubtitle": MessageLookupByLibrary.simpleMessage(
+            "اسألني عن الوظائف، السير الذاتية، المقابلات، أو مسارك المهني."),
+        "aiIsTyping":
+            MessageLookupByLibrary.simpleMessage("الذكاء الاصطناعي يفكر..."),
+        "all": MessageLookupByLibrary.simpleMessage("الكل"),
+        "allMarkedAsRead": MessageLookupByLibrary.simpleMessage(
+            "تم تعيين جميع الإشعارات كمقروءة"),
+        "almostComplete": MessageLookupByLibrary.simpleMessage("شبه مكتمل"),
+        "alreadyHaveAccount":
+            MessageLookupByLibrary.simpleMessage("لديك حساب بالفعل؟"),
+        "alreadySubmitted":
+            MessageLookupByLibrary.simpleMessage("تم التقديم بالفعل"),
+        "analyzed": MessageLookupByLibrary.simpleMessage("تم التحليل"),
+        "analyzing": MessageLookupByLibrary.simpleMessage("جارٍ التحليل"),
+        "answerEmployerQuestions": MessageLookupByLibrary.simpleMessage(
+            "أجب عن أسئلة صاحب العمل لمتابعة طلب التقديم."),
+        "application": MessageLookupByLibrary.simpleMessage("طلب التقديم"),
+        "applicationDetails":
+            MessageLookupByLibrary.simpleMessage("تفاصيل طلب التقديم"),
+        "applicationMethod":
+            MessageLookupByLibrary.simpleMessage("طريقة التقديم"),
+        "applicationQuestions":
+            MessageLookupByLibrary.simpleMessage("أسئلة التقديم"),
+        "applicationStatus":
+            MessageLookupByLibrary.simpleMessage("حالة التقديم"),
+        "applicationStatusDescription": MessageLookupByLibrary.simpleMessage(
+            "طلبك لدى TechNova قيد المراجعة الآن."),
+        "applicationStatusUpdated":
+            MessageLookupByLibrary.simpleMessage("تم تحديث حالة التقديم"),
+        "applicationSubmitted":
+            MessageLookupByLibrary.simpleMessage("تم إرسال طلبك!"),
+        "applicationSubmittedSuccessfully":
+            MessageLookupByLibrary.simpleMessage("تم تقديم الطلب بنجاح."),
+        "applicationTimeline":
+            MessageLookupByLibrary.simpleMessage("مراحل طلب التقديم"),
+        "applications": MessageLookupByLibrary.simpleMessage("التقديمات"),
+        "applied": MessageLookupByLibrary.simpleMessage("تم التقديم"),
+        "applyForRole": MessageLookupByLibrary.simpleMessage("التقديم للوظيفة"),
+        "applyNow": MessageLookupByLibrary.simpleMessage("قدّم الآن"),
+        "applyingFor": MessageLookupByLibrary.simpleMessage("التقديم على"),
+        "arabic": MessageLookupByLibrary.simpleMessage("العربية"),
+        "archived": MessageLookupByLibrary.simpleMessage("مؤرشفة"),
+        "askAnything": MessageLookupByLibrary.simpleMessage("اسأل أي شيء..."),
+        "askCareerMentorDescription": MessageLookupByLibrary.simpleMessage(
+            "اسأل مرشدك المهني عما يمكنك التركيز عليه أثناء الانتظار."),
+        "askChatBot": MessageLookupByLibrary.simpleMessage("اسأل المساعد"),
+        "at": MessageLookupByLibrary.simpleMessage("في"),
+        "avatarUploadUnavailable":
+            MessageLookupByLibrary.simpleMessage("رفع الصورة غير متاح بعد."),
+        "back": MessageLookupByLibrary.simpleMessage("رجوع"),
+        "backOnline":
+            MessageLookupByLibrary.simpleMessage("تمت استعادة الاتصال"),
+        "backToJobs": MessageLookupByLibrary.simpleMessage("العودة للوظائف"),
+        "backToLogin":
+            MessageLookupByLibrary.simpleMessage("العودة لتسجيل الدخول"),
+        "buildMyRoadmap":
+            MessageLookupByLibrary.simpleMessage("إنشاء خارطة الطريق"),
+        "cairo": MessageLookupByLibrary.simpleMessage("القاهرة"),
+        "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
+        "candidateProfile": MessageLookupByLibrary.simpleMessage("ملف المرشح"),
+        "careerGoal": MessageLookupByLibrary.simpleMessage("الهدف المهني"),
+        "careerGoalHelper": MessageLookupByLibrary.simpleMessage(
+            "قولنا باختصار إيه اللي عايز توصله في الخطوة الجاية."),
+        "careerGoalHint": MessageLookupByLibrary.simpleMessage(
+            "مثال: اكتساب خبرة احترافية في Flutter والمشاركة في تطوير منتجات موبايل مؤثرة."),
+        "careerGroundingContext": MessageLookupByLibrary.simpleMessage(
+            "مبني على مهاراتك الموثقة، خبراتك، وأدوارك المستهدفة."),
+        "careerGrowth": MessageLookupByLibrary.simpleMessage("التطوير المهني"),
+        "careerGrowthPrompt": MessageLookupByLibrary.simpleMessage(
+            "ما الخطوات التي يجب اتخاذها لأصبح مهندس تطبيقات أول؟"),
+        "careerMentor":
+            MessageLookupByLibrary.simpleMessage("المرشد المهني الذكي"),
+        "careerPreferences":
+            MessageLookupByLibrary.simpleMessage("تفضيلات مهنية"),
+        "careerPreferencesIntroDescription":
+            MessageLookupByLibrary.simpleMessage(
+                "تفضيلاتك بتساعد SkillMatch يرشحلك فرص أنسب ليك."),
+        "careerPreferencesIntroTitle":
+            MessageLookupByLibrary.simpleMessage("قولنا إنت بتدور على إيه"),
+        "careerPreferencesSavedSuccessfully":
+            MessageLookupByLibrary.simpleMessage(
+                "تم حفظ التفضيلات المهنية بنجاح"),
+        "careerProfile": MessageLookupByLibrary.simpleMessage("الملف المهني"),
+        "change": MessageLookupByLibrary.simpleMessage("تغيير"),
+        "changeLanguageLater": MessageLookupByLibrary.simpleMessage(
+            "You can change it later in Settings"),
+        "changePassword":
+            MessageLookupByLibrary.simpleMessage("تغيير كلمة المرور"),
+        "changePasswordDescription": MessageLookupByLibrary.simpleMessage(
+            "يجب أن تتكون كلمة المرور الجديدة من 8 أحرف على الأقل وتحتوي على حرف كبير وصغير ورقم ورمز خاص."),
+        "changePasswordSuccess":
+            MessageLookupByLibrary.simpleMessage("تم تغيير كلمة المرور بنجاح"),
+        "changePhoto": MessageLookupByLibrary.simpleMessage("تغيير الصورة"),
+        "characters": MessageLookupByLibrary.simpleMessage("حرف"),
+        "chatBot": MessageLookupByLibrary.simpleMessage("المساعد الذكي"),
+        "chatHistory": MessageLookupByLibrary.simpleMessage("سجل المحادثات"),
+        "chatSuggestion1":
+            MessageLookupByLibrary.simpleMessage("اشرح نمط Flutter BLoC"),
+        "chatSuggestion2": MessageLookupByLibrary.simpleMessage(
+            "ساعدني في الاستعداد لمقابلة عمل"),
+        "chatSuggestion3":
+            MessageLookupByLibrary.simpleMessage("راجع خارطة طريقي المهنية"),
+        "chatSuggestion4": MessageLookupByLibrary.simpleMessage(
+            "ما المهارات التي يجب أن أتعلمها؟"),
+        "chooseAnother": MessageLookupByLibrary.simpleMessage("اختر صورة أخرى"),
+        "chooseFile": MessageLookupByLibrary.simpleMessage("اختر ملفًا"),
+        "chooseFromGallery":
+            MessageLookupByLibrary.simpleMessage("اختر من المعرض"),
+        "chooseStrongPassword": MessageLookupByLibrary.simpleMessage(
+            "اختر كلمة مرور قوية لم تستخدمها من قبل."),
+        "chooseYourLanguage":
+            MessageLookupByLibrary.simpleMessage("Choose your language"),
+        "city": MessageLookupByLibrary.simpleMessage("المدينة"),
+        "clear": MessageLookupByLibrary.simpleMessage("مسح"),
+        "clearAllChats":
+            MessageLookupByLibrary.simpleMessage("مسح جميع المحادثات"),
+        "company": MessageLookupByLibrary.simpleMessage("الشركة"),
+        "companyHint": MessageLookupByLibrary.simpleMessage("مثال: شركة Tech"),
+        "completeProfilePrompt": MessageLookupByLibrary.simpleMessage(
+            "أكمل ملفك الشخصي لبدء إضافة تعليمك وخبراتك ومهاراتك والمزيد."),
+        "completeRegistration":
+            MessageLookupByLibrary.simpleMessage("إكمال التسجيل"),
+        "completedPercentage": m0,
+        "confirm": MessageLookupByLibrary.simpleMessage("تأكيد"),
+        "confirmClearAllChats": MessageLookupByLibrary.simpleMessage(
+            "هل أنت متأكد أنك تريد مسح جميع المحادثات؟ لا يمكن التراجع عن هذا الإجراء."),
+        "confirmDeleteChat": MessageLookupByLibrary.simpleMessage(
+            "هل أنت متأكد أنك تريد حذف هذه المحادثة؟ لا يمكن التراجع عن هذا الإجراء."),
+        "confirmNewPassword":
+            MessageLookupByLibrary.simpleMessage("تأكيد كلمة المرور الجديدة"),
+        "confirmPassword":
+            MessageLookupByLibrary.simpleMessage("تأكيد كلمة المرور"),
+        "confirmPasswordHint":
+            MessageLookupByLibrary.simpleMessage("أعد إدخال كلمة المرور"),
+        "confirmRefresh": MessageLookupByLibrary.simpleMessage("تأكيد التحديث"),
+        "connectionSlowRetrying": MessageLookupByLibrary.simpleMessage(
+            "الاتصال بطيء. جارٍ إعادة المحاولة..."),
+        "contactAddressPlaceholder": MessageLookupByLibrary.simpleMessage(
+            "١٠٠ جادة الابتكار، مجمع التكنولوجيا، جناح ٤٠٠"),
+        "contactAddressTitle":
+            MessageLookupByLibrary.simpleMessage("مقر المكتب"),
+        "contactEmailPlaceholder":
+            MessageLookupByLibrary.simpleMessage("support@skillmatch.com"),
+        "contactEmailTitle":
+            MessageLookupByLibrary.simpleMessage("الدعم عبر البريد الإلكتروني"),
+        "contactHoursPlaceholder": MessageLookupByLibrary.simpleMessage(
+            "الاثنين - الجمعة، ٩:٠٠ ص - ٦:٠٠ م"),
+        "contactHoursTitle":
+            MessageLookupByLibrary.simpleMessage("ساعات العمل"),
+        "contactPhonePlaceholder":
+            MessageLookupByLibrary.simpleMessage("+1 (555) 019-2834"),
+        "contactPhoneTitle": MessageLookupByLibrary.simpleMessage("رقم الهاتف"),
+        "contactUs": MessageLookupByLibrary.simpleMessage("تواصل معنا"),
+        "contextPreview": MessageLookupByLibrary.simpleMessage("سياق المرشح"),
+        "continueAsGuest": MessageLookupByLibrary.simpleMessage("الدخول كضيف"),
+        "continueText": MessageLookupByLibrary.simpleMessage("متابعة"),
+        "continueWithGoogle":
+            MessageLookupByLibrary.simpleMessage("المتابعة مع Google"),
+        "contract": MessageLookupByLibrary.simpleMessage("عقد"),
+        "copiedToClipboard":
+            MessageLookupByLibrary.simpleMessage("تم النسخ إلى الحافظة"),
+        "copy": MessageLookupByLibrary.simpleMessage("نسخ"),
+        "copyright": MessageLookupByLibrary.simpleMessage(
+            "© 2025 SkillMatch. جميع الحقوق محفوظة."),
+        "country": MessageLookupByLibrary.simpleMessage("الدولة"),
+        "coverNote": MessageLookupByLibrary.simpleMessage("رسالة تعريفية"),
+        "coverNoteHint": MessageLookupByLibrary.simpleMessage(
+            "أضف رسالة قصيرة توضح سبب اهتمامك بهذه الوظيفة."),
+        "createAccount": MessageLookupByLibrary.simpleMessage("إنشاء حساب"),
+        "createNewPassword":
+            MessageLookupByLibrary.simpleMessage("إنشاء كلمة مرور جديدة"),
+        "createProfile":
+            MessageLookupByLibrary.simpleMessage("إنشاء الملف الشخصي"),
+        "csOrRelated":
+            MessageLookupByLibrary.simpleMessage("علوم حاسب أو مجال ذو صلة"),
+        "currentPassword":
+            MessageLookupByLibrary.simpleMessage("كلمة المرور الحالية"),
+        "currentRecords":
+            MessageLookupByLibrary.simpleMessage("السجلات الحالية"),
+        "currentStatus": MessageLookupByLibrary.simpleMessage("الحالة الحالية"),
+        "currentlyStudyingHere":
+            MessageLookupByLibrary.simpleMessage("أدرس هنا حاليًا"),
+        "currentlyWorkHere":
+            MessageLookupByLibrary.simpleMessage("أعمل هنا حاليًا"),
+        "cv": MessageLookupByLibrary.simpleMessage("السيرة الذاتية"),
+        "cvAnalysisCompleted":
+            MessageLookupByLibrary.simpleMessage("اكتمل تحليل السيرة الذاتية"),
+        "cvAnalysisDescription": MessageLookupByLibrary.simpleMessage(
+            "استخرجنا 12 مهارة وقمنا بتحديث ملفك المهني."),
+        "cvEmptyFile":
+            MessageLookupByLibrary.simpleMessage("الملف المحدد فارغ."),
+        "cvFileTooLarge": MessageLookupByLibrary.simpleMessage(
+            "حجم الملف كبير جدًا. الحد الأقصى هو 5 MB."),
+        "cvPendingUpload": MessageLookupByLibrary.simpleMessage(
+            "تم الحفظ على هذا الجهاز — سيتم الرفع عند عودة الاتصال"),
+        "cvRefreshFailed": MessageLookupByLibrary.simpleMessage(
+            "تم رفع السيرة الذاتية، ولكن تعذر تحديث الملف."),
+        "cvResume": MessageLookupByLibrary.simpleMessage("السيرة الذاتية"),
+        "cvSkillsDescription": MessageLookupByLibrary.simpleMessage(
+            "تم استخراج المهارات تلقائيًا من السيرة الذاتية المرفوعة."),
+        "cvUnsupportedFileType": MessageLookupByLibrary.simpleMessage(
+            "نوع الملف غير مدعوم. يرجى اختيار ملف PDF أو DOCX."),
+        "cvUploadNotice": MessageLookupByLibrary.simpleMessage(
+            "بعدين تقدر ترفع سيرتك الذاتية (اختياري)."),
+        "cvUploadRequirements":
+            MessageLookupByLibrary.simpleMessage("PDF أو DOCX • بحد أقصى 5 MB"),
+        "cvUploadSuccessful":
+            MessageLookupByLibrary.simpleMessage("تم رفع السيرة الذاتية بنجاح"),
+        "cvViewFailed": MessageLookupByLibrary.simpleMessage(
+            "تعذر فتح مستند السيرة الذاتية."),
+        "dark": MessageLookupByLibrary.simpleMessage("داكن"),
+        "dateOfBirth": MessageLookupByLibrary.simpleMessage("تاريخ الميلاد"),
+        "daysAgo": m1,
+        "degree": MessageLookupByLibrary.simpleMessage("الدرجة العلمية"),
+        "degreeHint": MessageLookupByLibrary.simpleMessage(
+            "مثال: بكالوريوس علوم أو ماجستير"),
+        "delete": MessageLookupByLibrary.simpleMessage("حذف"),
+        "deleteChat": MessageLookupByLibrary.simpleMessage("حذف المحادثة"),
+        "deleteEducation": MessageLookupByLibrary.simpleMessage("حذف التعليم"),
+        "deleteEducationConfirm": MessageLookupByLibrary.simpleMessage(
+            "هل أنت متأكد أنك تريد حذف هذا التعليم؟ لا يمكن التراجع عن هذا الإجراء."),
+        "deleteExperience": MessageLookupByLibrary.simpleMessage("حذف الخبرة"),
+        "deleteExperienceConfirm": MessageLookupByLibrary.simpleMessage(
+            "هل أنت متأكد أنك تريد حذف هذه الخبرة؟ لا يمكن التراجع عن هذا الإجراء."),
+        "deleteProject": MessageLookupByLibrary.simpleMessage("حذف المشروع"),
+        "deleteProjectConfirm": MessageLookupByLibrary.simpleMessage(
+            "هل أنت متأكد أنك تريد حذف هذا المشروع؟ لا يمكن التراجع عن هذا الإجراء."),
+        "description": MessageLookupByLibrary.simpleMessage("الوصف"),
+        "draft": MessageLookupByLibrary.simpleMessage("مسودة"),
+        "edit": MessageLookupByLibrary.simpleMessage("تعديل"),
+        "editEducation": MessageLookupByLibrary.simpleMessage("تعديل التعليم"),
+        "editExperience": MessageLookupByLibrary.simpleMessage("تعديل الخبرة"),
+        "editNote": MessageLookupByLibrary.simpleMessage("تعديل الملاحظة"),
+        "editProfile": MessageLookupByLibrary.simpleMessage("تعديل الملف"),
+        "editProjectDetails":
+            MessageLookupByLibrary.simpleMessage("تعديل تفاصيل المشروع"),
+        "editTitle":
+            MessageLookupByLibrary.simpleMessage("تعديل عنوان المحادثة"),
+        "editorialScore":
+            MessageLookupByLibrary.simpleMessage("درجة اكتمال المحتوى"),
+        "education": MessageLookupByLibrary.simpleMessage("التعليم"),
+        "educationDeletedSuccessfully":
+            MessageLookupByLibrary.simpleMessage("تم حذف التعليم بنجاح"),
+        "educationSavedSuccessfully":
+            MessageLookupByLibrary.simpleMessage("تم حفظ التعليم بنجاح"),
+        "email": MessageLookupByLibrary.simpleMessage("البريد الإلكتروني"),
+        "emailAddress":
+            MessageLookupByLibrary.simpleMessage("البريد الإلكتروني"),
+        "emailHint":
+            MessageLookupByLibrary.simpleMessage("أدخل بريدك الإلكتروني"),
+        "employmentType": MessageLookupByLibrary.simpleMessage("نوع التوظيف"),
+        "endDate": MessageLookupByLibrary.simpleMessage("تاريخ النهاية"),
+        "endYearExpected":
+            MessageLookupByLibrary.simpleMessage("سنة النهاية (أو المتوقعة)"),
+        "english": MessageLookupByLibrary.simpleMessage("الإنجليزية"),
+        "enterNewTitle":
+            MessageLookupByLibrary.simpleMessage("أدخل العنوان الجديد"),
+        "enterVerificationCode":
+            MessageLookupByLibrary.simpleMessage("أدخل رمز التحقق"),
+        "entryLevel": MessageLookupByLibrary.simpleMessage("مستوى مبتدئ"),
+        "estimatedHours": m2,
+        "excellent": MessageLookupByLibrary.simpleMessage("ممتاز"),
+        "expectedMonthlySalary":
+            MessageLookupByLibrary.simpleMessage("ما الراتب الشهري المتوقع؟"),
+        "expectedSalary":
+            MessageLookupByLibrary.simpleMessage("الراتب المتوقع"),
+        "experience": MessageLookupByLibrary.simpleMessage("الخبرة"),
+        "experienceCompletenessHint": MessageLookupByLibrary.simpleMessage(
+            "أضف المزيد من التفاصيل حول مسؤولياتك وتأثيرك. الإنجازات المحددة تساعد على زيادة ظهورك لمسؤولي التوظيف."),
+        "experienceDeletedSuccessfully":
+            MessageLookupByLibrary.simpleMessage("تم حذف الخبرة بنجاح"),
+        "experienceLevel": MessageLookupByLibrary.simpleMessage("مستوى الخبرة"),
+        "experienceManagementDescription": MessageLookupByLibrary.simpleMessage(
+            "أضف تفاصيل عن مسؤولياتك وتأثيرك في العمل."),
+        "experienceSavedSuccessfully":
+            MessageLookupByLibrary.simpleMessage("تم حفظ الخبرة بنجاح"),
+        "experienceWithBloc":
+            MessageLookupByLibrary.simpleMessage("خبرة في Bloc"),
+        "failed": MessageLookupByLibrary.simpleMessage("فشل"),
+        "failedToLoadAd":
+            MessageLookupByLibrary.simpleMessage("فشل تحميل الإعلان"),
+        "failedToSendMessage": MessageLookupByLibrary.simpleMessage(
+            "فشل إرسال الرسالة. الرجاء المحاولة مرة أخرى."),
+        "fairMatch": MessageLookupByLibrary.simpleMessage("تطابق متوسط"),
+        "female": MessageLookupByLibrary.simpleMessage("أنثى"),
+        "fieldOfStudy": MessageLookupByLibrary.simpleMessage("مجال الدراسة"),
+        "fieldOfStudyHint": MessageLookupByLibrary.simpleMessage(
+            "مثال: هندسة البرمجيات أو نظم المعلومات"),
+        "filterAll": MessageLookupByLibrary.simpleMessage("الكل"),
+        "filterUnread": MessageLookupByLibrary.simpleMessage("غير مقروء"),
+        "finalConfirmation":
+            MessageLookupByLibrary.simpleMessage("التأكيد النهائي"),
+        "finalDecisionAndOnboarding":
+            MessageLookupByLibrary.simpleMessage("القرار النهائي وبدء العمل"),
+        "flexible": MessageLookupByLibrary.simpleMessage("مرن"),
+        "flutterOpportunities": MessageLookupByLibrary.simpleMessage(
+            "وجدنا 8 فرص Flutter بناءً على مهاراتك."),
+        "focusOnTwoHighPrioritySkills": MessageLookupByLibrary.simpleMessage(
+            "ركز على مهارتين بأولوية عالية"),
+        "followUs": MessageLookupByLibrary.simpleMessage("تابعنا"),
+        "followUsDescription": MessageLookupByLibrary.simpleMessage(
+            "تواصل معنا عبر منصات التواصل الاجتماعي لمتابعة كل جديد والاطلاع على الفرص."),
+        "forgotPassword":
+            MessageLookupByLibrary.simpleMessage("نسيت كلمة المرور؟"),
+        "foundInCvAndProjects": MessageLookupByLibrary.simpleMessage(
+            "موجودة في سيرتك الذاتية ومشاريعك"),
+        "foundInYourSkills":
+            MessageLookupByLibrary.simpleMessage("موجودة ضمن مهاراتك"),
+        "fourHoursAgo": MessageLookupByLibrary.simpleMessage("منذ 4 ساعات"),
+        "freelance": MessageLookupByLibrary.simpleMessage("عمل حر"),
+        "fromCv": MessageLookupByLibrary.simpleMessage("من السيرة الذاتية"),
+        "fromYourCv": MessageLookupByLibrary.simpleMessage("من سيرتك الذاتية"),
+        "fullName": MessageLookupByLibrary.simpleMessage("الاسم الكامل"),
+        "fullTime": MessageLookupByLibrary.simpleMessage("دوام كامل"),
+        "gender": MessageLookupByLibrary.simpleMessage("النوع"),
+        "generateRoadmap":
+            MessageLookupByLibrary.simpleMessage("إنشاء خارطة طريق"),
+        "generatingRoadmap":
+            MessageLookupByLibrary.simpleMessage("جارٍ إنشاء خارطة الطريق..."),
+        "generationFailed":
+            MessageLookupByLibrary.simpleMessage("فشل إنشاء خارطة الطريق"),
+        "generationSuccess":
+            MessageLookupByLibrary.simpleMessage("تم إنشاء خارطة الطريق بنجاح"),
+        "getExplainableMatch":
+            MessageLookupByLibrary.simpleMessage("احصل على توافق واضح ومفصل"),
+        "getExplainableMatchDesc": MessageLookupByLibrary.simpleMessage(
+            "ليس مجرد نسبة مئوية — بل نقاط قوة وفجوات وخطوات عمل واضحة."),
+        "getInTouch": MessageLookupByLibrary.simpleMessage("تواصل معنا"),
+        "getStarted": MessageLookupByLibrary.simpleMessage("ابدأ الآن"),
+        "github": MessageLookupByLibrary.simpleMessage("GitHub"),
+        "githubRepositoryUrl":
+            MessageLookupByLibrary.simpleMessage("رابط مستودع GitHub"),
+        "good": MessageLookupByLibrary.simpleMessage("جيد"),
+        "goodMatch": MessageLookupByLibrary.simpleMessage("توافق جيد"),
+        "gpaHint": MessageLookupByLibrary.simpleMessage("مثال: 3.4 / 4.0"),
+        "gpaOptional":
+            MessageLookupByLibrary.simpleMessage("التقدير (اختياري)"),
+        "greetingUser": m3,
+        "guestModeMessage": MessageLookupByLibrary.simpleMessage(
+            "يرجى تسجيل الدخول للوصول إلى هذه الميزة."),
+        "guestModeTitle":
+            MessageLookupByLibrary.simpleMessage("أنت في وضع الضيف"),
+        "help": MessageLookupByLibrary.simpleMessage("مساعدة"),
+        "helpfulAdvantage":
+            MessageLookupByLibrary.simpleMessage("ميزة إضافية مفيدة"),
+        "highPriority": MessageLookupByLibrary.simpleMessage("أولوية عالية"),
+        "home": MessageLookupByLibrary.simpleMessage("الرئيسية"),
+        "hoursAgo": m4,
+        "howCanIHelpYouToday":
+            MessageLookupByLibrary.simpleMessage("كيف يمكنني مساعدتك اليوم؟"),
+        "hybrid": MessageLookupByLibrary.simpleMessage("هجين"),
+        "iAgreeToTerms": MessageLookupByLibrary.simpleMessage(
+            "أوافق على الشروط وسياسة الخصوصية"),
+        "imageTooLarge": MessageLookupByLibrary.simpleMessage(
+            "حجم الصورة كبير جدًا. الحد الأقصى 5 ميجابايت."),
+        "inReview": MessageLookupByLibrary.simpleMessage("قيد المراجعة"),
+        "institutionHint":
+            MessageLookupByLibrary.simpleMessage("ابحث أو أدخل اسم المؤسسة"),
+        "internship": MessageLookupByLibrary.simpleMessage("تدريب"),
+        "interview": MessageLookupByLibrary.simpleMessage("المقابلة"),
+        "interviewPrep":
+            MessageLookupByLibrary.simpleMessage("التحضير للمقابلات"),
+        "interviewPrepPrompt": MessageLookupByLibrary.simpleMessage(
+            "ما هي أهم أسئلة المقابلات الفنية لـ Dart و Flutter؟"),
+        "invalidDateRange": MessageLookupByLibrary.simpleMessage(
+            "يجب أن يكون تاريخ الانتهاء مساويًا لتاريخ البدء أو بعده"),
+        "invalidImageType": MessageLookupByLibrary.simpleMessage(
+            "نوع الصورة غير مدعوم. استخدم JPG أو PNG أو WEBP."),
+        "invalidJobId":
+            MessageLookupByLibrary.simpleMessage("معرّف الوظيفة غير صالح."),
+        "invalidVerificationCode":
+            MessageLookupByLibrary.simpleMessage("رمز التحقق غير صحيح"),
+        "jobDetails": MessageLookupByLibrary.simpleMessage("تفاصيل الوظيفة"),
+        "jobFitAnalysis":
+            MessageLookupByLibrary.simpleMessage("تحليل ملاءمة الوظائف"),
+        "jobFitAnalysisPrompt": MessageLookupByLibrary.simpleMessage(
+            "كيف يحسب ماتش إن نسبة توافق الوظيفة معي؟"),
+        "jobRequirements":
+            MessageLookupByLibrary.simpleMessage("متطلبات الوظيفة"),
+        "jobTitle": MessageLookupByLibrary.simpleMessage("المسمى الوظيفي"),
+        "jobTitleHint":
+            MessageLookupByLibrary.simpleMessage("مثال: مطور Flutter"),
+        "jobType": MessageLookupByLibrary.simpleMessage("نوع الوظيفة"),
+        "jobs": MessageLookupByLibrary.simpleMessage("الوظائف"),
+        "jobsMatchDescription": MessageLookupByLibrary.simpleMessage(
+            "استكشف الفرص المناسبة لمهاراتك وتفضيلاتك المهنية."),
+        "jobsMatchYourProfile": MessageLookupByLibrary.simpleMessage(
+            "وجدنا وظائف تناسب ملفك الشخصي"),
+        "junior": MessageLookupByLibrary.simpleMessage("Junior"),
+        "juniorFlutterDeveloper":
+            MessageLookupByLibrary.simpleMessage("مطور Flutter مبتدئ"),
+        "justNow": MessageLookupByLibrary.simpleMessage("الآن"),
+        "keepMeSignedIn": MessageLookupByLibrary.simpleMessage("ابقَ متصلاً"),
+        "keepTrackerUpdated": MessageLookupByLibrary.simpleMessage(
+            "حدّث حالة طلبك عندما يصلك رد من صاحب العمل."),
+        "keyAchievements": MessageLookupByLibrary.simpleMessage("أهم النتائج"),
+        "keyAchievementsHelper": MessageLookupByLibrary.simpleMessage(
+            "ضيف نتائج قابلة للقياس لما يكون ممكن، زي تقليل وقت التحميل بنسبة 30%."),
+        "keyAchievementsHint": MessageLookupByLibrary.simpleMessage(
+            "مثال: تحسين استعلامات قاعدة البيانات وتقليل زمن الـ API بنسبة 42%..."),
+        "language": MessageLookupByLibrary.simpleMessage("اللغة"),
+        "learningTasks": MessageLookupByLibrary.simpleMessage("مهام التعلم"),
+        "light": MessageLookupByLibrary.simpleMessage("فاتح"),
+        "linkedin": MessageLookupByLibrary.simpleMessage("LinkedIn"),
+        "loadMore": MessageLookupByLibrary.simpleMessage("تحميل المزيد"),
+        "loadingAd":
+            MessageLookupByLibrary.simpleMessage("جارٍ تحميل الإعلان..."),
+        "loadingNotifications":
+            MessageLookupByLibrary.simpleMessage("جارٍ تحميل الإشعارات..."),
+        "location": MessageLookupByLibrary.simpleMessage("الموقع"),
+        "locationHint":
+            MessageLookupByLibrary.simpleMessage("مثال: القاهرة، مصر"),
+        "logOut": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
+        "logOutConfirmationMessage": MessageLookupByLibrary.simpleMessage(
+            "هل أنت متأكد من أنك تريد تسجيل الخروج من حسابك؟"),
+        "logOutConfirmationTitle":
+            MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
+        "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
+        "loginSubtitle": MessageLookupByLibrary.simpleMessage(
+            "ادخل على مساراتك المهنية والفرص المتاحة."),
+        "male": MessageLookupByLibrary.simpleMessage("ذكر"),
+        "manageAllSkills":
+            MessageLookupByLibrary.simpleMessage("إدارة كل المهارات"),
+        "markAllAsRead":
+            MessageLookupByLibrary.simpleMessage("تعيين الكل كمقروء"),
+        "markAllRead":
+            MessageLookupByLibrary.simpleMessage("تحديد الكل كمقروء"),
+        "markAsRead": MessageLookupByLibrary.simpleMessage("تعيين كمقروء"),
+        "match": MessageLookupByLibrary.simpleMessage("توافق"),
+        "matchExplanation": MessageLookupByLibrary.simpleMessage(
+            "أنت مناسب لهذه الوظيفة. خبرتك في Flutter وواجهات API تتوافق مع المتطلبات الأساسية، لكن الاختبار وCI/CD من المهارات المهمة التي تحتاج إلى تطوير."),
+        "matchSevenOfNine": MessageLookupByLibrary.simpleMessage(
+            "أنت متوافق مع 7 من أصل 9 متطلبات مهمة."),
+        "matches": MessageLookupByLibrary.simpleMessage("وظيفة مناسبة"),
+        "mentionedInJobRequirements":
+            MessageLookupByLibrary.simpleMessage("مذكورة في متطلبات الوظيفة"),
+        "midLevel": MessageLookupByLibrary.simpleMessage("Mid-Level"),
+        "militaryCompleted": MessageLookupByLibrary.simpleMessage("أدى الخدمة"),
+        "militaryExempted": MessageLookupByLibrary.simpleMessage("معفى"),
+        "militaryFinalExemption":
+            MessageLookupByLibrary.simpleMessage("إعفاء نهائي"),
+        "militaryPostponed": MessageLookupByLibrary.simpleMessage("مؤجل"),
+        "militaryStatus":
+            MessageLookupByLibrary.simpleMessage("الحالة العسكرية"),
+        "minutesAgo": m5,
+        "monthYearHint": MessageLookupByLibrary.simpleMessage("شهر / سنة"),
+        "monthsAgo": m6,
+        "mostRelevant": MessageLookupByLibrary.simpleMessage("الأكثر ملاءمة"),
+        "multiSelect": MessageLookupByLibrary.simpleMessage("اختيارات متعددة"),
+        "myCareerRoadmap":
+            MessageLookupByLibrary.simpleMessage("خارطة طريقي المهنية"),
+        "needHelpWithNextSteps": MessageLookupByLibrary.simpleMessage(
+            "تحتاج مساعدة في الخطوات القادمة؟"),
+        "needsImprovement": MessageLookupByLibrary.simpleMessage("يحتاج تحسين"),
+        "newChat": MessageLookupByLibrary.simpleMessage("محادثة جديدة"),
+        "newHere": MessageLookupByLibrary.simpleMessage("مستخدم جديد؟"),
+        "newJobsMatchProfile":
+            MessageLookupByLibrary.simpleMessage("وظائف جديدة تناسب ملفك"),
+        "newPassword":
+            MessageLookupByLibrary.simpleMessage("كلمة المرور الجديدة"),
+        "next": MessageLookupByLibrary.simpleMessage("التالي"),
+        "nextApplicationQuestions":
+            MessageLookupByLibrary.simpleMessage("التالي: أسئلة التقديم"),
+        "niceToHave": MessageLookupByLibrary.simpleMessage("ميزة إضافية"),
+        "noApplicationsYet":
+            MessageLookupByLibrary.simpleMessage("لا توجد طلبات تقديم بعد"),
+        "noConversationsYet":
+            MessageLookupByLibrary.simpleMessage("لا توجد محادثات بعد"),
+        "noCoverNoteAdded":
+            MessageLookupByLibrary.simpleMessage("لم تتم إضافة رسالة تعريفية"),
+        "noEducationYet":
+            MessageLookupByLibrary.simpleMessage("لم تتم إضافة أي تعليم بعد"),
+        "noEducationYetDesc": MessageLookupByLibrary.simpleMessage(
+            "أضف سجلك التعليمي الأول باستخدام النموذج أدناه."),
+        "noExperienceYet":
+            MessageLookupByLibrary.simpleMessage("لم تتم إضافة أي خبرة بعد"),
+        "noExperienceYetDesc": MessageLookupByLibrary.simpleMessage(
+            "أضف خبرتك العملية الأولى باستخدام النموذج أدناه."),
+        "noFileSelected":
+            MessageLookupByLibrary.simpleMessage("لم يتم اختيار ملف"),
+        "noHistoryYet": MessageLookupByLibrary.simpleMessage("لا يوجد سجل بعد"),
+        "noInternetConnection":
+            MessageLookupByLibrary.simpleMessage("لا يوجد اتصال بالإنترنت"),
+        "noJobsFound":
+            MessageLookupByLibrary.simpleMessage("لا توجد وظائف متاحة"),
+        "noLearningTasks": MessageLookupByLibrary.simpleMessage(
+            "لا توجد مهام تعلم محددة لهذه المهارة بعد."),
+        "noNotifications":
+            MessageLookupByLibrary.simpleMessage("لا توجد إشعارات بعد"),
+        "noNotificationsDesc": MessageLookupByLibrary.simpleMessage(
+            "سنخطرك عندما تصلك تحديثات جديدة ومهمة."),
+        "noProjectsYet":
+            MessageLookupByLibrary.simpleMessage("لم تتم إضافة أي مشاريع بعد"),
+        "noProjectsYetDesc": MessageLookupByLibrary.simpleMessage(
+            "أضف مشروعك الأول باستخدام الزر أعلاه."),
+        "noRoadmaps":
+            MessageLookupByLibrary.simpleMessage("لا توجد خارطات طريق بعد"),
+        "noSavedJobsYet":
+            MessageLookupByLibrary.simpleMessage("لا يوجد وظائف متاحة حالياً"),
+        "noUnreadNotifications":
+            MessageLookupByLibrary.simpleMessage("لا توجد إشعارات غير مقروءة"),
+        "notNow": MessageLookupByLibrary.simpleMessage("ليس الآن"),
+        "notes": MessageLookupByLibrary.simpleMessage("الملاحظات"),
+        "notesHint": MessageLookupByLibrary.simpleMessage(
+            "مثال: التركيز على الأنظمة الموزعة"),
+        "notificationMarkedAsRead":
+            MessageLookupByLibrary.simpleMessage("تم تعيين الإشعار كمقروء"),
+        "notifications": MessageLookupByLibrary.simpleMessage("الإشعارات"),
+        "notificationsTitle": MessageLookupByLibrary.simpleMessage("الإشعارات"),
+        "offer": MessageLookupByLibrary.simpleMessage("العرض"),
+        "offlineStatusShowingSaved": MessageLookupByLibrary.simpleMessage(
+            "أنت غير متصل بالإنترنت. يتم عرض البيانات المحفوظة."),
+        "older": MessageLookupByLibrary.simpleMessage("أقدم"),
+        "onSite": MessageLookupByLibrary.simpleMessage("من مقر العمل"),
+        "onboardingBullet1": MessageLookupByLibrary.simpleMessage(
+            "ارفع سيرتك الذاتية لتحليل فوري بالذكاء الاصطناعي"),
+        "onboardingBullet2": MessageLookupByLibrary.simpleMessage(
+            "حدد المسميات الوظيفية والمهارات المستهدفة"),
+        "onboardingBullet3": MessageLookupByLibrary.simpleMessage(
+            "احصل على أفضل الفرص المتوافقة معك بدقة"),
+        "ongoingProject": MessageLookupByLibrary.simpleMessage("المشروع مستمر"),
+        "onlyOnTrustedDevices":
+            MessageLookupByLibrary.simpleMessage("على الأجهزة الموثوقة فقط"),
+        "openMenu": MessageLookupByLibrary.simpleMessage("فتح القائمة"),
+        "openToOpportunitiesAnywhere":
+            MessageLookupByLibrary.simpleMessage("مستعد لفرص في أي مكان"),
+        "opportunities": MessageLookupByLibrary.simpleMessage("فرصة"),
+        "optional": MessageLookupByLibrary.simpleMessage("اختياري"),
+        "or": MessageLookupByLibrary.simpleMessage("أو"),
+        "otpCodeDidNotMatch": MessageLookupByLibrary.simpleMessage(
+            "لم يتطابق الرمز. تحقق من الرسالة وحاول مرة أخرى."),
+        "otpVerifying": MessageLookupByLibrary.simpleMessage("جاري التحقق…"),
+        "partTime": MessageLookupByLibrary.simpleMessage("دوام جزئي"),
+        "password": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
+        "passwordChangedSuccessDesc": MessageLookupByLibrary.simpleMessage(
+            "تم تغيير كلمة المرور بنجاح. يمكنك الآن تسجيل الدخول بكلمة المرور الجديدة."),
+        "passwordChangedSuccessfully":
+            MessageLookupByLibrary.simpleMessage("تم تغيير كلمة المرور بنجاح"),
+        "passwordHint":
+            MessageLookupByLibrary.simpleMessage("أدخل كلمة المرور"),
+        "passwordLengthHint":
+            MessageLookupByLibrary.simpleMessage("استخدم 8 أحرف على الأقل."),
+        "passwordRequirements":
+            MessageLookupByLibrary.simpleMessage("متطلبات كلمة المرور"),
+        "passwordsDoNotMatch":
+            MessageLookupByLibrary.simpleMessage("كلمتا المرور غير متطابقتين"),
+        "pendingEmployerScreening":
+            MessageLookupByLibrary.simpleMessage("بانتظار مراجعة صاحب العمل"),
+        "personalInformation":
+            MessageLookupByLibrary.simpleMessage("المعلومات الشخصية"),
+        "phoneHint": MessageLookupByLibrary.simpleMessage("أدخل رقم هاتفك"),
+        "phoneNumber": MessageLookupByLibrary.simpleMessage("رقم الهاتف"),
+        "phoneNumberLabel": MessageLookupByLibrary.simpleMessage("رقم الهاتف"),
+        "pleaseAcceptTerms": MessageLookupByLibrary.simpleMessage(
+            "يرجى الموافقة على الشروط وسياسة الخصوصية"),
+        "pleaseCheckYourInternetConnection":
+            MessageLookupByLibrary.simpleMessage(
+                "يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى"),
+        "plus50Xp": MessageLookupByLibrary.simpleMessage("+50 XP"),
+        "popular": MessageLookupByLibrary.simpleMessage("شائع"),
+        "portfolioLinkHint": MessageLookupByLibrary.simpleMessage(
+            "https://github.com/username أو رابط معرض الأعمال"),
+        "portfolioOrProjectLink": MessageLookupByLibrary.simpleMessage(
+            "رابط معرض الأعمال أو المشروع (اختياري)"),
+        "postedTwoDaysAgo":
+            MessageLookupByLibrary.simpleMessage("نُشرت منذ يومين"),
+        "preferNotToSay":
+            MessageLookupByLibrary.simpleMessage("أفضل عدم الإفصاح"),
+        "preferences": MessageLookupByLibrary.simpleMessage("التفضيلات"),
+        "preferred": MessageLookupByLibrary.simpleMessage("المفضل"),
+        "preferredLocation":
+            MessageLookupByLibrary.simpleMessage("الموقع المفضل"),
+        "preferredWorkMode":
+            MessageLookupByLibrary.simpleMessage("ما نمط العمل الذي تفضله؟"),
+        "preferredWorkModeLabel":
+            MessageLookupByLibrary.simpleMessage("نمط العمل المفضل"),
+        "previewPhoto": MessageLookupByLibrary.simpleMessage("معاينة الصورة"),
+        "previous7Days": MessageLookupByLibrary.simpleMessage("السابق 7 يوما"),
+        "privacyAndSupport":
+            MessageLookupByLibrary.simpleMessage("الخصوصية والدعم"),
+        "privacyPolicy": MessageLookupByLibrary.simpleMessage("سياسة الخصوصية"),
+        "professionalInformation":
+            MessageLookupByLibrary.simpleMessage("المعلومات المهنية"),
+        "professionalLinks":
+            MessageLookupByLibrary.simpleMessage("الروابط المهنية"),
+        "profile": MessageLookupByLibrary.simpleMessage("الملف الشخصي"),
+        "profileMatchQuality":
+            MessageLookupByLibrary.simpleMessage("جودة الملف الشخصي"),
+        "profileSynced":
+            MessageLookupByLibrary.simpleMessage("تمت مزامنة الملف"),
+        "projectDeletedSuccessfully":
+            MessageLookupByLibrary.simpleMessage("تم حذف المشروع بنجاح"),
+        "projectDescriptionHelper": MessageLookupByLibrary.simpleMessage(
+            "وضّح أهداف المشروع والتقنيات المستخدمة"),
+        "projectDescriptionHint": MessageLookupByLibrary.simpleMessage(
+            "اكتب أهداف المشروع، دورك، والغرض الأساسي منه..."),
+        "projectName": MessageLookupByLibrary.simpleMessage("اسم المشروع"),
+        "projectNameHint": MessageLookupByLibrary.simpleMessage(
+            "مثال: HealthTracker Companion"),
+        "projectSavedSuccessfully":
+            MessageLookupByLibrary.simpleMessage("تم حفظ المشروع بنجاح"),
+        "projectUrl": MessageLookupByLibrary.simpleMessage("رابط المشروع"),
+        "projects": MessageLookupByLibrary.simpleMessage("المشاريع"),
+        "projectsImprovementHint": MessageLookupByLibrary.simpleMessage(
+            "ضيف روابط للمشاريع ونتائج قابلة للقياس علشان تقوّي بروفايلك."),
+        "ready": MessageLookupByLibrary.simpleMessage("جاهزة"),
+        "readyToFindYourNextOpportunity": MessageLookupByLibrary.simpleMessage(
+            "جاهز للعثور على فرصتك القادمة؟"),
+        "recommendedForYou": MessageLookupByLibrary.simpleMessage("مقترحة لك"),
+        "recruiterReview":
+            MessageLookupByLibrary.simpleMessage("مراجعة مسؤول التوظيف"),
+        "recruiterVisibility":
+            MessageLookupByLibrary.simpleMessage("الظهور لمسؤولي التوظيف"),
+        "recruiterVisibilityDescription": MessageLookupByLibrary.simpleMessage(
+            "يساعد اكتمال بياناتك الأكاديمية على زيادة ظهور ملفك لمسؤولي التوظيف على SkillMatch."),
+        "refreshReasonHint":
+            MessageLookupByLibrary.simpleMessage("ما الذي تريد التركيز عليه؟"),
+        "refreshReasonLabel":
+            MessageLookupByLibrary.simpleMessage("سبب التحديث (اختياري)"),
+        "refreshRoadmap":
+            MessageLookupByLibrary.simpleMessage("تحديث خارطة الطريق"),
+        "refreshRoadmapDescription": MessageLookupByLibrary.simpleMessage(
+            "حدّث خارطة الطريق المحددة باستخدام أحدث المعلومات المتاحة."),
+        "refreshRoadmapWarning": MessageLookupByLibrary.simpleMessage(
+            "قد يؤدي التحديث إلى تغيير مراحل خارطة الطريق ومهامها."),
+        "refreshingRoadmap":
+            MessageLookupByLibrary.simpleMessage("جارٍ تحديث خارطة الطريق..."),
+        "registerWithGoogle":
+            MessageLookupByLibrary.simpleMessage("المتابعة مع Google"),
+        "relatedSkills":
+            MessageLookupByLibrary.simpleMessage("المهارات ذات الصلة"),
+        "relatedSkillsHint":
+            MessageLookupByLibrary.simpleMessage("اكتب المهارات ذات الصلة"),
+        "remote": MessageLookupByLibrary.simpleMessage("عن بُعد"),
+        "replaceCv":
+            MessageLookupByLibrary.simpleMessage("استبدال السيرة الذاتية"),
+        "reqAtLeastOneNumber":
+            MessageLookupByLibrary.simpleMessage("رقم واحد على الأقل"),
+        "reqAtLeastOneSpecial":
+            MessageLookupByLibrary.simpleMessage("رمز خاص واحد على الأقل"),
+        "reqMin8Chars":
+            MessageLookupByLibrary.simpleMessage("8 أحرف على الأقل"),
+        "required": MessageLookupByLibrary.simpleMessage("مطلوب"),
+        "requiredForThisRole":
+            MessageLookupByLibrary.simpleMessage("مطلوبة لهذه الوظيفة"),
+        "requiredSkills":
+            MessageLookupByLibrary.simpleMessage("المهارات المطلوبة"),
+        "resendCode": MessageLookupByLibrary.simpleMessage("إعادة إرسال الرمز"),
+        "resendCodeIn":
+            MessageLookupByLibrary.simpleMessage("إعادة إرسال الرمز خلال"),
+        "resetPassword":
+            MessageLookupByLibrary.simpleMessage("إعادة تعيين كلمة المرور"),
+        "responsibilitiesDescription":
+            MessageLookupByLibrary.simpleMessage("المسؤوليات / الوصف"),
+        "responsibilitiesHint": MessageLookupByLibrary.simpleMessage(
+            "اكتب مسؤولياتك الأساسية وأبرز مساهماتك وتأثيرك."),
+        "resumeOptimization":
+            MessageLookupByLibrary.simpleMessage("تحسين السيرة الذاتية"),
+        "resumeOptimizationPrompt": MessageLookupByLibrary.simpleMessage(
+            "كيف يمكنني تحسين سيرتي الذاتية لوظائف مطور فلاتر؟"),
+        "retry": MessageLookupByLibrary.simpleMessage("إعادة المحاولة"),
+        "reviewApplication":
+            MessageLookupByLibrary.simpleMessage("مراجعة الطلب"),
+        "reviewBeforeSubmission": MessageLookupByLibrary.simpleMessage(
+            "ستراجع جميع التفاصيل قبل الإرسال النهائي."),
+        "reviewBeforeSubmitting":
+            MessageLookupByLibrary.simpleMessage("راجع طلبك قبل الإرسال"),
+        "reviewBeforeSubmittingDescription": MessageLookupByLibrary.simpleMessage(
+            "تأكد من صحة معلوماتك. يمكنك الرجوع وتعديل أي شيء قبل إرسال الطلب."),
+        "reviewCv":
+            MessageLookupByLibrary.simpleMessage("مراجعة السيرة الذاتية"),
+        "reviewInformationBeforeContinuing":
+            MessageLookupByLibrary.simpleMessage("راجع معلوماتك قبل المتابعة."),
+        "rewardEarned":
+            MessageLookupByLibrary.simpleMessage("تم الحصول على المكافأة!"),
+        "roadMap": MessageLookupByLibrary.simpleMessage("خارطة الطريق"),
+        "roadmap": MessageLookupByLibrary.simpleMessage("خارطة الطريق"),
+        "roadmapAiRefreshFailed":
+            MessageLookupByLibrary.simpleMessage("فشل تحديث خارطة الطريق"),
+        "roadmapBasedOnJob": MessageLookupByLibrary.simpleMessage(
+            "ستعتمد خارطة الطريق على هذه الوظيفة ومهاراتك الحالية."),
+        "roadmapMatchDescription": MessageLookupByLibrary.simpleMessage(
+            "أنشئ خارطة طريق مخصصة للعمل على Testing وCI/CD لتصبح مرشحًا أقوى لهذه الوظيفة."),
+        "roadmapRefreshFailed": MessageLookupByLibrary.simpleMessage(
+            "تعذر تحديث تفاصيل خارطة الطريق"),
+        "roadmapRefreshedSuccessfully":
+            MessageLookupByLibrary.simpleMessage("تم تحديث خارطة الطريق بنجاح"),
+        "roadmapSubtitle": MessageLookupByLibrary.simpleMessage(
+            "تتبع تقدمك وطوّر مهاراتك الأساسية"),
+        "roadmapUpdated":
+            MessageLookupByLibrary.simpleMessage("تم تحديث خارطة طريقك"),
+        "salaryHelper": MessageLookupByLibrary.simpleMessage(
+            "أدخل إجمالي راتبك الشهري المتوقع."),
+        "salaryHint": MessageLookupByLibrary.simpleMessage("مثال: 24,000"),
+        "save": MessageLookupByLibrary.simpleMessage("حفظ"),
+        "saveChanges": MessageLookupByLibrary.simpleMessage("حفظ التغييرات"),
+        "saveEducation": MessageLookupByLibrary.simpleMessage("حفظ التعليم"),
+        "saveExperience": MessageLookupByLibrary.simpleMessage("حفظ الخبرة"),
+        "saveJobFailed": MessageLookupByLibrary.simpleMessage(
+            "تعذر حفظ الوظيفة. يرجى المحاولة مرة أخرى."),
+        "savePreferences":
+            MessageLookupByLibrary.simpleMessage("حفظ التفضيلات"),
+        "saveProject": MessageLookupByLibrary.simpleMessage("حفظ المشروع"),
+        "savedJobs": MessageLookupByLibrary.simpleMessage("الوظائف المحفوظة"),
+        "schoolUniversity":
+            MessageLookupByLibrary.simpleMessage("المدرسة / الجامعة"),
+        "searchJobs": MessageLookupByLibrary.simpleMessage(
+            "ابحث عن وظيفة أو شركة أو مهارة"),
+        "searchJobsTitle":
+            MessageLookupByLibrary.simpleMessage("البحث عن وظائف"),
+        "secondsSuffix": MessageLookupByLibrary.simpleMessage("ث"),
+        "sectionCompleteness":
+            MessageLookupByLibrary.simpleMessage("اكتمال القسم"),
+        "secureProtectionText": MessageLookupByLibrary.simpleMessage(
+            "يحمي SkillMatch بياناتك وتاريخ تقديمك بشكل آمن."),
+        "securityBadge": MessageLookupByLibrary.simpleMessage(
+            "سكيل ماتش يحمي بياناتك وسجل تقديماتك بأمان."),
+        "seeAll": MessageLookupByLibrary.simpleMessage("عرض الكل"),
+        "select": MessageLookupByLibrary.simpleMessage("اختر"),
+        "selectLanguage": MessageLookupByLibrary.simpleMessage("اختر اللغة"),
+        "selectRoadmap":
+            MessageLookupByLibrary.simpleMessage("اختر خارطة الطريق"),
+        "selectTheme": MessageLookupByLibrary.simpleMessage("اختر المظهر"),
+        "sendMessage": MessageLookupByLibrary.simpleMessage("إرسال رسالة"),
+        "sendingMessage":
+            MessageLookupByLibrary.simpleMessage("جارٍ الإرسال..."),
+        "senior": MessageLookupByLibrary.simpleMessage("Senior"),
+        "sentCodeToEmail": MessageLookupByLibrary.simpleMessage(
+            "لقد أرسلنا رمزاً مكوناً من 6 أرقام إلى بريدك الإلكتروني."),
+        "serverError":
+            MessageLookupByLibrary.simpleMessage("حدث خطأ في الخادم."),
+        "settings": MessageLookupByLibrary.simpleMessage("الإعدادات"),
+        "setupCareerProfile":
+            MessageLookupByLibrary.simpleMessage("أكمل ملفك المهني"),
+        "setupCareerProfileDesc": MessageLookupByLibrary.simpleMessage(
+            "أخبرنا بمهاراتك وأهدافك للحصول على توصيات وظيفية أفضل."),
+        "shareJobLinkUnavailable": MessageLookupByLibrary.simpleMessage(
+            "رابط الوظيفة غير متوفر لهذه الوظيفة."),
+        "showingCachedNotifications": MessageLookupByLibrary.simpleMessage(
+            "عرض الإشعارات المحفوظة (غير متصل)"),
+        "signUpWithGoogle":
+            MessageLookupByLibrary.simpleMessage("التسجيل مع Google"),
+        "skillCompleted":
+            MessageLookupByLibrary.simpleMessage("تم اكتمال المهارة"),
+        "skillInProgress":
+            MessageLookupByLibrary.simpleMessage("المهارة قيد التقدم"),
+        "skillMatchPortal":
+            MessageLookupByLibrary.simpleMessage("بوابة سكيل ماتش"),
+        "skillmatchPortal":
+            MessageLookupByLibrary.simpleMessage("بوابة SKILLMATCH"),
+        "skills": MessageLookupByLibrary.simpleMessage("المهارات"),
+        "skillsCount": m7,
+        "skillsLabel": MessageLookupByLibrary.simpleMessage("المهارات:"),
+        "skillsProfile": MessageLookupByLibrary.simpleMessage("ملف المهارات"),
+        "skillsProfileDescription": MessageLookupByLibrary.simpleMessage(
+            "مهاراتك بتساعد SkillMatch يحدد الفرص الأنسب ليك."),
+        "skillsToImprove":
+            MessageLookupByLibrary.simpleMessage("مهارات تحتاج إلى تطوير"),
+        "skip": MessageLookupByLibrary.simpleMessage("تخطي"),
+        "smartCareerDiscoveryPlatform":
+            MessageLookupByLibrary.simpleMessage("اكتشاف مهني ذكي"),
+        "somethingWentWrong":
+            MessageLookupByLibrary.simpleMessage("حدث خطأ ما"),
+        "sortedByRecent":
+            MessageLookupByLibrary.simpleMessage("مرتبة حسب الأحدث"),
+        "source": MessageLookupByLibrary.simpleMessage("المصدر"),
+        "start": MessageLookupByLibrary.simpleMessage("ابدأ"),
+        "startDate": MessageLookupByLibrary.simpleMessage("تاريخ البداية"),
+        "startFirstConversation":
+            MessageLookupByLibrary.simpleMessage("ابدأ محادثتك الأولى أدناه"),
+        "startYear": MessageLookupByLibrary.simpleMessage("سنة البداية"),
+        "stateGovernorate": MessageLookupByLibrary.simpleMessage("المحافظة"),
+        "stepFourConfirmation":
+            MessageLookupByLibrary.simpleMessage("الخطوة 4 من 4 • التأكيد"),
+        "stepOf": MessageLookupByLibrary.simpleMessage("من"),
+        "stepThreeOfThree":
+            MessageLookupByLibrary.simpleMessage("الخطوة 3 من 3"),
+        "strongMatch": MessageLookupByLibrary.simpleMessage("توافق قوي"),
+        "student": MessageLookupByLibrary.simpleMessage("طالب"),
+        "submissionConfirmationNotice": MessageLookupByLibrary.simpleMessage(
+            "بإرسال الطلب، فإنك تؤكد أن المعلومات المقدمة صحيحة ومتوافقة مع إرشادات المجتمع."),
+        "submitApplication":
+            MessageLookupByLibrary.simpleMessage("إرسال الطلب"),
+        "submittedJustNow":
+            MessageLookupByLibrary.simpleMessage("تم الإرسال الآن"),
+        "submittedSuccessfully": MessageLookupByLibrary.simpleMessage("بنجاح."),
+        "submittedTodayTime": MessageLookupByLibrary.simpleMessage(
+            "تم التقديم اليوم الساعة 10:32 ص"),
+        "suggestedPrompts":
+            MessageLookupByLibrary.simpleMessage("اقتراحات للمتابعة"),
+        "suggestedQuestions":
+            MessageLookupByLibrary.simpleMessage("أسئلة مقترحة"),
+        "suggestedRoles": MessageLookupByLibrary.simpleMessage("وظائف مقترحة"),
+        "suggestions": MessageLookupByLibrary.simpleMessage("مقترحات"),
+        "supportingDocumentOptional":
+            MessageLookupByLibrary.simpleMessage("مستند داعم (اختياري)"),
+        "system": MessageLookupByLibrary.simpleMessage("تلقائي (النظام)"),
+        "takePhoto": MessageLookupByLibrary.simpleMessage("التقط صورة"),
+        "targetRole": MessageLookupByLibrary.simpleMessage("الوظيفة المستهدفة"),
+        "targetRoleHint":
+            MessageLookupByLibrary.simpleMessage("مثال: مهندس backend"),
+        "taskCompleted":
+            MessageLookupByLibrary.simpleMessage("تم إكمال المهمة بنجاح"),
+        "taskCompletionFailed":
+            MessageLookupByLibrary.simpleMessage("فشل إكمال المهمة"),
+        "tasksCompleted": MessageLookupByLibrary.simpleMessage("مهام مكتملة"),
+        "technicalCultureFitStage": MessageLookupByLibrary.simpleMessage(
+            "مرحلة التقييم التقني والثقافي"),
+        "technologies": MessageLookupByLibrary.simpleMessage("التقنيات"),
+        "technologiesHint":
+            MessageLookupByLibrary.simpleMessage("مثال: TypeScript, GraphQL"),
+        "technologiesSkills":
+            MessageLookupByLibrary.simpleMessage("التقنيات / المهارات"),
+        "technologiesWorkedWith":
+            MessageLookupByLibrary.simpleMessage("ما التقنيات التي عملت بها؟"),
+        "tenMinutesAgo": MessageLookupByLibrary.simpleMessage("منذ 10 دقائق"),
+        "termsAndConditions":
+            MessageLookupByLibrary.simpleMessage("الشروط والأحكام"),
+        "testingPrioritySkill": MessageLookupByLibrary.simpleMessage(
+            "أصبح الاختبار الآن من مهاراتك ذات الأولوية الأعلى."),
+        "theme": MessageLookupByLibrary.simpleMessage("المظهر"),
+        "timeline": MessageLookupByLibrary.simpleMessage("الوقت"),
+        "today": MessageLookupByLibrary.simpleMessage("اليوم"),
+        "todayAtTime": MessageLookupByLibrary.simpleMessage("اليوم • 10:32 ص"),
+        "trackApplication":
+            MessageLookupByLibrary.simpleMessage("متابعة الطلب"),
+        "trackingApplication":
+            MessageLookupByLibrary.simpleMessage("متابعة طلب التقديم"),
+        "tryAgain": MessageLookupByLibrary.simpleMessage("إعادة المحاولة"),
+        "turnCvIntoOpportunities":
+            MessageLookupByLibrary.simpleMessage("حوّل سيرتك الذاتية إلى فرص"),
+        "turnCvIntoOpportunitiesDesc": MessageLookupByLibrary.simpleMessage(
+            "اكتشف لماذا تناسبك الوظيفة، وما ينقصك، والخطوات التالية."),
+        "twoDaysAgo": MessageLookupByLibrary.simpleMessage("منذ يومين"),
+        "twoHoursAgo": MessageLookupByLibrary.simpleMessage("منذ ساعتين"),
+        "updateStatus": MessageLookupByLibrary.simpleMessage("تحديث الحالة"),
+        "updatedFiveDaysAgo":
+            MessageLookupByLibrary.simpleMessage("تم التحديث منذ 5 أيام"),
+        "updatedJustNow":
+            MessageLookupByLibrary.simpleMessage("تم التحديث الآن"),
+        "uploadFile": MessageLookupByLibrary.simpleMessage("رفع ملف"),
+        "uploadFileHint":
+            MessageLookupByLibrary.simpleMessage("PDF أو DOCX • بحد أقصى 5 MB"),
+        "uploadYourCv":
+            MessageLookupByLibrary.simpleMessage("ارفع سيرتك الذاتية"),
+        "uploaded": MessageLookupByLibrary.simpleMessage("تم الرفع"),
+        "use8PlusCharacters":
+            MessageLookupByLibrary.simpleMessage("استخدم 8 أحرف على الأقل"),
+        "useDifferentEmail":
+            MessageLookupByLibrary.simpleMessage("استخدام بريد إلكتروني آخر"),
+        "usedInTwoProjects":
+            MessageLookupByLibrary.simpleMessage("استخدمتها في مشروعين"),
+        "userFallback": MessageLookupByLibrary.simpleMessage("المستخدم"),
+        "userFieldsNotSavedYet": MessageLookupByLibrary.simpleMessage(
+            "لا يمكن حفظ الاسم ورقم الهاتف بعد، ولم يتم إرسالهما إلى الخادم."),
+        "verificationCodeLabel":
+            MessageLookupByLibrary.simpleMessage("رمز التحقق"),
+        "verifiedQualifications":
+            MessageLookupByLibrary.simpleMessage("المؤهلات"),
+        "verify": MessageLookupByLibrary.simpleMessage("تحقق"),
+        "view": MessageLookupByLibrary.simpleMessage("عرض"),
+        "viewApplication": MessageLookupByLibrary.simpleMessage("عرض التقديم"),
+        "viewCv": MessageLookupByLibrary.simpleMessage("عرض السيرة الذاتية"),
+        "viewFullJobDescription":
+            MessageLookupByLibrary.simpleMessage("عرض الوصف الكامل للوظيفة"),
+        "viewGithubRepository":
+            MessageLookupByLibrary.simpleMessage("عرض مستودع GitHub"),
+        "viewJob": MessageLookupByLibrary.simpleMessage("عرض الوظيفة"),
+        "viewJobs": MessageLookupByLibrary.simpleMessage("عرض الوظائف"),
+        "viewLiveProject": MessageLookupByLibrary.simpleMessage("عرض المشروع"),
+        "viewMatches":
+            MessageLookupByLibrary.simpleMessage("عرض الوظائف المناسبة"),
+        "viewProject": MessageLookupByLibrary.simpleMessage("عرض المشروع"),
+        "viewRoadmap": MessageLookupByLibrary.simpleMessage("عرض خارطة الطريق"),
+        "viewTimeline":
+            MessageLookupByLibrary.simpleMessage("عرض التسلسل الزمني"),
+        "waitingForRecruiterResponse":
+            MessageLookupByLibrary.simpleMessage("بانتظار رد مسؤول التوظيف."),
+        "wantToImproveYourMatch":
+            MessageLookupByLibrary.simpleMessage("هل تريد تحسين توافقك؟"),
+        "watchAd": MessageLookupByLibrary.simpleMessage("شاهد إعلانًا"),
+        "watchAdEarnXp": MessageLookupByLibrary.simpleMessage(
+            "شاهد إعلانًا واحصل على 50 XP"),
+        "weeksAgo": m8,
+        "welcomeBack": MessageLookupByLibrary.simpleMessage("مرحباً بعودتك!"),
+        "whatYouAlreadyMatch":
+            MessageLookupByLibrary.simpleMessage("المهارات المتوافقة لديك"),
+        "whyInterestedHint": MessageLookupByLibrary.simpleMessage(
+            "اشرح ما الذي يثير اهتمامك في TechNova وهذه الوظيفة..."),
+        "whyInterestedRequired": MessageLookupByLibrary.simpleMessage(
+            "لماذا أنت مهتم بهذه الوظيفة؟ *"),
+        "withdrawApplication":
+            MessageLookupByLibrary.simpleMessage("سحب طلب التقديم"),
+        "withinThreeBusinessDays":
+            MessageLookupByLibrary.simpleMessage("خلال 3 أيام عمل"),
+        "workMode": MessageLookupByLibrary.simpleMessage("طريقة العمل"),
+        "yearsAgo": m9,
+        "yesterday": MessageLookupByLibrary.simpleMessage("أمس"),
+        "yesterdayTime": MessageLookupByLibrary.simpleMessage("أمس • 3:45 م"),
+        "yourApplicationFor":
+            MessageLookupByLibrary.simpleMessage("تم إرسال طلبك لوظيفة"),
+        "yourInformation": MessageLookupByLibrary.simpleMessage("معلوماتك"),
+        "yourMatch": MessageLookupByLibrary.simpleMessage("مدى توافقك"),
+        "zeroToTwoYears": MessageLookupByLibrary.simpleMessage("0–2 سنة"),
+        "zeroToTwoYearsExp":
+            MessageLookupByLibrary.simpleMessage("خبرة 0–2 سنة")
+      };
 }

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:MatchIn/core/errors/error_model.dart';
 import 'package:MatchIn/core/errors/exceptions.dart';
 import 'package:MatchIn/core/networking/api_consumer.dart';
@@ -38,6 +40,7 @@ class FakeApiConsumer implements ApiConsumer {
     Map<String, dynamic>? queryParameters,
     Object? data,
     bool isFormData = false,
+    void Function(int sentBytes, int totalBytes)? onSendProgress,
   }) async {
     if (getError != null) {
       throw getError!;
@@ -64,6 +67,14 @@ class FakeApiConsumer implements ApiConsumer {
   }) async {
     throw UnimplementedError();
   }
+
+  @override
+  Future<({Uint8List bytes, String? fileName, String? mimeType})> downloadBytes(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    throw UnimplementedError();
+  }
 }
 
 void main() {
@@ -72,9 +83,7 @@ void main() {
 
   setUp(() {
     fakeApiConsumer = FakeApiConsumer();
-    remoteDataSource = JobsRemoteDataSourceImpl(
-      apiConsumer: fakeApiConsumer,
-    );
+    remoteDataSource = JobsRemoteDataSourceImpl(apiConsumer: fakeApiConsumer);
   });
 
   group('JobsRemoteDataSourceImpl Tests', () {
@@ -103,21 +112,15 @@ void main() {
         },
       };
 
-        final result = await remoteDataSource.getJobs(
-          params: const JobFilterParams(
-            page: 1,
-            search: 'Flutter',
-          ),
-        );
+      final result = await remoteDataSource.getJobs(
+        params: const JobFilterParams(page: 1, search: 'Flutter'),
+      );
 
-        expect(result.data.length, equals(1));
-        expect(
-          result.data.first.title,
-          equals('Flutter Developer'),
-        );
-        expect(result.meta?.currentPage, equals(1));
-        expect(result.meta?.lastPage, equals(5));
-        expect(result.data.first.isSaved, isTrue);
+      expect(result.data.length, equals(1));
+      expect(result.data.first.title, equals('Flutter Developer'));
+      expect(result.meta?.currentPage, equals(1));
+      expect(result.meta?.lastPage, equals(5));
+      expect(result.data.first.isSaved, isTrue);
     });
 
     test('getJobs throws ServerException on 401 unauthenticated', () async {
@@ -131,22 +134,16 @@ void main() {
       expect(() => remoteDataSource.getJobs(), throwsA(isA<ServerException>()));
     });
 
-    test(
-      'getJobs throws ServerException on 403 forbidden',
-      () async {
-        fakeApiConsumer.getError = ServerException(
-          errorModel: const ErrorModel(
-            statusCode: 403,
-            errorMessage: 'Your account is inactive.',
-          ),
-        );
+    test('getJobs throws ServerException on 403 forbidden', () async {
+      fakeApiConsumer.getError = ServerException(
+        errorModel: const ErrorModel(
+          statusCode: 403,
+          errorMessage: 'Your account is inactive.',
+        ),
+      );
 
-        expect(
-          () => remoteDataSource.getJobs(),
-          throwsA(isA<ServerException>()),
-        );
-      },
-    );
+      expect(() => remoteDataSource.getJobs(), throwsA(isA<ServerException>()));
+    });
 
     test('getJobs throws ServerException on 422 validation error', () async {
       fakeApiConsumer.getError = ServerException(

@@ -14,9 +14,12 @@ import 'package:MatchIn/core/widgets/helpers/url_launcher_helper.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/profile_screen_widgets/cv_widgets/cv_file_validator.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/profile_screen_widgets/cv_widgets/cv_profile_card.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/profile_screen_widgets/cv_widgets/cv_sync_banner.dart';
+import 'package:MatchIn/features/profile/presentation/widgets/profile_screen_widgets/cv_widgets/cv_verification_sheet.dart';
 import 'package:MatchIn/generated/l10n.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Bridges the Main Profile CV card with the upload flow.
 ///
@@ -153,28 +156,53 @@ class _CvUploadFlowState extends State<_CvUploadFlow> {
 
   Future<void> _view(BuildContext context) async {
     final document = widget.cvDocument;
-    if (UrlLauncherHelper.isViewable(document?.fileUrl)) {
-      final opened = await UrlLauncherHelper.open(document?.fileUrl);
-      if (!context.mounted) return;
-      if (!opened) {
+    final cubit = context.read<CvUploadCubit>();
+    // --- Web cannot stage temp files: only a real file URL can open. ---
+    if (kIsWeb) {
+      if (UrlLauncherHelper.isViewable(document?.fileUrl)) {
+        final opened = await UrlLauncherHelper.open(document?.fileUrl);
+        if (!context.mounted) return;
+        if (!opened) _showMessage(context, S.of(context).cvViewFailed);
+      } else if (context.mounted) {
         _showMessage(context, S.of(context).cvViewFailed);
       }
       return;
     }
-    // --- The backend exposes no file URL: preview the locally kept file. ---
-    final local = await context.read<CvUploadCubit>().localFile();
+    // --- Authenticated fresh download first (never a stale cache), so
+    // --- the preview always shows the newly uploaded version. ---
+    final remote = await cubit.downloadRemote(cvDocumentId: document?.id);
+    if (!context.mounted) return;
+    if (remote != null && remote.bytes.isNotEmpty) {
+      final opened = await previewCvBytes(
+        fileName:
+            _nonEmpty(remote.fileName) ??
+            _nonEmpty(document?.fileName) ??
+            _nonEmpty(document?.originalFilename) ??
+            'cv.pdf',
+        bytes: remote.bytes,
+      );
+      if (!context.mounted) return;
+      if (opened) return;
+    }
+    // --- Offline or failed download: fall back to the locally kept file,
+    // --- then to an external file URL, before reporting failure. ---
+    final local = await cubit.localFile();
     if (!context.mounted) return;
     final bytes = local?.bytes;
-    if (bytes == null || bytes.isEmpty) {
-      _showMessage(context, S.of(context).cvViewFailed);
-      return;
+    if (bytes != null && bytes.isNotEmpty) {
+      final opened = await previewCvBytes(
+        fileName: local!.fileName,
+        bytes: bytes,
+      );
+      if (!context.mounted) return;
+      if (opened) return;
     }
-    final opened = await previewCvBytes(
-      fileName: local!.fileName,
-      bytes: bytes,
-    );
-    if (!context.mounted) return;
-    if (!opened) {
+    if (UrlLauncherHelper.isViewable(document?.fileUrl)) {
+      final opened = await UrlLauncherHelper.open(document?.fileUrl);
+      if (!context.mounted) return;
+      if (opened) return;
+    }
+    if (context.mounted) {
       _showMessage(context, S.of(context).cvViewFailed);
     }
   }
@@ -192,23 +220,75 @@ class _CvUploadFlowState extends State<_CvUploadFlow> {
           return;
         }
         if (state is CvUploadSuccess) {
+          // --- Upload acceptance (HTTP 201) is NOT extraction
+          // --- completion: refresh the profile, then poll the
+          // --- background extraction status for the new document. ---
           _showMessage(context, locale.cvUploadSuccessful);
           await context.read<ProfileCubit>().getCandidateProfile();
           if (!context.mounted) return;
           if (context.read<ProfileCubit>().state is ProfileFailure) {
             _showMessage(context, locale.cvRefreshFailed);
           }
+          final cubit = context.read<CvUploadCubit>();
+          final receiptId = state.receipt?.id;
+          final historyId = receiptId == null
+              ? await cubit.latestHistoryDocId()
+              : null;
+          if (!context.mounted) return;
+          final watchId = receiptId ?? historyId ?? widget.cvDocument?.id;
+          if (watchId != null) {
+            await cubit.watchExtraction(watchId, fileName: state.fileName);
+          }
+          return;
+        }
+        if (state is CvExtractionFailed) {
+          final message = state.message.trim().isEmpty
+              ? locale.somethingWentWrong
+              : state.message;
+          _showMessage(context, message);
+          return;
+        }
+        if (state is CvExtractionCompleted) {
+          // Refresh so the analyzed badge/failure state lands on the card.
+          await context.read<ProfileCubit>().getCandidateProfile();
+          return;
+        }
+        if (state is CvVerified) {
+          _showMessage(context, locale.cvUploadSuccessful);
+          await context.read<ProfileCubit>().getCandidateProfile();
+          return;
+        }
+        if (state is CvVerifyFailure) {
+          final message = state.message.trim().isEmpty
+              ? locale.somethingWentWrong
+              : state.message;
+          _showMessage(context, message);
         }
       },
       builder: (context, state) {
         final uploading = state is CvUploading;
+        final uploadProgress = state is CvUploading ? state.progress : 0.0;
+        final polling = state is CvExtractionPolling;
+        final verifying = state is CvVerifying;
+        final busy = uploading || polling || verifying;
         final pendingFileName = state is CvUploadPending
             ? state.fileName
             : null;
-        final successFileName = state is CvUploadSuccess
-            ? state.fileName
-            : null;
+        final successFileName = switch (state) {
+          CvUploadSuccess(fileName: final name) => name,
+          CvExtractionPolling(fileName: final name) => name,
+          CvExtractionCompleted(fileName: final name) => name,
+          CvExtractionFailed(fileName: final name) => name,
+          _ => null,
+        };
         final failure = state is CvUploadFailure ? state : null;
+        final extractionFailure = state is CvExtractionFailed ? state : null;
+        final completed = state is CvExtractionCompleted ? state : null;
+        final reviewable =
+            completed?.extraction?.hasReviewableContent == true &&
+            completed?.extraction?.extractionId != null &&
+            completed?.docId != null &&
+            completed != null;
 
         final document = widget.cvDocument;
         // --- Existence follows the persisted document, not filename
@@ -252,6 +332,16 @@ class _CvUploadFlowState extends State<_CvUploadFlow> {
                     ? null
                     : () => context.read<CvUploadCubit>().retryLast(),
               ),
+            // --- A failed extraction keeps the uploaded file and offers
+            // --- server-side retry (distinct from re-uploading). ---
+            if (extractionFailure != null)
+              CvSyncBanner(
+                message: extractionFailure.message,
+                icon: Icons.error_outline,
+                onRetry: () => context.read<CvUploadCubit>().retryExtraction(
+                  extractionFailure.docId,
+                ),
+              ),
             CvProfileCard(
               // Existence follows the selected current document (or a
               // locally known upload), not file_url availability.
@@ -263,11 +353,30 @@ class _CvUploadFlowState extends State<_CvUploadFlow> {
                   : ProfileFormValidator.normalizeDateForDisplay(
                       document?.updatedAt,
                     ),
-              isUploading: uploading,
-              onUpload: uploading ? null : () => _pickAndUpload(context),
-              onView: uploading || !hasCv ? null : () => _view(context),
-              onReplace: uploading ? null : () => _pickAndUpload(context),
+              isUploading: uploading || polling || verifying,
+              uploadProgress: uploadProgress,
+              onUpload: busy ? null : () => _pickAndUpload(context),
+              onView: busy || !hasCv ? null : () => _view(context),
+              onReplace: busy ? null : () => _pickAndUpload(context),
             ),
+            // --- Completed extraction with reviewable content opens the
+            // --- verify-before-apply sheet (real backend extraction id). ---
+            if (reviewable) ...[
+              SizedBox(height: 12.h),
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton.icon(
+                  onPressed: () => CvVerificationSheet.show(
+                    context,
+                    docId: completed.docId,
+                    extraction: completed.extraction!,
+                    cubit: context.read<CvUploadCubit>(),
+                  ),
+                  icon: const Icon(Icons.fact_check_outlined),
+                  label: Text(S.of(context).reviewCv),
+                ),
+              ),
+            ],
           ],
         );
       },

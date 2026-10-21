@@ -1,3 +1,4 @@
+import 'package:MatchIn/core/errors/exceptions.dart';
 import 'package:MatchIn/core/networking/api_consumer.dart';
 import 'package:MatchIn/core/networking/api_end_points.dart';
 import 'package:MatchIn/features/profile/data/data_sources/profile_remote_data_source.dart';
@@ -5,6 +6,9 @@ import 'package:MatchIn/features/profile/data/models/candidate_profile_model.dar
 import 'package:MatchIn/features/profile/data/models/candidate_project_model.dart';
 import 'package:MatchIn/features/profile/data/models/candidate_skill_model.dart';
 import 'package:MatchIn/features/profile/data/models/career_preference_model.dart';
+import 'package:MatchIn/features/profile/data/models/cv_document_model.dart';
+import 'package:MatchIn/features/profile/data/models/cv_extraction_status_model.dart';
+import 'package:MatchIn/features/profile/data/models/cv_file_download.dart';
 import 'package:MatchIn/features/profile/data/models/cv_upload_receipt_model.dart';
 import 'package:MatchIn/features/profile/data/models/education_model.dart';
 import 'package:MatchIn/features/profile/data/models/experience_model.dart';
@@ -17,6 +21,7 @@ import 'package:MatchIn/features/profile/domain/entities/add_education_params.da
 import 'package:MatchIn/features/profile/domain/entities/add_experience_params.dart';
 import 'package:MatchIn/features/profile/domain/entities/avatar_upload_input.dart';
 import 'package:MatchIn/features/profile/domain/entities/cv_upload_input.dart';
+import 'package:MatchIn/features/profile/domain/entities/cv_verify_params.dart';
 import 'package:MatchIn/features/profile/domain/entities/save_career_preferences_params.dart';
 import 'package:MatchIn/features/profile/domain/entities/update_candidate_profile_params.dart';
 import 'package:MatchIn/features/profile/domain/entities/update_candidate_project_params.dart';
@@ -471,11 +476,15 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   // CV Upload
 
   @override
-  Future<CvUploadReceiptModel?> uploadCv(CvUploadInput input) async {
+  Future<CvUploadReceiptModel?> uploadCv(
+    CvUploadInput input, {
+    void Function(int sentBytes, int totalBytes)? onSendProgress,
+  }) async {
     final response = await apiConsumer.post(
       EndPoint.cvUpload,
       data: CvUploadPayload.formData(input),
       isFormData: true,
+      onSendProgress: onSendProgress,
     );
 
     if (response is! Map<String, dynamic>) {
@@ -483,6 +492,102 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
     }
 
     return CvUploadReceiptModel.tryParseReceipt(response);
+  }
+
+  @override
+  Future<CvExtractionStatusModel> getCvStatus(int cvDocumentId) async {
+    final response = await apiConsumer.get(EndPoint.cvStatus(cvDocumentId));
+
+    if (response is! Map<String, dynamic>) {
+      throw const FormatException('Invalid CV status response format');
+    }
+
+    return CvExtractionStatusModel.fromJson(response);
+  }
+
+  @override
+  Future<List<CvDocumentModel>> getCvHistory() async {
+    final response = await apiConsumer.get(EndPoint.cvHistory);
+
+    if (response is! Map<String, dynamic>) {
+      throw const FormatException('Invalid CV history response format');
+    }
+
+    final data = response['data'];
+    final List<dynamic> rawItems;
+    if (data is List) {
+      rawItems = data;
+    } else if (data is Map<String, dynamic>) {
+      final nested =
+          data['items'] ?? data['documents'] ?? data['data'] ?? const [];
+      rawItems = nested is List ? nested : const [];
+    } else {
+      rawItems = const [];
+    }
+    final documents = <CvDocumentModel>[];
+    for (final entry in rawItems) {
+      if (entry is! Map<String, dynamic>) continue;
+      try {
+        documents.add(CvDocumentModel.fromJson(entry));
+      } catch (_) {
+        continue;
+      }
+    }
+    return documents;
+  }
+
+  @override
+  Future<CvExtractionStatusModel> retryCvExtraction(int cvDocumentId) async {
+    final response = await apiConsumer.post(EndPoint.cvRetry(cvDocumentId));
+
+    if (response is! Map<String, dynamic>) {
+      throw const FormatException('Invalid CV retry response format');
+    }
+
+    return CvExtractionStatusModel.fromJson(response);
+  }
+
+  @override
+  Future<void> verifyExtraction(CvVerifyParams params) async {
+    await apiConsumer.post(
+      EndPoint.cvVerifyExtraction(params.extractionId),
+      data: params.toJson(),
+    );
+  }
+
+  @override
+  Future<CvFileDownload> downloadCv({int? cvDocumentId}) async {
+    // Prefer the inline preview endpoint, then the native file endpoint
+    // when the backend answers 404 for the preview route.
+    try {
+      final preview = await apiConsumer.downloadBytes(
+        cvDocumentId == null
+            ? EndPoint.cvPreview
+            : EndPoint.cvPreviewDocument(cvDocumentId),
+      );
+      if (preview.bytes.isNotEmpty) {
+        return CvFileDownload(
+          bytes: preview.bytes,
+          fileName: preview.fileName,
+          mimeType: preview.mimeType,
+        );
+      }
+    } on ServerException catch (e) {
+      if (e.errorModel.statusCode != 404) rethrow;
+    }
+    final file = await apiConsumer.downloadBytes(
+      cvDocumentId == null
+          ? EndPoint.cvFile
+          : EndPoint.cvFileDocument(cvDocumentId),
+    );
+    if (file.bytes.isEmpty) {
+      throw const FormatException('Empty CV file response');
+    }
+    return CvFileDownload(
+      bytes: file.bytes,
+      fileName: file.fileName,
+      mimeType: file.mimeType,
+    );
   }
 
   // Avatar Upload
