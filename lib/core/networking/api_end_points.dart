@@ -18,11 +18,12 @@ abstract class EndPoint {
   static const String verifyEmailOtp = 'auth/verify-email-otp';
   static const String resendEmailOtp = 'auth/resend-email-otp';
 
-  // Password Recovery
+  // Password Recovery & Change
   static const String forgotPassword = 'auth/forgot-password';
   static const String verifyPasswordResetOtp =
       'auth/forgot-password/verify-otp';
   static const String resetPassword = 'auth/reset-password';
+  static const String changePassword = 'auth/reset-password';
 
   // Current User
   static const String currentUser = 'auth/me';
@@ -136,6 +137,7 @@ abstract class ApiKey {
   static const String refreshToken = 'refresh_token';
   static const String email = 'email';
   static const String otp = 'otp';
+  static const String resetToken = 'reset_token';
   static const String newPassword = 'new_password';
   static const String name = 'name';
   static const String role = 'role';

@@ -43,26 +43,33 @@ class AuthRemoteDataSourceImpl
   }
 
   @override
-  Future<void> verifyPasswordResetOtp({
+  Future<String> verifyPasswordResetOtp({
     required String email,
     required String otp,
   }) async {
-    await apiConsumer.post(
+    final response = await apiConsumer.post(
       EndPoint.verifyPasswordResetOtp,
       data: {ApiKey.email: email, ApiKey.otp: otp},
     );
+    final data =
+        response is Map<String, dynamic> ? response : <String, dynamic>{};
+    return data[ApiKey.resetToken] as String? ?? '';
   }
 
   @override
   Future<void> resetPassword({
     required String email,
-    required String newPassword,
+    required String resetToken,
+    required String password,
+    required String passwordConfirmation,
   }) async {
     await apiConsumer.post(
       EndPoint.resetPassword,
       data: {
         ApiKey.email: email,
-        ApiKey.newPassword: newPassword,
+        ApiKey.resetToken: resetToken,
+        ApiKey.password: password,
+        ApiKey.passwordConfirmation: passwordConfirmation,
       },
     );
   }

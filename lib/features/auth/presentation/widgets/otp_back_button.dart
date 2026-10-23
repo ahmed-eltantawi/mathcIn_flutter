@@ -1,4 +1,3 @@
-import 'package:MatchIn/core/utils/app_colors.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +19,7 @@ class OtpBackButton extends StatelessWidget {
         child: Text(
           S.of(context).useDifferentEmail,
           style: theme.textTheme.labelLarge?.copyWith(
-            color: AppColors.secondary,
+            color: theme.colorScheme.secondary,
           ),
         ),
       ),

@@ -18,10 +18,30 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
       final userResponse = await apiConsumer.get(EndPoint.currentUser);
       if (userResponse is Map<String, dynamic>) {
         final userProfile = UserProfileModel.fromJson(userResponse);
-        userName = userProfile.name;
+        userName = userProfile.name.trim();
       }
     } catch (_) {
       userName = '';
+    }
+
+    if (userName.isEmpty) {
+      try {
+        final candidateResponse =
+            await apiConsumer.get(EndPoint.candidateProfile);
+        if (candidateResponse is Map<String, dynamic> &&
+            candidateResponse[ApiKey.data] is Map<String, dynamic>) {
+          final data =
+              candidateResponse[ApiKey.data] as Map<String, dynamic>;
+          final userJson = data['user'] as Map<String, dynamic>?;
+          if (userJson != null && userJson['name'] != null && userJson['name'].toString().trim().isNotEmpty) {
+            userName = userJson['name'].toString().trim();
+          } else if (data['full_name'] != null && data['full_name'].toString().trim().isNotEmpty) {
+            userName = data['full_name'].toString().trim();
+          }
+        }
+      } catch (_) {
+        // Ignored
+      }
     }
 
     int matchesCount = 0;

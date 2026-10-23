@@ -46,7 +46,7 @@ ThemeData getLightTheme({bool isArabic = false}) {
       foregroundColor: AppColors.lightTextPrimary,
       surfaceTintColor: Colors.transparent,
       elevation: 0,
-      centerTitle: false,
+      centerTitle: true,
     ),
 
     cardTheme: CardThemeData(
@@ -96,6 +96,13 @@ ThemeData getLightTheme({bool isArabic = false}) {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
+      ),
+    ),
+
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: AppColors.lightTextPrimary,
+        side: const BorderSide(color: AppColors.lightBorder),
       ),
     ),
 

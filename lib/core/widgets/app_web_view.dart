@@ -1,9 +1,9 @@
+import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:MatchIn/core/utils/app_colors.dart';
 
-///\* Generic reusable in-app WebView component located in `core/widgets/`.
+///* Generic reusable in-app WebView component located in `core/widgets/`.
 class AppWebView extends StatefulWidget {
   const AppWebView({super.key, required this.url, this.title});
 
@@ -32,7 +32,7 @@ class _AppWebViewState extends State<AppWebView> {
             'Could not open browser for ${widget.url}',
             style: TextStyle(fontSize: 14.sp),
           ),
-          backgroundColor: AppColors.error,
+          backgroundColor: Theme.of(context).colorScheme.error,
         ),
       );
     }
@@ -50,17 +50,19 @@ class _AppWebViewState extends State<AppWebView> {
   @override
   Widget build(BuildContext context) {
     final displayTitle = widget.title ?? 'Resource';
+    final colors = context.colors;
+    final theme = context.theme;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.surface,
+        backgroundColor: colors.surface,
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: AppColors.secondary,
+            color: colors.secondary,
             size: 20.r,
           ),
           onPressed: () => Navigator.of(context).pop(),
@@ -70,7 +72,7 @@ class _AppWebViewState extends State<AppWebView> {
           style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.bold,
-            color: AppColors.secondary,
+            color: colors.onSurface,
           ),
           overflow: TextOverflow.ellipsis,
         ),
@@ -79,7 +81,7 @@ class _AppWebViewState extends State<AppWebView> {
             tooltip: 'Open in Browser',
             icon: Icon(
               Icons.open_in_browser_rounded,
-              color: AppColors.secondary,
+              color: colors.secondary,
               size: 22.r,
             ),
             onPressed: _openInBrowser,
@@ -90,9 +92,9 @@ class _AppWebViewState extends State<AppWebView> {
                 preferredSize: Size.fromHeight(3.h),
                 child: LinearProgressIndicator(
                   value: _progress,
-                  backgroundColor: AppColors.surfaceVariant,
-                  valueColor: const AlwaysStoppedAnimation<Color>(
-                    AppColors.primary,
+                  backgroundColor: colors.surfaceContainerHighest,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    colors.primary,
                   ),
                 ),
               )
@@ -143,6 +145,8 @@ class _AppWebViewState extends State<AppWebView> {
   }
 
   Widget _buildErrorView() {
+    final colors = context.colors;
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 32.h),
       child: Center(
@@ -151,14 +155,14 @@ class _AppWebViewState extends State<AppWebView> {
           children: [
             Container(
               padding: EdgeInsets.all(16.r),
-              decoration: const BoxDecoration(
-                color: AppColors.surfaceVariant,
+              decoration: BoxDecoration(
+                color: colors.surfaceContainerHighest,
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.wifi_off_rounded,
                 size: 48.r,
-                color: AppColors.error,
+                color: colors.error,
               ),
             ),
             SizedBox(height: 20.h),
@@ -167,7 +171,7 @@ class _AppWebViewState extends State<AppWebView> {
               style: TextStyle(
                 fontSize: 20.sp,
                 fontWeight: FontWeight.bold,
-                color: AppColors.secondary,
+                color: colors.onSurface,
               ),
               textAlign: TextAlign.center,
             ),
@@ -176,7 +180,7 @@ class _AppWebViewState extends State<AppWebView> {
               _errorMessage.isNotEmpty
                   ? _errorMessage
                   : 'Please check your internet connection.',
-              style: TextStyle(fontSize: 14.sp, color: AppColors.textSecondary),
+              style: TextStyle(fontSize: 14.sp, color: colors.onSurfaceVariant),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 32.h),
@@ -188,8 +192,8 @@ class _AppWebViewState extends State<AppWebView> {
                   icon: Icon(Icons.refresh_rounded, size: 18.r),
                   label: const Text('Try Again'),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: AppColors.secondary,
-                    side: const BorderSide(color: AppColors.secondary),
+                    foregroundColor: colors.secondary,
+                    side: BorderSide(color: colors.secondary),
                     padding: EdgeInsets.symmetric(
                       horizontal: 16.w,
                       vertical: 12.h,
@@ -205,8 +209,8 @@ class _AppWebViewState extends State<AppWebView> {
                   icon: Icon(Icons.open_in_new_rounded, size: 18.r),
                   label: const Text('Open in Browser'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.secondary,
-                    foregroundColor: AppColors.textSecondary,
+                    backgroundColor: colors.primary,
+                    foregroundColor: colors.onPrimary,
                     elevation: 0,
                     padding: EdgeInsets.symmetric(
                       horizontal: 16.w,

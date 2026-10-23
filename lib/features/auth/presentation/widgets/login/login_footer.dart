@@ -1,9 +1,7 @@
+import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:MatchIn/core/routing/app_routes.dart';
 import 'package:MatchIn/core/services/services_locator.dart';
 import 'package:MatchIn/core/services/shared_preferences_service.dart';
-import 'package:MatchIn/core/utils/app_colors.dart';
-import 'package:MatchIn/core/widgets/views/or_divider.dart';
-import 'package:MatchIn/features/auth/presentation/widgets/google_sign_in_button.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,13 +12,7 @@ class LoginFooterInner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const OrDivider(),
-        SizedBox(height: 12.h),
-        const GoogleSignInButton(),
-      ],
-    );
+    return const SizedBox.shrink();
   }
 }
 
@@ -29,23 +21,27 @@ class LoginFooterOuter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.theme;
+    final colors = context.colors;
     final locale = S.of(context);
+
+    final isDark = theme.brightness == Brightness.dark;
+    final guestColor = colors.primary;
 
     return Column(
       children: [
         Container(
           padding: EdgeInsets.all(12.w),
           decoration: BoxDecoration(
-            color: AppColors.surfaceVariant,
+            color: colors.surfaceContainerHighest.withValues(alpha: 0.5),
             borderRadius: BorderRadius.circular(12.r),
-            border: Border.all(color: AppColors.border),
+            border: Border.all(color: colors.outline),
           ),
           child: Row(
             children: [
               Icon(
                 Icons.verified_user_outlined,
-                color: AppColors.midnightBlue,
+                color: isDark ? colors.secondary : colors.primary,
                 size: 20.sp,
               ),
               SizedBox(width: 8.w),
@@ -53,7 +49,7 @@ class LoginFooterOuter extends StatelessWidget {
                 child: Text(
                   locale.secureProtectionText,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: AppColors.textPrimary,
+                    color: colors.onSurface,
                   ),
                 ),
               ),
@@ -67,7 +63,7 @@ class LoginFooterOuter extends StatelessWidget {
             Text(
               locale.newHere,
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: AppColors.textSecondary,
+                color: colors.onSurfaceVariant,
               ),
             ),
             InkWell(
@@ -83,7 +79,7 @@ class LoginFooterOuter extends StatelessWidget {
                 child: Text(
                   locale.createAccount,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: AppColors.terracotta,
+                    color: colors.secondary,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -105,21 +101,21 @@ class LoginFooterOuter extends StatelessWidget {
             icon: Icon(
               Icons.explore_outlined,
               size: 22.sp,
-              color: theme.colorScheme.primary,
+              color: guestColor,
             ),
             label: Text(
               locale.continueAsGuest,
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w700,
-                color: theme.colorScheme.primary,
+                color: guestColor,
               ),
             ),
             style: OutlinedButton.styleFrom(
-              backgroundColor:
-                  theme.colorScheme.primary.withValues(alpha: 0.08),
+              foregroundColor: guestColor,
+              backgroundColor: colors.primary.withValues(alpha: isDark ? 0.12 : 0.08),
               side: BorderSide(
-                color: theme.colorScheme.primary.withValues(alpha: 0.4),
+                color: colors.primary.withValues(alpha: isDark ? 0.35 : 0.4),
                 width: 1.5,
               ),
               shape: RoundedRectangleBorder(

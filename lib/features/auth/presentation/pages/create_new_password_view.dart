@@ -14,9 +14,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class CreateNewPasswordView extends StatefulWidget {
-  const CreateNewPasswordView({super.key, this.email = 'user@example.com'});
+  const CreateNewPasswordView({
+    super.key,
+    this.email = 'user@example.com',
+    this.resetToken = '',
+  });
 
   final String email;
+  final String resetToken;
 
   @override
   State<CreateNewPasswordView> createState() => _CreateNewPasswordViewState();
@@ -64,7 +69,9 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
 
     context.read<ResetPasswordCubit>().resetPassword(
       email: widget.email,
-      newPassword: _passwordController.text,
+      resetToken: widget.resetToken,
+      password: _passwordController.text,
+      passwordConfirmation: _confirmPasswordController.text,
     );
   }
 

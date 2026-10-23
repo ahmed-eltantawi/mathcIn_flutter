@@ -41,7 +41,7 @@ class UserProfileModel {
 
     return UserProfileModel(
       id: (data['id'] as num?)?.toInt() ?? 0,
-      name: data['name']?.toString() ?? '',
+      name: (data['name'] ?? data['full_name'])?.toString() ?? '',
       email: data['email']?.toString() ?? '',
       jobTitle:
           data['job_title']?.toString() ?? data['title']?.toString() ?? '',

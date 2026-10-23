@@ -1,13 +1,15 @@
 import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:MatchIn/core/extensions/snack_bar_extensions.dart';
 import 'package:MatchIn/core/routing/app_routes.dart';
-import 'package:MatchIn/core/utils/app_assets.dart';
-import 'package:MatchIn/core/utils/validator.dart';
+import 'package:MatchIn/core/widgets/custom_app_bar.dart';
 import 'package:MatchIn/core/widgets/custom_button.dart';
-import 'package:MatchIn/core/widgets/custom_text_field.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/forgot_password_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/forgot_password_state.dart';
 import 'package:MatchIn/features/auth/presentation/pages/otp_verification_view.dart';
+import 'package:MatchIn/features/auth/presentation/widgets/create_password_back_button.dart';
+import 'package:MatchIn/features/auth/presentation/widgets/forgot_password_form_card.dart';
+import 'package:MatchIn/features/auth/presentation/widgets/forgot_password_header.dart';
+import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -42,41 +44,43 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
   }
 
   void _onSendCodePressed() {
+    FocusScope.of(context).unfocus();
     if (_formKey.currentState?.validate() ?? false) {
       final email = _emailController.text.trim();
       context.read<ForgotPasswordCubit>().sendForgotPasswordEmail(email: email);
     }
   }
 
+  void _handleBack() {
+    if (context.canPop()) {
+      context.pop();
+    } else {
+      context.go(AppRoutes.kLoginView);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: context.theme.scaffoldBackgroundColor,
-      appBar: AppBar(
+    final locale = S.of(context);
+
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) {
+          _handleBack();
+        }
+      },
+      child: Scaffold(
         backgroundColor: context.theme.scaffoldBackgroundColor,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: context.colors.onSurface,
-          ),
-          onPressed: () => context.pop(),
+        appBar: CustomAppBar(
+          title: S.of(context).forgotPassword,
+          onBack: _handleBack,
         ),
-        title: Text(
-          context.l10n.forgotPassword,
-          style: context.textTheme.titleLarge?.copyWith(
-            color: context.colors.onSurface,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: true,
-      ),
-      body: SafeArea(
-        child: Center(
+        body: SafeArea(
           child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(
-              horizontal: 20.w,
-              vertical: 24.h,
+              horizontal: 16.w,
+              vertical: 16.h,
             ),
             child: BlocConsumer<ForgotPasswordCubit, ForgotPasswordState>(
               listener: (context, state) {
@@ -84,7 +88,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                   context.showErrorSnackBar(state.message);
                 } else if (state is ForgotPasswordSuccess) {
                   context.showSuccessSnackBar(
-                    'Verification code sent to your email',
+                    locale.verificationCodeSentToEmail,
                   );
                   context.push(
                     AppRoutes.kOtpVerificationView,
@@ -96,91 +100,33 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                 }
               },
               builder: (context, state) {
+                final isLoading = state is ForgotPasswordLoading;
+
                 return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const _ForgotPasswordLogo(imagePath: Assets.appIcon),
+                    const ForgotPasswordHeader(),
                     SizedBox(height: 24.h),
-                    _ForgotPasswordCard(
+                    ForgotPasswordFormCard(
                       formKey: _formKey,
                       emailController: _emailController,
-                      isLoading: state is ForgotPasswordLoading,
-                      onSendCodePressed: _onSendCodePressed,
+                      onFieldSubmitted: (_) => _onSendCodePressed(),
+                    ),
+                    SizedBox(height: 24.h),
+                    CustomButton(
+                      text: locale.sendVerificationCode,
+                      isLoading: isLoading,
+                      onPressed: _onSendCodePressed,
+                    ),
+                    SizedBox(height: 16.h),
+                    CreatePasswordBackButton(
+                      onPressed: () => context.go(AppRoutes.kLoginView),
                     ),
                   ],
                 );
               },
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _ForgotPasswordLogo extends StatelessWidget {
-  const _ForgotPasswordLogo({required this.imagePath});
-
-  final String imagePath;
-
-  @override
-  Widget build(BuildContext context) {
-    return Image.asset(
-      imagePath,
-      height: 100.h,
-    );
-  }
-}
-
-class _ForgotPasswordCard extends StatelessWidget {
-  const _ForgotPasswordCard({
-    required this.formKey,
-    required this.emailController,
-    required this.isLoading,
-    required this.onSendCodePressed,
-  });
-
-  final GlobalKey<FormState> formKey;
-  final TextEditingController emailController;
-  final bool isLoading;
-  final VoidCallback onSendCodePressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(24.w),
-      decoration: BoxDecoration(
-        color: context.colors.surface,
-        borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: context.colors.outline),
-      ),
-      child: Form(
-        key: formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              'Enter your email address to receive a verification code.',
-              style: context.textTheme.bodyMedium?.copyWith(
-                color: context.colors.onSurfaceVariant,
-              ),
-            ),
-            SizedBox(height: 16.h),
-            CustomTextField(
-              controller: emailController,
-              labelText: context.l10n.email,
-              hintText: context.l10n.emailHint,
-              keyboardType: TextInputType.emailAddress,
-              textInputAction: TextInputAction.done,
-              validator: Validator.validateEmail,
-            ),
-            SizedBox(height: 24.h),
-            CustomButton(
-              text: 'Send Verification Code',
-              isLoading: isLoading,
-              onPressed: onSendCodePressed,
-            ),
-          ],
         ),
       ),
     );

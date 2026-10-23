@@ -1,4 +1,4 @@
-import 'package:MatchIn/core/utils/app_colors.dart';
+import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -14,6 +14,8 @@ class OnboardingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: List.generate(itemCount, (index) {
@@ -24,7 +26,9 @@ class OnboardingIndicator extends StatelessWidget {
           width: isSelected ? 20.w : 6.w,
           height: 6.w,
           decoration: BoxDecoration(
-            color: isSelected ? AppColors.primary : AppColors.border,
+            color: isSelected
+                ? colors.primary
+                : colors.outline.withValues(alpha: 0.5),
             borderRadius: BorderRadius.circular(9999.r),
           ),
         );

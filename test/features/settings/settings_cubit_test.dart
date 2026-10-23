@@ -154,7 +154,7 @@ void main() {
     test('initial state has default values', () {
       expect(cubit.state.isNotificationsEnabled, isTrue);
       expect(cubit.state.languageCode, equals('en'));
-      expect(cubit.state.themeMode, equals(ThemeMode.system));
+      expect(cubit.state.themeMode, equals(ThemeMode.light));
     });
 
     test('loadSettings loads preferences from repository', () async {

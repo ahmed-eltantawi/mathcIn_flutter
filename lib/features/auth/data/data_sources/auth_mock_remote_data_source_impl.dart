@@ -11,7 +11,7 @@ class AuthMockRemoteDataSourceImpl implements AuthRemoteDataSource {
     await Future.delayed(const Duration(milliseconds: 800));
 
     // Simulated error for testing invalid OTP:
-    if (otp == '000000') {
+    if (otp != '123456') {
       throw ServerException(
         errorModel: const ErrorModel(
           statusCode: 400,
@@ -32,13 +32,13 @@ class AuthMockRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<void> verifyPasswordResetOtp({
+  Future<String> verifyPasswordResetOtp({
     required String email,
     required String otp,
   }) async {
     await Future.delayed(const Duration(milliseconds: 800));
 
-    if (otp == '000000') {
+    if (otp != '123456') {
       throw ServerException(
         errorModel: const ErrorModel(
           statusCode: 400,
@@ -46,16 +46,19 @@ class AuthMockRemoteDataSourceImpl implements AuthRemoteDataSource {
         ),
       );
     }
+    return 'mock_reset_token_123456';
   }
 
   @override
   Future<void> resetPassword({
     required String email,
-    required String newPassword,
+    required String resetToken,
+    required String password,
+    required String passwordConfirmation,
   }) async {
     await Future.delayed(const Duration(milliseconds: 800));
 
-    if (newPassword.length < 8) {
+    if (password.length < 8) {
       throw ServerException(
         errorModel: const ErrorModel(
           statusCode: 400,

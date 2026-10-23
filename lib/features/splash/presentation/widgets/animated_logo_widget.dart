@@ -95,7 +95,7 @@ class _AnimatedLogoWidgetState extends State<AnimatedLogoWidget>
             child: Text(
               AppConstants.appName,
               style: AppTextStyles.semiBold20.copyWith(
-                color: AppColors.primary,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
           ),

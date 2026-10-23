@@ -52,7 +52,13 @@ class HomeRepositoryImpl implements HomeRepository {
         if (cachedUserName != null && cachedUserName.isNotEmpty) {
           effectiveUserName = cachedUserName;
         } else {
-          effectiveUserName = 'User';
+          final userProfile =
+              await profileLocalDataSource.getCachedUserProfile();
+          if (userProfile != null && userProfile.name.trim().isNotEmpty) {
+            effectiveUserName = userProfile.name.trim();
+          } else {
+            effectiveUserName = 'User';
+          }
         }
       }
 

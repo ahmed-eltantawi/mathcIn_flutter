@@ -74,7 +74,7 @@ class FakeAuthRepository implements AuthRepository {
       throw UnimplementedError();
 
   @override
-  Future<Either<Failure, Unit>> verifyPasswordResetOtp({
+  Future<Either<Failure, String>> verifyPasswordResetOtp({
     required String email,
     required String otp,
   }) => throw UnimplementedError();
@@ -82,7 +82,9 @@ class FakeAuthRepository implements AuthRepository {
   @override
   Future<Either<Failure, Unit>> resetPassword({
     required String email,
-    required String newPassword,
+    required String resetToken,
+    required String password,
+    required String passwordConfirmation,
   }) => throw UnimplementedError();
 }
 

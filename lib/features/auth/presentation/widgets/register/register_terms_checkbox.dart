@@ -1,4 +1,4 @@
-import 'package:MatchIn/core/utils/app_colors.dart';
+import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,7 +10,9 @@ class RegisterTermsCheckbox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     final locale = S.of(context);
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -22,7 +24,7 @@ class RegisterTermsCheckbox extends StatelessWidget {
               height: 24.h,
               child: Checkbox(
                 value: value,
-                activeColor: AppColors.midnightBlue,
+                activeColor: colors.primary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.r),
                 ),
@@ -36,8 +38,8 @@ class RegisterTermsCheckbox extends StatelessWidget {
         Expanded(
           child: Text(
             locale.termsAndConditions,
-            style: Theme.of(context).textTheme.bodySmall
-                ?.copyWith(color: AppColors.textPrimary),
+            style: context.theme.textTheme.bodySmall
+                ?.copyWith(color: colors.onSurface),
           ),
         ),
       ],

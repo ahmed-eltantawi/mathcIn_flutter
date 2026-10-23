@@ -57,6 +57,9 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
   // -- Controls the in-card Lottie success animation ----------------------
   bool _showSuccessLottie = false;
 
+  // -- Reset token received from verifyPasswordResetOtp ------------------
+  String? _resetToken;
+
   @override
   void initState() {
     super.initState();
@@ -131,8 +134,15 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
           }
         case OtpMode.passwordReset:
           // Password-reset OTP confirmed → proceed to create new password.
+          // Pass both email and the reset_token returned by the server.
           if (mounted) {
-            context.go(AppRoutes.kCreateNewPasswordView, extra: widget.email);
+            context.go(
+              AppRoutes.kCreateNewPasswordView,
+              extra: <String, String>{
+                'email': widget.email,
+                'resetToken': _resetToken ?? '',
+              },
+            );
           }
       }
     }
@@ -161,6 +171,8 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
     return BlocListener<OtpCubit, OtpState>(
       listener: (context, state) {
         if (state is OtpVerificationSuccess) {
+          // Capture reset_token before triggering the animated transition.
+          _resetToken = state.resetToken;
           _otpController.succeed();
         } else if (state is OtpVerificationError) {
           _otpController.fail();

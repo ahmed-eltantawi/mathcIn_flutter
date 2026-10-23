@@ -7,7 +7,7 @@ class VerifyPasswordResetOtpUseCase {
 
   final AuthRepository repository;
 
-  Future<Either<Failure, Unit>> call({
+  Future<Either<Failure, String>> call({
     required String email,
     required String otp,
   }) async {

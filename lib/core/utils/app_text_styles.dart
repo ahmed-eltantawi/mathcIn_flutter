@@ -28,7 +28,7 @@ abstract class AppTextStyles {
         fontFamily: _font(isArabic),
         fontSize: 24.sp,
         fontWeight: FontWeight.w700,
-        color: color ?? AppColors.textPrimary,
+        color: color,
       );
 
   static TextStyle heading18Bold({required bool isArabic, Color? color}) =>
@@ -36,7 +36,7 @@ abstract class AppTextStyles {
         fontFamily: _font(isArabic),
         fontSize: 18.sp,
         fontWeight: FontWeight.w700,
-        color: color ?? AppColors.textPrimary,
+        color: color,
       );
 
   // ── Body styles ───────────────────────────────────────────────────────────
@@ -46,7 +46,7 @@ abstract class AppTextStyles {
         fontFamily: _font(isArabic),
         fontSize: 14.sp,
         fontWeight: FontWeight.w700,
-        color: color ?? AppColors.textPrimary,
+        color: color,
       );
 
   static TextStyle body14SemiBold({required bool isArabic, Color? color}) =>
@@ -54,7 +54,7 @@ abstract class AppTextStyles {
         fontFamily: _font(isArabic),
         fontSize: 14.sp,
         fontWeight: FontWeight.w600,
-        color: color ?? AppColors.textPrimary,
+        color: color,
       );
 
   static TextStyle body14Regular({required bool isArabic, Color? color}) =>
@@ -62,7 +62,7 @@ abstract class AppTextStyles {
         fontFamily: _font(isArabic),
         fontSize: 14.sp,
         fontWeight: FontWeight.w400,
-        color: color ?? AppColors.textPrimary,
+        color: color,
       );
 
   static TextStyle body12SemiBold({required bool isArabic, Color? color}) =>
@@ -70,7 +70,7 @@ abstract class AppTextStyles {
         fontFamily: _font(isArabic),
         fontSize: 12.sp,
         fontWeight: FontWeight.w600,
-        color: color ?? AppColors.textPrimary,
+        color: color,
       );
 
   static TextStyle body12Regular({required bool isArabic, Color? color}) =>
@@ -78,7 +78,7 @@ abstract class AppTextStyles {
         fontFamily: _font(isArabic),
         fontSize: 12.sp,
         fontWeight: FontWeight.w400,
-        color: color ?? AppColors.textPrimary,
+        color: color,
       );
 
   // ── TextTheme builder ─────────────────────────────────────────────────────

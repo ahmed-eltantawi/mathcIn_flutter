@@ -9,9 +9,9 @@ ThemeData getDarkTheme({bool isArabic = false}) {
   );
 
   const colorScheme = ColorScheme.dark(
-    primary: AppColors.midnightBlue,
+    primary: AppColors.darkPrimary,
     onPrimary: AppColors.white,
-    secondary: AppColors.terracotta,
+    secondary: AppColors.darkSecondary,
     onSecondary: AppColors.white,
     tertiary: AppColors.goldenMustard,
     onTertiary: AppColors.white,
@@ -20,13 +20,13 @@ ThemeData getDarkTheme({bool isArabic = false}) {
     surfaceContainerHighest: AppColors.darkSurfaceVariant,
     onSurfaceVariant: AppColors.darkTextSecondary,
     outline: AppColors.darkBorder,
-    error: AppColors.mutedRed,
+    error: AppColors.darkError,
     onError: AppColors.white,
   );
 
   final themedTextTheme = textTheme.copyWith(
     titleSmall: textTheme.titleSmall?.copyWith(
-      color: colorScheme.onSurface.withValues(alpha: 0.6),
+      color: colorScheme.onSurface.withValues(alpha: 0.7),
     ),
   );
 
@@ -38,7 +38,7 @@ ThemeData getDarkTheme({bool isArabic = false}) {
     textTheme: themedTextTheme,
 
     extensions: const [
-      AppSemanticColors(success: AppColors.forestGreen),
+      AppSemanticColors(success: AppColors.darkSuccess),
     ],
 
     appBarTheme: const AppBarTheme(
@@ -46,7 +46,7 @@ ThemeData getDarkTheme({bool isArabic = false}) {
       foregroundColor: AppColors.darkTextPrimary,
       surfaceTintColor: Colors.transparent,
       elevation: 0,
-      centerTitle: false,
+      centerTitle: true,
     ),
 
     cardTheme: CardThemeData(
@@ -70,28 +70,28 @@ ThemeData getDarkTheme({bool isArabic = false}) {
 
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: AppColors.darkSurface,
+      fillColor: AppColors.darkInputFill,
       hintStyle: const TextStyle(
-        color: AppColors.darkTextSecondary,
+        color: AppColors.darkTextHint,
       ),
       border: _darkInputBorder,
       enabledBorder: _darkInputBorder,
       focusedBorder: _darkInputBorder.copyWith(
         borderSide: const BorderSide(
-          color: AppColors.terracotta,
+          color: AppColors.darkPrimary,
           width: 1.5,
         ),
       ),
       errorBorder: _darkInputBorder.copyWith(
         borderSide: const BorderSide(
-          color: AppColors.mutedRed,
+          color: AppColors.darkError,
         ),
       ),
     ),
 
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.midnightBlue,
+        backgroundColor: AppColors.darkPrimary,
         foregroundColor: AppColors.white,
         elevation: 0,
         minimumSize: const Size(double.infinity, 56),
@@ -101,16 +101,22 @@ ThemeData getDarkTheme({bool isArabic = false}) {
       ),
     ),
 
-    textButtonTheme: TextButtonThemeData(
-      style: TextButton.styleFrom(
-        foregroundColor: AppColors.terracotta,
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: AppColors.darkTextPrimary,
+        side: const BorderSide(color: AppColors.darkBorder),
       ),
     ),
 
-    progressIndicatorTheme:
-        const ProgressIndicatorThemeData(
-          color: AppColors.goldenMustard,
-        ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: AppColors.darkSecondary,
+      ),
+    ),
+
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+      color: AppColors.darkPrimary,
+    ),
   );
 }
 

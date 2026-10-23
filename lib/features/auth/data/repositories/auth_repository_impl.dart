@@ -61,13 +61,16 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, Unit>> verifyPasswordResetOtp({
+  Future<Either<Failure, String>> verifyPasswordResetOtp({
     required String email,
     required String otp,
   }) async {
     try {
-      await remoteDataSource.verifyPasswordResetOtp(email: email, otp: otp);
-      return const Right(unit);
+      final resetToken = await remoteDataSource.verifyPasswordResetOtp(
+        email: email,
+        otp: otp,
+      );
+      return Right(resetToken);
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.errorModel.errorMessage, fieldErrors: e.errorModel.fieldErrors));
     } on OfflineException {
@@ -80,12 +83,16 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, Unit>> resetPassword({
     required String email,
-    required String newPassword,
+    required String resetToken,
+    required String password,
+    required String passwordConfirmation,
   }) async {
     try {
       await remoteDataSource.resetPassword(
         email: email,
-        newPassword: newPassword,
+        resetToken: resetToken,
+        password: password,
+        passwordConfirmation: passwordConfirmation,
       );
       return const Right(unit);
     } on ServerException catch (e) {

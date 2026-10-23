@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:MatchIn/core/routing/app_routes.dart';
 import 'package:MatchIn/core/services/services_locator.dart';
 import 'package:MatchIn/core/services/shared_preferences_service.dart';
-import 'package:MatchIn/core/utils/app_colors.dart';
 
 class SplashView extends StatelessWidget {
   const SplashView({super.key});
@@ -23,7 +22,7 @@ class SplashView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SplashViewBody(
         onAnimationCompleted: () => _goNext(context),
       ),

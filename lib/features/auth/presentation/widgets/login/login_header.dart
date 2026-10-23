@@ -1,5 +1,5 @@
+import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:MatchIn/core/utils/app_assets.dart';
-import 'package:MatchIn/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:MatchIn/generated/l10n.dart';
@@ -9,7 +9,8 @@ class LoginHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.theme;
+    final colors = context.colors;
     final locale = S.of(context);
 
     return Column(
@@ -19,13 +20,13 @@ class LoginHeader extends StatelessWidget {
         Container(
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
           decoration: BoxDecoration(
-            color: AppColors.surfaceVariant,
+            color: colors.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(4.r),
           ),
           child: Text(
             locale.skillmatchPortal,
             style: theme.textTheme.labelSmall?.copyWith(
-              color: AppColors.textSecondary,
+              color: colors.onSurfaceVariant,
               fontWeight: FontWeight.bold,
               letterSpacing: 1.2,
             ),
@@ -35,7 +36,7 @@ class LoginHeader extends StatelessWidget {
         Text(
           locale.welcomeBack,
           style: theme.textTheme.headlineSmall?.copyWith(
-            color: AppColors.midnightBlue,
+            color: colors.onSurface,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -43,7 +44,7 @@ class LoginHeader extends StatelessWidget {
         Text(
           locale.accessYourPathways,
           style: theme.textTheme.bodyMedium?.copyWith(
-            color: AppColors.textSecondary,
+            color: colors.onSurfaceVariant,
           ),
           textAlign: TextAlign.center,
         ),

@@ -1,7 +1,7 @@
+import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:MatchIn/core/routing/app_routes.dart';
 import 'package:MatchIn/core/services/services_locator.dart';
 import 'package:MatchIn/core/services/shared_preferences_service.dart';
-import 'package:MatchIn/core/utils/app_colors.dart';
 import 'package:MatchIn/features/auth/presentation/widgets/google_sign_in_button.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
@@ -13,24 +13,28 @@ class RegisterFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.theme;
+    final colors = context.colors;
     final locale = S.of(context);
+
+    final isDark = theme.brightness == Brightness.dark;
+    final guestColor = colors.primary;
 
     return Column(
       children: [
         Row(
           children: [
-            const Expanded(child: Divider(color: AppColors.border)),
+            Expanded(child: Divider(color: colors.outline)),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Text(
                 locale.or,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textSecondary,
+                  color: colors.onSurfaceVariant,
                 ),
               ),
             ),
-            const Expanded(child: Divider(color: AppColors.border)),
+            Expanded(child: Divider(color: colors.outline)),
           ],
         ),
         SizedBox(height: 12.h),
@@ -42,7 +46,7 @@ class RegisterFooter extends StatelessWidget {
             Text(
               locale.alreadyHaveAccount,
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: AppColors.terracotta,
+                color: colors.onSurfaceVariant,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -59,7 +63,7 @@ class RegisterFooter extends StatelessWidget {
                 child: Text(
                   locale.login,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: AppColors.terracotta,
+                    color: colors.secondary,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -81,21 +85,21 @@ class RegisterFooter extends StatelessWidget {
             icon: Icon(
               Icons.explore_outlined,
               size: 22.sp,
-              color: theme.colorScheme.primary,
+              color: guestColor,
             ),
             label: Text(
               locale.continueAsGuest,
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w700,
-                color: theme.colorScheme.primary,
+                color: guestColor,
               ),
             ),
             style: OutlinedButton.styleFrom(
-              backgroundColor:
-                  theme.colorScheme.primary.withValues(alpha: 0.08),
+              foregroundColor: guestColor,
+              backgroundColor: colors.primary.withValues(alpha: isDark ? 0.12 : 0.08),
               side: BorderSide(
-                color: theme.colorScheme.primary.withValues(alpha: 0.4),
+                color: colors.primary.withValues(alpha: isDark ? 0.35 : 0.4),
                 width: 1.5,
               ),
               shape: RoundedRectangleBorder(

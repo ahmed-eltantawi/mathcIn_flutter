@@ -1,5 +1,5 @@
+import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:MatchIn/core/routing/app_routes.dart';
-import 'package:MatchIn/core/utils/app_colors.dart';
 import 'package:MatchIn/core/utils/app_text_styles.dart';
 import 'package:MatchIn/core/widgets/custom_button.dart';
 import 'package:MatchIn/generated/l10n.dart';
@@ -12,8 +12,11 @@ class PasswordChangedSuccessView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
+    final colors = context.colors;
+
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -27,10 +30,10 @@ class PasswordChangedSuccessView extends StatelessWidget {
                 width: 88.w,
                 height: 88.w,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBF3ED),
+                  color: colors.primary.withValues(alpha: 0.12),
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: AppColors.success.withValues(alpha: 0.2),
+                    color: colors.primary.withValues(alpha: 0.25),
                     width: 1,
                   ),
                 ),
@@ -38,7 +41,7 @@ class PasswordChangedSuccessView extends StatelessWidget {
                 child: Icon(
                   Icons.check_rounded,
                   size: 38.sp,
-                  color: AppColors.success,
+                  color: colors.primary,
                 ),
               ),
               SizedBox(height: 24.h),
@@ -49,7 +52,7 @@ class PasswordChangedSuccessView extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: AppTextStyles.heading24Bold(
                   isArabic: false,
-                  color: AppColors.textPrimary,
+                  color: colors.onSurface,
                 ),
               ),
               SizedBox(height: 12.h),
@@ -62,7 +65,7 @@ class PasswordChangedSuccessView extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: AppTextStyles.body14Regular(
                     isArabic: false,
-                    color: AppColors.textSecondary,
+                    color: colors.onSurfaceVariant,
                   ),
                 ),
               ),

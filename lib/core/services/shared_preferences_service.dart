@@ -26,11 +26,20 @@ class SharedPreferencesService {
     return _sharedPreferencesHelper.getData(key: CacheKey.id);
   }
 
+  Future<void> saveUserEmail(String email) async {
+    await _sharedPreferencesHelper.saveData(key: CacheKey.email, value: email);
+  }
+
+  String? getUserEmail() {
+    return _sharedPreferencesHelper.getData(key: CacheKey.email);
+  }
+
   /// Clears only the logged-in session. Guest flag is intentionally kept
   /// so a 401 auto-logout (interceptor) can't wipe "Continue as Guest".
   /// Explicit logout clears guest separately (see Settings logout).
   Future<void> clearAuthData() async {
     await _sharedPreferencesHelper.deleteData(key: CacheKey.id);
+    await _sharedPreferencesHelper.deleteData(key: CacheKey.email);
     await _sharedPreferencesHelper.deleteData(key: CacheKey.userDataKey);
     await _sharedPreferencesHelper.deleteData(key: CacheKey.isLoggedIn);
   }

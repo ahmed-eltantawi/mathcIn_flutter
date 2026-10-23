@@ -32,7 +32,7 @@ class CreatePasswordFormCard extends StatelessWidget {
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(12.r),
         border: Border.all(
-          color: theme.dividerColor,
+          color: theme.colorScheme.outline,
           width: 1,
         ),
       ),

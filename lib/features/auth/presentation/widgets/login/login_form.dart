@@ -1,7 +1,7 @@
+import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:MatchIn/core/widgets/custom_button.dart';
 import 'package:MatchIn/core/widgets/custom_text_field.dart';
 import 'package:MatchIn/generated/l10n.dart';
-import 'package:MatchIn/core/utils/app_colors.dart';
 import 'package:MatchIn/core/utils/validator.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/helpers/auth_success_handler.dart';
@@ -43,7 +43,8 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.theme;
+    final colors = context.colors;
     final locale = S.of(context);
 
     return Form(
@@ -84,9 +85,9 @@ class _LoginFormState extends State<LoginForm> {
                       builder: (context, value, child) {
                         return Switch(
                           value: value,
-                          activeThumbColor: AppColors.white,
-                          activeTrackColor: AppColors.midnightBlue,
-                          inactiveTrackColor: AppColors.surfaceVariant,
+                          activeThumbColor: colors.surface,
+                          activeTrackColor: colors.primary,
+                          inactiveTrackColor: colors.surfaceContainerHighest,
                           onChanged: (newValue) =>
                               _isKeepSignedIn.value = newValue,
                         );
@@ -100,14 +101,14 @@ class _LoginFormState extends State<LoginForm> {
                           Text(
                             locale.keepMeSignedIn,
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: AppColors.textPrimary,
+                              color: colors.onSurface,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                           Text(
                             locale.onlyOnTrustedDevices,
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: AppColors.textSecondary,
+                              color: colors.onSurfaceVariant,
                             ),
                           ),
                         ],
@@ -131,7 +132,7 @@ class _LoginFormState extends State<LoginForm> {
                 child: Text(
                   locale.forgotPassword,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: AppColors.terracotta,
+                    color: colors.secondary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -147,7 +148,7 @@ class _LoginFormState extends State<LoginForm> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(state.message),
-                    backgroundColor: AppColors.error,
+                    backgroundColor: colors.error,
                   ),
                 );
               }

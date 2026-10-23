@@ -131,18 +131,29 @@ class ProfileLocalDataSourceImpl implements ProfileLocalDataSource {
 
   @override
   Future<CandidateProfileModel?> getCachedCandidateProfile() async {
-    String? rawJson = sharedPreferencesHelper.getString(
+    final userId = sharedPreferencesHelper.getData(key: CacheKey.id);
+    final rawJson = sharedPreferencesHelper.getString(
       key: _candidateProfileKey(),
     );
 
-    // Fallback to legacy default key if user-scoped key is empty
+    // Fallback to legacy default key ONLY if it matches the current user
     if (rawJson == null || rawJson.isEmpty) {
-      rawJson = sharedPreferencesHelper.getString(
+      final legacyJson = sharedPreferencesHelper.getString(
         key: CacheKey.candidateProfile,
       );
-    }
-
-    if (rawJson == null || rawJson.isEmpty) {
+      if (legacyJson != null && legacyJson.isNotEmpty) {
+        try {
+          final decoded = jsonDecode(legacyJson);
+          if (decoded is Map<String, dynamic>) {
+            final model = CandidateProfileModel.fromJson(decoded);
+            if (userId == null || model.user.id == 0 || model.user.id == userId) {
+              return model;
+            }
+          }
+        } catch (_) {
+          return null;
+        }
+      }
       return null;
     }
 
@@ -153,7 +164,11 @@ class ProfileLocalDataSourceImpl implements ProfileLocalDataSource {
         return null;
       }
 
-      return CandidateProfileModel.fromJson(decodedJson);
+      final profile = CandidateProfileModel.fromJson(decodedJson);
+      if (userId != null && profile.user.id != 0 && profile.user.id != userId) {
+        return null;
+      }
+      return profile;
     } catch (_) {
       return null;
     }
@@ -178,6 +193,7 @@ class ProfileLocalDataSourceImpl implements ProfileLocalDataSource {
   Future<void> clearCachedCandidateProfile() async {
     await sharedPreferencesHelper.deleteData(key: _candidateProfileKey());
     await sharedPreferencesHelper.deleteData(key: CacheKey.candidateProfile);
+    await sharedPreferencesHelper.deleteData(key: CacheKey.userDataKey);
     // --- Remove every per-user CV record (profile copy, pending
     // --- upload, marker, cached file). The id is already wiped at
     // --- logout, so stale suffixed keys are cleared by prefix. ---
@@ -221,16 +237,26 @@ class ProfileLocalDataSourceImpl implements ProfileLocalDataSource {
 
   @override
   Future<String?> getCachedUserName() async {
-    // 1. Try candidate profile first
-    final candidateProfile = await getCachedCandidateProfile();
-    if (candidateProfile != null && candidateProfile.user.name.trim().isNotEmpty) {
-      return candidateProfile.user.name.trim();
-    }
+    // Names that are known stale / placeholder — never surface them
+    const staleNames = {'test user', 'test_user', 'user', 'test'};
 
-    // 2. Try user profile
+    // 1. Try user profile first (directly persisted upon login with active user data)
     final userProfile = await getCachedUserProfile();
     if (userProfile != null && userProfile.name.trim().isNotEmpty) {
-      return userProfile.name.trim();
+      final name = userProfile.name.trim();
+      if (!staleNames.contains(name.toLowerCase())) {
+        return name;
+      }
+    }
+
+    // 2. Try candidate profile
+    final candidateProfile = await getCachedCandidateProfile();
+    if (candidateProfile != null &&
+        candidateProfile.user.name.trim().isNotEmpty) {
+      final name = candidateProfile.user.name.trim();
+      if (!staleNames.contains(name.toLowerCase())) {
+        return name;
+      }
     }
 
     return null;

@@ -17,9 +17,12 @@ import 'package:MatchIn/features/jobsAndApplications/presentation/views/applicat
 import 'package:MatchIn/features/jobsAndApplications/presentation/views/apply_for_role_view.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/views/review_application_view.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/views/tracking_application_view.dart';
+import 'package:MatchIn/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:MatchIn/features/auth/presentation/cubit/forgot_password_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/otp_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/reset_password_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/pages/create_new_password_view.dart';
+import 'package:MatchIn/features/auth/presentation/pages/forgot_password_view.dart';
 import 'package:MatchIn/features/auth/presentation/pages/login_view.dart';
 import 'package:MatchIn/features/auth/presentation/pages/otp_verification_view.dart';
 import 'package:MatchIn/features/auth/presentation/pages/password_changed_success_view.dart';
@@ -284,7 +287,10 @@ abstract final class AppRouter {
         pageBuilder: (context, state) {
           return _buildTransitionPage(
             state: state,
-            child: const RegisterView(),
+            child: BlocProvider(
+              create: (_) => getIt<AuthCubit>(),
+              child: const RegisterView(),
+            ),
           );
         },
       ),
@@ -293,44 +299,58 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kLoginView,
         pageBuilder: (context, state) {
-          return _buildTransitionPage(state: state, child: const LoginView());
+          return _buildTransitionPage(
+            state: state,
+            child: BlocProvider(
+              create: (_) => getIt<AuthCubit>(),
+              child: const LoginView(),
+            ),
+          );
         },
       ),
 
-      // Forget Password OTP — after confirming reset OTP, go to Create New Password
+      // Forgot Password Email Input
       GoRoute(
         path: AppRoutes.kForgetPasswordView,
         pageBuilder: (context, state) {
           final extra = state.extra;
           final email = extra is Map<String, dynamic>
-              ? extra['email'] as String? ?? 'user@example.com'
+              ? extra['email'] as String?
               : extra is String
-              ? extra
-              : 'user@example.com';
+                  ? extra
+                  : null;
+          return _buildTransitionPage(
+            state: state,
+            child: BlocProvider(
+              create: (_) => getIt<ForgotPasswordCubit>(),
+              child: ForgotPasswordView(email: email),
+            ),
+          );
+        },
+      ),
+
+      // OTP Verification — supports both registration email verification and password reset OTP
+      GoRoute(
+        path: AppRoutes.kOtpVerificationView,
+        pageBuilder: (context, state) {
+          final extra = state.extra;
+          String email = 'user@example.com';
+          OtpMode mode = OtpMode.emailVerification;
+
+          if (extra is Map<String, dynamic>) {
+            email = extra['email'] as String? ?? 'user@example.com';
+            mode = extra['mode'] as OtpMode? ?? OtpMode.emailVerification;
+          } else if (extra is String) {
+            email = extra;
+          }
+
           return _buildTransitionPage(
             state: state,
             child: BlocProvider(
               create: (_) => getIt<OtpCubit>(),
               child: OtpVerificationView(
                 email: email,
-                mode: OtpMode.passwordReset,
-              ),
-            ),
-          );
-        },
-      ),
-
-      // OTP — email verification after registration → navigates to Home
-      GoRoute(
-        path: AppRoutes.kOtpVerificationView,
-        pageBuilder: (context, state) {
-          return _buildTransitionPage(
-            state: state,
-            child: BlocProvider(
-              create: (_) => getIt<OtpCubit>(),
-              child: OtpVerificationView(
-                email: state.extra as String? ?? 'user@example.com',
-                mode: OtpMode.emailVerification,
+                mode: mode,
               ),
             ),
           );
@@ -341,12 +361,24 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kCreateNewPasswordView,
         pageBuilder: (context, state) {
+          // extra can be Map<String, String> (from OTP flow) or a bare String (legacy).
+          final extra = state.extra;
+          final String email;
+          final String resetToken;
+          if (extra is Map<String, dynamic>) {
+            email = extra['email'] as String? ?? 'user@example.com';
+            resetToken = extra['resetToken'] as String? ?? '';
+          } else {
+            email = extra is String ? extra : 'user@example.com';
+            resetToken = '';
+          }
           return _buildTransitionPage(
             state: state,
             child: BlocProvider(
               create: (_) => getIt<ResetPasswordCubit>(),
               child: CreateNewPasswordView(
-                email: state.extra as String? ?? 'user@example.com',
+                email: email,
+                resetToken: resetToken,
               ),
             ),
           );

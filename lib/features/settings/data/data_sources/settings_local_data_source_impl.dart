@@ -2,6 +2,7 @@ import 'package:MatchIn/core/networking/api_interceptor.dart';
 import 'package:MatchIn/core/services/google_sign_in_service.dart';
 import 'package:MatchIn/core/services/secure_storage_service.dart';
 import 'package:MatchIn/core/services/shared_preferences_service.dart';
+import 'package:MatchIn/features/home/data/data_sources/home_local_data_source.dart';
 import 'package:MatchIn/features/profile/data/data_sources/profile_local_data_source.dart';
 import 'package:MatchIn/features/settings/data/data_sources/settings_local_data_source.dart';
 
@@ -10,12 +11,14 @@ class SettingsLocalDataSourceImpl implements SettingsLocalDataSource {
     required this.sharedPreferencesService,
     required this.secureStorageService,
     required this.profileLocalDataSource,
+    this.homeLocalDataSource,
     this.googleSignInService,
   });
 
   final SharedPreferencesService sharedPreferencesService;
   final SecureStorageService secureStorageService;
   final ProfileLocalDataSource profileLocalDataSource;
+  final HomeLocalDataSource? homeLocalDataSource;
   final GoogleSignInService? googleSignInService;
 
   @override
@@ -66,8 +69,9 @@ class SettingsLocalDataSourceImpl implements SettingsLocalDataSource {
       // Intentionally ignored; local cleanup below is authoritative.
     }
 
-    // 3. Clear cached profile data
+    // 3. Clear cached profile and home data
     await profileLocalDataSource.clearCachedCandidateProfile();
+    await homeLocalDataSource?.clearCachedHomeDashboard();
 
     // 4. Dispatch logout event across the app
     AuthEventBus.instance.addEvent(AuthEvent.logout);

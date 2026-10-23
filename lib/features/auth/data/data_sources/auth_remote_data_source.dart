@@ -6,14 +6,16 @@ abstract class AuthRemoteDataSource {
 
   Future<void> forgotPassword({required String email});
 
-  Future<void> verifyPasswordResetOtp({
+  Future<String> verifyPasswordResetOtp({
     required String email,
     required String otp,
   });
 
   Future<void> resetPassword({
     required String email,
-    required String newPassword,
+    required String resetToken,
+    required String password,
+    required String passwordConfirmation,
   });
 
   Future<void> register({

@@ -82,11 +82,11 @@ class OtpCubit extends Cubit<OtpState> {
       ]);
       if (isClosed) return;
 
-      final Either<Failure, Unit> result =
-          results.first as Either<Failure, Unit>;
+      final Either<Failure, String> result =
+          results.first as Either<Failure, String>;
       result.fold(
         (failure) => emit(OtpVerificationError(message: failure.message)),
-        (_) => emit(const OtpVerificationSuccess()),
+        (resetToken) => emit(OtpVerificationSuccess(resetToken: resetToken)),
       );
     } catch (e) {
       if (isClosed) return;

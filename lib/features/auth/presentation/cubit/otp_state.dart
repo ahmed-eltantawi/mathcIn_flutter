@@ -16,7 +16,12 @@ class OtpLoading extends OtpState {
 }
 
 class OtpVerificationSuccess extends OtpState {
-  const OtpVerificationSuccess();
+  const OtpVerificationSuccess({this.resetToken});
+
+  final String? resetToken;
+
+  @override
+  List<Object?> get props => [resetToken];
 }
 
 class OtpVerificationError extends OtpState {

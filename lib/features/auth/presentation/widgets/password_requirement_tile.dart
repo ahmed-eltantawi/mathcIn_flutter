@@ -1,3 +1,5 @@
+import 'package:MatchIn/core/extensions/context_extensions.dart';
+import 'package:MatchIn/core/theme/app_semantic_colors.dart';
 import 'package:MatchIn/core/utils/app_colors.dart';
 import 'package:MatchIn/core/utils/app_text_styles.dart';
 import 'package:flutter/material.dart';
@@ -15,10 +17,16 @@ class PasswordRequirementTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color iconColor = isMet ? AppColors.success : const Color(0xFF74777F);
+    final colors = context.colors;
+    final successColor =
+        context.theme.extension<AppSemanticColors>()?.success ??
+            AppColors.forestGreen;
+    final Color iconColor = isMet
+        ? successColor
+        : colors.onSurfaceVariant.withValues(alpha: 0.6);
     final Color textColor = isMet
-        ? AppColors.textPrimary
-        : const Color(0xFF44474E);
+        ? colors.onSurface
+        : colors.onSurfaceVariant;
 
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 4.h),
@@ -30,7 +38,7 @@ class PasswordRequirementTile extends StatelessWidget {
             height: 14.w,
             decoration: BoxDecoration(
               color: isMet
-                  ? AppColors.success.withValues(alpha: 0.15)
+                  ? successColor.withValues(alpha: 0.15)
                   : Colors.transparent,
               shape: BoxShape.circle,
             ),

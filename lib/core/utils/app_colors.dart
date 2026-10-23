@@ -35,15 +35,22 @@ abstract final class AppColors {
   // Dark Palette
   // =========================================================
 
-  static const Color darkBackground = Color(0xFF111315);
-  static const Color darkSurface = Color(0xFF1F242A);
-  static const Color darkSurfaceVariant = Color(0xFF262B31);
+  static const Color darkPrimary = Color(0xFF4C82E6);
+  static const Color darkSecondary = Color(0xFFE27D60);
+  static const Color darkSuccess = Color(0xFF4ADE80);
+  static const Color darkError = Color(0xFFEF5350);
 
-  static const Color darkTextPrimary = Color(0xFFF4F2EF);
-  static const Color darkTextSecondary = Color(0xFFA7ABB1);
+  static const Color darkBackground = Color(0xFF0F1216);
+  static const Color darkSurface = Color(0xFF191F26);
+  static const Color darkSurfaceVariant = Color(0xFF222933);
+  static const Color darkInputFill = Color(0xFF13171C);
 
-  static const Color darkBorder = Color(0xFF363D45);
-  static const Color darkDivider = Color(0xFF30363D);
+  static const Color darkTextPrimary = Color(0xFFF3F5F7);
+  static const Color darkTextSecondary = Color(0xFF9AA4B2);
+  static const Color darkTextHint = Color(0xFF667085);
+
+  static const Color darkBorder = Color(0xFF2D3540);
+  static const Color darkDivider = Color(0xFF262D37);
 
   // =========================================================
   // Common
