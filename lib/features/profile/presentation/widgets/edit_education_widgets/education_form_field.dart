@@ -9,6 +9,7 @@ class EducationFormField extends StatelessWidget {
     this.hintText,
     this.readOnly = false,
     this.onTap,
+    this.validator,
   });
 
   final String label;
@@ -16,6 +17,7 @@ class EducationFormField extends StatelessWidget {
   final String? hintText;
   final bool readOnly;
   final VoidCallback? onTap;
+  final FormFieldValidator<String>? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,8 @@ class EducationFormField extends StatelessWidget {
         SizedBox(height: 8.h),
         TextFormField(
           controller: controller,
+          validator: validator,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           readOnly: readOnly,
           onTap: onTap,
           decoration: InputDecoration(
@@ -47,6 +51,14 @@ class EducationFormField extends StatelessWidget {
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.r),
               borderSide: BorderSide(color: theme.dividerColor),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.r),
+              borderSide: BorderSide(color: theme.colorScheme.error),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.r),
+              borderSide: BorderSide(color: theme.colorScheme.error, width: 2),
             ),
           ),
         ),

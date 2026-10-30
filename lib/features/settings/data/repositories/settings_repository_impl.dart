@@ -15,6 +15,52 @@ class SettingsRepositoryImpl implements SettingsRepository {
   final SettingsRemoteDataSource remoteDataSource;
 
   @override
+  Future<Either<Failure, Unit>> requestPasswordChangeOtp() async {
+    try {
+      await remoteDataSource.requestPasswordChangeOtp();
+      return const Right(unit);
+    } on ServerException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.errorModel.errorMessage,
+          fieldErrors: e.errorModel.fieldErrors,
+        ),
+      );
+    } on OfflineException {
+      return const Left(OfflineFailure());
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> confirmPasswordChange({
+    required String otp,
+    required String newPassword,
+    required String confirmPassword,
+  }) async {
+    try {
+      await remoteDataSource.confirmPasswordChange(
+        otp: otp,
+        newPassword: newPassword,
+        confirmPassword: confirmPassword,
+      );
+      return const Right(unit);
+    } on ServerException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.errorModel.errorMessage,
+          fieldErrors: e.errorModel.fieldErrors,
+        ),
+      );
+    } on OfflineException {
+      return const Left(OfflineFailure());
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
   Future<Either<Failure, bool>> getNotificationPreference() async {
     try {
       final isEnabled = await localDataSource.getNotificationPreference();
@@ -88,7 +134,12 @@ class SettingsRepositoryImpl implements SettingsRepository {
       );
       return const Right(unit);
     } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.errorModel.errorMessage, fieldErrors: e.errorModel.fieldErrors));
+      return Left(
+        ServerFailure(
+          message: e.errorModel.errorMessage,
+          fieldErrors: e.errorModel.fieldErrors,
+        ),
+      );
     } on OfflineException {
       return const Left(OfflineFailure());
     } catch (e) {

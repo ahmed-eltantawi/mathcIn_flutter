@@ -1,6 +1,5 @@
-import 'package:MatchIn/core/services/services_locator.dart';
-import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_cubit.dart';
 import 'package:MatchIn/features/saved/domain/entities/saved_job_entity.dart';
+import 'package:MatchIn/features/saved/domain/use_cases/get_local_saved_jobs_use_case.dart';
 import 'package:MatchIn/features/saved/domain/use_cases/get_saved_jobs_use_case.dart';
 import 'package:MatchIn/features/saved/domain/use_cases/set_saved_job_use_case.dart';
 import 'package:MatchIn/features/saved/domain/use_cases/set_unsaved_job_use_case.dart';
@@ -18,12 +17,16 @@ class SavedJobsCubit extends Cubit<SavedJobsState> {
     required this.setSavedJobUseCase,
     required this.setUnsavedJobUseCase,
     required this.syncSavedJobsUseCase,
+    required this.getLocalSavedJobsUseCase,
+    this.onSaveStatusChanged,
   }) : super(const SavedJobsInitial());
 
   final GetSavedJobsUseCase getSavedJobsUseCase;
   final SetSavedJobUseCase setSavedJobUseCase;
   final SetUnsavedJobUseCase setUnsavedJobUseCase;
   final SyncSavedJobsUseCase syncSavedJobsUseCase;
+  final GetLocalSavedJobsUseCase getLocalSavedJobsUseCase;
+  final void Function(int jobId, bool isSaved)? onSaveStatusChanged;
 
   //! ===== Optimistic bookmark handling =====
   // Guards against rapid repeated taps firing duplicate save/unsave calls.
@@ -190,7 +193,7 @@ class SavedJobsCubit extends Cubit<SavedJobsState> {
 
   Future<List<SavedJobEntity>?> _readLocalJobs() async {
     try {
-      return await syncSavedJobsUseCase.repository.getLocalSavedJobs();
+      return await getLocalSavedJobsUseCase();
     } catch (_) {
       return null;
     }
@@ -229,11 +232,6 @@ class SavedJobsCubit extends Cubit<SavedJobsState> {
   }
 
   void _pushFeedStatus(int jobPostId, bool isSaved) {
-    if (getIt.isRegistered<JobsFeedCubit>()) {
-      getIt<JobsFeedCubit>().updateJobSavedStatus(
-        jobId: jobPostId.toString(),
-        isSaved: isSaved,
-      );
-    }
+    onSaveStatusChanged?.call(jobPostId, isSaved);
   }
 }

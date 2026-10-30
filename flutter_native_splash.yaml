@@ -1,13 +1,22 @@
 flutter_native_splash:
-  color: "#082755"
-  image: "assets/images/app_icon.png"
-
   android: true
   ios: true
   web: false
+  color: "#F8F7F4"
+  color_dark: "#082855"
+  # Legacy Android and iOS display the complete app mark and its navy tile.
+  image: "assets/images/app_icon.png"
+  image_dark: "assets/images/app_icon.png"
+  android_gravity: center
+  ios_content_mode: center
 
   android_12:
-    image: "assets/images/app_icon.png"
-    icon_background_color: "#082755"
+    color: "#F8F7F4"
+    color_dark: "#082855"
+    # Android 12 applies its system mask and background to this foreground.
+    image: "assets/images/app_icon_foreground.png"
+    image_dark: "assets/images/app_icon_foreground.png"
+    icon_background_color: "#082855"
+    icon_background_color_dark: "#082855"
 
 

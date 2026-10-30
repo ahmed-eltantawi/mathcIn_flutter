@@ -1,6 +1,26 @@
 class ProfileFormValidator {
   const ProfileFormValidator._();
 
+  static String? requiredValue(
+    String? value, {
+    required String requiredMessage,
+  }) => value == null || value.trim().isEmpty ? requiredMessage : null;
+
+  static String? optionalWebUrl(
+    String? value, {
+    required String invalidMessage,
+  }) {
+    final trimmed = value?.trim() ?? '';
+    if (trimmed.isEmpty) return null;
+    final uri = Uri.tryParse(trimmed);
+    if (uri == null ||
+        (uri.scheme != 'http' && uri.scheme != 'https') ||
+        uri.host.isEmpty) {
+      return invalidMessage;
+    }
+    return null;
+  }
+
   /// Formats a picked date as `YYYY-MM-DD` for the backend.
   static String formatDate(DateTime date) {
     final month = date.month.toString().padLeft(2, '0');

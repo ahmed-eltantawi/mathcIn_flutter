@@ -2,7 +2,6 @@ import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:MatchIn/core/routing/app_routes.dart';
 import 'package:MatchIn/core/services/services_locator.dart';
 import 'package:MatchIn/core/services/shared_preferences_service.dart';
-import 'package:MatchIn/features/auth/presentation/widgets/google_sign_in_button.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,24 +21,7 @@ class RegisterFooter extends StatelessWidget {
 
     return Column(
       children: [
-        Row(
-          children: [
-            Expanded(child: Divider(color: colors.outline)),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Text(
-                locale.or,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: colors.onSurfaceVariant,
-                ),
-              ),
-            ),
-            Expanded(child: Divider(color: colors.outline)),
-          ],
-        ),
         SizedBox(height: 12.h),
-        const GoogleSignInButton(),
-        SizedBox(height: 16.h),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

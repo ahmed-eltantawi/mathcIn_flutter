@@ -18,13 +18,7 @@ class SettingsRemoteDataSourceImpl implements SettingsRemoteDataSource {
   final ProfileLocalDataSource? profileLocalDataSource;
   final SharedPreferencesService? sharedPreferencesService;
 
-  @override
-  Future<void> changePassword({
-    required String currentPassword,
-    required String newPassword,
-    required String confirmPassword,
-  }) async {
-    // 1. Resolve user email from local profile cache, SharedPreferences, or /auth/me
+  Future<String> _resolveEmail() async {
     String email = '';
     try {
       final cached = await profileLocalDataSource?.getCachedUserProfile();
@@ -39,17 +33,12 @@ class SettingsRemoteDataSourceImpl implements SettingsRemoteDataSource {
         email = savedEmail.trim();
       }
     }
-
     if (email.isEmpty) {
-      try {
-        final meResponse = await apiConsumer.get(EndPoint.currentUser);
-        if (meResponse is Map<String, dynamic>) {
-          final userProfile = UserProfileModel.fromJson(meResponse);
-          email = userProfile.email.trim();
-        }
-      } catch (_) {}
+      final meResponse = await apiConsumer.get(EndPoint.currentUser);
+      if (meResponse is Map<String, dynamic>) {
+        email = UserProfileModel.fromJson(meResponse).email.trim();
+      }
     }
-
     if (email.isEmpty) {
       throw ServerException(
         errorModel: const ErrorModel(
@@ -58,39 +47,47 @@ class SettingsRemoteDataSourceImpl implements SettingsRemoteDataSource {
         ),
       );
     }
+    return email;
+  }
 
-    // 2. Request OTP and exchange for reset_token
+  @override
+  Future<void> requestPasswordChangeOtp() async {
+    final email = await _resolveEmail();
     await apiConsumer.post(
       EndPoint.forgotPassword,
       data: {ApiKey.email: email},
     );
+  }
 
+  @override
+  Future<void> confirmPasswordChange({
+    required String otp,
+    required String newPassword,
+    required String confirmPassword,
+  }) async {
+    final email = await _resolveEmail();
     final verifyResponse = await apiConsumer.post(
       EndPoint.verifyPasswordResetOtp,
-      data: {
-        ApiKey.email: email,
-        ApiKey.otp: '123456',
-      },
+      data: {ApiKey.email: email, ApiKey.otp: otp.trim()},
     );
-
-    String resetToken = '';
-    if (verifyResponse is Map<String, dynamic>) {
-      resetToken = (verifyResponse[ApiKey.resetToken] ??
-              verifyResponse['data']?[ApiKey.resetToken])
-          ?.toString() ??
-          '';
-    }
-
-    if (resetToken.isEmpty) {
+    final responseData = verifyResponse is Map<String, dynamic>
+        ? verifyResponse['data']
+        : null;
+    final resetToken = verifyResponse is Map<String, dynamic>
+        ? (verifyResponse[ApiKey.resetToken] ??
+                  (responseData is Map<String, dynamic>
+                      ? responseData[ApiKey.resetToken]
+                      : null))
+              ?.toString()
+        : null;
+    if (resetToken == null || resetToken.isEmpty) {
       throw ServerException(
         errorModel: const ErrorModel(
-          statusCode: 400,
-          errorMessage: 'Failed to verify password reset token.',
+          statusCode: 502,
+          errorMessage: 'The server did not return a password reset token.',
         ),
       );
     }
-
-    // 3. Reset password using the obtained reset_token
     await apiConsumer.post(
       EndPoint.resetPassword,
       data: {
@@ -99,6 +96,21 @@ class SettingsRemoteDataSourceImpl implements SettingsRemoteDataSource {
         ApiKey.password: newPassword,
         ApiKey.passwordConfirmation: confirmPassword,
       },
+    );
+  }
+
+  @override
+  Future<void> changePassword({
+    required String currentPassword,
+    required String newPassword,
+    required String confirmPassword,
+  }) async {
+    await requestPasswordChangeOtp();
+    throw ServerException(
+      errorModel: const ErrorModel(
+        statusCode: 409,
+        errorMessage: 'A verification code was sent. Enter the email code to complete password change.',
+      ),
     );
   }
 

@@ -9,6 +9,7 @@ import 'package:MatchIn/features/profile/presentation/widgets/edit_education_wid
 import 'package:MatchIn/features/profile/presentation/widgets/edit_education_widgets/education_management_header.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_education_widgets/education_management_record.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_education_widgets/education_recruiter_visibility_card.dart';
+import 'package:MatchIn/features/profile/presentation/widgets/profile_screen_widgets/profile_skeleton.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -98,7 +99,7 @@ class EditEducationViewBody extends StatelessWidget {
           switch (state) {
             case EditEducationInitial():
             case EditEducationLoading():
-              return const Center(child: CircularProgressIndicator());
+              return const ProfileLoadingSkeleton();
             case EditEducationFailure():
               return AppErrorWidget(
                 message: state.message,

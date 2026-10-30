@@ -3527,6 +3527,16 @@ class S {
     );
   }
 
+  /// `Choose a skill from the suggestions before adding it.`
+  String get selectSkillSuggestion {
+    return Intl.message(
+      'Choose a skill from the suggestions before adding it.',
+      name: 'selectSkillSuggestion',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Add`
   String get add {
     return Intl.message('Add', name: 'add', desc: '', args: []);
@@ -4177,16 +4187,6 @@ class S {
     );
   }
 
-  /// `Avatar upload is not available yet.`
-  String get avatarUploadUnavailable {
-    return Intl.message(
-      'Avatar upload is not available yet.',
-      name: 'avatarUploadUnavailable',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Unsupported image type. Use JPG, PNG, or WEBP.`
   String get invalidImageType {
     return Intl.message(
@@ -4702,6 +4702,16 @@ class S {
     );
   }
 
+  /// `Some profile, project, experience, and career preference fields aren't supported by the current API, so those changes weren't saved.`
+  String get unsupportedProfileFieldsNotSaved {
+    return Intl.message(
+      'Some profile, project, experience, and career preference fields aren\'t supported by the current API, so those changes weren\'t saved.',
+      name: 'unsupportedProfileFieldsNotSaved',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Recruiter Visibility`
   String get recruiterVisibility {
     return Intl.message(
@@ -5207,6 +5217,26 @@ class S {
     return Intl.message(
       'Grounded on your verified skills, experience, and target roles.',
       name: 'careerGroundingContext',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No job requirements were provided.`
+  String get noJobRequirementsListed {
+    return Intl.message(
+      'No job requirements were provided.',
+      name: 'noJobRequirementsListed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter a valid link starting with https:// or http://.`
+  String get invalidProfileUrl {
+    return Intl.message(
+      'Enter a valid link starting with https:// or http://.',
+      name: 'invalidProfileUrl',
       desc: '',
       args: [],
     );

@@ -17,10 +17,10 @@ class CandidateProjectModel extends CandidateProjectEntity {
   factory CandidateProjectModel.fromJson(Map<String, dynamic> json) {
     return CandidateProjectModel(
       id: JsonParsing.parseId(json['id']) ?? 0,
-      name: JsonParsing.parseString(json['name']) ?? '',
+      name: JsonParsing.parseString(json['title'] ?? json['name']) ?? '',
       description: JsonParsing.parseString(json['description']),
       technologies: JsonParsing.parseStringList(json['technologies']),
-      projectUrl: JsonParsing.parseString(json['project_url']),
+      projectUrl: JsonParsing.parseString(json['url'] ?? json['project_url']),
       githubUrl: JsonParsing.parseString(json['github_url']),
       source: JsonParsing.parseString(json['source']) ?? 'manual',
       startDate: JsonParsing.parseString(json['start_date']),
@@ -53,7 +53,8 @@ class CandidateProjectModel extends CandidateProjectEntity {
     final id = JsonParsing.parseId(json['id']) ?? 0;
     if (id <= 0) return null;
 
-    final name = JsonParsing.parseString(json['name'])?.trim() ?? '';
+    final name =
+        JsonParsing.parseString(json['title'] ?? json['name'])?.trim() ?? '';
     if (name.isEmpty) return null;
 
     return CandidateProjectModel.fromJson(json);

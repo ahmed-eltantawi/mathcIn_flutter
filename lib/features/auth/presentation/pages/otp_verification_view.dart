@@ -32,12 +32,14 @@ class OtpVerificationView extends StatefulWidget {
     super.key,
     this.email = 'user@example.com',
     this.mode = OtpMode.emailVerification,
+    this.allowImmediateResend = false,
   });
 
   final String email;
 
   /// Controls the post-verification navigation destination.
   final OtpMode mode;
+  final bool allowImmediateResend;
 
   @override
   State<OtpVerificationView> createState() => _OtpVerificationViewState();
@@ -63,7 +65,11 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
   @override
   void initState() {
     super.initState();
-    _startTimer();
+    if (widget.allowImmediateResend) {
+      _secondsRemaining = 0;
+    } else {
+      _startTimer();
+    }
   }
 
   @override

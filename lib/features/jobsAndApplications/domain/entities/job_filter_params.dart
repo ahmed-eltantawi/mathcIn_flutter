@@ -43,19 +43,7 @@ class JobFilterParams extends Equatable {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     if (search != null && search!.trim().isNotEmpty) {
-      map[ApiKey.search] = search!.trim();
-    }
-    if (sort != null && sort!.isNotEmpty) {
-      map[ApiKey.sort] = sort;
-    }
-    if (companyId != null) {
-      map[ApiKey.companyId] = companyId;
-    }
-    if (jobType != null && jobType!.isNotEmpty) {
-      map[ApiKey.jobType] = jobType;
-    }
-    if (workMode != null && workMode!.isNotEmpty) {
-      map[ApiKey.workMode] = workMode;
+      map['q'] = search!.trim();
     }
     if (employmentType != null && employmentType!.isNotEmpty) {
       map[ApiKey.employmentType] = employmentType;
@@ -63,30 +51,17 @@ class JobFilterParams extends Equatable {
     if (experienceLevel != null && experienceLevel!.isNotEmpty) {
       map[ApiKey.experienceLevel] = experienceLevel;
     }
-    if (country != null && country!.isNotEmpty) {
-      map[ApiKey.country] = country;
+    final locationParts = [
+      country,
+      state,
+      city,
+    ].whereType<String>().where((value) => value.trim().isNotEmpty).toList();
+    if (locationParts.isNotEmpty) map['location'] = locationParts.join(', ');
+    if (workMode != null && workMode!.isNotEmpty) {
+      map['is_remote'] = workMode!.toLowerCase().contains('remote');
     }
-    if (state != null && state!.isNotEmpty) {
-      map[ApiKey.state] = state;
-    }
-    if (city != null && city!.isNotEmpty) {
-      map[ApiKey.city] = city;
-    }
-    if (source != null && source!.isNotEmpty) {
-      map[ApiKey.source] = source;
-    }
-    if (applicationMethod != null && applicationMethod!.isNotEmpty) {
-      map[ApiKey.applicationMethod] = applicationMethod;
-    }
-    if (isVerifiedCompany != null) {
-      map[ApiKey.isVerifiedCompany] = isVerifiedCompany;
-    }
-    if (requiredSkillIds != null && requiredSkillIds!.isNotEmpty) {
-      map[ApiKey.requiredSkillIds] = requiredSkillIds;
-    }
-    if (preferredSkillIds != null && preferredSkillIds!.isNotEmpty) {
-      map[ApiKey.preferredSkillIds] = preferredSkillIds;
-    }
+    // The deployed contract does not define sort, company, source,
+    // verification, or skill-id filters; don't send undocumented keys.
     map[ApiKey.page] = page;
     map[ApiKey.perPage] = perPage;
     return map;
@@ -187,22 +162,22 @@ class JobFilterParams extends Equatable {
 
   @override
   List<Object?> get props => [
-        search,
-        sort,
-        companyId,
-        jobType,
-        workMode,
-        employmentType,
-        experienceLevel,
-        country,
-        state,
-        city,
-        source,
-        applicationMethod,
-        isVerifiedCompany,
-        requiredSkillIds,
-        preferredSkillIds,
-        page,
-        perPage,
-      ];
+    search,
+    sort,
+    companyId,
+    jobType,
+    workMode,
+    employmentType,
+    experienceLevel,
+    country,
+    state,
+    city,
+    source,
+    applicationMethod,
+    isVerifiedCompany,
+    requiredSkillIds,
+    preferredSkillIds,
+    page,
+    perPage,
+  ];
 }

@@ -146,9 +146,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "askChatBot": MessageLookupByLibrary.simpleMessage("اسأل المساعد"),
     "at": MessageLookupByLibrary.simpleMessage("في"),
-    "avatarUploadUnavailable": MessageLookupByLibrary.simpleMessage(
-      "رفع الصورة غير متاح بعد.",
-    ),
     "back": MessageLookupByLibrary.simpleMessage("رجوع"),
     "backOnline": MessageLookupByLibrary.simpleMessage("تمت استعادة الاتصال"),
     "backToJobs": MessageLookupByLibrary.simpleMessage("العودة للوظائف"),
@@ -542,6 +539,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "invalidJobId": MessageLookupByLibrary.simpleMessage(
       "معرّف الوظيفة غير صالح.",
     ),
+    "invalidProfileUrl": MessageLookupByLibrary.simpleMessage(
+      "أدخل رابطًا صحيحًا يبدأ بـ https:// أو http://.",
+    ),
     "invalidVerificationCode": MessageLookupByLibrary.simpleMessage(
       "رمز التحقق غير صحيح",
     ),
@@ -675,6 +675,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "noHistoryYet": MessageLookupByLibrary.simpleMessage("لا يوجد سجل بعد"),
     "noInternetConnection": MessageLookupByLibrary.simpleMessage(
       "لا يوجد اتصال بالإنترنت",
+    ),
+    "noJobRequirementsListed": MessageLookupByLibrary.simpleMessage(
+      "لم يتم توفير متطلبات لهذه الوظيفة.",
     ),
     "noJobsFound": MessageLookupByLibrary.simpleMessage("لا توجد وظائف متاحة"),
     "noLearningTasks": MessageLookupByLibrary.simpleMessage(
@@ -977,6 +980,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "select": MessageLookupByLibrary.simpleMessage("اختر"),
     "selectLanguage": MessageLookupByLibrary.simpleMessage("اختر اللغة"),
     "selectRoadmap": MessageLookupByLibrary.simpleMessage("اختر خارطة الطريق"),
+    "selectSkillSuggestion": MessageLookupByLibrary.simpleMessage(
+      "اختار مهارة من الاقتراحات قبل ما تضيفها.",
+    ),
     "selectTheme": MessageLookupByLibrary.simpleMessage("اختر المظهر"),
     "sendMessage": MessageLookupByLibrary.simpleMessage("إرسال رسالة"),
     "sendVerificationCode": MessageLookupByLibrary.simpleMessage(
@@ -1111,6 +1117,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "twoDaysAgo": MessageLookupByLibrary.simpleMessage("منذ يومين"),
     "twoHoursAgo": MessageLookupByLibrary.simpleMessage("منذ ساعتين"),
+    "unsupportedProfileFieldsNotSaved": MessageLookupByLibrary.simpleMessage(
+      "بعض بيانات الملف والمشاريع والخبرات والتفضيلات المهنية غير مدعومة في الـAPI الحالية، لذلك لم تُحفظ هذه التغييرات.",
+    ),
     "updateStatus": MessageLookupByLibrary.simpleMessage("تحديث الحالة"),
     "updatedFiveDaysAgo": MessageLookupByLibrary.simpleMessage(
       "تم التحديث منذ 5 أيام",

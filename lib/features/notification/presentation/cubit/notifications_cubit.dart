@@ -31,8 +31,10 @@ class NotificationsCubit extends Cubit<NotificationsState> {
   final NotificationService notificationService;
 
   StreamSubscription<int>? _unreadCountSubscription;
+  int _requestGeneration = 0;
 
   Future<void> loadNotifications({bool? unreadOnly}) async {
+    final generation = ++_requestGeneration;
     final filter = unreadOnly ?? state.unreadOnly;
     emit(state.copyWith(
       status: NotificationsStatus.loading,
@@ -43,6 +45,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
       page: 1,
       unreadOnly: filter,
     );
+    if (isClosed || generation != _requestGeneration) return;
 
     result.fold(
       (failure) => emit(state.copyWith(
@@ -65,13 +68,16 @@ class NotificationsCubit extends Cubit<NotificationsState> {
       return;
     }
 
-    emit(state.copyWith(status: NotificationsStatus.paginationLoading));
+    final generation = _requestGeneration;
+    final startingState = state;
+    emit(startingState.copyWith(status: NotificationsStatus.paginationLoading));
 
-    final nextPage = state.currentPage + 1;
+    final nextPage = startingState.currentPage + 1;
     final result = await getNotificationsUseCase(
       page: nextPage,
-      unreadOnly: state.unreadOnly,
+      unreadOnly: startingState.unreadOnly,
     );
+    if (isClosed || generation != _requestGeneration) return;
 
     result.fold(
       (failure) => emit(state.copyWith(
@@ -98,10 +104,13 @@ class NotificationsCubit extends Cubit<NotificationsState> {
   }
 
   Future<void> refreshNotifications() async {
+    final generation = ++_requestGeneration;
+    final unreadOnly = state.unreadOnly;
     final result = await getNotificationsUseCase(
       page: 1,
-      unreadOnly: state.unreadOnly,
+      unreadOnly: unreadOnly,
     );
+    if (isClosed || generation != _requestGeneration) return;
 
     result.fold(
       (failure) => emit(state.copyWith(errorMessage: failure.message)),
@@ -127,6 +136,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
 
   Future<void> loadUnreadCount() async {
     final result = await getUnreadNotificationsCountUseCase();
+    if (isClosed) return;
     result.fold(
       (_) => null,
       (count) => emit(state.copyWith(unreadCount: count)),
@@ -135,6 +145,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
 
   Future<void> markAsRead(int notificationId) async {
     final result = await markNotificationAsReadUseCase(id: notificationId);
+    if (isClosed) return;
 
     result.fold(
       (_) => null,
@@ -162,6 +173,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
 
   Future<void> markAllAsRead() async {
     final result = await markAllNotificationsAsReadUseCase();
+    if (isClosed) return;
 
     result.fold(
       (_) => null,
@@ -179,8 +191,8 @@ class NotificationsCubit extends Cubit<NotificationsState> {
   }
 
   @override
-  Future<void> close() {
-    _unreadCountSubscription?.cancel();
-    return super.close();
+  Future<void> close() async {
+    await _unreadCountSubscription?.cancel();
+    await super.close();
   }
 }

@@ -2,12 +2,15 @@ import 'package:equatable/equatable.dart';
 
 class UpdateCandidateProfileParams extends Equatable {
   const UpdateCandidateProfileParams({
+    this.fullName = _unset,
+    this.phone = _unset,
     this.dateOfBirth = _unset,
     this.gender = _unset,
     this.jobTitle = _unset,
     this.country = _unset,
     this.state = _unset,
     this.city = _unset,
+    this.location = _unset,
     this.githubUrl = _unset,
     this.linkedinUrl = _unset,
     this.militaryStatus = _unset,
@@ -18,12 +21,15 @@ class UpdateCandidateProfileParams extends Equatable {
   /// `_unset` means "unchanged, do not send".
   /// An explicit `null` means "clear this field".
   /// A [String] value means "update to this value".
+  final Object? fullName;
+  final Object? phone;
   final Object? dateOfBirth;
   final Object? gender;
   final Object? jobTitle;
   final Object? country;
   final Object? state;
   final Object? city;
+  final Object? location;
   final Object? githubUrl;
   final Object? linkedinUrl;
   final Object? militaryStatus;
@@ -36,30 +42,53 @@ class UpdateCandidateProfileParams extends Equatable {
   static bool isSet(Object? value) => !identical(value, _unset);
 
   bool get hasChanges =>
+      isSet(fullName) ||
+      isSet(phone) ||
       isSet(dateOfBirth) ||
       isSet(gender) ||
       isSet(jobTitle) ||
       isSet(country) ||
       isSet(state) ||
       isSet(city) ||
+      isSet(location) ||
       isSet(githubUrl) ||
       isSet(linkedinUrl) ||
       isSet(militaryStatus) ||
       isSet(professionalSummary);
 
+  /// Fields the published PATCH /candidate/profile contract accepts.
+  bool get hasApiSupportedChanges =>
+      isSet(fullName) ||
+      isSet(phone) ||
+      isSet(jobTitle) ||
+      isSet(location) ||
+      isSet(githubUrl) ||
+      isSet(linkedinUrl) ||
+      isSet(professionalSummary);
+
+  bool get hasUnsupportedChanges =>
+      isSet(dateOfBirth) ||
+      isSet(gender) ||
+      isSet(militaryStatus);
+
   UpdateCandidateProfileParams copyWith({
+    Object? fullName = _unset,
+    Object? phone = _unset,
     Object? dateOfBirth = _unset,
     Object? gender = _unset,
     Object? jobTitle = _unset,
     Object? country = _unset,
     Object? state = _unset,
     Object? city = _unset,
+    Object? location = _unset,
     Object? githubUrl = _unset,
     Object? linkedinUrl = _unset,
     Object? militaryStatus = _unset,
     Object? professionalSummary = _unset,
   }) {
     return UpdateCandidateProfileParams(
+      fullName: identical(fullName, _unset) ? this.fullName : fullName,
+      phone: identical(phone, _unset) ? this.phone : phone,
       dateOfBirth: identical(dateOfBirth, _unset)
           ? this.dateOfBirth
           : dateOfBirth,
@@ -68,6 +97,7 @@ class UpdateCandidateProfileParams extends Equatable {
       country: identical(country, _unset) ? this.country : country,
       state: identical(state, _unset) ? this.state : state,
       city: identical(city, _unset) ? this.city : city,
+      location: identical(location, _unset) ? this.location : location,
       githubUrl: identical(githubUrl, _unset) ? this.githubUrl : githubUrl,
       linkedinUrl: identical(linkedinUrl, _unset)
           ? this.linkedinUrl
@@ -83,12 +113,15 @@ class UpdateCandidateProfileParams extends Equatable {
 
   @override
   List<Object?> get props => [
+    fullName,
+    phone,
     dateOfBirth,
     gender,
     jobTitle,
     country,
     state,
     city,
+    location,
     githubUrl,
     linkedinUrl,
     militaryStatus,

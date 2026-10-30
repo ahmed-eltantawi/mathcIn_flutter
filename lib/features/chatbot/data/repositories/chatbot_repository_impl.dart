@@ -3,13 +3,13 @@ import 'package:MatchIn/core/errors/exceptions.dart';
 import 'package:MatchIn/core/errors/failures.dart';
 import 'package:MatchIn/core/networking/network_info.dart';
 import 'package:MatchIn/core/services/shared_preferences_service.dart';
-import '../../domain/entities/chat_entity.dart';
-import '../../domain/entities/chat_message_entity.dart';
-import '../../domain/repositories/chatbot_repository.dart';
-import '../data_sources/chatbot_local_data_source.dart';
-import '../data_sources/chatbot_remote_data_source.dart';
-import '../models/chat_model.dart';
-import '../models/chatbot_send_message_response_model.dart';
+import 'package:MatchIn/features/chatbot/domain/entities/chat_entity.dart';
+import 'package:MatchIn/features/chatbot/domain/entities/chat_message_entity.dart';
+import 'package:MatchIn/features/chatbot/domain/repositories/chatbot_repository.dart';
+import 'package:MatchIn/features/chatbot/data/data_sources/chatbot_local_data_source.dart';
+import 'package:MatchIn/features/chatbot/data/data_sources/chatbot_remote_data_source.dart';
+import 'package:MatchIn/features/chatbot/data/models/chat_model.dart';
+import 'package:MatchIn/features/chatbot/data/models/chatbot_send_message_response_model.dart';
 
 class ChatbotRepositoryImpl implements ChatbotRepository {
   ChatbotRepositoryImpl({
@@ -146,28 +146,30 @@ class ChatbotRepositoryImpl implements ChatbotRepository {
         message: message,
       );
 
-      // Reconcile and update local cache
-      final localChat = await localDataSource.getChatSession(conversationId, userId: uid);
-      if (localChat != null) {
-        final updatedMessages = List<ChatMessageEntity>.from(localChat.messages);
-        if (response.userMessage != null &&
-            !updatedMessages.any((m) => m.id == response.userMessage!.id)) {
-          updatedMessages.add(response.userMessage!);
-        }
-        updatedMessages.add(response.mentorReply);
-
-        final updatedChat = ChatModel.fromEntity(localChat.copyWith(
-          messages: updatedMessages,
-          updatedAt: DateTime.now(),
-        ));
-        await localDataSource.saveChatSession(updatedChat, userId: uid);
-      }
+      // Append only the new exchange instead of decoding and rewriting the
+      // entire conversation history for every send.
+      final appended = <ChatMessageEntity>[
+        if (response.userMessage != null) response.userMessage!,
+        response.mentorReply,
+      ];
+      await localDataSource.appendMessages(
+        conversationId,
+        appended,
+        userId: uid,
+        updatedAt: DateTime.now(),
+      );
 
       return Right(response);
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.errorModel.errorMessage));
     } on OfflineException {
       return const Left(OfflineFailure());
+    } on FormatException {
+      return const Left(
+        ServerFailure(
+          message: 'The mentor response was unavailable. Please try again.',
+        ),
+      );
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:MatchIn/core/cache/shared_preferences_helper.dart';
+import 'package:MatchIn/core/cache/cache_key.dart';
 import 'package:MatchIn/features/saved/data/data_sources/saved_jobs_local_data_source.dart';
 import 'package:MatchIn/features/saved/data/models/paginated_saved_jobs_model.dart';
 import 'package:MatchIn/features/saved/data/models/saved_job_response_model.dart';
@@ -16,7 +17,15 @@ class SavedJobsLocalDataSourceImpl implements SavedJobsLocalDataSource {
   /// Primary key backing the local source of truth for saved jobs.
   static const String primaryCacheKey = 'page_1_per_page_15';
 
-  static const String _syncQueueKey = 'saved_jobs_sync_queue_v1';
+  String get _userScope {
+    final userId = sharedPreferencesHelper.getData(key: CacheKey.id);
+    return userId == null ? 'guest' : userId.toString();
+  }
+
+  String _cacheStorageKey(String key) =>
+      '$_savedJobsCachePrefix${_userScope}_$key';
+
+  String get _syncQueueKey => 'saved_jobs_sync_queue_v1_$_userScope';
 
   @override
   Future<void> cacheSavedJobs(
@@ -25,7 +34,7 @@ class SavedJobsLocalDataSourceImpl implements SavedJobsLocalDataSource {
   ) async {
     final jsonString = jsonEncode(savedJobs.toJson());
     await sharedPreferencesHelper.saveData(
-      key: '$_savedJobsCachePrefix$key',
+      key: _cacheStorageKey(key),
       value: jsonString,
     );
   }
@@ -33,7 +42,7 @@ class SavedJobsLocalDataSourceImpl implements SavedJobsLocalDataSource {
   @override
   Future<PaginatedSavedJobsModel?> getCachedSavedJobs(String key) async {
     final jsonString = sharedPreferencesHelper.getString(
-      key: '$_savedJobsCachePrefix$key',
+      key: _cacheStorageKey(key),
     );
     if (jsonString != null && jsonString.isNotEmpty) {
       try {
@@ -64,10 +73,12 @@ class SavedJobsLocalDataSourceImpl implements SavedJobsLocalDataSource {
 
   @override
   Future<void> clearCache() async {
-    // Best-effort clear of primary page
-    await sharedPreferencesHelper.deleteData(
-      key: '$_savedJobsCachePrefix$primaryCacheKey',
-    );
+    final prefix = '$_savedJobsCachePrefix${_userScope}_';
+    for (final key in sharedPreferencesHelper.getKeys()) {
+      if (key.startsWith(prefix)) {
+        await sharedPreferencesHelper.deleteData(key: key);
+      }
+    }
   }
 
   @override

@@ -9,9 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-//* The backend application contract (POST /applications) supports only
-//* job_post_id, cv_document_id, cover_letter and notes. This step keeps no
-//* extra employer-question inputs; it forwards to the review step.
+//* This step keeps no extra employer-question inputs; it forwards to the
+//* review step. OpenAPI documents `job_post_id`, but the deployed endpoint's
+//* 422 response validates `job_id`; request mapping follows that live error.
 class ApplicationQuestionsViewBody extends StatelessWidget {
   const ApplicationQuestionsViewBody({
     super.key,

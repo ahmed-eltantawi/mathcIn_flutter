@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:MatchIn/core/cache/cache_key.dart';
 import 'package:MatchIn/core/cache/shared_preferences_helper.dart';
-import '../models/chat_message_model.dart';
-import '../models/chat_model.dart';
+import 'package:MatchIn/features/chatbot/data/models/chat_message_model.dart';
+import 'package:MatchIn/features/chatbot/data/models/chat_model.dart';
+import 'package:MatchIn/features/chatbot/domain/entities/chat_message_entity.dart';
 import 'chatbot_local_data_source.dart';
 
 class ChatbotLocalDataSourceImpl implements ChatbotLocalDataSource {
@@ -37,8 +38,11 @@ class ChatbotLocalDataSourceImpl implements ChatbotLocalDataSource {
         final mKey = _messagesKey(chatWithoutMessages.id, userId);
         final messagesRaw = sharedPreferencesHelper.getStringList(key: mKey);
 
+        final preview = messagesRaw == null
+            ? const <String>[]
+            : messagesRaw.skip(messagesRaw.length > 8 ? messagesRaw.length - 8 : 0);
         final messagesList = messagesRaw != null
-            ? messagesRaw
+            ? preview
                 .map((m) => ChatMessageModel.fromJson(
                     jsonDecode(m) as Map<String, dynamic>))
                 .toList()
@@ -58,12 +62,24 @@ class ChatbotLocalDataSourceImpl implements ChatbotLocalDataSource {
 
   @override
   Future<ChatModel?> getChatSession(String chatId, {String? userId}) async {
-    final sessions = await getChatSessions(userId: userId);
-    try {
-      return sessions.firstWhere((s) => s.id == chatId);
-    } catch (_) {
-      return null;
+    final rawList = sharedPreferencesHelper.getStringList(key: _sessionsKey(userId)) ?? [];
+    for (final raw in rawList) {
+      try {
+        final header = ChatModel.fromJson(jsonDecode(raw) as Map<String, dynamic>);
+        if (header.id != chatId) continue;
+        final rawMessages = sharedPreferencesHelper.getStringList(
+          key: _messagesKey(chatId, userId),
+        ) ?? const <String>[];
+        final messages = <ChatMessageModel>[];
+        for (final item in rawMessages) {
+          try {
+            messages.add(ChatMessageModel.fromJson(jsonDecode(item) as Map<String, dynamic>));
+          } catch (_) {}
+        }
+        return ChatModel.fromEntity(header.copyWith(messages: messages));
+      } catch (_) {}
     }
+    return null;
   }
 
   @override
@@ -96,28 +112,103 @@ class ChatbotLocalDataSourceImpl implements ChatbotLocalDataSource {
       sessionMaps.insert(0, sessionHeader);
     }
 
-    final updatedRawList = sessionMaps.map((m) => jsonEncode(m)).toList();
-    await sharedPreferencesHelper.saveData(
-      key: key,
-      value: updatedRawList,
-    );
-
-    final mKey = _messagesKey(chat.id, userId);
-    final messagesRaw = chat.messages
-        .map((m) => jsonEncode(ChatMessageModel.fromEntity(m).toJson()))
-        .toList();
-
-    await sharedPreferencesHelper.saveData(
-      key: mKey,
-      value: messagesRaw,
-    );
+    await _writeHeaders(key, sessionMaps);
+    // Header refreshes may carry no messages. Preserve the existing history.
+    if (chat.messages.isNotEmpty) {
+      await sharedPreferencesHelper.saveData(
+        key: _messagesKey(chat.id, userId),
+        value: chat.messages
+            .map((m) => jsonEncode(ChatMessageModel.fromEntity(m).toJson()))
+            .toList(),
+      );
+    }
   }
 
   @override
   Future<void> saveAllChatSessions(List<ChatModel> chats, {String? userId}) async {
-    for (final chat in chats) {
-      await saveChatSession(chat, userId: userId);
+    final key = _sessionsKey(userId);
+    final existing = sharedPreferencesHelper.getStringList(key: key) ?? [];
+    final byId = <String, Map<String, dynamic>>{};
+    for (final raw in existing) {
+      try {
+        final map = jsonDecode(raw) as Map<String, dynamic>;
+        final id = map['id']?.toString();
+        if (id != null && id.isNotEmpty) byId[id] = map;
+      } catch (_) {}
     }
+    for (final chat in chats) {
+      final header = _headerJson(chat);
+      byId[chat.id] = header;
+      if (chat.messages.isNotEmpty) {
+        await sharedPreferencesHelper.saveData(
+          key: _messagesKey(chat.id, userId),
+          value: chat.messages
+              .map((m) => jsonEncode(ChatMessageModel.fromEntity(m).toJson()))
+              .toList(),
+        );
+      }
+    }
+    final incomingIds = chats.map((e) => e.id).toSet();
+    final ordered = <Map<String, dynamic>>[
+      ...chats.map((chat) => byId[chat.id]!),
+      ...byId.entries.where((entry) => !incomingIds.contains(entry.key)).map((e) => e.value),
+    ];
+    await _writeHeaders(key, ordered);
+  }
+
+  @override
+  Future<void> appendMessages(
+    String chatId,
+    List<ChatMessageEntity> messages, {
+    String? userId,
+    DateTime? updatedAt,
+  }) async {
+    if (messages.isEmpty) return;
+    final key = _messagesKey(chatId, userId);
+    final raw = sharedPreferencesHelper.getStringList(key: key) ?? [];
+    final seenIds = <String>{};
+    for (final item in raw.skip(raw.length > 20 ? raw.length - 20 : 0)) {
+      try {
+        seenIds.add((jsonDecode(item) as Map<String, dynamic>)['id']?.toString() ?? '');
+      } catch (_) {}
+    }
+    for (final message in messages) {
+      if (seenIds.add(message.id)) {
+        raw.add(jsonEncode(ChatMessageModel.fromEntity(message).toJson()));
+      }
+    }
+    await sharedPreferencesHelper.saveData(key: key, value: raw);
+    if (updatedAt != null) await _updateHeaderTimestamp(chatId, updatedAt, userId);
+  }
+
+  Map<String, dynamic> _headerJson(ChatModel chat) => ChatModel(
+    id: chat.id, title: chat.title, createdAt: chat.createdAt,
+    updatedAt: chat.updatedAt, messages: const [], isArchived: chat.isArchived,
+    jobPostId: chat.jobPostId, contextMode: chat.contextMode,
+  ).toJson();
+
+  Future<void> _writeHeaders(
+    String key,
+    List<Map<String, dynamic>> maps,
+  ) async {
+    await sharedPreferencesHelper.saveData(
+      key: key,
+      value: maps.map(jsonEncode).toList(),
+    );
+  }
+
+  Future<void> _updateHeaderTimestamp(String chatId, DateTime updatedAt, String? userId) async {
+    final key = _sessionsKey(userId);
+    final raw = sharedPreferencesHelper.getStringList(key: key) ?? [];
+    final maps = <Map<String, dynamic>>[];
+    for (final item in raw) {
+      try {
+        final map = jsonDecode(item) as Map<String, dynamic>;
+        if (map['id']?.toString() == chatId) map['updated_at'] = updatedAt.toIso8601String();
+        maps.add(map);
+      } catch (_) {}
+    }
+    await _writeHeaders(key, maps);
   }
 
   @override

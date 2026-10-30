@@ -23,23 +23,138 @@ class CandidateProfileModel extends CandidateProfileEntity {
   });
 
   factory CandidateProfileModel.fromJson(Map<String, dynamic> json) {
-    final userJson = json['user'];
-    if (userJson is! Map<String, dynamic>) {
-      throw const FormatException('Invalid candidate profile: missing user');
-    }
+    final nestedUser = json['user'];
+    final nestedUserJson = nestedUser is Map<String, dynamic>
+        ? nestedUser
+        : const <String, dynamic>{};
     final profileJson = json['profile'];
     if (profileJson != null && profileJson is! Map<String, dynamic>) {
       throw const FormatException('Invalid candidate profile: invalid profile');
     }
-    final profile = profileJson == null
+    final nestedProfileJson = profileJson is Map<String, dynamic>
+        ? profileJson
+        : const <String, dynamic>{};
+    Object? firstNotNull(Iterable<Object?> values) {
+      for (final value in values) {
+        if (value != null) return value;
+      }
+      return null;
+    }
+
+    // The published API returns profile fields at the root, while some live
+    // responses also wrap user/profile fields in nested objects. Merge both
+    // shapes so nested `user` data does not hide root avatar/profile fields.
+    final userJson = <String, dynamic>{
+      ...nestedUserJson,
+      'id': firstNotNull([nestedUserJson['id'], json['user_id'], json['id']]),
+      'name': firstNotNull([
+        json['full_name'],
+        json['name'],
+        nestedUserJson['name'],
+        nestedUserJson['full_name'],
+      ]),
+      'email': firstNotNull([json['email'], nestedUserJson['email']]),
+      'role':
+          firstNotNull([nestedUserJson['role'], json['role']]) ?? 'candidate',
+      'is_active':
+          firstNotNull([nestedUserJson['is_active'], json['is_active']]) ??
+          true,
+      'phone': firstNotNull([json['phone'], nestedUserJson['phone']]),
+      'avatar': firstNotNull([
+        json['avatar'],
+        json['avater'],
+        json['avatar_url'],
+        nestedProfileJson['avatar'],
+        nestedProfileJson['avater'],
+        nestedProfileJson['avatar_url'],
+        nestedUserJson['avatar'],
+        nestedUserJson['avater'],
+        nestedUserJson['avatar_url'],
+      ]),
+    };
+    final hasFlatProfile = [
+      'headline',
+      'job_title',
+      'summary',
+      'professional_summary',
+      'location',
+      'city',
+      'country',
+      'linkedin_url',
+      'github_url',
+      'portfolio_url',
+    ].any(json.containsKey);
+    final flatProfileJson = <String, dynamic>{
+      ...nestedProfileJson,
+      'id': firstNotNull([
+        nestedProfileJson['id'],
+        json['profile_id'],
+        json['id'],
+        json['user_id'],
+      ]),
+      'date_of_birth': firstNotNull([
+        nestedProfileJson['date_of_birth'],
+        json['date_of_birth'],
+      ]),
+      'gender': firstNotNull([nestedProfileJson['gender'], json['gender']]),
+      'job_title': firstNotNull([
+        json['headline'],
+        json['job_title'],
+        nestedProfileJson['headline'],
+        nestedProfileJson['job_title'],
+      ]),
+      'headline': firstNotNull([
+        json['headline'],
+        json['job_title'],
+        nestedProfileJson['headline'],
+        nestedProfileJson['job_title'],
+      ]),
+      'professional_summary': firstNotNull([
+        json['summary'],
+        json['professional_summary'],
+        nestedProfileJson['summary'],
+        nestedProfileJson['professional_summary'],
+      ]),
+      'summary': firstNotNull([
+        json['summary'],
+        json['professional_summary'],
+        nestedProfileJson['summary'],
+        nestedProfileJson['professional_summary'],
+      ]),
+      'location': firstNotNull([
+        json['location'],
+        nestedProfileJson['location'],
+      ]),
+      'city': firstNotNull([json['city'], nestedProfileJson['city']]),
+      'state': firstNotNull([json['state'], nestedProfileJson['state']]),
+      'country': firstNotNull([json['country'], nestedProfileJson['country']]),
+      'github_url': firstNotNull([
+        json['github_url'],
+        nestedProfileJson['github_url'],
+      ]),
+      'linkedin_url': firstNotNull([
+        json['linkedin_url'],
+        nestedProfileJson['linkedin_url'],
+      ]),
+      'military_status': firstNotNull([
+        nestedProfileJson['military_status'],
+        json['military_status'],
+      ]),
+    };
+    final detailsJson = profileJson is Map<String, dynamic>
+        ? flatProfileJson
+        : (hasFlatProfile ? flatProfileJson : null);
+    final profile = detailsJson == null
         ? null
-        : CandidateProfileDetailsModel.fromJson(
-            profileJson as Map<String, dynamic>,
-          );
-    final profileMap = profileJson is Map<String, dynamic> ? profileJson : null;
+        : CandidateProfileDetailsModel.fromJson(detailsJson);
+    final profileMap = detailsJson;
 
     return CandidateProfileModel(
-      profileExists: json['profile_exists'] as bool? ?? false,
+      profileExists:
+          json['profile_exists'] as bool? ??
+          (profile != null ||
+              nestedUser is Map<String, dynamic> ||
+              json['user_id'] != null),
       user: ProfileUserModel.fromJson(userJson),
       profile: profile,
       skills: _skillList(
@@ -329,6 +444,7 @@ class CandidateProfileModel extends CandidateProfileEntity {
                 dateOfBirth: profile!.dateOfBirth,
                 gender: profile!.gender,
                 jobTitle: profile!.jobTitle,
+                location: profile!.location,
                 country: profile!.country,
                 state: profile!.state,
                 city: profile!.city,

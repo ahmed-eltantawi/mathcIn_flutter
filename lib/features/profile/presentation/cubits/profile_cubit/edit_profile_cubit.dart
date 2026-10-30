@@ -21,12 +21,14 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   final UpdateCandidateProfileUseCase _updateCandidateProfileUseCase;
 
   final UploadAvatarUseCase _uploadAvatarUseCase;
+  int _loadGeneration = 0;
 
   Future<void> loadProfile() async {
+    final generation = ++_loadGeneration;
     emit(const EditProfileLoading());
 
     final result = await _getCandidateProfileForEditUseCase();
-    if (isClosed) return;
+    if (isClosed || generation != _loadGeneration) return;
 
     result.fold(
       (failure) {
@@ -38,10 +40,13 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     );
   }
 
-  Future<void> updateProfile(UpdateCandidateProfileParams params) async {
+  Future<void> updateProfile(
+    UpdateCandidateProfileParams params, {
+    bool hasUnpersistedChanges = false,
+  }) async {
     // Never send an empty PATCH: callers must diff first and skip
     // the request when nothing changed.
-    if (!params.hasChanges) return;
+    if (!params.hasApiSupportedChanges) return;
 
     final currentState = state;
     if (currentState is EditProfileSaving) return;
@@ -65,7 +70,12 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         emit(EditProfileActionFailure(failure.message, profile: baseline));
       },
       (profile) {
-        emit(EditProfileSuccess(profile));
+        emit(
+          EditProfileSuccess(
+            profile,
+            hasUnpersistedChanges: hasUnpersistedChanges,
+          ),
+        );
       },
     );
   }
@@ -109,9 +119,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   /// Attempts to upload the staged avatar through [UploadAvatarUseCase].
   ///
-  /// TODO(avatar-backend): the remote endpoint is unimplemented, so this
-  /// currently surfaces pending-backend feedback and preserves the
-  /// baseline avatar. Never fabricates upload success.
+  /// Uploads the staged avatar and reloads the server profile before
+  /// reporting success, so the form only closes after persisted state is read.
   Future<void> confirmAvatarUpload() async {
     final currentState = state;
     if (currentState is! EditProfileAvatarStaged) return;
@@ -125,25 +134,35 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     );
     if (isClosed) return;
 
-    result.fold(
-      (failure) {
-        emit(
+    if (result.isLeft()) {
+      result.fold(
+        (failure) => emit(
           EditProfileActionFailure(
             failure.message,
             profile: currentState.profile,
           ),
-        );
-      },
-      (_) {
-        // TODO(avatar-backend): unreachable until the endpoint lands.
-        // Handle real upload success (refresh + pop) only then.
-        emit(
-          EditProfileActionFailure(
-            'Avatar upload is not available yet.',
-            profile: currentState.profile,
-          ),
-        );
-      },
+        ),
+        (_) {},
+      );
+      return;
+    }
+
+    await _refreshProfileAfterAvatarUpload(currentState.profile);
+  }
+
+  Future<void> _refreshProfileAfterAvatarUpload(
+    CandidateProfileEntity fallbackProfile,
+  ) async {
+    final result = await _getCandidateProfileForEditUseCase();
+    if (isClosed) return;
+    result.fold(
+      (failure) => emit(
+        EditProfileActionFailure(
+          'Avatar uploaded, but profile refresh failed: ${failure.message}',
+          profile: fallbackProfile,
+        ),
+      ),
+      (profile) => emit(EditProfileSuccess(profile)),
     );
   }
 }

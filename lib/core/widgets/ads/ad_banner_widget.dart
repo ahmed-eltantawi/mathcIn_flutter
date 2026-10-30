@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'dart:io';
@@ -28,14 +29,19 @@ class _AdBannerWidgetState extends State<AdBannerWidget> {
       : 'ca-app-pub-3940256099942544/2435281174'; // IOS Ad test Unit Id
 
   void _loadAd() {
+    // No production banner inventory is configured. Never request Google's
+    // sample unit IDs from a Play build.
+    if (kReleaseMode) return;
     _bannerAd = BannerAd(
       adUnitId: adUnitId,
       size: AdSize.banner,
       listener: BannerAdListener(
         onAdLoaded: (ad) {
-          setState(() {
-            _isLoaded = true;
-          });
+          if (!mounted) {
+            ad.dispose();
+            return;
+          }
+          setState(() => _isLoaded = true);
         },
         onAdFailedToLoad: (ad, error) {
           ad.dispose();

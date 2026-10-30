@@ -18,7 +18,9 @@ class WorkModeSection extends StatelessWidget {
   // Support multi-select Job Type and Work Mode
   // after the backend introduces and documents
   // array-based request/response contracts.
-  static const List<String> modes = ['remote', 'hybrid', 'on_site'];
+  // API exposes only the boolean `is_open_to_remote`; hybrid would be
+  // lossy because the server cannot store it distinctly.
+  static const List<String> modes = ['remote', 'on_site'];
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,6 @@ class WorkModeSection extends StatelessWidget {
   String _localized(S locale, String value) {
     return switch (value) {
       'remote' => locale.remote,
-      'hybrid' => locale.hybrid,
       'on_site' => locale.onSite,
       _ => value,
     };

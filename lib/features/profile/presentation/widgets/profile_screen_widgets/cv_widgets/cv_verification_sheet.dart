@@ -53,22 +53,36 @@ class CvVerificationSheet extends StatelessWidget {
 }
 
 class _EditableRow {
-  _EditableRow({required this.primary, this.secondary, this.detail});
+  _EditableRow({
+    required this.primary,
+    this.secondary,
+    this.detail,
+    this.tertiary,
+    this.quaternary,
+    this.isCurrent,
+  });
 
   final TextEditingController primary;
   final TextEditingController? secondary;
   final TextEditingController? detail;
+  final TextEditingController? tertiary;
+  final TextEditingController? quaternary;
+  final bool? isCurrent;
 
   void dispose() {
     primary.dispose();
     secondary?.dispose();
     detail?.dispose();
+    tertiary?.dispose();
+    quaternary?.dispose();
   }
 
   bool get isEmpty =>
       primary.text.trim().isEmpty &&
       (secondary?.text.trim().isEmpty ?? true) &&
-      (detail?.text.trim().isEmpty ?? true);
+      (detail?.text.trim().isEmpty ?? true) &&
+      (tertiary?.text.trim().isEmpty ?? true) &&
+      (quaternary?.text.trim().isEmpty ?? true);
 }
 
 class _VerificationForm extends StatefulWidget {
@@ -91,24 +105,42 @@ class _VerificationFormState extends State<_VerificationForm> {
     super.initState();
     _skills = widget.extraction.skills
         .map(
-          (item) =>
-              _EditableRow(primary: TextEditingController(text: item.label)),
+          (item) => _EditableRow(
+            primary: TextEditingController(text: item.label),
+            secondary: TextEditingController(
+              text: item.proficiency?.toLowerCase() ?? 'beginner',
+            ),
+          ),
         )
         .toList();
     _experiences = widget.extraction.experiences
         .map(
           (item) => _EditableRow(
-            primary: TextEditingController(text: item.title ?? item.label),
-            secondary: TextEditingController(text: item.subtitle ?? ''),
+            primary: TextEditingController(
+              text: item.jobTitle ?? item.title ?? '',
+            ),
+            secondary: TextEditingController(
+              text: item.companyName ?? item.subtitle ?? '',
+            ),
             detail: TextEditingController(text: item.detail ?? ''),
+            tertiary: TextEditingController(text: item.startDate ?? ''),
+            quaternary: TextEditingController(text: item.endDate ?? ''),
+            isCurrent: item.isCurrent,
           ),
         )
         .toList();
     _educations = widget.extraction.educations
         .map(
           (item) => _EditableRow(
-            primary: TextEditingController(text: item.title ?? item.label),
-            secondary: TextEditingController(text: item.subtitle ?? ''),
+            primary: TextEditingController(
+              text: item.institution ?? item.subtitle ?? '',
+            ),
+            secondary: TextEditingController(
+              text: item.degree ?? item.title ?? '',
+            ),
+            detail: TextEditingController(text: item.fieldOfStudy ?? ''),
+            tertiary: TextEditingController(text: item.startDate ?? ''),
+            quaternary: TextEditingController(text: item.endDate ?? ''),
           ),
         )
         .toList();
@@ -151,9 +183,19 @@ class _VerificationFormState extends State<_VerificationForm> {
                   title: locale.skills,
                   rows: _skills,
                   primaryHint: locale.skills,
+                  fieldHints: [locale.skills],
+                  secondaryOptions: const [
+                    'beginner',
+                    'intermediate',
+                    'advanced',
+                    'expert',
+                  ],
                   onAdd: () => setState(
                     () => _skills.add(
-                      _EditableRow(primary: TextEditingController()),
+                      _EditableRow(
+                        primary: TextEditingController(),
+                        secondary: TextEditingController(text: 'beginner'),
+                      ),
                     ),
                   ),
                   onRemove: (row) => setState(() {
@@ -166,12 +208,21 @@ class _VerificationFormState extends State<_VerificationForm> {
                   rows: _experiences,
                   primaryHint: locale.experience,
                   secondaryHint: locale.reviewCv,
+                  fieldHints: [
+                    locale.jobTitle,
+                    locale.company,
+                    locale.reviewCv,
+                    '${locale.startDate} (YYYY-MM-DD)',
+                    '${locale.endDate} (YYYY-MM-DD)',
+                  ],
                   onAdd: () => setState(
                     () => _experiences.add(
                       _EditableRow(
                         primary: TextEditingController(),
                         secondary: TextEditingController(),
                         detail: TextEditingController(),
+                        tertiary: TextEditingController(),
+                        quaternary: TextEditingController(),
                       ),
                     ),
                   ),
@@ -184,11 +235,21 @@ class _VerificationFormState extends State<_VerificationForm> {
                   title: locale.education,
                   rows: _educations,
                   primaryHint: locale.education,
+                  fieldHints: [
+                    locale.institutionHint,
+                    locale.degree,
+                    locale.fieldOfStudy,
+                    '${locale.startDate} (YYYY-MM-DD)',
+                    '${locale.endDate} (YYYY-MM-DD)',
+                  ],
                   onAdd: () => setState(
                     () => _educations.add(
                       _EditableRow(
                         primary: TextEditingController(),
                         secondary: TextEditingController(),
+                        detail: TextEditingController(),
+                        tertiary: TextEditingController(),
+                        quaternary: TextEditingController(),
                       ),
                     ),
                   ),
@@ -234,32 +295,64 @@ class _VerificationFormState extends State<_VerificationForm> {
 
   void _submit(BuildContext context) {
     final extractionId = widget.extraction.extractionId;
-    if (extractionId == null) return;
+    if (extractionId == null) {
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          SnackBar(content: Text(S.of(context).somethingWentWrong)),
+        );
+      return;
+    }
+    final skills = _skills
+        .where((row) => !row.isEmpty)
+        .map(
+          (row) => CvExtractedItem(
+            name: row.primary.text.trim(),
+            proficiency: row.secondary?.text.trim(),
+          ),
+        )
+        .toList();
+    final experiences = _experiences
+        .where((row) => !row.isEmpty)
+        .map(
+          (row) => CvExtractedItem(
+            jobTitle: row.primary.text.trim(),
+            companyName: row.secondary?.text.trim(),
+            detail: row.detail?.text.trim(),
+            startDate: row.tertiary?.text.trim(),
+            endDate: row.quaternary?.text.trim(),
+            isCurrent: row.isCurrent,
+          ),
+        )
+        .toList();
+    final educations = _educations
+        .where((row) => !row.isEmpty)
+        .map(
+          (row) => CvExtractedItem(
+            institution: row.primary.text.trim(),
+            degree: row.secondary?.text.trim(),
+            fieldOfStudy: row.detail?.text.trim(),
+            startDate: row.tertiary?.text.trim(),
+            endDate: row.quaternary?.text.trim(),
+          ),
+        )
+        .toList();
+    if (skills.any((item) => !item.isSkillComplete) ||
+        experiences.any((item) => !item.isExperienceComplete) ||
+        educations.any((item) => !item.isEducationComplete)) {
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          SnackBar(content: Text(S.of(context).somethingWentWrong)),
+        );
+      return;
+    }
     final params = CvVerifyParams(
       extractionId: extractionId,
-      skills: _skills
-          .where((row) => !row.isEmpty)
-          .map((row) => CvExtractedItem(name: row.primary.text.trim()))
-          .toList(),
-      experiences: _experiences
-          .where((row) => !row.isEmpty)
-          .map(
-            (row) => CvExtractedItem(
-              title: row.primary.text.trim(),
-              subtitle: row.secondary?.text.trim(),
-              detail: row.detail?.text.trim(),
-            ),
-          )
-          .toList(),
-      educations: _educations
-          .where((row) => !row.isEmpty)
-          .map(
-            (row) => CvExtractedItem(
-              title: row.primary.text.trim(),
-              subtitle: row.secondary?.text.trim(),
-            ),
-          )
-          .toList(),
+      action: 'edit',
+      skills: skills,
+      experiences: experiences,
+      educations: educations,
     );
     context.read<CvUploadCubit>().verifyExtraction(params);
   }
@@ -270,6 +363,8 @@ class _Section extends StatelessWidget {
     required this.title,
     required this.rows,
     required this.primaryHint,
+    required this.fieldHints,
+    this.secondaryOptions,
     this.secondaryHint,
     required this.onAdd,
     required this.onRemove,
@@ -278,6 +373,8 @@ class _Section extends StatelessWidget {
   final String title;
   final List<_EditableRow> rows;
   final String primaryHint;
+  final List<String> fieldHints;
+  final List<String>? secondaryOptions;
   final String? secondaryHint;
   final VoidCallback onAdd;
   final ValueChanged<_EditableRow> onRemove;
@@ -317,30 +414,44 @@ class _Section extends StatelessWidget {
                 Expanded(
                   child: Column(
                     children: [
-                      TextField(
-                        controller: row.primary,
-                        decoration: InputDecoration(
-                          hintText: primaryHint,
-                          isDense: true,
-                        ),
-                      ),
+                      _field(row.primary, fieldHints[0]),
                       if (row.secondary != null) ...[
                         SizedBox(height: 6.h),
-                        TextField(
-                          controller: row.secondary,
-                          decoration: InputDecoration(
-                            hintText: secondaryHint ?? primaryHint,
-                            isDense: true,
-                          ),
-                        ),
+                        if (secondaryOptions != null)
+                          DropdownButtonFormField<String>(
+                            initialValue:
+                                secondaryOptions!.contains(row.secondary!.text)
+                                ? row.secondary!.text
+                                : null,
+                            decoration: InputDecoration(
+                              hintText: secondaryHint ?? primaryHint,
+                              isDense: true,
+                            ),
+                            items: secondaryOptions!
+                                .map(
+                                  (value) => DropdownMenuItem(
+                                    value: value,
+                                    child: Text(value),
+                                  ),
+                                )
+                                .toList(),
+                            onChanged: (value) =>
+                                row.secondary!.text = value ?? '',
+                          )
+                        else
+                          _field(row.secondary!, fieldHints[1]),
                       ],
                       if (row.detail != null) ...[
                         SizedBox(height: 6.h),
-                        TextField(
-                          controller: row.detail,
-                          maxLines: 2,
-                          decoration: const InputDecoration(isDense: true),
-                        ),
+                        _field(row.detail!, fieldHints[2], maxLines: 2),
+                      ],
+                      if (row.tertiary != null) ...[
+                        SizedBox(height: 6.h),
+                        _field(row.tertiary!, fieldHints[3]),
+                      ],
+                      if (row.quaternary != null) ...[
+                        SizedBox(height: 6.h),
+                        _field(row.quaternary!, fieldHints[4]),
                       ],
                     ],
                   ),
@@ -356,6 +467,16 @@ class _Section extends StatelessWidget {
       ],
     );
   }
+
+  Widget _field(
+    TextEditingController controller,
+    String hint, {
+    int maxLines = 1,
+  }) => TextField(
+    controller: controller,
+    maxLines: maxLines,
+    decoration: InputDecoration(hintText: hint, isDense: true),
+  );
 }
 
 class _FailureBanner extends StatelessWidget {

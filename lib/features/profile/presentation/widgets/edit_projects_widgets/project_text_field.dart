@@ -13,6 +13,8 @@ class ProjectTextField extends StatelessWidget {
     this.onChanged,
     this.readOnly = false,
     this.onTap,
+    this.validator,
+    this.fieldKey,
     super.key,
   });
 
@@ -26,6 +28,8 @@ class ProjectTextField extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final bool readOnly;
   final VoidCallback? onTap;
+  final FormFieldValidator<String>? validator;
+  final GlobalKey<FormFieldState<String>>? fieldKey;
 
   @override
   Widget build(BuildContext context) {
@@ -55,13 +59,16 @@ class ProjectTextField extends StatelessWidget {
           ],
         ),
         SizedBox(height: 8.h),
-        TextField(
+        TextFormField(
+          key: fieldKey,
           controller: controller,
           onChanged: onChanged,
           onTap: onTap,
           readOnly: readOnly,
           keyboardType: keyboardType,
           maxLines: maxLines,
+          validator: validator,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           decoration: InputDecoration(
             hintText: hint,
             prefixIcon: prefixIcon == null
@@ -76,16 +83,22 @@ class ProjectTextField extends StatelessWidget {
             border: _border(theme),
             enabledBorder: _border(theme),
             focusedBorder: _border(theme, color: colors.primary),
+            errorBorder: _border(theme, color: colors.error),
+            focusedErrorBorder: _border(theme, color: colors.error, width: 2),
           ),
         ),
       ],
     );
   }
 
-  OutlineInputBorder _border(ThemeData theme, {Color? color}) {
+  OutlineInputBorder _border(
+    ThemeData theme, {
+    Color? color,
+    double width = 1,
+  }) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(10.r),
-      borderSide: BorderSide(color: color ?? theme.dividerColor, width: 1),
+      borderSide: BorderSide(color: color ?? theme.dividerColor, width: width),
     );
   }
 }

@@ -45,6 +45,8 @@ UpdateCandidateProfileParams mapCurrent(
   final details = baseline.profile;
   return EditProfilePatchMapper.fromDiff(
     baseline: baseline,
+    fullName: baseline.user.name,
+    phone: baseline.user.phone ?? '',
     dateOfBirth: dateOfBirth ?? details?.dateOfBirth ?? '',
     gender: gender ?? details?.gender,
     jobTitle: jobTitle ?? details?.jobTitle ?? '',
@@ -114,6 +116,8 @@ void main() {
 
       final params = EditProfilePatchMapper.fromDiff(
         baseline: baseline,
+        fullName: baseline.user.name,
+        phone: '',
         dateOfBirth: '',
         gender: null,
         jobTitle: '',
@@ -142,6 +146,8 @@ void main() {
 
       final params = EditProfilePatchMapper.fromDiff(
         baseline: baseline,
+        fullName: baseline.user.name,
+        phone: '',
         dateOfBirth: '2000-01-01',
         gender: 'male',
         jobTitle: 'Junior Flutter Developer',

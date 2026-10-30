@@ -17,6 +17,8 @@ class PersonalInformationCard extends StatelessWidget {
     required this.onGenderChanged,
     required this.onCountryCodeChanged,
     required this.onDateOfBirthTap,
+    required this.fullNameValidator,
+    required this.fullNameFieldKey,
     super.key,
   });
 
@@ -29,6 +31,8 @@ class PersonalInformationCard extends StatelessWidget {
   final ValueChanged<String> onGenderChanged;
   final ValueChanged<String?> onCountryCodeChanged;
   final VoidCallback onDateOfBirthTap;
+  final FormFieldValidator<String> fullNameValidator;
+  final GlobalKey<FormFieldState<String>> fullNameFieldKey;
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +42,11 @@ class PersonalInformationCard extends StatelessWidget {
       title: locale.personalInformation,
       child: Column(
         children: [
-          // TODO(user-profile): Name lives on the User object with no
-          // confirmed update endpoint; edits stay local, never PATCHed.
           EditProfileField(
             label: locale.fullName,
             controller: fullNameController,
+            validator: fullNameValidator,
+            fieldKey: fullNameFieldKey,
           ),
           SizedBox(height: 16.h),
           EditProfileField(
@@ -54,8 +58,6 @@ class PersonalInformationCard extends StatelessWidget {
           SizedBox(height: 16.h),
           GenderSelector(value: gender, onChanged: onGenderChanged),
           SizedBox(height: 16.h),
-          // TODO(user-profile): Phone lives on the User object with no
-          // confirmed update endpoint; edits stay local, never PATCHed.
           ProfilePhoneField(
             controller: phoneController,
             countryCode: countryCode,

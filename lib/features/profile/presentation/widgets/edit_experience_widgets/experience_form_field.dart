@@ -10,6 +10,7 @@ class ExperienceFormField extends StatelessWidget {
     this.maxLines = 1,
     this.readOnly = false,
     this.onTap,
+    this.validator,
   });
 
   final String label;
@@ -18,6 +19,7 @@ class ExperienceFormField extends StatelessWidget {
   final int maxLines;
   final bool readOnly;
   final VoidCallback? onTap;
+  final FormFieldValidator<String>? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +37,8 @@ class ExperienceFormField extends StatelessWidget {
         SizedBox(height: 8.h),
         TextFormField(
           controller: controller,
+          validator: validator,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           maxLines: maxLines,
           readOnly: readOnly,
           onTap: onTap,
@@ -46,6 +50,14 @@ class ExperienceFormField extends StatelessWidget {
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.r),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.r),
+              borderSide: BorderSide(color: theme.colorScheme.error),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.r),
+              borderSide: BorderSide(color: theme.colorScheme.error, width: 2),
             ),
           ),
         ),

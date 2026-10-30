@@ -7,6 +7,22 @@ class ChangePasswordUseCase {
 
   final SettingsRepository repository;
 
+  Future<Either<Failure, Unit>> requestOtp() {
+    return repository.requestPasswordChangeOtp();
+  }
+
+  Future<Either<Failure, Unit>> confirmWithOtp({
+    required String otp,
+    required String newPassword,
+    required String confirmPassword,
+  }) {
+    return repository.confirmPasswordChange(
+      otp: otp,
+      newPassword: newPassword,
+      confirmPassword: confirmPassword,
+    );
+  }
+
   Future<Either<Failure, Unit>> call({
     required String currentPassword,
     required String newPassword,

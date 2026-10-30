@@ -163,6 +163,7 @@ import 'package:MatchIn/features/saved/data/data_sources/saved_jobs_remote_data_
 import 'package:MatchIn/features/saved/data/repositories/saved_jobs_repository_impl.dart';
 import 'package:MatchIn/features/saved/domain/repositories/saved_jobs_repository.dart';
 import 'package:MatchIn/features/saved/domain/use_cases/get_saved_jobs_use_case.dart';
+import 'package:MatchIn/features/saved/domain/use_cases/get_local_saved_jobs_use_case.dart';
 import 'package:MatchIn/features/saved/domain/use_cases/save_job_use_case.dart';
 import 'package:MatchIn/features/saved/domain/use_cases/set_saved_job_use_case.dart';
 import 'package:MatchIn/features/saved/domain/use_cases/set_unsaved_job_use_case.dart';
@@ -258,6 +259,7 @@ Future<void> setupServiceLocator() async {
     () => AuthCubit(
       loginUseCase: getIt(),
       registerUseCase: getIt(),
+      resendOtpUseCase: getIt(),
       googleSignInService: getIt(),
       loginWithGoogleUseCase: getIt(),
     ),
@@ -541,6 +543,7 @@ Future<void> setupServiceLocator() async {
     () => ApplyForJobUseCase(repository: getIt()),
   );
 
+  // App scoped: Home, search and details share one feed state instance.
   getIt.registerLazySingleton<JobsFeedCubit>(
     () => JobsFeedCubit(
       getJobsUseCase: getIt(),
@@ -559,7 +562,6 @@ Future<void> setupServiceLocator() async {
 
   getIt.registerLazySingleton<HomeLocalDataSource>(
     () => HomeLocalDataSourceImpl(
-      profileLocalDataSource: getIt(),
       sharedPreferencesHelper: getIt(),
     ),
   );
@@ -572,7 +574,6 @@ Future<void> setupServiceLocator() async {
     () => HomeRepositoryImpl(
       remoteDataSource: getIt(),
       localDataSource: getIt(),
-      profileLocalDataSource: getIt(),
     ),
   );
 
@@ -584,7 +585,7 @@ Future<void> setupServiceLocator() async {
     () => GetCachedHomeDashboardUseCase(repository: getIt()),
   );
 
-  getIt.registerLazySingleton<HomeCubit>(
+  getIt.registerFactory<HomeCubit>(
     () => HomeCubit(
       getHomeDashboardUseCase: getIt(),
       getCachedHomeDashboardUseCase: getIt(),
@@ -813,12 +814,19 @@ Future<void> setupServiceLocator() async {
     () => SyncSavedJobsUseCase(repository: getIt<SavedJobsRepository>()),
   );
 
+  getIt.registerLazySingleton<GetLocalSavedJobsUseCase>(
+    () => GetLocalSavedJobsUseCase(repository: getIt<SavedJobsRepository>()),
+  );
+
   getIt.registerFactory<SavedJobsCubit>(
     () => SavedJobsCubit(
       getSavedJobsUseCase: getIt<GetSavedJobsUseCase>(),
       setSavedJobUseCase: getIt<SetSavedJobUseCase>(),
       setUnsavedJobUseCase: getIt<SetUnsavedJobUseCase>(),
       syncSavedJobsUseCase: getIt<SyncSavedJobsUseCase>(),
+      getLocalSavedJobsUseCase: getIt<GetLocalSavedJobsUseCase>(),
+      onSaveStatusChanged: (jobId, isSaved) => getIt<JobsFeedCubit>()
+          .updateJobSavedStatus(jobId: jobId.toString(), isSaved: isSaved),
     ),
   );
 
@@ -1100,6 +1108,7 @@ Future<void> setupServiceLocator() async {
     () => LogoutUseCase(repository: getIt()),
   );
 
+  // App scoped because locale/theme are read by MaterialApp and settings UI.
   getIt.registerLazySingleton<SettingsCubit>(
     () => SettingsCubit(
       getNotificationPreferenceUseCase: getIt(),

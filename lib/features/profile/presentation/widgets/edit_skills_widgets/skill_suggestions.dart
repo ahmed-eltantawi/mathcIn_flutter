@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:MatchIn/generated/l10n.dart';
+import 'package:MatchIn/features/profile/domain/entities/skill_search_result_entity.dart';
 
 class SkillSuggestions extends StatelessWidget {
   const SkillSuggestions({
@@ -9,8 +10,8 @@ class SkillSuggestions extends StatelessWidget {
     super.key,
   });
 
-  final List<String> skills;
-  final ValueChanged<String> onSkillPressed;
+  final List<SkillSearchResultEntity> skills;
+  final ValueChanged<SkillSearchResultEntity> onSkillPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +48,7 @@ class SkillSuggestions extends StatelessWidget {
                 size: 18.r,
                 color: colors.onSurface,
               ),
-              label: Text(skill),
+              label: Text(skill.name),
               backgroundColor: colors.surface,
               side: BorderSide(color: theme.dividerColor),
               shape: RoundedRectangleBorder(

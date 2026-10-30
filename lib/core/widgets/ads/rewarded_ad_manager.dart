@@ -54,6 +54,8 @@ class RewardedAdManager extends ChangeNotifier {
 
   //! ===== Load =====
   Future<void> loadAd() async {
+    // iOS currently has only Google's sample rewarded unit configured.
+    if (kReleaseMode && Platform.isIOS) return;
     if (kIsWeb || (!Platform.isAndroid && !Platform.isIOS)) {
       return;
     }

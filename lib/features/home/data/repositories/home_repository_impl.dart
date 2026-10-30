@@ -4,19 +4,15 @@ import 'package:MatchIn/features/home/data/data_sources/home_local_data_source.d
 import 'package:MatchIn/features/home/data/data_sources/home_remote_data_source.dart';
 import 'package:MatchIn/features/home/domain/entities/home_dashboard_entity.dart';
 import 'package:MatchIn/features/home/domain/repositories/home_repository.dart';
-import 'package:MatchIn/features/profile/data/data_sources/profile_local_data_source.dart';
-import 'package:MatchIn/features/profile/data/models/user_profile_model.dart';
 
 class HomeRepositoryImpl implements HomeRepository {
   const HomeRepositoryImpl({
     required this.remoteDataSource,
     required this.localDataSource,
-    required this.profileLocalDataSource,
   });
 
   final HomeRemoteDataSource remoteDataSource;
   final HomeLocalDataSource localDataSource;
-  final ProfileLocalDataSource profileLocalDataSource;
 
   @override
   Future<Either<Failure, HomeDashboardEntity?>> getCachedHomeDashboard() async {
@@ -34,31 +30,13 @@ class HomeRepositoryImpl implements HomeRepository {
       final remoteDashboard = await remoteDataSource.getHomeDashboard();
 
       String effectiveUserName = remoteDashboard.userName;
-      if (effectiveUserName.isNotEmpty) {
-        // Cache the newly fetched user name into profile cache if present
-        final cachedUser = await profileLocalDataSource.getCachedUserProfile();
-        await profileLocalDataSource.cacheUserProfile(
-          UserProfileModel(
-            id: cachedUser?.id ?? 0,
-            name: effectiveUserName,
-            email: cachedUser?.email ?? '',
-            jobTitle: cachedUser?.jobTitle ?? '',
-            location: cachedUser?.location ?? '',
-          ),
-        );
-      } else {
+      if (effectiveUserName.isEmpty) {
         // Preserve locally cached user name if remote name was empty
         final cachedUserName = await localDataSource.getCachedUserName();
         if (cachedUserName != null && cachedUserName.isNotEmpty) {
           effectiveUserName = cachedUserName;
         } else {
-          final userProfile =
-              await profileLocalDataSource.getCachedUserProfile();
-          if (userProfile != null && userProfile.name.trim().isNotEmpty) {
-            effectiveUserName = userProfile.name.trim();
-          } else {
-            effectiveUserName = 'User';
-          }
+          effectiveUserName = 'User';
         }
       }
 

@@ -6,6 +6,7 @@ import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_entity.
 abstract class JobModelKey {
   static const String id = 'id';
   static const String title = 'title';
+  static const String description = 'description';
   static const String jobType = 'job_type';
   static const String workMode = 'work_mode';
   static const String employmentType = 'employment_type';
@@ -37,6 +38,7 @@ class JobModel {
   const JobModel({
     required this.id,
     required this.title,
+    this.description,
     this.jobType,
     this.workMode,
     this.employmentType,
@@ -44,6 +46,8 @@ class JobModel {
     this.country,
     this.state,
     this.city,
+    this.apiLocation,
+    this.isRemote,
     this.minYearsExperience,
     this.maxYearsExperience,
     this.source,
@@ -79,6 +83,7 @@ class JobModel {
           ? json[JobModelKey.id] as int
           : int.tryParse(json[JobModelKey.id]?.toString() ?? '0') ?? 0,
       title: json[JobModelKey.title] as String? ?? '',
+      description: json[JobModelKey.description] as String?,
       jobType: json[JobModelKey.jobType] as String?,
       workMode: json[JobModelKey.workMode] as String?,
       employmentType: json[JobModelKey.employmentType] as String?,
@@ -86,31 +91,39 @@ class JobModel {
       country: json[JobModelKey.country] as String?,
       state: json[JobModelKey.state] as String?,
       city: json[JobModelKey.city] as String?,
+      apiLocation: json['location']?.toString(),
+      isRemote: json['is_remote'] as bool?,
       minYearsExperience: json[JobModelKey.minYearsExperience] is int
           ? json[JobModelKey.minYearsExperience] as int
-          : int.tryParse(json[JobModelKey.minYearsExperience]?.toString() ?? ''),
+          : int.tryParse(
+              json[JobModelKey.minYearsExperience]?.toString() ?? '',
+            ),
       maxYearsExperience: json[JobModelKey.maxYearsExperience] is int
           ? json[JobModelKey.maxYearsExperience] as int
-          : int.tryParse(json[JobModelKey.maxYearsExperience]?.toString() ?? ''),
+          : int.tryParse(
+              json[JobModelKey.maxYearsExperience]?.toString() ?? '',
+            ),
       source: json[JobModelKey.source] as String?,
       applicationMethod: json[JobModelKey.applicationMethod] as String?,
       publishedAt: json[JobModelKey.publishedAt] as String?,
       expiresAt: json[JobModelKey.expiresAt] as String?,
       isActive: json[JobModelKey.isActive] as bool? ?? true,
       company: json[JobModelKey.company] is Map<String, dynamic>
-          ? CompanyModel.fromJson(json[JobModelKey.company] as Map<String, dynamic>)
+          ? CompanyModel.fromJson(
+              json[JobModelKey.company] as Map<String, dynamic>,
+            )
           : null,
       requiredSkills: json[JobModelKey.requiredSkills] is List
           ? (json[JobModelKey.requiredSkills] as List)
-              .whereType<Map<String, dynamic>>()
-              .map(SkillModel.fromJson)
-              .toList()
+                .whereType<Map<String, dynamic>>()
+                .map(SkillModel.fromJson)
+                .toList()
           : null,
       preferredSkills: json[JobModelKey.preferredSkills] is List
           ? (json[JobModelKey.preferredSkills] as List)
-              .whereType<Map<String, dynamic>>()
-              .map(SkillModel.fromJson)
-              .toList()
+                .whereType<Map<String, dynamic>>()
+                .map(SkillModel.fromJson)
+                .toList()
           : null,
       isExpired: json[JobModelKey.isExpired] as bool? ?? false,
       isSaved: json[JobModelKey.isSaved] as bool? ?? false,
@@ -126,6 +139,7 @@ class JobModel {
 
   final int id;
   final String title;
+  final String? description;
   final String? jobType;
   final String? workMode;
   final String? employmentType;
@@ -133,6 +147,8 @@ class JobModel {
   final String? country;
   final String? state;
   final String? city;
+  final String? apiLocation;
+  final bool? isRemote;
   final int? minYearsExperience;
   final int? maxYearsExperience;
   final String? source;
@@ -154,6 +170,7 @@ class JobModel {
     return {
       JobModelKey.id: id,
       JobModelKey.title: title,
+      JobModelKey.description: description,
       JobModelKey.jobType: jobType,
       JobModelKey.workMode: workMode,
       JobModelKey.employmentType: employmentType,
@@ -169,8 +186,12 @@ class JobModel {
       JobModelKey.expiresAt: expiresAt,
       JobModelKey.isActive: isActive,
       JobModelKey.company: company?.toJson(),
-      JobModelKey.requiredSkills: requiredSkills?.map((s) => s.toJson()).toList(),
-      JobModelKey.preferredSkills: preferredSkills?.map((s) => s.toJson()).toList(),
+      JobModelKey.requiredSkills: requiredSkills
+          ?.map((s) => s.toJson())
+          .toList(),
+      JobModelKey.preferredSkills: preferredSkills
+          ?.map((s) => s.toJson())
+          .toList(),
       JobModelKey.isExpired: isExpired,
       JobModelKey.isSaved: isSaved,
       JobModelKey.salaryMin: salaryMin,
@@ -193,7 +214,9 @@ class JobModel {
     }
 
     final reqSkillEntities = requiredSkills?.map((s) => s.toEntity()).toList();
-    final prefSkillEntities = preferredSkills?.map((s) => s.toEntity()).toList();
+    final prefSkillEntities = preferredSkills
+        ?.map((s) => s.toEntity())
+        .toList();
 
     final skillNames = <String>[
       if (reqSkillEntities != null) ...reqSkillEntities.map((s) => s.name),
@@ -203,10 +226,15 @@ class JobModel {
     return JobEntity(
       id: id.toString(),
       title: title,
+      description: description,
       companyName: company?.name ?? '',
       companyLogoUrl: company?.logoUrl,
-      location: locationParts.isNotEmpty ? locationParts : 'Remote',
-      workMode: workMode ?? 'Remote',
+      location: locationParts.isNotEmpty
+          ? locationParts
+          : (apiLocation?.trim().isNotEmpty == true
+                ? apiLocation!.trim()
+                : 'Location not specified'),
+      workMode: workMode ?? (isRemote == true ? 'Remote' : 'On-site'),
       employmentType: employmentType ?? 'Full-time',
       experienceLevel: experienceLevel ?? 'Entry Level',
       postedDate: parsedPostedDate,

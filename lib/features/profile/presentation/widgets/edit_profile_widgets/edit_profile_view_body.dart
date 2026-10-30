@@ -1,16 +1,19 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:MatchIn/core/services/picked_file.dart';
 import 'package:MatchIn/core/services/services_locator.dart';
 import 'package:MatchIn/core/services/profile_image_picker_service.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_profile_widgets/avatar_file_validator.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_profile_widgets/avatar_preview_dialog.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_profile_widgets/avatar_source_sheet.dart';
 import 'package:MatchIn/core/widgets/error/app_error.dart';
-import 'package:MatchIn/features/profile/data/data_sources/location/location_catalog.dart';
+import 'package:MatchIn/core/utils/profile_formatters.dart';
 import 'package:MatchIn/features/profile/domain/entities/candidate_profile_entity.dart';
+import 'package:MatchIn/features/profile/data/data_sources/location/location_catalog.dart';
 import 'package:MatchIn/features/profile/presentation/cubits/profile_cubit/edit_profile_cubit.dart';
 import 'package:MatchIn/features/profile/presentation/cubits/profile_cubit/edit_profile_state.dart';
+import 'package:MatchIn/features/profile/presentation/cubits/profile_cubit/profile_cubit.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_profile_widgets/edit_profile_patch_mapper.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_profile_widgets/military_status_options.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/profile_screen_widgets/profile_form_validator.dart';
@@ -20,6 +23,8 @@ import 'package:MatchIn/features/profile/presentation/widgets/edit_profile_widge
 import 'package:MatchIn/features/profile/presentation/widgets/edit_profile_widgets/professional_links_card.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_profile_widgets/profile_location_card.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_profile_widgets/profile_photo_editor.dart';
+import 'package:MatchIn/features/profile/presentation/utils/profile_avatar_url.dart';
+import 'package:MatchIn/features/profile/presentation/widgets/profile_screen_widgets/profile_skeleton.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,9 +50,13 @@ class EditProfileViewBody extends StatelessWidget {
               ..hideCurrentSnackBar()
               ..showSnackBar(SnackBar(content: Text(message)));
           case EditProfileSuccess():
+            context.read<ProfileCubit>().publishProfile(state.profile);
+            final message = state.hasUnpersistedChanges
+                ? locale.unsupportedProfileFieldsNotSaved
+                : locale.profileSynced;
             messenger
               ..hideCurrentSnackBar()
-              ..showSnackBar(SnackBar(content: Text(locale.profileSynced)));
+              ..showSnackBar(SnackBar(content: Text(message)));
             Navigator.of(context).pop(true);
           default:
             break;
@@ -61,11 +70,17 @@ class EditProfileViewBody extends StatelessWidget {
         switch (state) {
           case EditProfileInitial():
           case EditProfileLoading():
-            return const Center(child: CircularProgressIndicator());
+            return const ProfileFormSkeleton();
           case EditProfileLoadFailure():
-            return AppErrorWidget(
-              message: state.message,
-              onRetry: () => context.read<EditProfileCubit>().loadProfile(),
+            return ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: EdgeInsets.all(16.w),
+              children: [
+                AppErrorWidget(
+                  message: state.message,
+                  onRetry: () => context.read<EditProfileCubit>().loadProfile(),
+                ),
+              ],
             );
           case EditProfileReady():
             return _EditProfileForm(
@@ -80,9 +95,16 @@ class EditProfileViewBody extends StatelessWidget {
           case EditProfileActionFailure():
             final baseline = state.profile;
             if (baseline == null) {
-              return AppErrorWidget(
-                message: state.message,
-                onRetry: () => context.read<EditProfileCubit>().loadProfile(),
+              return ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.all(16.w),
+                children: [
+                  AppErrorWidget(
+                    message: state.message,
+                    onRetry: () =>
+                        context.read<EditProfileCubit>().loadProfile(),
+                  ),
+                ],
               );
             }
             return _EditProfileForm(initialProfile: baseline, isSaving: false);
@@ -125,25 +147,23 @@ class _EditProfileForm extends StatefulWidget {
 }
 
 class _EditProfileFormState extends State<_EditProfileForm> {
+  final GlobalKey<FormFieldState<String>> _fullNameFieldKey =
+      GlobalKey<FormFieldState<String>>();
+  final GlobalKey<FormFieldState<String>> _githubFieldKey =
+      GlobalKey<FormFieldState<String>>();
+  final GlobalKey<FormFieldState<String>> _linkedinFieldKey =
+      GlobalKey<FormFieldState<String>>();
   late final TextEditingController _fullNameController;
   late final TextEditingController _dateOfBirthController;
   late final TextEditingController _phoneController;
   late final TextEditingController _jobTitleController;
   late final TextEditingController _githubController;
   late final TextEditingController _linkedinController;
+  late final TextEditingController _locationController;
 
   late final ValueNotifier<String?> _gender;
   late final ValueNotifier<String?> _countryCode;
   late final ValueNotifier<String?> _militaryStatus;
-  late final ValueNotifier<String?> _country;
-  late final ValueNotifier<String?> _state;
-  late final ValueNotifier<String?> _city;
-
-  late final ValueNotifier<Map<String, String>> _stateOptions;
-  late final ValueNotifier<Map<String, String>> _cityOptions;
-
-  int _statesRequest = 0;
-  int _citiesRequest = 0;
 
   LocationCatalog get _locationCatalog => getIt<LocationCatalog>();
 
@@ -169,53 +189,15 @@ class _EditProfileFormState extends State<_EditProfileForm> {
     _linkedinController = TextEditingController(
       text: details?.linkedinUrl ?? '',
     );
+    _locationController = TextEditingController(
+      text: details?.location ?? ProfileFormatters.location(details),
+    );
 
     _gender = ValueNotifier<String?>(details?.gender);
 
     _countryCode = ValueNotifier<String?>(null);
 
     _militaryStatus = ValueNotifier<String?>(details?.militaryStatus);
-
-    _country = ValueNotifier<String?>(details?.country);
-
-    _state = ValueNotifier<String?>(details?.state);
-
-    _city = ValueNotifier<String?>(details?.city);
-
-    _stateOptions = ValueNotifier<Map<String, String>>(const {});
-
-    _cityOptions = ValueNotifier<Map<String, String>>(const {});
-
-    _loadStatesForCountry(_country.value);
-    if (_country.value != null && _state.value != null) {
-      _loadCitiesForState(_country.value, _state.value);
-    }
-  }
-
-  /// Loads state options for [countryName] from the local dataset.
-  ///
-  /// Stale responses from superseded requests are discarded so rapid
-  /// country changes cannot repopulate options for the wrong country.
-  Future<void> _loadStatesForCountry(String? countryName) async {
-    final request = ++_statesRequest;
-    final options = countryName == null
-        ? const <String, String>{}
-        : await _locationCatalog.statesForCountry(countryName);
-    if (!mounted || request != _statesRequest) return;
-    _stateOptions.value = options;
-  }
-
-  /// Loads city options for [stateName] in [countryName].
-  Future<void> _loadCitiesForState(
-    String? countryName,
-    String? stateName,
-  ) async {
-    final request = ++_citiesRequest;
-    final options = countryName == null || stateName == null
-        ? const <String, String>{}
-        : await _locationCatalog.citiesForState(countryName, stateName);
-    if (!mounted || request != _citiesRequest) return;
-    _cityOptions.value = options;
   }
 
   @override
@@ -226,57 +208,57 @@ class _EditProfileFormState extends State<_EditProfileForm> {
     _jobTitleController.dispose();
     _githubController.dispose();
     _linkedinController.dispose();
+    _locationController.dispose();
 
     _gender.dispose();
     _countryCode.dispose();
     _militaryStatus.dispose();
-    _country.dispose();
-    _state.dispose();
-    _city.dispose();
-    _stateOptions.dispose();
-    _cityOptions.dispose();
 
     super.dispose();
   }
 
   void _handleSave() {
     if (widget.isSaving) return;
+    final fullNameIsValid = _fullNameFieldKey.currentState?.validate() ?? false;
+    final githubIsValid = _githubFieldKey.currentState?.validate() ?? false;
+    final linkedInIsValid = _linkedinFieldKey.currentState?.validate() ?? false;
+    final isValid = fullNameIsValid && githubIsValid && linkedInIsValid;
+    if (!isValid) return;
 
     final params = EditProfilePatchMapper.fromDiff(
       baseline: widget.initialProfile,
+      fullName: _fullNameController.text,
+      phone: _phoneController.text,
       dateOfBirth: _dateOfBirthController.text,
       gender: _gender.value,
       jobTitle: _jobTitleController.text,
-      country: _country.value,
-      state: _state.value,
-      city: _city.value,
+      country: null,
+      state: null,
+      city: null,
+      location: _locationController.text,
       githubUrl: _githubController.text,
       linkedinUrl: _linkedinController.text,
       militaryStatus: _militaryStatus.value,
     );
 
-    // Name/Phone belong to the User object and have no confirmed update
-    // endpoint: they are never included in PATCH /candidate/profile.
-    // Inform the user instead of silently discarding their edits.
-    final baselineUser = widget.initialProfile.user;
-    final hasPendingUserEdits =
-        _fullNameController.text.trim() != baselineUser.name.trim() ||
-        _phoneController.text.trim() != (baselineUser.phone ?? '').trim();
-    if (hasPendingUserEdits) {
-      _showPendingUserEditsNotice();
+    final hasUnsupportedProfileEdits = params.hasUnsupportedChanges;
+    if (hasUnsupportedProfileEdits) {
+      _showUnsupportedProfileEditsNotice();
     }
 
-    // No supported field changed: skip the PATCH and stay on screen so
-    // entered values (including unsaved Name/Phone) are preserved.
-    // A negative result is only returned when nothing was edited at all.
-    if (!params.hasChanges) {
-      if (!hasPendingUserEdits) {
+    // No API-supported field changed: skip the PATCH and stay on screen if
+    // any unsupported values were edited.
+    if (!params.hasApiSupportedChanges) {
+      if (!hasUnsupportedProfileEdits) {
         Navigator.of(context).pop(false);
       }
       return;
     }
 
-    context.read<EditProfileCubit>().updateProfile(params);
+    context.read<EditProfileCubit>().updateProfile(
+      params,
+      hasUnpersistedChanges: hasUnsupportedProfileEdits,
+    );
   }
 
   void _showMessage(String message) {
@@ -286,8 +268,8 @@ class _EditProfileFormState extends State<_EditProfileForm> {
       ..showSnackBar(SnackBar(content: Text(message)));
   }
 
-  void _showPendingUserEditsNotice() {
-    _showMessage(S.of(context).userFieldsNotSavedYet);
+  void _showUnsupportedProfileEditsNotice() {
+    _showMessage(S.of(context).unsupportedProfileFieldsNotSaved);
   }
 
   /// Change Photo flow: source sheet → platform pick → validation →
@@ -300,9 +282,15 @@ class _EditProfileFormState extends State<_EditProfileForm> {
     final source = await AvatarSourceSheet.show(context);
     if (source == null || !mounted) return;
 
-    final picked = await getIt<ProfileImagePickerService>().pickProfileImage(
-      source,
-    );
+    final PickedFile? picked;
+    try {
+      picked = await getIt<ProfileImagePickerService>().pickProfileImage(
+        source,
+      );
+    } catch (_) {
+      if (mounted) _showMessage(locale.somethingWentWrong);
+      return;
+    }
     if (!mounted) return;
     if (picked == null) return;
 
@@ -373,10 +361,10 @@ class _EditProfileFormState extends State<_EditProfileForm> {
     final locale = S.of(context);
     final theme = Theme.of(context);
     final arabic = Localizations.localeOf(context).languageCode == 'ar';
-    final countryOptions = _locationCatalog.countries(arabic: arabic);
     final callingCodes = _locationCatalog.callingCodes(arabic: arabic);
 
     return ListView(
+      physics: const AlwaysScrollableScrollPhysics(),
       padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 32.h),
       children: [
         // Header
@@ -410,7 +398,9 @@ class _EditProfileFormState extends State<_EditProfileForm> {
         // Profile picture: staged preview takes precedence while
         // picking; Change Photo and the camera badge share one flow.
         ProfilePhotoEditor(
-          avatarUrl: widget.initialProfile.user.avatar,
+          avatarUrl: ProfileAvatarUrl.resolve(
+            widget.initialProfile.user.avatar,
+          ),
           previewBytes: widget.avatarBytes,
           onChangePhoto: widget.isSaving ? null : _pickAndStageAvatar,
         ),
@@ -440,6 +430,12 @@ class _EditProfileFormState extends State<_EditProfileForm> {
                     _countryCode.value = value;
                   },
                   onDateOfBirthTap: _pickDateOfBirth,
+                  fullNameFieldKey: _fullNameFieldKey,
+                  fullNameValidator: (value) =>
+                      ProfileFormValidator.requiredValue(
+                        value,
+                        requiredMessage: locale.required,
+                      ),
                 );
               },
             );
@@ -468,54 +464,7 @@ class _EditProfileFormState extends State<_EditProfileForm> {
         SizedBox(height: 16.h),
 
         // Location
-        ValueListenableBuilder<String?>(
-          valueListenable: _country,
-          builder: (context, country, child) {
-            return ValueListenableBuilder<String?>(
-              valueListenable: _state,
-              builder: (context, state, child) {
-                return ValueListenableBuilder<String?>(
-                  valueListenable: _city,
-                  builder: (context, city, child) {
-                    return ValueListenableBuilder<Map<String, String>>(
-                      valueListenable: _stateOptions,
-                      builder: (context, stateOptions, child) {
-                        return ValueListenableBuilder<Map<String, String>>(
-                          valueListenable: _cityOptions,
-                          builder: (context, cityOptions, child) {
-                            return ProfileLocationCard(
-                              country: country,
-                              state: state,
-                              city: city,
-                              countries: countryOptions,
-                              states: stateOptions,
-                              cities: cityOptions,
-                              onCountryChanged: (value) {
-                                _country.value = value;
-                                _state.value = null;
-                                _city.value = null;
-                                _cityOptions.value = const {};
-                                _loadStatesForCountry(value);
-                              },
-                              onStateChanged: (value) {
-                                _state.value = value;
-                                _city.value = null;
-                                _loadCitiesForState(_country.value, value);
-                              },
-                              onCityChanged: (value) {
-                                _city.value = value;
-                              },
-                            );
-                          },
-                        );
-                      },
-                    );
-                  },
-                );
-              },
-            );
-          },
-        ),
+        ProfileLocationCard(controller: _locationController),
 
         SizedBox(height: 16.h),
 
@@ -523,6 +472,16 @@ class _EditProfileFormState extends State<_EditProfileForm> {
         ProfessionalLinksCard(
           githubController: _githubController,
           linkedinController: _linkedinController,
+          githubFieldKey: _githubFieldKey,
+          linkedinFieldKey: _linkedinFieldKey,
+          githubValidator: (value) => ProfileFormValidator.optionalWebUrl(
+            value,
+            invalidMessage: locale.invalidProfileUrl,
+          ),
+          linkedinValidator: (value) => ProfileFormValidator.optionalWebUrl(
+            value,
+            invalidMessage: locale.invalidProfileUrl,
+          ),
         ),
 
         SizedBox(height: 28.h),

@@ -29,15 +29,18 @@ class ApplicationModel {
         : const <String, dynamic>{};
 
     final id = (dataObj['id'] ?? json['id'] ?? '').toString();
-    final type =
-        (dataObj['type'] ?? json['type'] ?? 'applications').toString();
+    final type = (dataObj['type'] ?? json['type'] ?? 'applications').toString();
 
-    final status =
-        (dataObj['status'] ?? attributes['status'] ?? 'applied').toString();
+    final status = (dataObj['status'] ?? attributes['status'] ?? 'applied')
+        .toString();
     final coverLetter =
         (dataObj['cover_letter'] ?? attributes['cover_letter']) as String?;
     final notes =
-        (dataObj['notes'] ?? attributes['notes']) as String?;
+        (dataObj['candidate_notes'] ??
+                dataObj['notes'] ??
+                attributes['candidate_notes'] ??
+                attributes['notes'])
+            as String?;
 
     DateTime? parseDate(dynamic val) {
       if (val == null) return null;
@@ -55,8 +58,7 @@ class ApplicationModel {
     );
 
     JobModel? job;
-    final jobJson =
-        dataObj['job'] ?? attributes['job'] ?? dataObj['job_post'];
+    final jobJson = dataObj['job'] ?? attributes['job'] ?? dataObj['job_post'];
     if (jobJson is Map<String, dynamic>) {
       job = JobModel.fromJson(jobJson);
     }

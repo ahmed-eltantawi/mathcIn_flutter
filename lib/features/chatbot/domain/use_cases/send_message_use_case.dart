@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failures.dart';
-import '../../data/models/chatbot_send_message_response_model.dart';
-import '../repositories/chatbot_repository.dart';
+import 'package:MatchIn/core/errors/failures.dart';
+import 'package:MatchIn/features/chatbot/data/models/chatbot_send_message_response_model.dart';
+import 'package:MatchIn/features/chatbot/domain/repositories/chatbot_repository.dart';
 
 class SendMessageUseCase {
   const SendMessageUseCase({required this.repository});

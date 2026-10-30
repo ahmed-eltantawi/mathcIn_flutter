@@ -54,6 +54,8 @@ class CvUploadCubit extends Cubit<CvUploadState> {
   /// a terminal failure with server-side retry available. Cancelled on
   /// close, on terminal states, and when superseded by a newer watch.
   Timer? _pollTimer;
+  int _pollGeneration = 0;
+  bool _pollInProgress = false;
   static const int _maxPollAttempts = 20;
 
   Future<void> upload(CvUploadInput input) async {
@@ -163,12 +165,14 @@ class CvUploadCubit extends Cubit<CvUploadState> {
     _pollTimer?.cancel();
     _pollTimer = null;
     if (isClosed) return;
+    final generation = ++_pollGeneration;
     emit(CvExtractionPolling(docId: docId, fileName: fileName));
-    await _pollOnce(docId, 1, fileName: fileName);
-    if (isClosed) return;
+    await _pollOnce(docId, 1, generation: generation, fileName: fileName);
+    if (isClosed || generation != _pollGeneration) return;
     if (state is! CvExtractionPolling) return;
     var attempts = 1;
     _pollTimer = Timer.periodic(pollInterval, (timer) async {
+      if (generation != _pollGeneration || _pollInProgress) return;
       attempts++;
       if (attempts > _maxPollAttempts) {
         timer.cancel();
@@ -184,8 +188,13 @@ class CvUploadCubit extends Cubit<CvUploadState> {
         }
         return;
       }
-      await _pollOnce(docId, attempts, fileName: fileName);
-      if (isClosed) return;
+      await _pollOnce(
+        docId,
+        attempts,
+        generation: generation,
+        fileName: fileName,
+      );
+      if (isClosed || generation != _pollGeneration) return;
       if (state is! CvExtractionPolling) {
         timer.cancel();
         _pollTimer = null;
@@ -250,15 +259,24 @@ class CvUploadCubit extends Cubit<CvUploadState> {
 
   @override
   Future<void> close() {
+    _pollGeneration++;
     _pollTimer?.cancel();
     _pollTimer = null;
     return super.close();
   }
 
-  Future<void> _pollOnce(int docId, int attempts, {String? fileName}) async {
-    final result = await getCvStatusUseCase(docId);
-    if (isClosed) return;
-    result.fold(
+  Future<void> _pollOnce(
+    int docId,
+    int attempts, {
+    required int generation,
+    String? fileName,
+  }) async {
+    if (_pollInProgress) return;
+    _pollInProgress = true;
+    try {
+      final result = await getCvStatusUseCase(docId);
+      if (isClosed || generation != _pollGeneration) return;
+      result.fold(
       (failure) {
         if (state is! CvExtractionPolling) return;
         if (failure is OfflineFailure) return;
@@ -305,7 +323,10 @@ class CvUploadCubit extends Cubit<CvUploadState> {
           ),
         );
       },
-    );
+      );
+    } finally {
+      _pollInProgress = false;
+    }
   }
 
   /// Locally known upload name from the current state, if any.

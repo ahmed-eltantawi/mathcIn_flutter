@@ -29,6 +29,12 @@ class ChatbotSendMessageResponseModel {
       aiReply = ChatMessageModel.fromJson(data);
     }
 
+    if (aiReply.isInternalAction) {
+      throw const FormatException(
+        'The mentor returned an internal action instead of a user-facing reply.',
+      );
+    }
+
     ChatModel? convo;
     if (data.containsKey('conversation') && data['conversation'] is Map<String, dynamic>) {
       convo = ChatModel.fromJson(data['conversation'] as Map<String, dynamic>);

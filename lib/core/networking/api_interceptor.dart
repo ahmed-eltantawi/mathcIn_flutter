@@ -122,7 +122,7 @@ class ApiInterceptor extends Interceptor {
     try {
       // create new dio instance for refresh token request, following the
       // same centralized configuration as every other API request
-      final refreshDio = Dio(BaseOptions(baseUrl: EndPoint.baseUrl));
+      final refreshDio = Dio(BaseOptions(baseUrl: err.requestOptions.baseUrl));
 
       // call refresh token endpoint
       final response = await refreshDio.post(

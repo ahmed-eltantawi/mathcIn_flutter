@@ -1,4 +1,4 @@
-import '../../domain/entities/suggested_action_entity.dart';
+import 'package:MatchIn/features/chatbot/domain/entities/suggested_action_entity.dart';
 
 class SuggestedActionModel extends SuggestedActionEntity {
   const SuggestedActionModel({

@@ -53,6 +53,7 @@ abstract class EndPoint {
   static String applicationNotes(dynamic id) => 'applications/$id/notes';
   // Candidate Profile
   static const String candidateProfile = 'candidate/profile';
+  static const String candidateProfileAvatar = 'candidate/profile/avatar';
 
   // Candidate Skills
   static const String candidateSkills = 'candidate/skills';

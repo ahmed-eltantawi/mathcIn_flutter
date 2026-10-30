@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Result of the avatar preview dialog.
 enum AvatarPreviewAction {
-  /// Attempt upload (currently reports pending backend support).
+  /// Upload the selected image through the documented avatar endpoint.
   confirm,
 
   /// Discard the preview and pick another image.
@@ -18,9 +18,7 @@ enum AvatarPreviewAction {
 
 /// Shows the staged avatar image before confirmation.
 ///
-/// Displays the in-memory bytes only; confirming never claims the
-/// image was saved. The pending-backend notice sets that expectation
-/// before the user confirms.
+/// Displays the in-memory bytes before the user confirms the upload.
 class AvatarPreviewDialog extends StatelessWidget {
   const AvatarPreviewDialog({
     required this.bytes,
@@ -72,13 +70,6 @@ class AvatarPreviewDialog extends StatelessWidget {
               fileName,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: colors.onSurfaceVariant,
-              ),
-            ),
-            SizedBox(height: 8.h),
-            Text(
-              locale.avatarUploadUnavailable,
               style: theme.textTheme.bodySmall?.copyWith(
                 color: colors.onSurfaceVariant,
               ),

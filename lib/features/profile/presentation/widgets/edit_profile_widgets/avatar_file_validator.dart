@@ -1,17 +1,13 @@
 /// Validates picked profile images before preview and upload.
 ///
-/// Provisional constraints (JPG/JPEG, PNG, WEBP; 5 MiB) mirror the CV
-/// upload policy until the backend documents the avatar contract.
-///
-/// TODO(avatar-backend): verify accepted formats, size limits, and
-/// MIME types against the final Swagger contract. Do not treat these
-/// provisional rules as production backend validation.
+/// The API documents JPEG and PNG avatar uploads. The local size limit is
+/// retained as a client-side guard; the server remains authoritative.
 class AvatarFileValidator {
   const AvatarFileValidator._();
 
-  static const List<String> allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+  static const List<String> allowedExtensions = ['jpg', 'jpeg', 'png'];
 
-  /// Provisional maximum image size (5 MiB), pending backend confirmation.
+  /// Client-side maximum image size (5 MiB).
   static const int maxBytes = 5 * 1024 * 1024;
 
   /// Lowercase extension without the dot, or empty when absent.

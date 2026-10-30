@@ -74,10 +74,11 @@ final class EditProfileAvatarStaged extends EditProfileState {
 }
 
 final class EditProfileSuccess extends EditProfileState {
-  const EditProfileSuccess(this.profile);
+  const EditProfileSuccess(this.profile, {this.hasUnpersistedChanges = false});
 
   final CandidateProfileEntity profile;
+  final bool hasUnpersistedChanges;
 
   @override
-  List<Object?> get props => [profile];
+  List<Object?> get props => [profile, hasUnpersistedChanges];
 }

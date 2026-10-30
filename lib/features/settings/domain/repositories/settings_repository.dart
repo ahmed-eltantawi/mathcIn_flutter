@@ -2,6 +2,14 @@ import 'package:MatchIn/core/errors/failures.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class SettingsRepository {
+  Future<Either<Failure, Unit>> requestPasswordChangeOtp();
+
+  Future<Either<Failure, Unit>> confirmPasswordChange({
+    required String otp,
+    required String newPassword,
+    required String confirmPassword,
+  });
+
   Future<Either<Failure, bool>> getNotificationPreference();
 
   Future<Either<Failure, Unit>> setNotificationPreference(bool enabled);

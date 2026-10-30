@@ -12,25 +12,32 @@ class ProfileCubit extends Cubit<ProfileState> {
     required this.getCachedCandidateProfileUseCase,
   }) : super(const ProfileInitial());
 
-  final GetCandidateProfileUseCase
-  getCandidateProfileUseCase;
-  final GetCachedCandidateProfileUseCase
-  getCachedCandidateProfileUseCase;
+  final GetCandidateProfileUseCase getCandidateProfileUseCase;
+  final GetCachedCandidateProfileUseCase getCachedCandidateProfileUseCase;
+
+  int _loadGeneration = 0;
+
+  /// Publishes a successfully saved profile so every screen using this
+  /// app-scoped Cubit sees the same fresh model without waiting for a refetch.
+  void publishProfile(CandidateProfileEntity profile) {
+    if (isClosed) return;
+    _loadGeneration++;
+    emit(ProfileSuccess(profile: profile));
+  }
 
   Future<void> getCandidateProfile() async {
+    final generation = ++_loadGeneration;
     CandidateProfileEntity? cachedProfile;
 
     // 1. Emit cached profile immediately when available (offline-first).
     final cachedResult = await getCachedCandidateProfileUseCase();
-    cachedResult.fold(
-      (_) => null,
-      (profile) {
-        if (profile != null) {
-          cachedProfile = profile;
-          emit(ProfileSuccess(profile: profile, isRefreshing: true));
-        }
-      },
-    );
+    if (isClosed || generation != _loadGeneration) return;
+    cachedResult.fold((_) => null, (profile) {
+      if (profile != null) {
+        cachedProfile = profile;
+        emit(ProfileSuccess(profile: profile, isRefreshing: true));
+      }
+    });
 
     if (cachedProfile == null) {
       emit(const ProfileLoading());
@@ -38,6 +45,7 @@ class ProfileCubit extends Cubit<ProfileState> {
 
     // 2. Refresh from remote in the background; preserve cache on failure.
     final result = await getCandidateProfileUseCase();
+    if (isClosed || generation != _loadGeneration) return;
 
     result.fold(
       (failure) {

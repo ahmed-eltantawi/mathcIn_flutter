@@ -30,12 +30,12 @@ import 'package:MatchIn/features/auth/presentation/pages/register_view.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/views/job_details_view.dart';
 import 'package:MatchIn/features/home/presentation/views/jobs_search_view.dart';
 import 'package:MatchIn/features/home/presentation/views/notifications_view.dart';
-import 'package:MatchIn/features/home/presentation/views/settings_view.dart';
+import 'package:MatchIn/features/settings/presentation/views/settings_view.dart';
 import 'package:MatchIn/features/settings/presentation/views/change_password_view.dart';
 import 'package:MatchIn/features/settings/presentation/views/contact_us_view.dart';
 import 'package:MatchIn/features/settings/presentation/views/follow_us_view.dart';
 import 'package:MatchIn/features/settings/presentation/views/privacy_policy_view.dart';
-import 'package:MatchIn/features/onbording/presentation/pages/onbording.dart';
+import 'package:MatchIn/features/onboarding/presentation/pages/onboarding_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -149,7 +149,10 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kOnboardingView,
         pageBuilder: (context, state) {
-          return _buildTransitionPage(state: state, child: const Onb1());
+          return _buildTransitionPage(
+            state: state,
+            child: const OnboardingView(),
+          );
         },
       ),
 
@@ -168,10 +171,7 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.kChatBotView,
         pageBuilder: (context, state) {
-          return _buildTransitionPage(
-            state: state,
-            child: const AiChatView(),
-          );
+          return _buildTransitionPage(state: state, child: const AiChatView());
         },
       ),
 
@@ -336,10 +336,13 @@ abstract final class AppRouter {
           final extra = state.extra;
           String email = 'user@example.com';
           OtpMode mode = OtpMode.emailVerification;
+          bool allowImmediateResend = false;
 
           if (extra is Map<String, dynamic>) {
             email = extra['email'] as String? ?? 'user@example.com';
             mode = extra['mode'] as OtpMode? ?? OtpMode.emailVerification;
+            allowImmediateResend =
+                extra['allowImmediateResend'] as bool? ?? false;
           } else if (extra is String) {
             email = extra;
           }
@@ -351,6 +354,7 @@ abstract final class AppRouter {
               child: OtpVerificationView(
                 email: email,
                 mode: mode,
+                allowImmediateResend: allowImmediateResend,
               ),
             ),
           );

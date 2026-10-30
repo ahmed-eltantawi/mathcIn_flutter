@@ -20,25 +20,29 @@ class ChangePasswordViewBody extends StatefulWidget {
 
 class _ChangePasswordViewBodyState extends State<ChangePasswordViewBody> {
   final _formKey = GlobalKey<FormState>();
-  final _currentPasswordController = TextEditingController();
+  final _otpController = TextEditingController();
   final _newPasswordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
   @override
   void dispose() {
-    _currentPasswordController.dispose();
+    _otpController.dispose();
     _newPasswordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
   }
 
-  void _onSubmit() {
-    if (_formKey.currentState?.validate() ?? false) {
-      context.read<ChangePasswordCubit>().changePassword(
-            currentPassword: _currentPasswordController.text,
-            newPassword: _newPasswordController.text,
-            confirmPassword: _confirmPasswordController.text,
-          );
+  void _onSubmit({required bool otpSent}) {
+    if (!(_formKey.currentState?.validate() ?? false)) return;
+    final cubit = context.read<ChangePasswordCubit>();
+    if (otpSent) {
+      cubit.confirmWithOtp(
+        otp: _otpController.text,
+        newPassword: _newPasswordController.text,
+        confirmPassword: _confirmPasswordController.text,
+      );
+    } else {
+      cubit.requestOtp();
     }
   }
 
@@ -50,6 +54,9 @@ class _ChangePasswordViewBodyState extends State<ChangePasswordViewBody> {
 
     return BlocConsumer<ChangePasswordCubit, ChangePasswordState>(
       listener: (context, state) {
+        if (state is ChangePasswordOtpSent) {
+          context.showSuccessSnackBar(l10n.verificationCodeSentToEmail);
+        }
         if (state is ChangePasswordSuccess) {
           context.showSuccessSnackBar(l10n.changePasswordSuccess);
           context.pop();
@@ -59,6 +66,10 @@ class _ChangePasswordViewBodyState extends State<ChangePasswordViewBody> {
       },
       builder: (context, state) {
         final isLoading = state is ChangePasswordLoading;
+        final otpSent =
+            state is ChangePasswordOtpSent ||
+            (state is ChangePasswordLoading && state.otpSent) ||
+            (state is ChangePasswordFailure && state.otpSent);
 
         return SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
@@ -100,21 +111,24 @@ class _ChangePasswordViewBodyState extends State<ChangePasswordViewBody> {
 
                 SizedBox(height: 24.h),
 
-                CustomTextField(
-                  labelText: l10n.currentPassword,
-                  hintText: '••••••••',
-                  controller: _currentPasswordController,
-                  isPassword: true,
-                  prefixIcon: const Icon(Icons.lock_outline_rounded),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return AppStrings.fieldRequired;
-                    }
-                    return null;
-                  },
-                ),
-
-                SizedBox(height: 18.h),
+                if (otpSent) ...[
+                  Text(
+                    l10n.verificationCodeSentToEmail,
+                    style: theme.textTheme.bodyMedium,
+                  ),
+                  SizedBox(height: 14.h),
+                  CustomTextField(
+                    labelText: l10n.verificationCodeLabel,
+                    hintText: l10n.enterVerificationCode,
+                    controller: _otpController,
+                    keyboardType: TextInputType.number,
+                    prefixIcon: const Icon(Icons.mark_email_read_outlined),
+                    validator: (value) => value == null || value.trim().isEmpty
+                        ? AppStrings.fieldRequired
+                        : null,
+                  ),
+                  SizedBox(height: 18.h),
+                ],
 
                 CustomTextField(
                   labelText: l10n.newPassword,
@@ -142,9 +156,9 @@ class _ChangePasswordViewBodyState extends State<ChangePasswordViewBody> {
                 SizedBox(height: 36.h),
 
                 CustomButton(
-                  text: l10n.changePassword,
+                  text: otpSent ? l10n.verify : l10n.sendVerificationCode,
                   isLoading: isLoading,
-                  onPressed: _onSubmit,
+                  onPressed: () => _onSubmit(otpSent: otpSent),
                 ),
               ],
             ),

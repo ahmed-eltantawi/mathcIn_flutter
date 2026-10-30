@@ -34,6 +34,7 @@ class ExperienceForm extends StatefulWidget {
 }
 
 class _ExperienceFormState extends State<ExperienceForm> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late final TextEditingController _jobTitleController;
   late final TextEditingController _companyController;
   late final TextEditingController _startDateController;
@@ -203,6 +204,7 @@ class _ExperienceFormState extends State<ExperienceForm> {
 
   void _handleSave() {
     if (widget.isSaving) return;
+    if (!(_formKey.currentState?.validate() ?? false)) return;
     final locale = S.of(context);
 
     final jobTitle = _jobTitleController.text.trim();
@@ -240,6 +242,13 @@ class _ExperienceFormState extends State<ExperienceForm> {
     );
 
     final baseline = widget.initialExperience;
+    final unsupportedChanges = baseline == null
+        ? _employmentType.value != null || technologies.isNotEmpty
+        : _employmentType.value != baseline.employmentType ||
+              !_sameTechnologies(technologies, baseline.technologies);
+    if (unsupportedChanges) {
+      _showMessage(locale.unsupportedProfileFieldsNotSaved);
+    }
     if (baseline == null) {
       widget.onAdd(
         AddExperienceParams(
@@ -354,236 +363,263 @@ class _ExperienceFormState extends State<ExperienceForm> {
       'on_site': locale.onSite,
     };
 
-    return Container(
-      padding: EdgeInsets.all(18.r),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(14.r),
-        border: Border.all(color: theme.dividerColor),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            _isEditing ? locale.editExperience : locale.addNewExperience,
-            style: theme.textTheme.titleLarge?.copyWith(
-              color: theme.colorScheme.primary,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          SizedBox(height: 18.h),
-          Divider(color: theme.dividerColor),
-          SizedBox(height: 18.h),
-          ExperienceFormField(
-            label: locale.jobTitle,
-            controller: _jobTitleController,
-            hintText: locale.jobTitleHint,
-          ),
-          SizedBox(height: 18.h),
-          ExperienceFormField(
-            label: locale.company,
-            controller: _companyController,
-            hintText: locale.companyHint,
-          ),
-          SizedBox(height: 18.h),
-          ValueListenableBuilder<String?>(
-            valueListenable: _employmentType,
-            builder: (context, value, child) {
-              return Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: ExperienceDropdownField(
-                      label: locale.employmentType,
-                      value: value,
-                      items: employmentTypes,
-                      onChanged: (newValue) {
-                        _employmentType.value = newValue;
-                      },
-                    ),
-                  ),
-                  SizedBox(width: 12.w),
-                  Expanded(
-                    // TODO(experience-backend):
-                    // Enable Experience Work Mode when the backend
-                    // provides a confirmed request/response contract.
-                    child: ExperienceDropdownField(
-                      label: locale.workMode,
-                      value: null,
-                      items: workModes,
-                      enabled: false,
-                      onChanged: (_) {},
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-          SizedBox(height: 18.h),
-          ValueListenableBuilder<String?>(
-            valueListenable: _country,
-            builder: (context, country, child) {
-              return ValueListenableBuilder<String?>(
-                valueListenable: _state,
-                builder: (context, state, child) {
-                  return ValueListenableBuilder<String?>(
-                    valueListenable: _city,
-                    builder: (context, city, child) {
-                      return ValueListenableBuilder<Map<String, String>>(
-                        valueListenable: _stateOptions,
-                        builder: (context, stateOptions, child) {
-                          return ValueListenableBuilder<Map<String, String>>(
-                            valueListenable: _cityOptions,
-                            builder: (context, cityOptions, child) {
-                              final arabic =
-                                  Localizations.localeOf(context)
-                                      .languageCode ==
-                                  'ar';
-                              final countries = _locationCatalog.countries(
-                                arabic: arabic,
-                              );
-                              return Column(
-                                children: [
-                                  ExperienceDropdownField(
-                                    label: locale.country,
-                                    value: country,
-                                    items: countries,
-                                    onChanged: (value) {
-                                      _country.value = value;
-                                      _state.value = null;
-                                      _city.value = null;
-                                      _cityOptions.value = const {};
-                                      _loadStatesForCountry(value);
-                                    },
-                                  ),
-                                  SizedBox(height: 18.h),
-                                  // Local-only filter for city options.
-                                  // Experience has no state field, so this
-                                  // value is never submitted.
-                                  ExperienceDropdownField(
-                                    label: locale.stateGovernorate,
-                                    value: state,
-                                    items: stateOptions,
-                                    onChanged: (value) {
-                                      _state.value = value;
-                                      _city.value = null;
-                                      _loadCitiesForState(
-                                        _country.value,
-                                        value,
-                                      );
-                                    },
-                                  ),
-                                  SizedBox(height: 18.h),
-                                  ExperienceDropdownField(
-                                    label: locale.city,
-                                    value: city,
-                                    items: cityOptions,
-                                    onChanged: (value) {
-                                      _city.value = value;
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                      );
-                    },
-                  );
-                },
-              );
-            },
-          ),
-          SizedBox(height: 18.h),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: ExperienceFormField(
-                  label: locale.startDate,
-                  controller: _startDateController,
-                  hintText: locale.monthYearHint,
-                  readOnly: true,
-                  onTap: () => _pickDate(
-                    notifier: _startDate,
-                    controller: _startDateController,
-                  ),
-                ),
+    return Form(
+      key: _formKey,
+      child: Container(
+        padding: EdgeInsets.all(18.r),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surface,
+          borderRadius: BorderRadius.circular(14.r),
+          border: Border.all(color: theme.dividerColor),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              _isEditing ? locale.editExperience : locale.addNewExperience,
+              style: theme.textTheme.titleLarge?.copyWith(
+                color: theme.colorScheme.primary,
+                fontWeight: FontWeight.w700,
               ),
-              SizedBox(width: 12.w),
-              Expanded(
-                child: ValueListenableBuilder<bool>(
-                  valueListenable: _isCurrent,
-                  builder: (context, isCurrent, child) {
-                    return Opacity(
-                      opacity: isCurrent ? 0.5 : 1.0,
-                      child: ExperienceFormField(
-                        label: locale.endDate,
-                        controller: _endDateController,
-                        hintText: locale.monthYearHint,
-                        readOnly: true,
-                        onTap: isCurrent
-                            ? null
-                            : () => _pickDate(
-                                notifier: _endDate,
-                                controller: _endDateController,
-                              ),
+            ),
+            SizedBox(height: 18.h),
+            Divider(color: theme.dividerColor),
+            SizedBox(height: 18.h),
+            ExperienceFormField(
+              label: locale.jobTitle,
+              controller: _jobTitleController,
+              hintText: locale.jobTitleHint,
+              validator: (value) => ProfileFormValidator.requiredValue(
+                value,
+                requiredMessage: locale.required,
+              ),
+            ),
+            SizedBox(height: 18.h),
+            ExperienceFormField(
+              label: locale.company,
+              controller: _companyController,
+              hintText: locale.companyHint,
+              validator: (value) => ProfileFormValidator.requiredValue(
+                value,
+                requiredMessage: locale.required,
+              ),
+            ),
+            SizedBox(height: 18.h),
+            ValueListenableBuilder<String?>(
+              valueListenable: _employmentType,
+              builder: (context, value, child) {
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: ExperienceDropdownField(
+                        label: locale.employmentType,
+                        value: value,
+                        items: employmentTypes,
+                        onChanged: (newValue) {
+                          _employmentType.value = newValue;
+                        },
                       ),
+                    ),
+                    SizedBox(width: 12.w),
+                    Expanded(
+                      // TODO(experience-backend):
+                      // Enable Experience Work Mode when the backend
+                      // provides a confirmed request/response contract.
+                      child: ExperienceDropdownField(
+                        label: locale.workMode,
+                        value: null,
+                        items: workModes,
+                        enabled: false,
+                        onChanged: (_) {},
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+            SizedBox(height: 18.h),
+            ValueListenableBuilder<String?>(
+              valueListenable: _country,
+              builder: (context, country, child) {
+                return ValueListenableBuilder<String?>(
+                  valueListenable: _state,
+                  builder: (context, state, child) {
+                    return ValueListenableBuilder<String?>(
+                      valueListenable: _city,
+                      builder: (context, city, child) {
+                        return ValueListenableBuilder<Map<String, String>>(
+                          valueListenable: _stateOptions,
+                          builder: (context, stateOptions, child) {
+                            return ValueListenableBuilder<Map<String, String>>(
+                              valueListenable: _cityOptions,
+                              builder: (context, cityOptions, child) {
+                                final arabic =
+                                    Localizations.localeOf(context)
+                                        .languageCode ==
+                                    'ar';
+                                final countries = _locationCatalog.countries(
+                                  arabic: arabic,
+                                );
+                                return Column(
+                                  children: [
+                                    ExperienceDropdownField(
+                                      label: locale.country,
+                                      value: country,
+                                      items: countries,
+                                      onChanged: (value) {
+                                        _country.value = value;
+                                        _state.value = null;
+                                        _city.value = null;
+                                        _cityOptions.value = const {};
+                                        _loadStatesForCountry(value);
+                                      },
+                                    ),
+                                    SizedBox(height: 18.h),
+                                    // Local-only filter for city options.
+                                    // Experience has no state field, so this
+                                    // value is never submitted.
+                                    ExperienceDropdownField(
+                                      label: locale.stateGovernorate,
+                                      value: state,
+                                      items: stateOptions,
+                                      onChanged: (value) {
+                                        _state.value = value;
+                                        _city.value = null;
+                                        _loadCitiesForState(
+                                          _country.value,
+                                          value,
+                                        );
+                                      },
+                                    ),
+                                    SizedBox(height: 18.h),
+                                    ExperienceDropdownField(
+                                      label: locale.city,
+                                      value: city,
+                                      items: cityOptions,
+                                      onChanged: (value) {
+                                        _city.value = value;
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                        );
+                      },
                     );
                   },
+                );
+              },
+            ),
+            SizedBox(height: 18.h),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: ExperienceFormField(
+                    label: locale.startDate,
+                    controller: _startDateController,
+                    hintText: locale.monthYearHint,
+                    readOnly: true,
+                    validator: (value) => ProfileFormValidator.requiredValue(
+                      value,
+                      requiredMessage: locale.required,
+                    ),
+                    onTap: () => _pickDate(
+                      notifier: _startDate,
+                      controller: _startDateController,
+                    ),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(height: 8.h),
-          ValueListenableBuilder<bool>(
-            valueListenable: _isCurrent,
-            builder: (context, isCurrent, child) {
-              return Material(
-                type: MaterialType.transparency,
-                child: CheckboxListTile(
-                  value: isCurrent,
-                  contentPadding: EdgeInsets.zero,
-                  controlAffinity: ListTileControlAffinity.leading,
-                  title: Text(locale.currentlyWorkHere),
-                  onChanged: widget.isSaving
-                      ? null
-                      : (value) {
-                          _isCurrent.value = value ?? false;
-
-                          if (_isCurrent.value) {
-                            _endDate.value = null;
-                            _endDateController.clear();
-                          }
-                        },
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: ValueListenableBuilder<bool>(
+                    valueListenable: _isCurrent,
+                    builder: (context, isCurrent, child) {
+                      return Opacity(
+                        opacity: isCurrent ? 0.5 : 1.0,
+                        child: ExperienceFormField(
+                          label: locale.endDate,
+                          controller: _endDateController,
+                          hintText: locale.monthYearHint,
+                          readOnly: true,
+                          validator: (value) {
+                            if (_isCurrent.value ||
+                                value == null ||
+                                value.isEmpty) {
+                              return null;
+                            }
+                            return ProfileFormValidator.validateDateRange(
+                              start: _startDate.value,
+                              end: _endDate.value,
+                              invalidMessage: locale.invalidDateRange,
+                            );
+                          },
+                          onTap: isCurrent
+                              ? null
+                              : () => _pickDate(
+                                  notifier: _endDate,
+                                  controller: _endDateController,
+                                ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              );
-            },
-          ),
-          SizedBox(height: 8.h),
-          ExperienceFormField(
-            label: locale.responsibilitiesDescription,
-            controller: _descriptionController,
-            hintText: locale.responsibilitiesHint,
-            maxLines: 5,
-          ),
-          SizedBox(height: 18.h),
+              ],
+            ),
+            SizedBox(height: 8.h),
+            ValueListenableBuilder<bool>(
+              valueListenable: _isCurrent,
+              builder: (context, isCurrent, child) {
+                return Material(
+                  type: MaterialType.transparency,
+                  child: CheckboxListTile(
+                    value: isCurrent,
+                    contentPadding: EdgeInsets.zero,
+                    controlAffinity: ListTileControlAffinity.leading,
+                    title: Text(locale.currentlyWorkHere),
+                    onChanged: widget.isSaving
+                        ? null
+                        : (value) {
+                            _isCurrent.value = value ?? false;
 
-          ExperienceFormField(
-            label: locale.relatedSkills,
-            controller: _relatedSkillsController,
-            hintText: locale.relatedSkillsHint,
-          ),
+                            if (_isCurrent.value) {
+                              _endDate.value = null;
+                              _endDateController.clear();
+                            }
+                          },
+                  ),
+                );
+              },
+            ),
+            SizedBox(height: 8.h),
+            ExperienceFormField(
+              label: locale.responsibilitiesDescription,
+              controller: _descriptionController,
+              hintText: locale.responsibilitiesHint,
+              maxLines: 5,
+            ),
+            SizedBox(height: 18.h),
 
-          SizedBox(height: 24.h),
-          Divider(color: theme.dividerColor),
-          SizedBox(height: 16.h),
-          ExperienceFormActions(
-            isSaving: widget.isSaving,
-            onCancel: widget.onCancel,
-            onSave: _handleSave,
-          ),
-        ],
+            ExperienceFormField(
+              label: locale.relatedSkills,
+              controller: _relatedSkillsController,
+              hintText: locale.relatedSkillsHint,
+            ),
+
+            SizedBox(height: 24.h),
+            Divider(color: theme.dividerColor),
+            SizedBox(height: 16.h),
+            ExperienceFormActions(
+              isSaving: widget.isSaving,
+              onCancel: widget.onCancel,
+              onSave: _handleSave,
+            ),
+          ],
+        ),
       ),
     );
   }

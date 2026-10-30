@@ -4,13 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:MatchIn/core/functions/require_auth.dart';
 import 'package:MatchIn/core/services/services_locator.dart';
-import '../cubit/chatbot_cubit.dart';
-import '../cubit/chatbot_state.dart';
-import '../widgets/ai_chat_composer.dart';
-import '../widgets/ai_chat_empty_state.dart';
-import '../widgets/chat_history_drawer.dart';
-import '../widgets/chat_message_bubble.dart';
-import '../widgets/typing_indicator.dart';
+import 'package:MatchIn/features/chatbot/presentation/cubit/chatbot_cubit.dart';
+import 'package:MatchIn/features/chatbot/presentation/cubit/chatbot_state.dart';
+import 'package:MatchIn/features/chatbot/presentation/widgets/ai_chat_composer.dart';
+import 'package:MatchIn/features/chatbot/presentation/widgets/ai_chat_empty_state.dart';
+import 'package:MatchIn/features/chatbot/presentation/widgets/chat_history_drawer.dart';
+import 'package:MatchIn/features/chatbot/presentation/widgets/chat_message_bubble.dart';
+import 'package:MatchIn/features/chatbot/presentation/widgets/typing_indicator.dart';
 
 class AiChatView extends StatelessWidget {
   const AiChatView({super.key});

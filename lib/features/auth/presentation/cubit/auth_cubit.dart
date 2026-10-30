@@ -6,6 +6,7 @@ import 'package:MatchIn/features/auth/data/models/login_model.dart';
 import 'package:MatchIn/features/auth/domain/use_cases/login_use_case.dart';
 import 'package:MatchIn/features/auth/domain/use_cases/login_with_google_use_case.dart';
 import 'package:MatchIn/features/auth/domain/use_cases/register_use_case.dart';
+import 'package:MatchIn/features/auth/domain/use_cases/resend_otp_use_case.dart';
 
 part 'auth_state.dart';
 
@@ -13,12 +14,14 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit({
     required this.loginUseCase,
     required this.registerUseCase,
+    this.resendOtpUseCase,
     required this.googleSignInService,
     required this.loginWithGoogleUseCase,
   }) : super(AuthInitial());
 
   final LoginUseCase loginUseCase;
   final RegisterUseCase registerUseCase;
+  final ResendOtpUseCase? resendOtpUseCase;
   final GoogleSignInService googleSignInService;
   final LoginWithGoogleUseCase loginWithGoogleUseCase;
 
@@ -46,9 +49,27 @@ class AuthCubit extends Cubit<AuthState> {
       password: password,
       passwordConfirmation: passwordConfirmation,
     );
+    var registrationSucceeded = false;
     result.fold(
       (failure) => emit(RegisterFailure(message: failure.message)),
-      (success) => emit(RegisterSuccess()),
+      (_) {
+        registrationSucceeded = true;
+      },
+    );
+    if (!registrationSucceeded) return;
+
+    final resendOtp = resendOtpUseCase;
+    if (resendOtp == null) {
+      emit(RegisterSuccess());
+      return;
+    }
+
+    // The register endpoint creates the account; this endpoint explicitly
+    // sends the verification code to the email the user just registered.
+    final otpResult = await resendOtp(email: email.trim());
+    otpResult.fold(
+      (failure) => emit(RegisterSuccess(otpSendError: failure.message)),
+      (_) => emit(RegisterSuccess()),
     );
   }
 

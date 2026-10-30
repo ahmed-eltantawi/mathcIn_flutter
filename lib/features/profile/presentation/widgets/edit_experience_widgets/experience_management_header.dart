@@ -24,7 +24,22 @@ class ExperienceManagementHeader extends StatelessWidget {
             ),
           ),
         ),
-        IconButton(onPressed: () {}, icon: const Icon(Icons.help_outline)),
+        IconButton(
+          onPressed: () => showDialog<void>(
+            context: context,
+            builder: (dialogContext) => AlertDialog(
+              title: Text(locale.help),
+              content: Text(locale.experienceManagementDescription),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(dialogContext).pop(),
+                  child: Text(locale.cancel),
+                ),
+              ],
+            ),
+          ),
+          icon: const Icon(Icons.help_outline),
+        ),
       ],
     );
   }

@@ -24,6 +24,7 @@ class JobCard extends StatelessWidget {
     this.onApply,
     this.onSave,
     this.heroPrefix = 'feed',
+    this.enableDetailsNavigation = true,
   });
 
   final JobEntity job;
@@ -36,6 +37,7 @@ class JobCard extends StatelessWidget {
 
   /// List-source prefix scoping Hero tags ('home', 'feed', 'search', 'saved').
   final String heroPrefix;
+  final bool enableDetailsNavigation;
 
   bool get _isApplied =>
       job.applicationStatus != JobApplicationStatus.notApplied;
@@ -43,8 +45,7 @@ class JobCard extends StatelessWidget {
   ///* Scoped Hero tags: prefix + job id + element. The details screen reuses
   ///* the originating [heroPrefix] passed via navigation extra, so the same
   ///* job in Home / Feed / Search / Saved never produces duplicate tags.
-  String get _heroTag =>
-      JobHeroTags.avatar(prefix: heroPrefix, jobId: job.id);
+  String get _heroTag => JobHeroTags.avatar(prefix: heroPrefix, jobId: job.id);
 
   // Guards against rapid repeated taps pushing duplicate details screens.
   static String? _navigatingJobId;
@@ -64,14 +65,16 @@ class JobCard extends StatelessWidget {
     }
     _navigatingJobId = job.id;
     _lastNavigationTime = now;
-    context.push(
-      AppRoutes.kJobDetailsView,
-      extra: <String, dynamic>{'job': job, 'heroPrefix': heroPrefix},
-    ).then((_) {
-      if (_navigatingJobId == job.id) {
-        _navigatingJobId = null;
-      }
-    });
+    context
+        .push(
+          AppRoutes.kJobDetailsView,
+          extra: <String, dynamic>{'job': job, 'heroPrefix': heroPrefix},
+        )
+        .then((_) {
+          if (_navigatingJobId == job.id) {
+            _navigatingJobId = null;
+          }
+        });
   }
 
   @override
@@ -82,11 +85,13 @@ class JobCard extends StatelessWidget {
       child: InkWell(
         onTap:
             onTap ??
-            () => navigateToJobDetails(
-              context,
-              job: job,
-              heroPrefix: heroPrefix,
-            ),
+            (enableDetailsNavigation
+                ? () => navigateToJobDetails(
+                    context,
+                    job: job,
+                    heroPrefix: heroPrefix,
+                  )
+                : null),
         child: Padding(
           padding: EdgeInsets.all(16.r),
           child: Column(
@@ -122,9 +127,7 @@ class JobCard extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 10.h),
-              JobCardPostedDate(
-                postedDate: job.postedDate.timeAgo(context),
-              ),
+              JobCardPostedDate(postedDate: job.postedDate.timeAgo(context)),
               if (job.skills.isNotEmpty) ...[
                 SizedBox(height: 14.h),
                 JobCardSkillsSection(skills: job.skills),
@@ -136,20 +139,20 @@ class JobCard extends StatelessWidget {
                 children: [
                   MatchingStatus(percentage: job.matchPercentage),
                   const Spacer(),
-                    ElevatedButton(
-                      onPressed: _isApplied
-                          ? null
-                          : (onApply ??
+                  ElevatedButton(
+                    onPressed: _isApplied
+                        ? null
+                        : (onApply ??
                               () {
                                 if (!requireAuth(context)) return;
                                 // External listings open the employer's
                                 // website and are never marked as applied
                                 // merely for opening the link.
                                 if (job.isExternalApply) {
-                                  final website =
-                                      job.websiteUrl?.trim() ?? '';
+                                  final website = job.websiteUrl?.trim() ?? '';
                                   final uri = Uri.tryParse(website);
-                                  final isValid = uri != null &&
+                                  final isValid =
+                                      uri != null &&
                                       uri.isAbsolute &&
                                       (uri.scheme == 'http' ||
                                           uri.scheme == 'https');
@@ -173,14 +176,12 @@ class JobCard extends StatelessWidget {
                                   extra: job,
                                 );
                               }),
-                      style: ElevatedButton.styleFrom(
+                    style: ElevatedButton.styleFrom(
                       minimumSize: Size(110.w, 42.h),
                       padding: EdgeInsets.symmetric(horizontal: 18.w),
                     ),
                     child: Text(
-                      _isApplied
-                          ? context.l10n.applied
-                          : context.l10n.applyNow,
+                      _isApplied ? context.l10n.applied : context.l10n.applyNow,
                     ),
                   ),
                 ],

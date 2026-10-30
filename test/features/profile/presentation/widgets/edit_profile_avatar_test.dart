@@ -57,7 +57,7 @@ class FakeAvatarRepository extends Fake implements ProfileRepository {
   Future<Either<Failure, Unit>> uploadAvatar(AvatarUploadInput input) async {
     avatarCalls++;
     return const Left(
-      ServerFailure(message: 'Avatar upload is not available yet.'),
+      ServerFailure(message: 'Simulated avatar upload failure.'),
     );
   }
 }
@@ -147,7 +147,7 @@ void main() {
       expect(find.text('Choose from Gallery'), findsOneWidget);
     });
 
-    testWidgets('confirm reports pending without saving or uploading', (
+    testWidgets('confirm reports a real upload failure without fake success', (
       tester,
     ) async {
       final picker = FakeImagePicker()..nextFile = jpg;
@@ -166,7 +166,7 @@ void main() {
       await tester.tap(_dialogButton('Save Changes'));
       await tester.pumpAndSettle();
 
-      expect(find.text('Avatar upload is not available yet.'), findsOneWidget);
+      expect(find.text('Simulated avatar upload failure.'), findsOneWidget);
       // Still on the Edit screen with the staged preview, no success claim.
       expect(find.byType(ProfilePhotoEditor), findsOneWidget);
       expect(find.text('Profile synced'), findsNothing);

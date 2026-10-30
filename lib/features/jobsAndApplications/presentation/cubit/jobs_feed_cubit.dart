@@ -39,6 +39,7 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
 
   JobFilterParams _currentFilterParams = const JobFilterParams();
   Timer? _debounceTimer;
+  int _requestGeneration = 0;
 
   //! ===== Optimistic save handling =====
   // Tracks job ids with an in-flight save/unsave request so rapid taps
@@ -53,6 +54,7 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
   bool _isRefreshingJobs = false;
 
   Future<void> getJobs({JobFilterParams? params}) async {
+    final generation = ++_requestGeneration;
     if (params != null) {
       _currentFilterParams = params;
     }
@@ -61,6 +63,7 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
     final cachedResult = await getCachedJobsUseCase(
       params: _currentFilterParams,
     );
+    if (isClosed || generation != _requestGeneration) return;
     final cachedEntity = cachedResult.fold((_) => null, (entity) => entity);
     final hasCache = cachedEntity != null && cachedEntity.jobs.isNotEmpty;
     if (hasCache) {
@@ -82,6 +85,7 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
 
     // 2. Refresh from remote in the background; preserve cache on failure.
     final result = await getJobsUseCase(params: _currentFilterParams);
+    if (isClosed || generation != _requestGeneration) return;
 
     result.fold(
       (failure) {
@@ -121,13 +125,13 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
     if (_isRefreshingJobs) return;
     _isRefreshingJobs = true;
     try {
-      await _performRefresh();
+      await _performRefresh(++_requestGeneration);
     } finally {
       _isRefreshingJobs = false;
     }
   }
 
-  Future<void> _performRefresh() async {
+  Future<void> _performRefresh(int generation) async {
     final resetParams = _currentFilterParams.copyWith(page: 1);
     _currentFilterParams = resetParams;
 
@@ -139,6 +143,7 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
     }
 
     final result = await refreshJobsUseCase(params: resetParams);
+    if (isClosed || generation != _requestGeneration) return;
 
     result.fold(
       (failure) {
@@ -172,8 +177,10 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
   }
 
   void searchJobs(String query) {
+    final generation = ++_requestGeneration;
     _debounceTimer?.cancel();
     _debounceTimer = Timer(const Duration(milliseconds: 400), () async {
+      if (isClosed || generation != _requestGeneration) return;
       final trimmed = query.trim();
       final newParams = _currentFilterParams.copyWith(
         search: trimmed.isEmpty ? null : trimmed,
@@ -187,6 +194,8 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
       final result = trimmed.isEmpty
           ? await getJobsUseCase(params: newParams)
           : await searchJobsUseCase(query: trimmed, params: newParams);
+
+      if (isClosed || generation != _requestGeneration) return;
 
       result.fold((failure) => emit(JobsFeedError(failure.message)), (
         paginatedEntity,
@@ -215,23 +224,31 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
     final pagination = currentState.pagination;
     if (pagination != null && !pagination.hasNextPage) return;
 
+    final generation = _requestGeneration;
+    final filterAtStart = _currentFilterParams;
     final nextPage = (pagination?.currentPage ?? 1) + 1;
     emit(currentState.copyWith(isPaginationLoading: true));
 
-    final nextParams = _currentFilterParams.copyWith(page: nextPage);
+    final nextParams = filterAtStart.copyWith(page: nextPage);
     final result = await getJobsUseCase(params: nextParams);
+    if (isClosed || generation != _requestGeneration) return;
 
     result.fold(
       (failure) {
-        emit(
-          currentState.copyWith(
-            isPaginationLoading: false,
-            errorMessage: failure.message,
-          ),
-        );
+        final latestState = state;
+        if (latestState is JobsFeedLoaded) {
+          emit(
+            latestState.copyWith(
+              isPaginationLoading: false,
+              errorMessage: failure.message,
+            ),
+          );
+        }
       },
       (paginatedEntity) {
-        final updatedJobs = List<JobEntity>.from(currentState.jobs)
+        final latestState = state;
+        if (latestState is! JobsFeedLoaded) return;
+        final updatedJobs = List<JobEntity>.from(latestState.jobs)
           ..addAll(paginatedEntity.jobs);
         _currentFilterParams = nextParams;
         emit(
@@ -326,6 +343,7 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
       currentIsSaved: currentIsSaved,
     );
     _pendingSaveJobIds.remove(jobId);
+    if (isClosed) return;
 
     result.fold(
       (failure) {
@@ -457,6 +475,7 @@ class JobsFeedCubit extends Cubit<JobsFeedState> {
     if (currentState is! JobsFeedLoaded) return;
 
     final result = await applyForJobUseCase(jobId);
+    if (isClosed) return;
 
     result.fold(
       (failure) {

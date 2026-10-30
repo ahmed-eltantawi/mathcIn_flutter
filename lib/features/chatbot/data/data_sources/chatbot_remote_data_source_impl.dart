@@ -1,8 +1,8 @@
 import 'package:MatchIn/core/networking/api_consumer.dart';
 import 'package:MatchIn/core/networking/api_end_points.dart';
-import '../models/chat_message_model.dart';
-import '../models/chat_model.dart';
-import '../models/chatbot_send_message_response_model.dart';
+import 'package:MatchIn/features/chatbot/data/models/chat_message_model.dart';
+import 'package:MatchIn/features/chatbot/data/models/chat_model.dart';
+import 'package:MatchIn/features/chatbot/data/models/chatbot_send_message_response_model.dart';
 import 'chatbot_remote_data_source.dart';
 
 class ChatbotRemoteDataSourceImpl implements ChatbotRemoteDataSource {

@@ -1,7 +1,7 @@
 import 'package:MatchIn/core/routing/app_routes.dart';
 import 'package:MatchIn/core/widgets/custom_app_bar.dart';
 import 'package:MatchIn/core/widgets/custom_button.dart';
-import 'package:MatchIn/core/widgets/custom_snack_bar.dart';
+import 'package:MatchIn/core/extensions/snack_bar_extensions.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/reset_password_cubit.dart';
 import 'package:MatchIn/features/auth/presentation/cubit/reset_password_state.dart';
 import 'package:MatchIn/features/auth/presentation/widgets/create_password_back_button.dart';
@@ -59,10 +59,7 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
   void _onSubmit() {
     if (!_isValid) {
       if (!_isPasswordMatching) {
-        CustomSnackBar.showError(
-          context,
-          message: S.of(context).passwordsDoNotMatch,
-        );
+        context.showErrorSnackBar(S.of(context).passwordsDoNotMatch);
       }
       return;
     }
@@ -90,7 +87,7 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
         if (state is ResetPasswordSuccess) {
           context.go(AppRoutes.kPasswordChangedSuccessView);
         } else if (state is ResetPasswordError) {
-          CustomSnackBar.showError(context, message: state.message);
+          context.showErrorSnackBar(state.message);
         }
       },
       builder: (context, state) {

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:MatchIn/core/extensions/context_extensions.dart';
-import '../../domain/entities/chat_entity.dart';
-import '../cubit/chatbot_cubit.dart';
-import '../cubit/chatbot_state.dart';
+import 'package:MatchIn/features/chatbot/domain/entities/chat_entity.dart';
+import 'package:MatchIn/features/chatbot/presentation/cubit/chatbot_cubit.dart';
+import 'package:MatchIn/features/chatbot/presentation/cubit/chatbot_state.dart';
 
 class ChatHistoryDrawer extends StatelessWidget {
   const ChatHistoryDrawer({super.key});
@@ -42,14 +42,15 @@ class ChatHistoryDrawer extends StatelessWidget {
     return grouped;
   }
 
-  void _showRenameDialog(BuildContext context, ChatEntity chat) {
+  Future<void> _showRenameDialog(BuildContext context, ChatEntity chat) async {
     final s = context.l10n;
     final colors = context.colors;
     final textController = TextEditingController(text: chat.title);
 
-    showDialog<void>(
-      context: context,
-      builder: (ctx) => AlertDialog(
+    try {
+      await showDialog<void>(
+        context: context,
+        builder: (ctx) => AlertDialog(
         backgroundColor: colors.surface,
         title: Text(
           s.editTitle,
@@ -85,8 +86,11 @@ class ChatHistoryDrawer extends StatelessWidget {
             child: Text(s.save),
           ),
         ],
-      ),
-    );
+        ),
+      );
+    } finally {
+      textController.dispose();
+    }
   }
 
   void _showDeleteConfirmDialog(BuildContext context, ChatEntity chat) {
@@ -263,30 +267,28 @@ class ChatHistoryDrawer extends StatelessWidget {
                     );
                   }
 
-                  return ListView.builder(
-                    padding: EdgeInsets.symmetric(vertical: 8.h),
-                    itemCount: grouped.length,
-                    itemBuilder: (context, index) {
-                      final groupTitle = grouped.keys.elementAt(index);
-                      final chats = grouped[groupTitle]!;
-
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
+                  return CustomScrollView(
+                    slivers: [
+                      for (final group in grouped.entries) ...[
+                        SliverToBoxAdapter(
+                          child: Padding(
                             padding: EdgeInsets.symmetric(
                               horizontal: 16.w,
                               vertical: 8.h,
                             ),
                             child: Text(
-                              groupTitle,
+                              group.key,
                               style: context.textTheme.labelMedium?.copyWith(
                                 color: colors.onSurfaceVariant,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
-                          ...chats.map((chat) {
+                        ),
+                        SliverList.builder(
+                          itemCount: group.value.length,
+                          itemBuilder: (context, index) {
+                            final chat = group.value[index];
                             final isSelected = chat.id == state.activeChatId;
                             return ListTile(
                               dense: true,
@@ -351,10 +353,10 @@ class ChatHistoryDrawer extends StatelessWidget {
                                 context.read<ChatbotCubit>().selectChat(chat.id);
                               },
                             );
-                          }),
-                        ],
-                      );
-                    },
+                          },
+                        ),
+                      ],
+                    ],
                   );
                 },
               ),

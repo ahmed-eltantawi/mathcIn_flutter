@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import '../../domain/entities/chat_entity.dart';
-import '../../domain/entities/chat_message_entity.dart';
+import 'package:MatchIn/features/chatbot/domain/entities/chat_entity.dart';
+import 'package:MatchIn/features/chatbot/domain/entities/chat_message_entity.dart';
 
 enum ChatbotStatus { initial, loading, success, failure }
 

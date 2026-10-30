@@ -1,5 +1,6 @@
 import 'package:MatchIn/core/networking/network_info.dart';
-import 'package:MatchIn/features/auth/data/data_sources/auth_mock_remote_data_source_impl.dart';
+
+import '../../../../support/auth_mock_remote_data_source_impl.dart';
 import 'package:MatchIn/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:MatchIn/features/auth/domain/use_cases/forgot_password_use_case.dart';
 import 'package:MatchIn/features/auth/domain/use_cases/resend_otp_use_case.dart';

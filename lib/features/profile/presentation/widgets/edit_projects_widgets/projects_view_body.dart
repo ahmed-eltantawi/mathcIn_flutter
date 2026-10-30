@@ -11,6 +11,7 @@ import 'package:MatchIn/features/profile/presentation/widgets/edit_projects_widg
 import 'package:MatchIn/features/profile/presentation/widgets/edit_projects_widgets/project_form.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_projects_widgets/projects_app_bar.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_projects_widgets/projects_profile_card.dart';
+import 'package:MatchIn/features/profile/presentation/widgets/profile_screen_widgets/profile_skeleton.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -110,7 +111,7 @@ class ProjectsViewBody extends StatelessWidget {
           switch (state) {
             case ProjectsInitial():
             case ProjectsLoading():
-              return const Center(child: CircularProgressIndicator());
+              return const ProfileLoadingSkeleton();
             case ProjectsFailure():
               return AppErrorWidget(
                 message: state.message,

@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:MatchIn/core/cache/cache_key.dart';
 import 'package:MatchIn/core/cache/shared_preferences_helper.dart';
@@ -8,6 +10,7 @@ import 'package:MatchIn/features/profile/data/models/cv_local_file_model.dart';
 import 'package:MatchIn/features/profile/data/models/cv_pending_upload_model.dart';
 import 'package:MatchIn/features/profile/data/models/cv_upload_marker_model.dart';
 import 'package:MatchIn/features/profile/data/models/user_profile_model.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ProfileLocalDataSourceImpl implements ProfileLocalDataSource {
   const ProfileLocalDataSourceImpl({required this.sharedPreferencesHelper});
@@ -42,11 +45,27 @@ class ProfileLocalDataSourceImpl implements ProfileLocalDataSource {
     return base;
   }
 
+  Future<File> _cvFile(String kind) async {
+    final directory = await getApplicationSupportDirectory();
+    final safeUserId = currentUserScopeId().replaceAll(
+      RegExp(r'[^A-Za-z0-9_-]'),
+      '_',
+    );
+    return File('${directory.path}${Platform.pathSeparator}profile_cv_${kind}_$safeUserId.bin');
+  }
+
   @override
   Future<void> savePendingCvUpload(CvPendingUploadModel pending) async {
+    await (await _cvFile('pending')).writeAsBytes(pending.bytes, flush: true);
     await sharedPreferencesHelper.saveData(
       key: _scopedCvKey(CacheKey.pendingCv),
-      value: jsonEncode(pending.toJson()),
+      value: jsonEncode({
+        'fileName': pending.fileName,
+        'extension': pending.extension,
+        'sizeBytes': pending.sizeBytes,
+        'userId': pending.userId,
+        'savedAt': pending.savedAt,
+      }),
     );
   }
 
@@ -59,9 +78,32 @@ class ProfileLocalDataSourceImpl implements ProfileLocalDataSource {
     try {
       final decoded = jsonDecode(rawJson);
       if (decoded is! Map<String, dynamic>) return null;
-      final pending = CvPendingUploadModel.fromJson(decoded);
-      if (pending.bytes.isEmpty) return null;
-      return pending;
+      final legacy = CvPendingUploadModel.fromJson(decoded);
+      final bytes = legacy.bytes.isNotEmpty
+          ? legacy.bytes
+          : await _readCvBytes('pending');
+      if (bytes.isEmpty) return null;
+      if (legacy.bytes.isNotEmpty) {
+        await (await _cvFile('pending')).writeAsBytes(bytes, flush: true);
+        await sharedPreferencesHelper.saveData(
+          key: _scopedCvKey(CacheKey.pendingCv),
+          value: jsonEncode({
+            'fileName': legacy.fileName,
+            'extension': legacy.extension,
+            'sizeBytes': legacy.sizeBytes,
+            'userId': legacy.userId,
+            'savedAt': legacy.savedAt,
+          }),
+        );
+      }
+      return CvPendingUploadModel(
+        fileName: legacy.fileName,
+        extension: legacy.extension,
+        sizeBytes: legacy.sizeBytes,
+        bytes: bytes,
+        userId: legacy.userId,
+        savedAt: legacy.savedAt,
+      );
     } catch (_) {
       return null;
     }
@@ -69,6 +111,7 @@ class ProfileLocalDataSourceImpl implements ProfileLocalDataSource {
 
   @override
   Future<void> clearPendingCvUpload() async {
+    await _deleteCvFile('pending');
     await sharedPreferencesHelper.deleteData(
       key: _scopedCvKey(CacheKey.pendingCv),
     );
@@ -106,9 +149,14 @@ class ProfileLocalDataSourceImpl implements ProfileLocalDataSource {
 
   @override
   Future<void> saveCachedCvFile(CvLocalFileModel file) async {
+    await (await _cvFile('cached')).writeAsBytes(file.bytes, flush: true);
     await sharedPreferencesHelper.saveData(
       key: _scopedCvKey(CacheKey.cachedCvFile),
-      value: jsonEncode(file.toJson()),
+      value: jsonEncode({
+        'fileName': file.fileName,
+        'userId': file.userId,
+        'savedAt': file.savedAt,
+      }),
     );
   }
 
@@ -121,9 +169,28 @@ class ProfileLocalDataSourceImpl implements ProfileLocalDataSource {
     try {
       final decoded = jsonDecode(rawJson);
       if (decoded is! Map<String, dynamic>) return null;
-      final file = CvLocalFileModel.fromJson(decoded);
-      if (file.bytes.isEmpty) return null;
-      return file;
+      final legacy = CvLocalFileModel.fromJson(decoded);
+      final bytes = legacy.bytes.isNotEmpty
+          ? legacy.bytes
+          : await _readCvBytes('cached');
+      if (bytes.isEmpty) return null;
+      if (legacy.bytes.isNotEmpty) {
+        await (await _cvFile('cached')).writeAsBytes(bytes, flush: true);
+        await sharedPreferencesHelper.saveData(
+          key: _scopedCvKey(CacheKey.cachedCvFile),
+          value: jsonEncode({
+            'fileName': legacy.fileName,
+            'userId': legacy.userId,
+            'savedAt': legacy.savedAt,
+          }),
+        );
+      }
+      return CvLocalFileModel(
+        fileName: legacy.fileName,
+        bytes: bytes,
+        userId: legacy.userId,
+        savedAt: legacy.savedAt,
+      );
     } catch (_) {
       return null;
     }
@@ -191,6 +258,7 @@ class ProfileLocalDataSourceImpl implements ProfileLocalDataSource {
 
   @override
   Future<void> clearCachedCandidateProfile() async {
+    await _deleteAllCvFiles();
     await sharedPreferencesHelper.deleteData(key: _candidateProfileKey());
     await sharedPreferencesHelper.deleteData(key: CacheKey.candidateProfile);
     await sharedPreferencesHelper.deleteData(key: CacheKey.userDataKey);
@@ -201,6 +269,35 @@ class ProfileLocalDataSourceImpl implements ProfileLocalDataSource {
     await _clearKeysWithPrefix(CacheKey.pendingCv);
     await _clearKeysWithPrefix(CacheKey.cvUploadMarker);
     await _clearKeysWithPrefix(CacheKey.cachedCvFile);
+  }
+
+  Future<Uint8List> _readCvBytes(String kind) async {
+    try {
+      final file = await _cvFile(kind);
+      if (!await file.exists()) return Uint8List(0);
+      return await file.readAsBytes();
+    } catch (_) {
+      return Uint8List(0);
+    }
+  }
+
+  Future<void> _deleteCvFile(String kind) async {
+    try {
+      final file = await _cvFile(kind);
+      if (await file.exists()) await file.delete();
+    } catch (_) {}
+  }
+
+  Future<void> _deleteAllCvFiles() async {
+    try {
+      final directory = await getApplicationSupportDirectory();
+      await for (final entry in directory.list()) {
+        if (entry is File &&
+            entry.uri.pathSegments.last.startsWith('profile_cv_')) {
+          await entry.delete();
+        }
+      }
+    } catch (_) {}
   }
 
   Future<void> _clearKeysWithPrefix(String prefix) async {

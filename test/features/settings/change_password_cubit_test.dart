@@ -11,6 +11,21 @@ class _FakeSettingsRepository implements SettingsRepository {
   String errorMessage = 'Failed';
 
   @override
+  Future<Either<Failure, Unit>> requestPasswordChangeOtp() async =>
+      shouldSucceed
+      ? const Right(unit)
+      : Left(ServerFailure(message: errorMessage));
+
+  @override
+  Future<Either<Failure, Unit>> confirmPasswordChange({
+    required String otp,
+    required String newPassword,
+    required String confirmPassword,
+  }) async => shouldSucceed
+      ? const Right(unit)
+      : Left(ServerFailure(message: errorMessage));
+
+  @override
   Future<Either<Failure, Unit>> changePassword({
     required String currentPassword,
     required String newPassword,
@@ -31,8 +46,7 @@ class _FakeSettingsRepository implements SettingsRepository {
       const Right(true);
 
   @override
-  Future<Either<Failure, String>> getThemeMode() async =>
-      const Right('system');
+  Future<Either<Failure, String>> getThemeMode() async => const Right('system');
 
   @override
   Future<Either<Failure, Unit>> logout() async => const Right(unit);

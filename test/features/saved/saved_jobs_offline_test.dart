@@ -20,6 +20,7 @@ import 'package:MatchIn/features/saved/data/models/save_job_toggle_model.dart';
 import 'package:MatchIn/features/saved/data/models/saved_job_response_model.dart';
 import 'package:MatchIn/features/saved/data/repositories/saved_jobs_repository_impl.dart';
 import 'package:MatchIn/features/saved/domain/entities/saved_job_entity.dart';
+import 'package:MatchIn/features/saved/domain/use_cases/get_local_saved_jobs_use_case.dart';
 import 'package:MatchIn/features/saved/domain/use_cases/get_saved_jobs_use_case.dart';
 import 'package:MatchIn/features/saved/domain/use_cases/set_saved_job_use_case.dart';
 import 'package:MatchIn/features/saved/domain/use_cases/set_unsaved_job_use_case.dart';
@@ -270,6 +271,7 @@ void main() {
   group('SavedJobsCubit', () {
     SavedJobsCubit buildCubit(SavedJobsRepositoryImpl repo) => SavedJobsCubit(
       getSavedJobsUseCase: GetSavedJobsUseCase(repository: repo),
+      getLocalSavedJobsUseCase: GetLocalSavedJobsUseCase(repository: repo),
       setSavedJobUseCase: SetSavedJobUseCase(repository: repo),
       setUnsavedJobUseCase: SetUnsavedJobUseCase(repository: repo),
       syncSavedJobsUseCase: SyncSavedJobsUseCase(repository: repo),

@@ -1,15 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:MatchIn/core/errors/failures.dart';
 import 'package:MatchIn/core/services/shared_preferences_service.dart';
-import '../../domain/entities/chat_message_entity.dart';
-import '../../domain/use_cases/clear_all_chats_use_case.dart';
-import '../../domain/use_cases/create_conversation_use_case.dart';
-import '../../domain/use_cases/delete_chat_use_case.dart';
-import '../../domain/use_cases/get_chat_history_use_case.dart';
-import '../../domain/use_cases/get_context_preview_use_case.dart';
-import '../../domain/use_cases/get_conversation_details_use_case.dart';
-import '../../domain/use_cases/send_message_use_case.dart';
-import '../../domain/use_cases/update_conversation_use_case.dart';
+import 'package:MatchIn/features/chatbot/domain/entities/chat_message_entity.dart';
+import 'package:MatchIn/features/chatbot/domain/use_cases/clear_all_chats_use_case.dart';
+import 'package:MatchIn/features/chatbot/domain/use_cases/create_conversation_use_case.dart';
+import 'package:MatchIn/features/chatbot/domain/use_cases/delete_chat_use_case.dart';
+import 'package:MatchIn/features/chatbot/domain/use_cases/get_chat_history_use_case.dart';
+import 'package:MatchIn/features/chatbot/domain/use_cases/get_context_preview_use_case.dart';
+import 'package:MatchIn/features/chatbot/domain/use_cases/get_conversation_details_use_case.dart';
+import 'package:MatchIn/features/chatbot/domain/use_cases/send_message_use_case.dart';
+import 'package:MatchIn/features/chatbot/domain/use_cases/update_conversation_use_case.dart';
 import 'chatbot_state.dart';
 
 class ChatbotCubit extends Cubit<ChatbotState> {

@@ -1,5 +1,5 @@
-import '../models/chat_model.dart';
-import '../models/chatbot_send_message_response_model.dart';
+import 'package:MatchIn/features/chatbot/data/models/chat_model.dart';
+import 'package:MatchIn/features/chatbot/data/models/chatbot_send_message_response_model.dart';
 
 abstract class ChatbotRemoteDataSource {
   Future<List<ChatModel>> getConversations();

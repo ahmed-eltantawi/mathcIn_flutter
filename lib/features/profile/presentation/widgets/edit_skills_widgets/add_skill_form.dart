@@ -2,6 +2,7 @@ import 'package:MatchIn/features/profile/domain/entities/skill_search_result_ent
 import 'package:MatchIn/features/profile/presentation/cubits/skills_cubit/skills_cubit.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/add_skill_section.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/skill_search_debouncer.dart';
+import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -50,35 +51,52 @@ class _AddSkillFormState extends State<AddSkillForm> {
     });
   }
 
-  Future<void> _addSkill(String value) async {
-    final name = value.trim();
-
-    if (name.isEmpty) return;
-
-    final added = await context.read<SkillsCubit>().addSkill(name: name);
+  Future<void> _addSkill(SkillSearchResultEntity skill) async {
+    final added = await context.read<SkillsCubit>().addSkill(
+      skillId: skill.id,
+      name: skill.name,
+    );
     if (!mounted || !added) return;
 
     _controller.clear();
     context.read<SkillsCubit>().clearSearch();
   }
 
+  void _addExactSuggestion() {
+    final query = _controller.text.trim().toLowerCase();
+    if (query.isEmpty) return;
+
+    for (final skill in widget.suggestions) {
+      if (skill.name.trim().toLowerCase() == query) {
+        _addSkill(skill);
+        return;
+      }
+    }
+
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(content: Text(S.of(context).selectSkillSuggestion)),
+      );
+  }
+
   @override
   Widget build(BuildContext context) {
     return AddSkillSection(
       controller: _controller,
-      suggestions: widget.suggestions.map((skill) => skill.name).toList(),
+      suggestions: widget.suggestions,
       onSearchChanged: _onSearchChanged,
-      onSubmitted: _addSkill,
-      onAddPressed: () {
-        _addSkill(_controller.text);
-      },
+      onAddPressed: _addExactSuggestion,
       onSuggestionPressed: (skill) {
-        _controller.text = skill;
+        _controller.text = skill.name;
 
-        _controller.selection = TextSelection.collapsed(offset: skill.length);
+        _controller.selection = TextSelection.collapsed(
+          offset: skill.name.length,
+        );
 
         _addSkill(skill);
       },
+      onSubmitted: (_) => _onSearchChanged(_controller.text),
     );
   }
 }

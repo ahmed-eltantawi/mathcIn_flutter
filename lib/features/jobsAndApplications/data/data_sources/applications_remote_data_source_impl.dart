@@ -17,7 +17,6 @@ class ApplicationsRemoteDataSourceImpl implements ApplicationsRemoteDataSource {
   }) async {
     final queryParams = <String, dynamic>{
       if (status != null && status.isNotEmpty) ApiKey.status: status,
-      if (search != null && search.isNotEmpty) ApiKey.search: search,
       ApiKey.page: page,
     };
 
@@ -41,7 +40,9 @@ class ApplicationsRemoteDataSourceImpl implements ApplicationsRemoteDataSource {
     if (response is Map<String, dynamic>) {
       return ApplicationModel.fromJson(response);
     }
-    throw const FormatException('Invalid response format for application details');
+    throw const FormatException(
+      'Invalid response format for application details',
+    );
   }
 
   @override
@@ -51,26 +52,38 @@ class ApplicationsRemoteDataSourceImpl implements ApplicationsRemoteDataSource {
     String? coverLetter,
     String? notes,
   }) async {
-    // Live contract: POST /applications with job_post_id (required) plus
-    // the documented optional fields. No invented fields are sent.
-    final body = <String, dynamic>{ApiKey.jobPostId: jobId};
+    // The deployed API currently validates `job_id` (the 422 response names
+    // it), although the OpenAPI example documents `job_post_id`.
+    final body = <String, dynamic>{ApiKey.jobId: jobId};
     if (cvDocumentId != null) {
       body[ApiKey.cvDocumentId] = cvDocumentId;
     }
     if (coverLetter != null && coverLetter.isNotEmpty) {
       body[ApiKey.coverLetter] = coverLetter;
     }
-    if (notes != null && notes.isNotEmpty) {
-      body[ApiKey.notes] = notes;
-    }
-
-    final response = await apiConsumer.post(
-      EndPoint.applications,
-      data: body,
-    );
+    final response = await apiConsumer.post(EndPoint.applications, data: body);
 
     if (response is Map<String, dynamic>) {
-      return ApplicationModel.fromJson(response);
+      var application = ApplicationModel.fromJson(response);
+      if (notes != null && notes.isNotEmpty) {
+        final applicationId = int.tryParse(application.id);
+        if (applicationId == null || applicationId <= 0) {
+          throw const FormatException(
+            'Application response did not include an id required to save notes.',
+          );
+        }
+        final notesResponse = await apiConsumer.patch(
+          EndPoint.applicationNotes(applicationId),
+          data: {ApiKey.notes: notes},
+        );
+        if (notesResponse is! Map<String, dynamic>) {
+          throw const FormatException(
+            'Invalid response format for application notes',
+          );
+        }
+        application = ApplicationModel.fromJson(notesResponse);
+      }
+      return application;
     }
     throw const FormatException('Invalid response format for apply to job');
   }
@@ -108,7 +121,9 @@ class ApplicationsRemoteDataSourceImpl implements ApplicationsRemoteDataSource {
     if (response is Map<String, dynamic>) {
       return ApplicationModel.fromJson(response);
     }
-    throw const FormatException('Invalid response format for withdraw application');
+    throw const FormatException(
+      'Invalid response format for withdraw application',
+    );
   }
 
   @override

@@ -37,6 +37,7 @@ class JobEntity extends Equatable {
     this.isExpired = false,
     this.applicationMethod,
     this.websiteUrl,
+    this.description,
   });
 
   final String id;
@@ -85,6 +86,9 @@ class JobEntity extends Equatable {
   /// Null when the backend provides no website.
   final String? websiteUrl;
 
+  /// Description returned by the job listing API.
+  final String? description;
+
   JobEntity copyWith({
     String? id,
     String? title,
@@ -110,6 +114,7 @@ class JobEntity extends Equatable {
     bool? isExpired,
     String? applicationMethod,
     String? websiteUrl,
+    String? description,
   }) {
     return JobEntity(
       id: id ?? this.id,
@@ -136,6 +141,7 @@ class JobEntity extends Equatable {
       isExpired: isExpired ?? this.isExpired,
       applicationMethod: applicationMethod ?? this.applicationMethod,
       websiteUrl: websiteUrl ?? this.websiteUrl,
+      description: description ?? this.description,
     );
   }
 
@@ -170,5 +176,6 @@ class JobEntity extends Equatable {
     isExpired,
     applicationMethod,
     websiteUrl,
+    description,
   ];
 }

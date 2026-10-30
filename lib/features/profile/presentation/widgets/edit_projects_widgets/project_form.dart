@@ -29,6 +29,12 @@ class ProjectForm extends StatefulWidget {
 }
 
 class _ProjectFormState extends State<ProjectForm> {
+  final GlobalKey<FormFieldState<String>> _nameFieldKey =
+      GlobalKey<FormFieldState<String>>();
+  final GlobalKey<FormFieldState<String>> _projectUrlFieldKey =
+      GlobalKey<FormFieldState<String>>();
+  final GlobalKey<FormFieldState<String>> _githubUrlFieldKey =
+      GlobalKey<FormFieldState<String>>();
   late final TextEditingController _nameController;
   late final TextEditingController _descriptionController;
   late final TextEditingController _technologyController;
@@ -162,6 +168,13 @@ class _ProjectFormState extends State<ProjectForm> {
     if (widget.isSaving) return;
     final locale = S.of(context);
 
+    final nameIsValid = _nameFieldKey.currentState?.validate() ?? false;
+    final projectUrlIsValid =
+        _projectUrlFieldKey.currentState?.validate() ?? false;
+    final githubUrlIsValid =
+        _githubUrlFieldKey.currentState?.validate() ?? false;
+    if (!nameIsValid || !projectUrlIsValid || !githubUrlIsValid) return;
+
     final name = _nameController.text.trim();
     if (name.isEmpty) {
       _showMessage(locale.required);
@@ -182,6 +195,14 @@ class _ProjectFormState extends State<ProjectForm> {
     }
 
     final project = widget.project;
+    final unsupportedChanges = project == null
+        ? _technologies.value.isNotEmpty ||
+              _normalizedOrNull(_githubUrlController.text) != null
+        : !_sameTechnologies(_technologies.value, project.technologies) ||
+              _normalizedOrNull(_githubUrlController.text) != project.githubUrl;
+    if (unsupportedChanges) {
+      _showMessage(locale.unsupportedProfileFieldsNotSaved);
+    }
     if (project == null) {
       _addProject(name: name, start: start, end: end);
       return;
@@ -287,6 +308,21 @@ class _ProjectFormState extends State<ProjectForm> {
               _pickDate(notifier: _startDate, controller: _startDateController),
           onEndDateTap: () =>
               _pickDate(notifier: _endDate, controller: _endDateController),
+          nameFieldKey: _nameFieldKey,
+          projectUrlFieldKey: _projectUrlFieldKey,
+          githubUrlFieldKey: _githubUrlFieldKey,
+          nameValidator: (value) => ProfileFormValidator.requiredValue(
+            value,
+            requiredMessage: S.of(context).required,
+          ),
+          projectUrlValidator: (value) => ProfileFormValidator.optionalWebUrl(
+            value,
+            invalidMessage: S.of(context).invalidProfileUrl,
+          ),
+          githubUrlValidator: (value) => ProfileFormValidator.optionalWebUrl(
+            value,
+            invalidMessage: S.of(context).invalidProfileUrl,
+          ),
           onCancel: widget.onCancel,
         );
       },

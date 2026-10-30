@@ -1,3 +1,5 @@
+import 'package:MatchIn/core/extensions/context_extensions.dart';
+import 'package:MatchIn/core/extensions/snack_bar_extensions.dart';
 import 'package:MatchIn/core/services/services_locator.dart';
 import 'package:MatchIn/features/profile/data/data_sources/location/location_catalog.dart';
 import 'package:MatchIn/features/profile/domain/entities/career_preference_entity.dart';
@@ -228,6 +230,10 @@ class _CareerPreferencesFormState extends State<CareerPreferencesForm> {
     final baseline = widget.preferences;
 
     var params = const SaveCareerPreferencesParams();
+    final unsupportedChanged =
+        _experienceLevel.value != baseline?.experienceLevel ||
+        _nullableText(_careerGoalController.text) != baseline?.careerGoal ||
+        _openToRelocation.value != (baseline?.openToRelocation ?? false);
 
     final targetRole = _nullableText(_targetRoleController.text);
     if (targetRole != baseline?.targetRole) {
@@ -243,31 +249,29 @@ class _CareerPreferencesFormState extends State<CareerPreferencesForm> {
     }
 
     final country = _nullableText(_country.value);
-    if (country != baseline?.preferredCountry) {
-      params = params.copyWith(preferredCountry: country);
-    }
-
     final city = _nullableText(_city.value);
-    if (city != baseline?.preferredCity) {
-      params = params.copyWith(preferredCity: city);
-    }
-
-    if (_experienceLevel.value != baseline?.experienceLevel) {
-      params = params.copyWith(experienceLevel: _experienceLevel.value);
-    }
-
-    final careerGoal = _nullableText(_careerGoalController.text);
-    if (careerGoal != baseline?.careerGoal) {
-      params = params.copyWith(careerGoal: careerGoal);
-    }
-
-    if (_openToRelocation.value != (baseline?.openToRelocation ?? false)) {
-      params = params.copyWith(openToRelocation: _openToRelocation.value);
+    if (country != baseline?.preferredCountry ||
+        city != baseline?.preferredCity) {
+      // Send both parts together so changing either doesn't erase the other.
+      params = params.copyWith(preferredCountry: country, preferredCity: city);
     }
 
     // No PATCH when nothing changed: avoids an empty request body
     // and keeps the form exactly as the user left it.
-    if (!params.hasChanges) return;
+    if (!params.hasApiSupportedChanges) {
+      if (unsupportedChanged) {
+        context.showWarningSnackBar(
+          context.l10n.unsupportedProfileFieldsNotSaved,
+        );
+      }
+      return;
+    }
+
+    if (unsupportedChanged) {
+      context.showWarningSnackBar(
+        context.l10n.unsupportedProfileFieldsNotSaved,
+      );
+    }
 
     context.read<CareerPreferencesCubit>().saveCareerPreferences(params);
   }

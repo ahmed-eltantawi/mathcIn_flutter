@@ -24,7 +24,22 @@ class EducationManagementHeader extends StatelessWidget {
             ),
           ),
         ),
-        TextButton(onPressed: () {}, child: Text(locale.help)),
+        TextButton(
+          onPressed: () => showDialog<void>(
+            context: context,
+            builder: (dialogContext) => AlertDialog(
+              title: Text(locale.help),
+              content: Text(locale.noEducationYetDesc),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(dialogContext).pop(),
+                  child: Text(locale.cancel),
+                ),
+              ],
+            ),
+          ),
+          child: Text(locale.help),
+        ),
       ],
     );
   }

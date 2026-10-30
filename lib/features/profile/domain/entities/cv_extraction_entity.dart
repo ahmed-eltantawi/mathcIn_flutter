@@ -9,6 +9,13 @@ class CvExtractedItem extends Equatable {
     this.title,
     this.subtitle,
     this.detail,
+    this.institution,
+    this.degree,
+    this.fieldOfStudy,
+    this.companyName,
+    this.jobTitle,
+    this.location,
+    this.grade,
     this.proficiency,
     this.isCurrent,
     this.startDate,
@@ -32,6 +39,13 @@ class CvExtractedItem extends Equatable {
         'school',
       ]),
       detail: _stringOf(json, const ['description', 'summary']),
+      institution: _stringOf(json, const ['institution', 'school']),
+      degree: _stringOf(json, const ['degree']),
+      fieldOfStudy: _stringOf(json, const ['field_of_study', 'fieldOfStudy']),
+      companyName: _stringOf(json, const ['company_name', 'company']),
+      jobTitle: _stringOf(json, const ['job_title']),
+      location: _stringOf(json, const ['location']),
+      grade: _stringOf(json, const ['grade']),
       proficiency: _stringOf(json, const [
         'proficiency_level',
         'proficiency',
@@ -47,6 +61,13 @@ class CvExtractedItem extends Equatable {
   final String? title;
   final String? subtitle;
   final String? detail;
+  final String? institution;
+  final String? degree;
+  final String? fieldOfStudy;
+  final String? companyName;
+  final String? jobTitle;
+  final String? location;
+  final String? grade;
   final String? proficiency;
   final bool? isCurrent;
   final String? startDate;
@@ -80,6 +101,65 @@ class CvExtractedItem extends Equatable {
     };
   }
 
+  Map<String, dynamic> toSkillVerifyJson() => {
+    if (name != null && name!.trim().isNotEmpty) 'name': name!.trim(),
+    if (proficiency != null && proficiency!.trim().isNotEmpty)
+      'proficiency_level': proficiency!.trim().toLowerCase(),
+  };
+
+  Map<String, dynamic> toEducationVerifyJson() => {
+    if (institution != null && institution!.trim().isNotEmpty)
+      'institution': institution!.trim(),
+    if (degree != null && degree!.trim().isNotEmpty) 'degree': degree!.trim(),
+    if (fieldOfStudy != null && fieldOfStudy!.trim().isNotEmpty)
+      'field_of_study': fieldOfStudy!.trim(),
+    if (startDate != null && startDate!.trim().isNotEmpty)
+      'start_date': startDate!.trim(),
+    if (endDate != null && endDate!.trim().isNotEmpty)
+      'end_date': endDate!.trim(),
+    if (isCurrent != null) 'is_current': isCurrent,
+    if (grade != null && grade!.trim().isNotEmpty) 'grade': grade!.trim(),
+  };
+
+  Map<String, dynamic> toExperienceVerifyJson() => {
+    if (companyName != null && companyName!.trim().isNotEmpty)
+      'company_name': companyName!.trim(),
+    if (jobTitle != null && jobTitle!.trim().isNotEmpty)
+      'job_title': jobTitle!.trim(),
+    if (startDate != null && startDate!.trim().isNotEmpty)
+      'start_date': startDate!.trim(),
+    if (endDate != null && endDate!.trim().isNotEmpty)
+      'end_date': endDate!.trim(),
+    if (isCurrent != null) 'is_current': isCurrent,
+    if (detail != null && detail!.trim().isNotEmpty)
+      'description': detail!.trim(),
+    if (location != null && location!.trim().isNotEmpty)
+      'location': location!.trim(),
+  };
+
+  bool get isSkillComplete =>
+      name?.trim().isNotEmpty == true &&
+      const {
+        'beginner',
+        'intermediate',
+        'advanced',
+        'expert',
+      }.contains(proficiency?.trim().toLowerCase());
+
+  bool get isEducationComplete =>
+      institution?.trim().isNotEmpty == true &&
+      degree?.trim().isNotEmpty == true &&
+      fieldOfStudy?.trim().isNotEmpty == true &&
+      _hasIsoDate(startDate);
+
+  bool get isExperienceComplete =>
+      companyName?.trim().isNotEmpty == true &&
+      jobTitle?.trim().isNotEmpty == true &&
+      _hasIsoDate(startDate);
+
+  static bool _hasIsoDate(String? value) =>
+      value != null && RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(value.trim());
+
   static String? _stringOf(Map<String, dynamic> json, List<String> keys) {
     for (final key in keys) {
       final value = json[key];
@@ -106,6 +186,13 @@ class CvExtractedItem extends Equatable {
     title,
     subtitle,
     detail,
+    institution,
+    degree,
+    fieldOfStudy,
+    companyName,
+    jobTitle,
+    location,
+    grade,
     proficiency,
     isCurrent,
     startDate,

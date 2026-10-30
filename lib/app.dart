@@ -5,6 +5,7 @@ import 'package:MatchIn/core/services/services_locator.dart';
 import 'package:MatchIn/core/theme/app_theme.dart';
 import 'package:MatchIn/features/home/presentation/cubit/home_cubit.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_cubit.dart';
+import 'package:MatchIn/features/profile/presentation/cubits/profile_cubit/profile_cubit.dart';
 import 'package:MatchIn/features/settings/presentation/cubit/settings_cubit.dart';
 import 'package:MatchIn/features/settings/presentation/cubit/settings_state.dart';
 import 'package:MatchIn/generated/l10n.dart';
@@ -20,21 +21,16 @@ class MatchIn extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(
-          value: getIt<SettingsCubit>()..loadSettings(),
+        BlocProvider.value(value: getIt<SettingsCubit>()..loadSettings()),
+        BlocProvider.value(value: getIt<JobsFeedCubit>()..getJobs()),
+        BlocProvider<HomeCubit>(
+          create: (_) => getIt<HomeCubit>()..getHomeDashboard(),
         ),
-        BlocProvider.value(
-          value: getIt<JobsFeedCubit>()..getJobs(),
+        BlocProvider<ProfileCubit>(
+          create: (_) => getIt<ProfileCubit>()..getCandidateProfile(),
         ),
-        BlocProvider.value(
-          value: getIt<HomeCubit>()..getHomeDashboard(),
-        ),
-        BlocProvider.value(
-          value: getIt<MainNavigationCubit>(),
-        ),
-        BlocProvider.value(
-          value: getIt<ConnectivityCubit>(),
-        ),
+        BlocProvider.value(value: getIt<MainNavigationCubit>()),
+        BlocProvider.value(value: getIt<ConnectivityCubit>()),
       ],
       child: BlocBuilder<SettingsCubit, SettingsState>(
         builder: (context, settingsState) {

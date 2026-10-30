@@ -30,9 +30,19 @@ class RegisterSubmitButton extends StatelessWidget {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is RegisterSuccess) {
+          if (state.otpSent) {
+            context.showSuccessSnackBar(
+              S.of(context).verificationCodeSentToEmail,
+            );
+          } else {
+            context.showErrorSnackBar(state.otpSendError!);
+          }
           context.push(
             AppRoutes.kOtpVerificationView,
-            extra: emailController.text.trim(),
+            extra: <String, dynamic>{
+              'email': emailController.text.trim(),
+              'allowImmediateResend': !state.otpSent,
+            },
           );
         } else if (state is RegisterFailure) {
           context.showErrorSnackBar(state.message);

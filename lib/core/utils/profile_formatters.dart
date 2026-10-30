@@ -7,12 +7,20 @@ abstract class ProfileFormatters {
     if (profile == null) {
       return '';
     }
+    final location = profile.location?.trim();
+    if (location != null && location.isNotEmpty) return location;
 
-    return [profile.city, profile.country]
-        .where(
-          (value) =>
-              value != null && value.trim().isNotEmpty,
-        )
-        .join(', ');
+    final parts = <String>[];
+    for (final value in [profile.city, profile.state, profile.country]) {
+      final normalized = value?.trim();
+      if (normalized != null &&
+          normalized.isNotEmpty &&
+          !parts.any(
+            (part) => part.toLowerCase() == normalized.toLowerCase(),
+          )) {
+        parts.add(normalized);
+      }
+    }
+    return parts.join(', ');
   }
 }

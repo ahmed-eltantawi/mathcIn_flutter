@@ -42,7 +42,7 @@ class FakeEditProfileRepository extends Fake implements ProfileRepository {
     avatarCalls++;
     return avatarResult ??
         const Left(
-          ServerFailure(message: 'Avatar upload is not available yet.'),
+          ServerFailure(message: 'Simulated avatar upload failure.'),
         );
   }
 }
@@ -261,7 +261,7 @@ void main() {
     );
 
     blocTest<EditProfileCubit, EditProfileState>(
-      'confirm emits pending failure without fake success',
+      'confirm surfaces upload failure without fake success',
       build: () => buildCubit(repo),
       seed: () => EditProfileAvatarStaged(
         makeProfile(),
@@ -271,7 +271,7 @@ void main() {
       act: (cubit) => cubit.confirmAvatarUpload(),
       expect: () => [
         EditProfileActionFailure(
-          'Avatar upload is not available yet.',
+          'Simulated avatar upload failure.',
           profile: makeProfile(),
         ),
       ],

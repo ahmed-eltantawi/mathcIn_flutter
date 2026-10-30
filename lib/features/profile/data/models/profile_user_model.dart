@@ -20,7 +20,9 @@ class ProfileUserModel extends ProfileUserEntity {
       role: JsonParsing.parseString(json['role']) ?? 'candidate',
       isActive: JsonParsing.parseBoolFlag(json['is_active']) ?? true,
       phone: JsonParsing.parseString(json['phone']),
-      avatar: JsonParsing.parseString(json['avatar']),
+      avatar: JsonParsing.parseString(
+        json['avatar'] ?? json['avater'] ?? json['avatar_url'],
+      ),
     );
   }
 

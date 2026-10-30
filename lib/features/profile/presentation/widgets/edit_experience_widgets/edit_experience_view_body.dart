@@ -8,6 +8,7 @@ import 'package:MatchIn/features/profile/presentation/widgets/edit_experience_wi
 import 'package:MatchIn/features/profile/presentation/widgets/edit_experience_widgets/experience_form.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_experience_widgets/experience_management_header.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_experience_widgets/experience_summary_card.dart';
+import 'package:MatchIn/features/profile/presentation/widgets/profile_screen_widgets/profile_skeleton.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -97,7 +98,7 @@ class EditExperienceViewBody extends StatelessWidget {
           switch (state) {
             case EditExperienceInitial():
             case EditExperienceLoading():
-              return const Center(child: CircularProgressIndicator());
+              return const ProfileLoadingSkeleton();
             case EditExperienceFailure():
               return AppErrorWidget(
                 message: state.message,

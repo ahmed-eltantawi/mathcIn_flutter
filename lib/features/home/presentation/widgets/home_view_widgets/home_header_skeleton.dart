@@ -1,6 +1,5 @@
 import 'package:MatchIn/core/functions/show_image.dart';
 import 'package:MatchIn/core/utils/app_assets.dart';
-import 'package:MatchIn/core/widgets/app_circle_icon_button.dart';
 import 'package:MatchIn/core/widgets/loading/app_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,29 +18,15 @@ class HomeHeaderSkeleton extends StatelessWidget {
             children: [
               showImage(image: Assets.iconsTextLogo),
               const Spacer(),
-              AppCircleIconButton(
-                icon: Icons.notifications_none_rounded,
-                onTap: () {},
-              ),
+              AppShimmer(width: 40.w, height: 40.w, borderRadius: 20.r),
               SizedBox(width: 8.w),
-              AppCircleIconButton(
-                icon: Icons.settings_outlined,
-                onTap: () {},
-              ),
+              AppShimmer(width: 40.w, height: 40.w, borderRadius: 20.r),
             ],
           ),
           SizedBox(height: 24.h),
-          AppShimmer(
-            width: 170.w,
-            height: 28.h,
-            borderRadius: 6.r,
-          ),
+          AppShimmer(width: 170.w, height: 28.h, borderRadius: 6.r),
           SizedBox(height: 8.h),
-          AppShimmer(
-            width: 240.w,
-            height: 16.h,
-            borderRadius: 4.r,
-          ),
+          AppShimmer(width: 240.w, height: 16.h, borderRadius: 4.r),
         ],
       ),
     );

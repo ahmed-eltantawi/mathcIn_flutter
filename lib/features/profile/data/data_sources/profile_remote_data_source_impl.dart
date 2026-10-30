@@ -27,6 +27,7 @@ import 'package:MatchIn/features/profile/domain/entities/update_candidate_profil
 import 'package:MatchIn/features/profile/domain/entities/update_candidate_project_params.dart';
 import 'package:MatchIn/features/profile/domain/entities/update_education_params.dart';
 import 'package:MatchIn/features/profile/domain/entities/update_experience_params.dart';
+import 'package:dio/dio.dart' show MultipartFile;
 
 class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   const ProfileRemoteDataSourceImpl({required this.apiConsumer});
@@ -44,29 +45,28 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   Future<CandidateProfileModel> updateCandidateProfile(
     UpdateCandidateProfileParams params,
   ) async {
+    if (!params.hasApiSupportedChanges) {
+      throw const FormatException(
+        'The profile changes are not supported by the published API contract',
+      );
+    }
     final response = await apiConsumer.patch(
       EndPoint.candidateProfile,
       data: {
-        if (UpdateCandidateProfileParams.isSet(params.dateOfBirth))
-          'date_of_birth': params.dateOfBirth as String?,
-        if (UpdateCandidateProfileParams.isSet(params.gender))
-          'gender': params.gender as String?,
+        if (UpdateCandidateProfileParams.isSet(params.fullName))
+          'full_name': params.fullName as String?,
+        if (UpdateCandidateProfileParams.isSet(params.phone))
+          'phone': params.phone as String?,
         if (UpdateCandidateProfileParams.isSet(params.jobTitle))
-          'job_title': params.jobTitle as String?,
-        if (UpdateCandidateProfileParams.isSet(params.country))
-          'country': params.country as String?,
-        if (UpdateCandidateProfileParams.isSet(params.state))
-          'state': params.state as String?,
-        if (UpdateCandidateProfileParams.isSet(params.city))
-          'city': params.city as String?,
+          'headline': params.jobTitle as String?,
+        if (UpdateCandidateProfileParams.isSet(params.location))
+          'location': params.location as String?,
         if (UpdateCandidateProfileParams.isSet(params.githubUrl))
           'github_url': params.githubUrl as String?,
         if (UpdateCandidateProfileParams.isSet(params.linkedinUrl))
           'linkedin_url': params.linkedinUrl as String?,
-        if (UpdateCandidateProfileParams.isSet(params.militaryStatus))
-          'military_status': params.militaryStatus as String?,
         if (UpdateCandidateProfileParams.isSet(params.professionalSummary))
-          'professional_summary': params.professionalSummary as String?,
+          'summary': params.professionalSummary as String?,
       },
     );
 
@@ -118,13 +118,22 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   Future<CandidateSkillModel> addCandidateSkill(
     AddCandidateSkillParams params,
   ) async {
-    // NOTE(swagger): the documented example also shows
-    // proficiency_level and years_of_experience, but the confirmed
-    // request shape used here stays name-only until live backend
-    // verification. Do not add fields on assumption.
+    if (params.skillId <= 0 || params.name.trim().isEmpty) {
+      throw const FormatException(
+        'Select a skill from the API suggestions before adding it.',
+      );
+    }
     final response = await apiConsumer.post(
       EndPoint.candidateSkills,
-      data: {'name': params.name},
+      data: {
+        // The deployed API validates `name` (422: expected string, received
+        // undefined) even though the saved OpenAPI schema also requires the
+        // selected skill ID and proficiency level. Send all three so the
+        // request satisfies both contracts.
+        'name': params.name.trim(),
+        'skill_id': params.skillId,
+        'proficiency_level': params.proficiencyLevel,
+      },
     );
 
     if (response is! Map<String, dynamic>) {
@@ -137,7 +146,16 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
       throw const FormatException('Invalid added skill data format');
     }
 
-    return CandidateSkillModel.fromJson(data);
+    final skillJson = data['skill'] is Map<String, dynamic>
+        ? Map<String, dynamic>.from(data['skill'] as Map<String, dynamic>)
+        : <String, dynamic>{};
+    skillJson.putIfAbsent('id', () => params.skillId);
+    skillJson.putIfAbsent('name', () => params.name.trim());
+    return CandidateSkillModel.fromJson({
+      ...data,
+      'skill': skillJson,
+      'skill_id': data['skill_id'] ?? params.skillId,
+    });
   }
 
   @override
@@ -229,11 +247,9 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
     final response = await apiConsumer.post(
       EndPoint.candidateProjects,
       data: {
-        'name': params.name,
+        'title': params.name,
         if (params.description != null) 'description': params.description,
-        if (params.technologies.isNotEmpty) 'technologies': params.technologies,
-        if (params.projectUrl != null) 'project_url': params.projectUrl,
-        if (params.githubUrl != null) 'github_url': params.githubUrl,
+        if (params.projectUrl != null) 'url': params.projectUrl,
         if (params.startDate != null) 'start_date': params.startDate,
         if (params.endDate != null) 'end_date': params.endDate,
       },
@@ -250,15 +266,11 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
       EndPoint.candidateProject(params.projectId),
       data: {
         if (UpdateCandidateProjectParams.isSet(params.name))
-          'name': params.name as String?,
+          'title': params.name as String?,
         if (UpdateCandidateProjectParams.isSet(params.description))
           'description': params.description as String?,
-        if (UpdateCandidateProjectParams.isSet(params.technologies))
-          'technologies': params.technologies as List<String>?,
         if (UpdateCandidateProjectParams.isSet(params.projectUrl))
-          'project_url': params.projectUrl as String?,
-        if (UpdateCandidateProjectParams.isSet(params.githubUrl))
-          'github_url': params.githubUrl as String?,
+          'url': params.projectUrl as String?,
         if (UpdateCandidateProjectParams.isSet(params.startDate))
           'start_date': params.startDate as String?,
         if (UpdateCandidateProjectParams.isSet(params.endDate))
@@ -302,16 +314,20 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
 
   @override
   Future<EducationModel?> addEducation(AddEducationParams params) async {
+    if (params.degree?.trim().isNotEmpty != true ||
+        params.fieldOfStudy?.trim().isNotEmpty != true ||
+        params.startDate?.trim().isNotEmpty != true) {
+      throw const FormatException(
+        'Education requires degree, field of study, and start date by the API contract.',
+      );
+    }
     final response = await apiConsumer.post(
       EndPoint.candidateEducations,
       data: {
         'institution': params.institution,
         if (params.degree != null) 'degree': params.degree,
         if (params.fieldOfStudy != null) 'field_of_study': params.fieldOfStudy,
-        if (params.educationLevel != null)
-          'education_level': params.educationLevel,
         if (params.grade != null) 'grade': params.grade,
-        if (params.description != null) 'description': params.description,
         'is_current': params.isCurrent,
         if (params.startDate != null) 'start_date': params.startDate,
         if (params.endDate != null) 'end_date': params.endDate,
@@ -332,12 +348,8 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
           'degree': params.degree as String?,
         if (UpdateEducationParams.isSet(params.fieldOfStudy))
           'field_of_study': params.fieldOfStudy as String?,
-        if (UpdateEducationParams.isSet(params.educationLevel))
-          'education_level': params.educationLevel as String?,
         if (UpdateEducationParams.isSet(params.grade))
           'grade': params.grade as String?,
-        if (UpdateEducationParams.isSet(params.description))
-          'description': params.description as String?,
         if (UpdateEducationParams.isSet(params.isCurrent))
           'is_current': params.isCurrent as bool?,
         if (UpdateEducationParams.isSet(params.startDate))
@@ -399,17 +411,25 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
 
   @override
   Future<ExperienceModel?> addExperience(AddExperienceParams params) async {
+    if (params.startDate?.trim().isNotEmpty != true) {
+      throw const FormatException(
+        'Experience requires a start date by the API contract.',
+      );
+    }
     final response = await apiConsumer.post(
       EndPoint.candidateExperiences,
       data: {
         'job_title': params.jobTitle,
         'company_name': params.companyName,
-        if (params.employmentType != null)
-          'employment_type': params.employmentType,
-        if (params.country != null) 'country': params.country,
-        if (params.city != null) 'city': params.city,
+        if ([
+          params.city,
+          params.country,
+        ].whereType<String>().any((value) => value.trim().isNotEmpty))
+          'location': [params.city, params.country]
+              .whereType<String>()
+              .where((value) => value.trim().isNotEmpty)
+              .join(', '),
         if (params.description != null) 'description': params.description,
-        if (params.technologies.isNotEmpty) 'technologies': params.technologies,
         'is_current': params.isCurrent,
         if (params.startDate != null) 'start_date': params.startDate,
         if (params.endDate != null) 'end_date': params.endDate,
@@ -430,16 +450,14 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
           'job_title': params.jobTitle as String?,
         if (UpdateExperienceParams.isSet(params.companyName))
           'company_name': params.companyName as String?,
-        if (UpdateExperienceParams.isSet(params.employmentType))
-          'employment_type': params.employmentType as String?,
-        if (UpdateExperienceParams.isSet(params.country))
-          'country': params.country as String?,
-        if (UpdateExperienceParams.isSet(params.city))
-          'city': params.city as String?,
+        if (UpdateExperienceParams.isSet(params.city) ||
+            UpdateExperienceParams.isSet(params.country))
+          'location': [params.city, params.country]
+              .whereType<String>()
+              .where((value) => value.trim().isNotEmpty)
+              .join(', '),
         if (UpdateExperienceParams.isSet(params.description))
           'description': params.description as String?,
-        if (UpdateExperienceParams.isSet(params.technologies))
-          'technologies': params.technologies as List<String>?,
         if (UpdateExperienceParams.isSet(params.isCurrent))
           'is_current': params.isCurrent as bool?,
         if (UpdateExperienceParams.isSet(params.startDate))
@@ -593,13 +611,19 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   // Avatar Upload
   @override
   Future<void> uploadAvatar(AvatarUploadInput input) async {
-    // TODO(avatar-backend): implement the multipart upload once the
-    // endpoint, HTTP method, field name, and response schema are
-    // documented. Do NOT invent them here. This throw intentionally
-    // fires before any network operation.
-    throw UnimplementedError(
-      'Avatar upload API contract is pending backend support.',
+    final response = await apiConsumer.post(
+      EndPoint.candidateProfileAvatar,
+      data: {
+        'avatar': MultipartFile.fromBytes(
+          input.bytes,
+          filename: input.fileName,
+        ),
+      },
+      isFormData: true,
     );
+    if (response is! Map<String, dynamic> || response['data'] is! Map) {
+      throw const FormatException('Invalid avatar upload response format');
+    }
   }
 
   // career preferences
@@ -629,38 +653,39 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   Future<CareerPreferenceModel> saveCareerPreferences(
     SaveCareerPreferencesParams params,
   ) async {
+    if (!params.hasApiSupportedChanges) {
+      throw const FormatException(
+        'No changed career preference is supported by the API.',
+      );
+    }
+    final locationParts = <String>[
+      if (SaveCareerPreferencesParams.isSet(params.preferredCity) &&
+          (params.preferredCity as String?)?.trim().isNotEmpty == true)
+        (params.preferredCity as String).trim(),
+      if (SaveCareerPreferencesParams.isSet(params.preferredCountry) &&
+          (params.preferredCountry as String?)?.trim().isNotEmpty == true)
+        (params.preferredCountry as String).trim(),
+    ];
     final response = await apiConsumer.patch(
       EndPoint.careerPreferences,
       data: {
         if (SaveCareerPreferencesParams.isSet(params.targetRole))
-          'target_role': params.targetRole as String?,
-
+          'preferred_titles': (params.targetRole as String?) == null
+              ? <String>[]
+              : <String>[(params.targetRole as String).trim()],
         if (SaveCareerPreferencesParams.isSet(params.jobType))
-          'job_type': params.jobType as String?,
-
+          'employment_types': (params.jobType as String?) == null
+              ? <String>[]
+              : <String>[(params.jobType as String).trim()],
         if (SaveCareerPreferencesParams.isSet(params.workMode))
-          'work_mode': params.workMode as String?,
-
-        if (SaveCareerPreferencesParams.isSet(params.preferredCountry))
-          'preferred_country': params.preferredCountry as String?,
-
-        if (SaveCareerPreferencesParams.isSet(params.preferredCity))
-          'preferred_city': params.preferredCity as String?,
-
-        if (SaveCareerPreferencesParams.isSet(params.experienceLevel))
-          'experience_level': params.experienceLevel as String?,
-
-        if (SaveCareerPreferencesParams.isSet(params.careerGoal))
-          'career_goal': params.careerGoal as String?,
-
-        if (SaveCareerPreferencesParams.isSet(params.openToRelocation))
-          'open_to_relocation': params.openToRelocation as bool?,
-
-        if (SaveCareerPreferencesParams.isSet(params.targetRoles))
-          'target_roles': params.targetRoles as List<String>?,
-
-        if (SaveCareerPreferencesParams.isSet(params.preferredIndustries))
-          'preferred_industries': params.preferredIndustries as List<String>?,
+          'is_open_to_remote':
+              (params.workMode as String?)?.toLowerCase().contains('remote') ??
+              false,
+        if (SaveCareerPreferencesParams.isSet(params.preferredCountry) ||
+            SaveCareerPreferencesParams.isSet(params.preferredCity))
+          'preferred_locations': locationParts.isEmpty
+              ? <String>[]
+              : locationParts,
       },
     );
 

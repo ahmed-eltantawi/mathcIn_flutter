@@ -2,6 +2,7 @@ import 'package:MatchIn/features/profile/presentation/widgets/profile_screen_wid
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileOverviewSocialLinks extends StatelessWidget {
   const ProfileOverviewSocialLinks({
@@ -23,19 +24,21 @@ class ProfileOverviewSocialLinks extends StatelessWidget {
         ProfileOverviewLinkChip(
           icon: Icons.code_rounded,
           label: locale.github,
-          onPressed: () {
-            // TODO: Open githubUrl.
-          },
+          onPressed: () => _openLink(githubUrl),
         ),
         SizedBox(width: 8.w),
         ProfileOverviewLinkChip(
           icon: Icons.link_rounded,
           label: locale.linkedin,
-          onPressed: () {
-            // TODO: Open linkedinUrl.
-          },
+          onPressed: () => _openLink(linkedinUrl),
         ),
       ],
     );
+  }
+
+  Future<void> _openLink(String? value) async {
+    final uri = Uri.tryParse(value?.trim() ?? '');
+    if (uri == null || !{'http', 'https'}.contains(uri.scheme)) return;
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 }

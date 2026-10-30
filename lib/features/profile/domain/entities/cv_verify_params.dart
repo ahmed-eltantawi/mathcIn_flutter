@@ -25,15 +25,15 @@ class CvVerifyParams extends Equatable {
     return {
       'action': action,
       'verified_skills': skills
-          .map((item) => item.toVerifyJson())
+          .map((item) => item.toSkillVerifyJson())
           .where((json) => json.isNotEmpty)
           .toList(),
       'verified_educations': educations
-          .map((item) => item.toVerifyJson())
+          .map((item) => item.toEducationVerifyJson())
           .where((json) => json.isNotEmpty)
           .toList(),
       'verified_experiences': experiences
-          .map((item) => item.toVerifyJson())
+          .map((item) => item.toExperienceVerifyJson())
           .where((json) => json.isNotEmpty)
           .toList(),
     };

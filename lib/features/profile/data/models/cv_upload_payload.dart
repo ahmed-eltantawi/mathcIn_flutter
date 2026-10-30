@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 
 /// Builds the multipart payload for `POST /cv/upload`.
 ///
-/// Field name `cv` follows the documented contract. File content always
+/// Field name `cv_file` follows the documented `/cv/upload` contract. File content always
 /// travels as in-memory bytes ([CvUploadInput.bytes]) so uploads work
 /// on mobile and web without `dart:io`.
 class CvUploadPayload {
@@ -11,7 +11,7 @@ class CvUploadPayload {
 
   static Map<String, dynamic> formData(CvUploadInput input) {
     return {
-      'cv': MultipartFile.fromBytes(input.bytes, filename: input.fileName),
+      'cv_file': MultipartFile.fromBytes(input.bytes, filename: input.fileName),
     };
   }
 }

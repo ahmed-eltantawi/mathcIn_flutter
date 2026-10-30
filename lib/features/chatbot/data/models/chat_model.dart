@@ -1,4 +1,4 @@
-import '../../domain/entities/chat_entity.dart';
+import 'package:MatchIn/features/chatbot/domain/entities/chat_entity.dart';
 import 'chat_message_model.dart';
 
 class ChatModel extends ChatEntity {
@@ -27,6 +27,7 @@ class ChatModel extends ChatEntity {
       messagesList = rawMessages
           .whereType<Map<String, dynamic>>()
           .map((e) => ChatMessageModel.fromJson(e))
+          .where((message) => !message.isInternalAction)
           .toList();
     }
 

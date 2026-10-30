@@ -123,7 +123,7 @@ void main() {
 
       expect(find.text('Preview Photo'), findsOneWidget);
       expect(find.byType(Image), findsOneWidget);
-      expect(find.text('Avatar upload is not available yet.'), findsOneWidget);
+      expect(find.text('Simulated avatar upload failure.'), findsNothing);
     });
 
     testWidgets('confirm, retake, and cancel return distinct actions', (

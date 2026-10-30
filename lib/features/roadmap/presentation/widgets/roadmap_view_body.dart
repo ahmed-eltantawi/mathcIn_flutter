@@ -4,6 +4,7 @@ import 'package:MatchIn/core/widgets/error/app_error.dart';
 import 'package:MatchIn/core/widgets/loading/app_loading.dart';
 import 'package:MatchIn/features/roadmap/data/models/roadmap_node.dart';
 import 'package:MatchIn/features/roadmap/domain/entities/roadmap_entity.dart';
+import 'package:MatchIn/features/roadmap/domain/entities/roadmap_milestone.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/roadmap_cubit/roadmap_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/skill_task_cubit/skill_task_cubit.dart';
 import 'package:MatchIn/features/roadmap/presentation/manager/treasure_cubit/treasure_cubit.dart';
@@ -18,15 +19,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class RoadmapViewBody extends StatelessWidget {
+class RoadmapViewBody extends StatefulWidget {
   const RoadmapViewBody({super.key, this.nodes});
 
   final List<RoadmapNode>? nodes;
 
   @override
+  State<RoadmapViewBody> createState() => _RoadmapViewBodyState();
+}
+
+class _RoadmapViewBodyState extends State<RoadmapViewBody> {
+  List<RoadmapNode>? _mappedNodes;
+  List<RoadmapMilestone>? _mappedMilestones;
+  int? _mappedRoadmapId;
+  String? _mappedLocale;
+
+  @override
   Widget build(BuildContext context) {
-    if (nodes != null && nodes!.isNotEmpty) {
-      return RoadmapContentWidget(nodes: nodes!);
+    if (widget.nodes != null && widget.nodes!.isNotEmpty) {
+      return RoadmapContentWidget(nodes: widget.nodes!);
     }
 
     return BlocBuilder<RoadmapCubit, RoadmapState>(
@@ -140,10 +151,20 @@ class RoadmapViewBody extends StatelessWidget {
     required int pendingOpsCount,
   }) {
     final locale = S.of(context);
-    final mapped = RoadmapNodeMapper.mapMilestones(
-      details.milestones,
-      durationLabel: (hours) => locale.estimatedHours(hours),
-    );
+    final localeTag = Localizations.localeOf(context).toLanguageTag();
+    if (_mappedNodes == null ||
+        _mappedRoadmapId != details.id ||
+        !identical(_mappedMilestones, details.milestones) ||
+        _mappedLocale != localeTag) {
+      _mappedNodes = RoadmapNodeMapper.mapMilestones(
+        details.milestones,
+        durationLabel: (hours) => locale.estimatedHours(hours),
+      );
+      _mappedMilestones = details.milestones;
+      _mappedRoadmapId = details.id;
+      _mappedLocale = localeTag;
+    }
+    final mapped = _mappedNodes!;
     // Empty/malformed payloads never crash: a proper localized empty
     // state replaces the winding path only when no valid nodes exist.
     if (mapped.isEmpty) return _emptyView(context);

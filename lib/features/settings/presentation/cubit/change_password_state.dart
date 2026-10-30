@@ -12,7 +12,16 @@ final class ChangePasswordInitial extends ChangePasswordState {
 }
 
 final class ChangePasswordLoading extends ChangePasswordState {
-  const ChangePasswordLoading();
+  const ChangePasswordLoading({this.otpSent = false});
+
+  final bool otpSent;
+
+  @override
+  List<Object?> get props => [otpSent];
+}
+
+final class ChangePasswordOtpSent extends ChangePasswordState {
+  const ChangePasswordOtpSent();
 }
 
 final class ChangePasswordSuccess extends ChangePasswordState {
@@ -20,10 +29,11 @@ final class ChangePasswordSuccess extends ChangePasswordState {
 }
 
 final class ChangePasswordFailure extends ChangePasswordState {
-  const ChangePasswordFailure({required this.message});
+  const ChangePasswordFailure({required this.message, this.otpSent = false});
 
   final String message;
+  final bool otpSent;
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [message, otpSent];
 }

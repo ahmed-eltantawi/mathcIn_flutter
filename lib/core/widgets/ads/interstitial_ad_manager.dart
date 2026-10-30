@@ -22,8 +22,7 @@ class InterstitialAdManager {
       'ca-app-pub-3940256099942544/1033173712';
   static const String _iosAdUnitId = 'ca-app-pub-3940256099942544/4411468910';
 
-  String get adUnitId =>
-      Platform.isAndroid ? _androidAdUnitId : _iosAdUnitId;
+  String get adUnitId => Platform.isAndroid ? _androidAdUnitId : _iosAdUnitId;
 
   InterstitialAd? _interstitialAd;
   bool _isAdLoaded = false;
@@ -35,6 +34,8 @@ class InterstitialAdManager {
 
   //! ===== Load =====
   void loadAd() {
+    // Only test interstitial units are configured; keep them out of release.
+    if (kReleaseMode) return;
     if (_isDisposed) {
       return;
     }

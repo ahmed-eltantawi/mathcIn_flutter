@@ -33,7 +33,7 @@ class ExperienceModel extends ExperienceEntity {
       employmentType: (json['employment_type'] ?? json['employmentType'])
           ?.toString(),
       country: json['country']?.toString(),
-      city: json['city']?.toString(),
+      city: (json['city'] ?? json['location'])?.toString(),
       description: json['description']?.toString(),
       technologies: JsonParsing.parseStringList(json['technologies']),
       startDate: (json['start_date'] ?? json['startDate'])?.toString(),

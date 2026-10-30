@@ -7,6 +7,7 @@ import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widget
 import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/build_skills_content.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/skills_app_bar.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/skills_profile_card.dart';
+import 'package:MatchIn/features/profile/presentation/widgets/profile_screen_widgets/profile_skeleton.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,7 +45,7 @@ class SkillsViewBody extends StatelessWidget {
         },
         builder: (context, state) {
           if (state is SkillsLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return const ProfileLoadingSkeleton();
           }
 
           if (state is SkillsFailure) {

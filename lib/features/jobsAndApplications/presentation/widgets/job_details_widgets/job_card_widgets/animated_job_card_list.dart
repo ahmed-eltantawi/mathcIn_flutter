@@ -59,3 +59,46 @@ class AnimatedJobCardList extends StatelessWidget {
     );
   }
 }
+
+/// Lazily builds cards for paginated feeds. Keep [AnimatedJobCardList] for
+/// short, fixed collections; a Column eagerly builds every card in a page.
+class JobCardSliverList extends StatelessWidget {
+  const JobCardSliverList({
+    super.key,
+    required this.jobs,
+    this.onSave,
+    this.onApply,
+    this.onShareJob,
+    this.showShareButton = false,
+    this.heroPrefix = 'feed',
+  });
+
+  final List<JobEntity> jobs;
+  final void Function(String jobId)? onSave;
+  final void Function(String jobId)? onApply;
+  final void Function(JobEntity job)? onShareJob;
+  final bool showShareButton;
+  final String heroPrefix;
+
+  @override
+  Widget build(BuildContext context) => SliverPadding(
+    padding: EdgeInsetsDirectional.symmetric(horizontal: 16.w),
+    sliver: SliverList.builder(
+      itemCount: jobs.length,
+      itemBuilder: (context, index) {
+        final job = jobs[index];
+        return Padding(
+          padding: EdgeInsets.only(bottom: 12.h),
+          child: JobCard(
+            job: job,
+            heroPrefix: heroPrefix,
+            showShareButton: showShareButton,
+            onSave: onSave == null ? null : () => onSave!(job.id),
+            onApply: onApply == null ? null : () => onApply!(job.id),
+            onShare: onShareJob == null ? null : () => onShareJob!(job),
+          ),
+        );
+      },
+    ),
+  );
+}

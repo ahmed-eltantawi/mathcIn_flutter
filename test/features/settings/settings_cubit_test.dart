@@ -97,6 +97,16 @@ class _FakeSecureStorageService implements SecureStorageService {
 
 class _FakeSettingsRemoteDataSource implements SettingsRemoteDataSource {
   @override
+  Future<void> requestPasswordChangeOtp() async {}
+
+  @override
+  Future<void> confirmPasswordChange({
+    required String otp,
+    required String newPassword,
+    required String confirmPassword,
+  }) async {}
+
+  @override
   Future<void> changePassword({
     required String currentPassword,
     required String newPassword,
@@ -194,15 +204,18 @@ void main() {
       expect(sharedPreferencesService.getThemeMode(), equals('light'));
     });
 
-    test('logout clears auth data, tokens, profile cache, and updates state', () async {
-      await sharedPreferencesService.setLoggedIn(true);
+    test(
+      'logout clears auth data, tokens, profile cache, and updates state',
+      () async {
+        await sharedPreferencesService.setLoggedIn(true);
 
-      await cubit.logout();
+        await cubit.logout();
 
-      expect(cubit.state.isLoggedOut, isTrue);
-      expect(sharedPreferencesService.isLoggedIn(), isFalse);
-      expect(fakeSecureStorage.tokensDeleted, isTrue);
-      expect(fakeProfileDataSource.cleared, isTrue);
-    });
+        expect(cubit.state.isLoggedOut, isTrue);
+        expect(sharedPreferencesService.isLoggedIn(), isFalse);
+        expect(fakeSecureStorage.tokensDeleted, isTrue);
+        expect(fakeProfileDataSource.cleared, isTrue);
+      },
+    );
   });
 }

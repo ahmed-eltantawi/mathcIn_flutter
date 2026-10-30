@@ -6,6 +6,7 @@ class CandidateProfileDetailsEntity extends Equatable {
     this.dateOfBirth,
     this.gender,
     this.jobTitle,
+    this.location,
     this.country,
     this.state,
     this.city,
@@ -19,6 +20,7 @@ class CandidateProfileDetailsEntity extends Equatable {
   final String? dateOfBirth;
   final String? gender;
   final String? jobTitle;
+  final String? location;
   final String? country;
   final String? state;
   final String? city;
@@ -33,6 +35,7 @@ class CandidateProfileDetailsEntity extends Equatable {
     dateOfBirth,
     gender,
     jobTitle,
+    location,
     country,
     state,
     city,

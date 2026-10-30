@@ -1,4 +1,6 @@
-import '../../domain/entities/chat_message_entity.dart';
+import 'dart:convert';
+
+import 'package:MatchIn/features/chatbot/domain/entities/chat_message_entity.dart';
 import 'suggested_action_model.dart';
 
 class ChatMessageModel extends ChatMessageEntity {
@@ -9,6 +11,7 @@ class ChatMessageModel extends ChatMessageEntity {
     required super.timestamp,
     super.isError = false,
     super.suggestedActions = const [],
+    this.isInternalAction = false,
   });
 
   factory ChatMessageModel.fromJson(Map<String, dynamic> json) {
@@ -16,6 +19,8 @@ class ChatMessageModel extends ChatMessageEntity {
     final sender = (senderRaw == 'user') ? MessageSender.user : MessageSender.ai;
 
     final content = (json['content'] ?? json['message'] ?? json['text'] ?? '').toString();
+    final isInternalAction =
+        sender == MessageSender.ai && _containsInternalAction(content);
 
     DateTime ts;
     final rawTs = json['timestamp'] ?? json['created_at'];
@@ -41,6 +46,7 @@ class ChatMessageModel extends ChatMessageEntity {
       timestamp: ts,
       isError: json['isError'] as bool? ?? false,
       suggestedActions: actions,
+      isInternalAction: isInternalAction,
     );
   }
 
@@ -53,6 +59,33 @@ class ChatMessageModel extends ChatMessageEntity {
       isError: entity.isError,
       suggestedActions: entity.suggestedActions,
     );
+  }
+
+  final bool isInternalAction;
+
+  static bool _containsInternalAction(String content) {
+    final candidates = <String>[content.trim()];
+    final fencedBlocks = RegExp(
+      r'```(?:json)?\s*([\s\S]*?)```',
+      caseSensitive: false,
+    ).allMatches(content);
+    candidates.addAll(fencedBlocks.map((match) => match.group(1)!.trim()));
+
+    for (final candidate in candidates) {
+      try {
+        final decoded = jsonDecode(candidate);
+        if (decoded is Map<String, dynamic> &&
+            decoded['action'] is String &&
+            (decoded['action_input'] is Map ||
+                decoded['action_arguments'] is Map ||
+                decoded['tool_input'] is Map)) {
+          return true;
+        }
+      } on FormatException {
+        continue;
+      }
+    }
+    return false;
   }
 
   Map<String, dynamic> toJson() {

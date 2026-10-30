@@ -1,4 +1,12 @@
 abstract class SettingsRemoteDataSource {
+  Future<void> requestPasswordChangeOtp();
+
+  Future<void> confirmPasswordChange({
+    required String otp,
+    required String newPassword,
+    required String confirmPassword,
+  });
+
   Future<void> changePassword({
     required String currentPassword,
     required String newPassword,

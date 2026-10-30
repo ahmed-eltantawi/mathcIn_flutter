@@ -13,16 +13,12 @@ class ProfileImagePickerService {
   final ImagePicker _imagePicker;
 
   /// Returns the picked image as in-memory bytes, or null when the
-  /// user dismisses the picker or the platform reports an error.
-  /// A null result always means "no image", never a failure to report.
+  /// user dismisses the picker. Platform and file-read errors are allowed
+  /// to reach the UI so they can be reported instead of silently ignored.
   Future<PickedFile?> pickProfileImage(ImageSource source) async {
-    try {
-      final file = await _imagePicker.pickImage(source: source);
-      if (file == null) return null;
-      final bytes = await file.readAsBytes();
-      return PickedFile(name: file.name, bytes: bytes);
-    } catch (_) {
-      return null;
-    }
+    final file = await _imagePicker.pickImage(source: source);
+    if (file == null) return null;
+    final bytes = await file.readAsBytes();
+    return PickedFile(name: file.name, bytes: bytes);
   }
 }

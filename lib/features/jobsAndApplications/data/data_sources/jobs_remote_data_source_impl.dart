@@ -74,7 +74,9 @@ class JobsRemoteDataSourceImpl implements JobsRemoteDataSource {
   Future<JobEntity> applyForJob(String jobId) async {
     final response = await apiConsumer.post(
       EndPoint.applications,
-      data: {ApiKey.jobPostId: int.tryParse(jobId) ?? jobId},
+      // The deployed API currently validates `job_id`, despite the OpenAPI
+      // request schema documenting `job_post_id`.
+      data: {ApiKey.jobId: int.tryParse(jobId) ?? jobId},
     );
 
     // Only report success when the backend confirms with a parseable body.

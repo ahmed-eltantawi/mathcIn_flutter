@@ -21,7 +21,13 @@ class LoginFailure extends AuthState {
 
 class RegisterLoading extends AuthState {}
 
-class RegisterSuccess extends AuthState {}
+class RegisterSuccess extends AuthState {
+  RegisterSuccess({this.otpSendError});
+
+  final String? otpSendError;
+
+  bool get otpSent => otpSendError == null;
+}
 
 class RegisterFailure extends AuthState {
   RegisterFailure({required this.message});

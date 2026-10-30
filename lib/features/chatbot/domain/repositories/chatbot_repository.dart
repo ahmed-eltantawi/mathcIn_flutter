@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failures.dart';
-import '../../data/models/chatbot_send_message_response_model.dart';
-import '../entities/chat_entity.dart';
+import 'package:MatchIn/core/errors/failures.dart';
+import 'package:MatchIn/features/chatbot/data/models/chatbot_send_message_response_model.dart';
+import 'package:MatchIn/features/chatbot/domain/entities/chat_entity.dart';
 
 abstract class ChatbotRepository {
   Future<Either<Failure, List<ChatEntity>>> getConversations();

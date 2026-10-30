@@ -11,6 +11,8 @@ class EditProfileField extends StatelessWidget {
     this.onTap,
     this.keyboardType,
     this.prefix,
+    this.validator,
+    this.fieldKey,
   });
 
   final String label;
@@ -20,6 +22,8 @@ class EditProfileField extends StatelessWidget {
   final VoidCallback? onTap;
   final TextInputType? keyboardType;
   final Widget? prefix;
+  final FormFieldValidator<String>? validator;
+  final GlobalKey<FormFieldState<String>>? fieldKey;
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +41,13 @@ class EditProfileField extends StatelessWidget {
         ),
         SizedBox(height: 8.h),
         TextFormField(
+          key: fieldKey,
           controller: controller,
           readOnly: readOnly,
           onTap: onTap,
           keyboardType: keyboardType,
+          validator: validator,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           decoration: InputDecoration(
             hintText: hintText,
             prefixIcon: prefix,
@@ -54,6 +61,14 @@ class EditProfileField extends StatelessWidget {
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.r),
               borderSide: BorderSide(color: theme.dividerColor),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.r),
+              borderSide: BorderSide(color: theme.colorScheme.error),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.r),
+              borderSide: BorderSide(color: theme.colorScheme.error, width: 2),
             ),
           ),
         ),

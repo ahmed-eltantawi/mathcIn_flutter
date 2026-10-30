@@ -13,6 +13,7 @@ import 'package:MatchIn/features/home/presentation/widgets/jobs_search_view_widg
 import 'package:MatchIn/features/home/presentation/widgets/jobs_search_view_widgets/search_results_header.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_cubit.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_state.dart';
+import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_entity.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/job_details_widgets/job_card_widgets/animated_job_card_list.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/job_details_widgets/job_card_widgets/job_card_shimmer.dart';
 
@@ -56,11 +57,12 @@ class _JobsSearchViewBodyState extends State<JobsSearchViewBody> {
       },
       child: RefreshIndicator(
         onRefresh: () => context.read<JobsFeedCubit>().refreshJobs(),
-        child: SingleChildScrollView(
+        child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+          slivers: [
+            SliverToBoxAdapter(child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
               const JobsSearchHeader(),
               SizedBox(height: 12.h),
               JobsSearchField(
@@ -86,9 +88,9 @@ class _JobsSearchViewBodyState extends State<JobsSearchViewBody> {
                 },
               ),
               SizedBox(height: 16.h),
-              Padding(
-                padding: EdgeInsetsDirectional.symmetric(horizontal: 16.w),
-                child: BlocConsumer<JobsFeedCubit, JobsFeedState>(
+              ],
+            )),
+            BlocConsumer<JobsFeedCubit, JobsFeedState>(
                   listener: (context, state) {
                     if (state is JobsFeedLoaded &&
                         state.errorMessage != null &&
@@ -103,81 +105,96 @@ class _JobsSearchViewBodyState extends State<JobsSearchViewBody> {
                   },
                   builder: (context, state) {
                     return switch (state) {
-                      JobsFeedInitial() ||
-                      JobsFeedLoading() => const JobFeedShimmerList(),
-                      JobsFeedError(:final message) => AppErrorWidget(
+                      JobsFeedInitial() || JobsFeedLoading() =>
+                        const SliverToBoxAdapter(child: JobFeedShimmerList()),
+                      JobsFeedError(:final message) => SliverToBoxAdapter(child: AppErrorWidget(
                         message: message,
                         onRetry: () => context.read<JobsFeedCubit>().getJobs(),
-                      ),
-                      JobsFeedEmpty() => AppEmptyWidget(
+                      )),
+                      JobsFeedEmpty() => SliverToBoxAdapter(child: AppEmptyWidget(
                         message: context.l10n.noJobsFound,
-                      ),
+                      )),
                       JobsFeedOfflineWithCache(:final jobs, :final message) =>
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            JobsOfflineBanner(
-                              message: message ?? context.l10n.noInternetConnection,
-                            ),
-                            SizedBox(height: 12.h),
-                            AnimatedJobCardList(
-                              jobs: jobs,
-                              heroPrefix: 'search',
-                              showShareButton: true,
-                              onSave: (id) {
-                                if (!requireAuth(context)) return;
-                                context
-                                    .read<JobsFeedCubit>()
-                                    .toggleSaveJob(id);
-                              },
-                              onShareJob: (job) => shareJob(context, job),
-                            ),
-                          ],
+                        SliverMainAxisGroup(
+                          slivers: _offlineSlivers(context, jobs, message),
                         ),
-                      JobsFeedLoaded(
-                        :final jobs,
-                        :final isFromCache,
-                        :final isPaginationLoading,
-                      ) =>
-                        Column(
-                          children: [
-                            if (isFromCache) ...[
-                              JobsOfflineBanner(
-                                message:
-                                    state.errorMessage ??
-                                    context.l10n.noInternetConnection,
-                              ),
-                              SizedBox(height: 12.h),
-                            ],
-                            AnimatedJobCardList(
-                              jobs: jobs,
-                              heroPrefix: 'search',
-                              showShareButton: true,
-                              onSave: (id) {
-                                if (!requireAuth(context)) return;
-                                context
-                                    .read<JobsFeedCubit>()
-                                    .toggleSaveJob(id);
-                              },
-                              onShareJob: (job) => shareJob(context, job),
-                            ),
-                            if (isPaginationLoading) ...[
-                              Padding(
-                                padding: EdgeInsets.symmetric(vertical: 16.h),
-                                child: const JobCardShimmer(),
-                              ),
-                            ],
-                          ],
+                      JobsFeedLoaded(:final jobs, :final isFromCache, :final isPaginationLoading) =>
+                        SliverMainAxisGroup(
+                          slivers: _loadedSlivers(
+                            context,
+                            jobs,
+                            isFromCache,
+                            state.errorMessage,
+                            isPaginationLoading,
+                          ),
                         ),
                     };
                   },
                 ),
-              ),
-              SizedBox(height: 32.h),
-            ],
-          ),
+          ],
         ),
       ),
     );
   }
+
+  List<Widget> _offlineSlivers(
+    BuildContext context,
+    List<JobEntity> jobs,
+    String? message,
+  ) => [
+    SliverToBoxAdapter(
+      child: Padding(
+        padding: EdgeInsetsDirectional.symmetric(horizontal: 16.w),
+        child: JobsOfflineBanner(
+          message: message ?? context.l10n.noInternetConnection,
+        ),
+      ),
+    ),
+    JobCardSliverList(
+      jobs: jobs,
+      heroPrefix: 'search',
+      showShareButton: true,
+      onSave: (id) {
+        if (!requireAuth(context)) return;
+        context.read<JobsFeedCubit>().toggleSaveJob(id);
+      },
+      onShareJob: (job) => shareJob(context, job),
+    ),
+  ];
+
+  List<Widget> _loadedSlivers(
+    BuildContext context,
+    List<JobEntity> jobs,
+    bool isFromCache,
+    String? error,
+    bool isPaginationLoading,
+  ) => [
+    if (isFromCache)
+      SliverToBoxAdapter(
+        child: Padding(
+          padding: EdgeInsetsDirectional.symmetric(horizontal: 16.w),
+          child: JobsOfflineBanner(
+            message: error ?? context.l10n.noInternetConnection,
+          ),
+        ),
+      ),
+    JobCardSliverList(
+      jobs: jobs,
+      heroPrefix: 'search',
+      showShareButton: true,
+      onSave: (id) {
+        if (!requireAuth(context)) return;
+        context.read<JobsFeedCubit>().toggleSaveJob(id);
+      },
+      onShareJob: (job) => shareJob(context, job),
+    ),
+    if (isPaginationLoading)
+      SliverToBoxAdapter(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 16.h),
+          child: const JobCardShimmer(),
+        ),
+      ),
+    const SliverToBoxAdapter(child: SizedBox(height: 32)),
+  ];
 }

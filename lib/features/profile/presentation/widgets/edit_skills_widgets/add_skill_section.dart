@@ -1,5 +1,6 @@
 import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/skill_search_field.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_skills_widgets/skill_suggestions.dart';
+import 'package:MatchIn/features/profile/domain/entities/skill_search_result_entity.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,10 +17,10 @@ class AddSkillSection extends StatelessWidget {
   });
 
   final TextEditingController controller;
-  final List<String> suggestions;
+  final List<SkillSearchResultEntity> suggestions;
   final ValueChanged<String> onSearchChanged;
   final VoidCallback onAddPressed;
-  final ValueChanged<String> onSuggestionPressed;
+  final ValueChanged<SkillSearchResultEntity> onSuggestionPressed;
   final ValueChanged<String> onSubmitted;
 
   @override

@@ -9,13 +9,15 @@ class SplashView extends StatelessWidget {
   const SplashView({super.key});
 
   void _goNext(BuildContext context) {
+    if (!context.mounted) return;
+
     final prefs = getIt<SharedPreferencesService>();
     if (!prefs.isOnBoardingViewed()) {
       context.go(AppRoutes.kOnboardingView);
-    } else if (prefs.shouldSkipAuth()) {
+    } else if (prefs.isLoggedIn()) {
       context.go(AppRoutes.kHomeView);
     } else {
-      context.go(AppRoutes.kRegisterView);
+      context.go(AppRoutes.kLoginView);
     }
   }
 

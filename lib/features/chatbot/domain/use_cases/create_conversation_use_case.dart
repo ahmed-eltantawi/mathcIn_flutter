@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failures.dart';
-import '../entities/chat_entity.dart';
-import '../repositories/chatbot_repository.dart';
+import 'package:MatchIn/core/errors/failures.dart';
+import 'package:MatchIn/features/chatbot/domain/entities/chat_entity.dart';
+import 'package:MatchIn/features/chatbot/domain/repositories/chatbot_repository.dart';
 
 class CreateConversationUseCase {
   const CreateConversationUseCase({required this.repository});

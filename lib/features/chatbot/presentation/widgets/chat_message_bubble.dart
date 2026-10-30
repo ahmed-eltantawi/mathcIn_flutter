@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:MatchIn/core/extensions/context_extensions.dart';
 import 'package:MatchIn/core/extensions/snack_bar_extensions.dart';
-import '../../domain/entities/chat_message_entity.dart';
+import 'package:MatchIn/features/chatbot/domain/entities/chat_message_entity.dart';
 
 class ChatMessageBubble extends StatelessWidget {
   const ChatMessageBubble({

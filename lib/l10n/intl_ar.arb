@@ -434,6 +434,7 @@
   "profileMatchQuality": "جودة الملف الشخصي",
   "addNewSkill": "إضافة مهارة جديدة",
   "addSkillHint": "أضف مهارة (مثال: Docker, GraphQL)",
+  "selectSkillSuggestion": "اختار مهارة من الاقتراحات قبل ما تضيفها.",
   "add": "إضافة",
   "suggestions": "مقترحات",
   "cvSkillsDescription": "تم استخراج المهارات تلقائيًا من السيرة الذاتية المرفوعة.",
@@ -511,7 +512,6 @@
 "chooseFromGallery": "اختر من المعرض",
 "previewPhoto": "معاينة الصورة",
 "chooseAnother": "اختر صورة أخرى",
-"avatarUploadUnavailable": "رفع الصورة غير متاح بعد.",
 "invalidImageType": "نوع الصورة غير مدعوم. استخدم JPG أو PNG أو WEBP.",
 "imageTooLarge": "حجم الصورة كبير جدًا. الحد الأقصى 5 ميجابايت.",
 "saveChanges": "حفظ التغييرات",
@@ -567,6 +567,7 @@
 "completeProfilePrompt": "أكمل ملفك الشخصي لبدء إضافة تعليمك وخبراتك ومهاراتك والمزيد.",
 "createProfile": "إنشاء الملف الشخصي",
 "userFieldsNotSavedYet": "لا يمكن حفظ الاسم ورقم الهاتف بعد، ولم يتم إرسالهما إلى الخادم.",
+  "unsupportedProfileFieldsNotSaved": "بعض بيانات الملف والمشاريع والخبرات والتفضيلات المهنية غير مدعومة في الـAPI الحالية، لذلك لم تُحفظ هذه التغييرات.",
 "recruiterVisibility": "الظهور لمسؤولي التوظيف",
 "recruiterVisibilityDescription": "يساعد اكتمال بياناتك الأكاديمية على زيادة ظهور ملفك لمسؤولي التوظيف على SkillMatch.",
 "currentRecords": "السجلات الحالية",
@@ -631,7 +632,9 @@
   "careerMentor": "المرشد المهني الذكي",
   "contextPreview": "سياق المرشح",
   "archived": "مؤرشفة",
-  "careerGroundingContext": "مبني على مهاراتك الموثقة، خبراتك، وأدوارك المستهدفة."
+  "careerGroundingContext": "مبني على مهاراتك الموثقة، خبراتك، وأدوارك المستهدفة.",
+  "noJobRequirementsListed": "لم يتم توفير متطلبات لهذه الوظيفة.",
+  "invalidProfileUrl": "أدخل رابطًا صحيحًا يبدأ بـ https:// أو http://."
 }
 
 

@@ -6,7 +6,14 @@ import 'package:MatchIn/core/networking/network_info.dart';
 import 'package:MatchIn/features/profile/data/data_sources/profile_local_data_source.dart';
 import 'package:MatchIn/features/profile/data/data_sources/profile_remote_data_source.dart';
 import 'package:MatchIn/features/profile/data/models/candidate_profile_model.dart';
+import 'package:MatchIn/features/profile/data/models/candidate_skill_model.dart';
+import 'package:MatchIn/features/profile/data/models/candidate_profile_details_model.dart';
+import 'package:MatchIn/features/profile/data/models/profile_user_model.dart';
+import 'package:MatchIn/features/profile/data/models/career_preference_model.dart';
 import 'package:MatchIn/features/profile/data/models/cv_document_model.dart';
+import 'package:MatchIn/features/profile/data/models/candidate_project_model.dart';
+import 'package:MatchIn/features/profile/data/models/education_model.dart';
+import 'package:MatchIn/features/profile/data/models/experience_model.dart';
 import 'package:MatchIn/features/profile/data/models/cv_local_file_model.dart';
 import 'package:MatchIn/features/profile/data/models/cv_pending_upload_model.dart';
 import 'package:MatchIn/features/profile/data/models/cv_upload_marker_model.dart';
@@ -54,7 +61,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
   Future<Either<Failure, CandidateProfileEntity>> getCandidateProfile() async {
     if (await networkInfo.isConnected) {
       try {
-        final profile = await remoteDataSource.getCandidateProfile();
+        final profile = await _loadCompleteCandidateProfile();
 
         await localDataSource.cacheCandidateProfile(profile);
 
@@ -95,6 +102,117 @@ class ProfileRepositoryImpl implements ProfileRepository {
     return const Left(OfflineFailure());
   }
 
+  /// The published GET /candidate/profile contract only includes the base
+  /// profile fields. The six profile cards are backed by separate resources,
+  /// so load those resources together and compose one complete profile model
+  /// before caching or emitting it to the UI.
+  Future<CandidateProfileModel> _loadCompleteCandidateProfile() async {
+    final base = await remoteDataSource.getCandidateProfile();
+    if (!base.profileExists) return base;
+
+    final skillsFallback = base.skills
+        .whereType<CandidateSkillModel>()
+        .toList();
+    final projectsFallback = base.projects
+        .whereType<CandidateProjectModel>()
+        .toList();
+    final educationFallback = base.education
+        .whereType<EducationModel>()
+        .toList();
+    final experienceFallback = base.experience
+        .whereType<ExperienceModel>()
+        .toList();
+    final preferencesFallback = base.careerPreferences is CareerPreferenceModel
+        ? base.careerPreferences as CareerPreferenceModel
+        : null;
+    final cvFallback = base.cvDocument is CvDocumentModel
+        ? <CvDocumentModel>[base.cvDocument as CvDocumentModel]
+        : <CvDocumentModel>[];
+
+    final sections = await Future.wait<Object?>([
+      _loadSection(remoteDataSource.getCandidateSkills, skillsFallback),
+      _loadSection(remoteDataSource.getProjects, projectsFallback),
+      _loadSection(remoteDataSource.getEducations, educationFallback),
+      _loadSection(remoteDataSource.getExperiences, experienceFallback),
+      _loadSection(remoteDataSource.getCareerPreferences, preferencesFallback),
+      _loadSection(remoteDataSource.getCvHistory, cvFallback),
+    ]);
+
+    final cvDocuments = sections[5] as List<CvDocumentModel>;
+    CvDocumentModel? currentCv;
+    for (final document in cvDocuments) {
+      if (document.isCurrent == true) {
+        currentCv = document;
+        break;
+      }
+    }
+    currentCv ??= cvDocuments.isNotEmpty ? cvDocuments.first : null;
+
+    return CandidateProfileModel(
+      profileExists: base.profileExists,
+      user: base.user as ProfileUserModel,
+      profile: base.profile as CandidateProfileDetailsModel?,
+      skills: sections[0] as List<CandidateSkillModel>,
+      projects: sections[1] as List<CandidateProjectModel>,
+      education: sections[2] as List<EducationModel>,
+      experience: sections[3] as List<ExperienceModel>,
+      careerPreferences: sections[4] as CareerPreferenceModel?,
+      cvDocument: currentCv,
+    );
+  }
+
+  Future<T> _loadSection<T>(Future<T> Function() load, T fallback) async {
+    try {
+      return await load();
+    } catch (_) {
+      // One unavailable section must not hide the other profile data.
+      return fallback;
+    }
+  }
+
+  /// Refreshes one independently stored profile section into the durable
+  /// aggregate cache after a successful child-resource mutation. This lets
+  /// the app-scoped ProfileCubit render fresh cached data as soon as the user
+  /// returns to the profile, while its normal background fetch reconciles it.
+  Future<void> _refreshCachedSection<T>(
+    Future<T> Function() load,
+    CandidateProfileModel Function(CandidateProfileModel, T) update,
+  ) async {
+    try {
+      final cached = await localDataSource.getCachedCandidateProfile();
+      if (cached == null) return;
+      final section = await load();
+      await localDataSource.cacheCandidateProfile(update(cached, section));
+    } catch (_) {
+      // The server mutation already succeeded. A cache refresh failure must
+      // not turn that successful write into a reported failure.
+    }
+  }
+
+  CandidateProfileModel _copyProfileWithSections(
+    CandidateProfileModel base, {
+    List<CandidateSkillModel>? skills,
+    List<CandidateProjectModel>? projects,
+    List<EducationModel>? education,
+    List<ExperienceModel>? experience,
+    CareerPreferenceModel? careerPreferences,
+    bool replaceCareerPreferences = false,
+  }) {
+    return CandidateProfileModel(
+      profileExists: base.profileExists,
+      user: base.user as ProfileUserModel,
+      profile: base.profile as CandidateProfileDetailsModel?,
+      skills: skills ?? base.skills,
+      projects: projects ?? base.projects,
+      education: education ?? base.education,
+      experience: experience ?? base.experience,
+      careerPreferences: replaceCareerPreferences
+          ? careerPreferences
+          : base.careerPreferences as CareerPreferenceModel?,
+      cvDocument: base.cvDocument as CvDocumentModel?,
+    );
+  }
+
   @override
   Future<Either<Failure, CandidateProfileEntity?>>
   getCachedCandidateProfile() async {
@@ -117,11 +235,32 @@ class ProfileRepositoryImpl implements ProfileRepository {
     }
 
     try {
-      final profile = await remoteDataSource.updateCandidateProfile(params);
+      // The PATCH response may be valid but incomplete (some deployments
+      // return only changed/root fields). Never replace the complete cached
+      // profile with that partial representation. Read the canonical GET
+      // response after the write, then cache and publish that snapshot.
+      final patchedProfile = await remoteDataSource.updateCandidateProfile(
+        params,
+      );
 
-      await localDataSource.cacheCandidateProfile(profile);
-
-      return Right(profile);
+      try {
+        final refreshedProfile = await _loadCompleteCandidateProfile();
+        await localDataSource.cacheCandidateProfile(refreshedProfile);
+        final reconciled = await _applyLocalCvOverrides(refreshedProfile);
+        await _cacheReconciledCv(reconciled, refreshedProfile);
+        return Right(reconciled);
+      } catch (_) {
+        // PATCH already succeeded. Merge its supported fields into the
+        // complete cached snapshot so an offline reload cannot resurrect
+        // values from before the save. Never cache a partial response alone.
+        final cached = await localDataSource.getCachedCandidateProfile();
+        if (cached != null) {
+          final merged = _mergePatchedProfile(cached, patchedProfile, params);
+          await localDataSource.cacheCandidateProfile(merged);
+          return Right(await _applyLocalCvOverrides(merged));
+        }
+        return Right(patchedProfile);
+      }
     } on ServerException catch (e) {
       return Left(
         ServerFailure(
@@ -132,6 +271,98 @@ class ProfileRepositoryImpl implements ProfileRepository {
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
+  }
+
+  CandidateProfileModel _mergePatchedProfile(
+    CandidateProfileModel cached,
+    CandidateProfileModel patchResponse,
+    UpdateCandidateProfileParams params,
+  ) {
+    String? patchOrCurrent(String? current, Object? patchValue) =>
+        UpdateCandidateProfileParams.isSet(patchValue)
+        ? patchValue as String?
+        : current;
+
+    final cachedUser = cached.user as ProfileUserModel;
+    final oldDetails =
+        (cached.profile ?? patchResponse.profile)
+            as CandidateProfileDetailsModel?;
+    final updatedUser = ProfileUserModel(
+      id: cachedUser.id,
+      name: UpdateCandidateProfileParams.isSet(params.fullName)
+          ? (params.fullName as String? ?? '')
+          : patchResponse.user.name.isNotEmpty
+          ? patchResponse.user.name
+          : cachedUser.name,
+      email: patchResponse.user.email.isNotEmpty
+          ? patchResponse.user.email
+          : cachedUser.email,
+      role: cachedUser.role,
+      isActive: cachedUser.isActive,
+      phone: patchOrCurrent(cachedUser.phone, params.phone),
+      avatar: patchResponse.user.avatar ?? cachedUser.avatar,
+    );
+    final hasDetailsPatch =
+        UpdateCandidateProfileParams.isSet(params.jobTitle) ||
+        UpdateCandidateProfileParams.isSet(params.location) ||
+        UpdateCandidateProfileParams.isSet(params.githubUrl) ||
+        UpdateCandidateProfileParams.isSet(params.linkedinUrl) ||
+        UpdateCandidateProfileParams.isSet(params.professionalSummary);
+    final updatedDetails = oldDetails == null && !hasDetailsPatch
+        ? null
+        : CandidateProfileDetailsModel(
+            id: oldDetails?.id ?? patchResponse.profile?.id ?? cachedUser.id,
+            dateOfBirth: oldDetails?.dateOfBirth,
+            gender: oldDetails?.gender,
+            jobTitle: patchOrCurrent(oldDetails?.jobTitle, params.jobTitle),
+            location: patchOrCurrent(oldDetails?.location, params.location),
+            country: UpdateCandidateProfileParams.isSet(params.location)
+                ? null
+                : oldDetails?.country,
+            state: UpdateCandidateProfileParams.isSet(params.location)
+                ? null
+                : oldDetails?.state,
+            city: UpdateCandidateProfileParams.isSet(params.location)
+                ? null
+                : oldDetails?.city,
+            githubUrl: patchOrCurrent(oldDetails?.githubUrl, params.githubUrl),
+            linkedinUrl: patchOrCurrent(
+              oldDetails?.linkedinUrl,
+              params.linkedinUrl,
+            ),
+            militaryStatus: oldDetails?.militaryStatus,
+            professionalSummary: patchOrCurrent(
+              oldDetails?.professionalSummary,
+              params.professionalSummary,
+            ),
+          );
+
+    return CandidateProfileModel(
+      profileExists: cached.profileExists || patchResponse.profileExists,
+      user: updatedUser,
+      profile: updatedDetails,
+      skills: cached.skills,
+      projects: cached.projects,
+      careerPreferences:
+          (cached.careerPreferences ?? patchResponse.careerPreferences)
+              as CareerPreferenceModel?,
+      education: cached.education,
+      experience: cached.experience,
+      cvDocument: cached.cvDocument == null
+          ? null
+          : CvDocumentModel(
+              id: cached.cvDocument!.id,
+              fileName: cached.cvDocument!.fileName,
+              originalFilename: cached.cvDocument!.originalFilename,
+              fileUrl: cached.cvDocument!.fileUrl,
+              status: cached.cvDocument!.status,
+              version: cached.cvDocument!.version,
+              isCurrent: cached.cvDocument!.isCurrent,
+              processedAt: cached.cvDocument!.processedAt,
+              updatedAt: cached.cvDocument!.updatedAt,
+              failureReason: cached.cvDocument!.failureReason,
+            ),
+    );
   }
 
   @override
@@ -191,6 +422,10 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
     try {
       final skill = await remoteDataSource.addCandidateSkill(params);
+      await _refreshCachedSection(
+        remoteDataSource.getCandidateSkills,
+        (cached, skills) => _copyProfileWithSections(cached, skills: skills),
+      );
 
       return Right(skill);
     } on ServerException catch (e) {
@@ -215,6 +450,10 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
     try {
       await remoteDataSource.removeCandidateSkill(candidateSkillId);
+      await _refreshCachedSection(
+        remoteDataSource.getCandidateSkills,
+        (cached, skills) => _copyProfileWithSections(cached, skills: skills),
+      );
 
       return const Right(unit);
     } on ServerException catch (e) {
@@ -310,6 +549,11 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
     try {
       final project = await remoteDataSource.addCandidateProject(params);
+      await _refreshCachedSection(
+        remoteDataSource.getProjects,
+        (cached, projects) =>
+            _copyProfileWithSections(cached, projects: projects),
+      );
 
       return Right(project);
     } on ServerException catch (e) {
@@ -334,6 +578,11 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
     try {
       final project = await remoteDataSource.updateCandidateProject(params);
+      await _refreshCachedSection(
+        remoteDataSource.getProjects,
+        (cached, projects) =>
+            _copyProfileWithSections(cached, projects: projects),
+      );
 
       return Right(project);
     } on ServerException catch (e) {
@@ -356,6 +605,11 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
     try {
       await remoteDataSource.deleteCandidateProject(projectId);
+      await _refreshCachedSection(
+        remoteDataSource.getProjects,
+        (cached, projects) =>
+            _copyProfileWithSections(cached, projects: projects),
+      );
 
       return const Right(unit);
     } on ServerException catch (e) {
@@ -403,6 +657,10 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
     try {
       final education = await remoteDataSource.addEducation(params);
+      await _refreshCachedSection(
+        remoteDataSource.getEducations,
+        (cached, items) => _copyProfileWithSections(cached, education: items),
+      );
 
       return Right(education);
     } on ServerException catch (e) {
@@ -427,6 +685,10 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
     try {
       final education = await remoteDataSource.updateEducation(params);
+      await _refreshCachedSection(
+        remoteDataSource.getEducations,
+        (cached, items) => _copyProfileWithSections(cached, education: items),
+      );
 
       return Right(education);
     } on ServerException catch (e) {
@@ -449,6 +711,10 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
     try {
       await remoteDataSource.deleteEducation(educationId);
+      await _refreshCachedSection(
+        remoteDataSource.getEducations,
+        (cached, items) => _copyProfileWithSections(cached, education: items),
+      );
 
       return const Right(unit);
     } on ServerException catch (e) {
@@ -496,6 +762,10 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
     try {
       final experience = await remoteDataSource.addExperience(params);
+      await _refreshCachedSection(
+        remoteDataSource.getExperiences,
+        (cached, items) => _copyProfileWithSections(cached, experience: items),
+      );
 
       return Right(experience);
     } on ServerException catch (e) {
@@ -520,6 +790,10 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
     try {
       final experience = await remoteDataSource.updateExperience(params);
+      await _refreshCachedSection(
+        remoteDataSource.getExperiences,
+        (cached, items) => _copyProfileWithSections(cached, experience: items),
+      );
 
       return Right(experience);
     } on ServerException catch (e) {
@@ -542,6 +816,10 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
     try {
       await remoteDataSource.deleteExperience(experienceId);
+      await _refreshCachedSection(
+        remoteDataSource.getExperiences,
+        (cached, items) => _copyProfileWithSections(cached, experience: items),
+      );
 
       return const Right(unit);
     } on ServerException catch (e) {
@@ -1005,12 +1283,6 @@ class ProfileRepositoryImpl implements ProfileRepository {
           fieldErrors: e.errorModel.fieldErrors,
         ),
       );
-    } on UnimplementedError {
-      // TODO(avatar-backend): remove this branch once the remote avatar
-      // upload is implemented against the documented contract.
-      return const Left(
-        ServerFailure(message: 'Avatar upload is not available yet.'),
-      );
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
@@ -1050,6 +1322,14 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
     try {
       final preferences = await remoteDataSource.saveCareerPreferences(params);
+      await _refreshCachedSection(
+        remoteDataSource.getCareerPreferences,
+        (cached, preferences) => _copyProfileWithSections(
+          cached,
+          careerPreferences: preferences,
+          replaceCareerPreferences: true,
+        ),
+      );
 
       return Right(preferences);
     } on ServerException catch (e) {

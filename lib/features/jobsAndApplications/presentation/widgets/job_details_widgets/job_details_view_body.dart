@@ -1,5 +1,6 @@
 import 'package:MatchIn/core/functions/require_auth.dart';
 import 'package:MatchIn/core/functions/share_job.dart';
+import 'package:MatchIn/core/routing/cubit/main_navigation_cubit.dart';
 import 'package:MatchIn/features/jobsAndApplications/domain/entities/job_entity.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_cubit.dart';
 import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_feed_state.dart';
@@ -14,10 +15,15 @@ import 'package:MatchIn/features/jobsAndApplications/presentation/widgets/job_de
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gap/gap.dart';
 
 class JobDetailsViewBody extends StatelessWidget {
-  const JobDetailsViewBody({super.key, required this.job, this.heroPrefix = 'feed'});
+  const JobDetailsViewBody({
+    super.key,
+    required this.job,
+    this.heroPrefix = 'feed',
+  });
   final JobEntity job;
 
   /// Originating list prefix so Hero tags match the tapped card.
@@ -28,13 +34,9 @@ class JobDetailsViewBody extends StatelessWidget {
     return BlocBuilder<JobsFeedCubit, JobsFeedState>(
       builder: (context, state) {
         final currentJob =
-            context.read<JobsFeedCubit>().getJobById(
-              job.id,
-            ) ??
-            job;
+            context.read<JobsFeedCubit>().getJobById(job.id) ?? job;
         final isApplied =
-            currentJob.applicationStatus !=
-            JobApplicationStatus.notApplied;
+            currentJob.applicationStatus != JobApplicationStatus.notApplied;
 
         return Column(
           children: [
@@ -54,36 +56,27 @@ class JobDetailsViewBody extends StatelessWidget {
                     JobCard(
                       job: currentJob,
                       heroPrefix: heroPrefix,
-                      onTap: () {},
+                      enableDetailsNavigation: false,
                     ),
                     Gap(14.h),
                     const JobMatchCard(),
                     Gap(14.h),
-                    if (currentJob
-                        .matchedSkills
-                        .isNotEmpty) ...[
-                      MatchedSkillsCard(
-                        skills: currentJob.matchedSkills,
-                      ),
+                    if (currentJob.matchedSkills.isNotEmpty) ...[
+                      MatchedSkillsCard(skills: currentJob.matchedSkills),
                       Gap(14.h),
                     ],
                     Gap(14.h),
-                    if (currentJob
-                        .missingSkills
-                        .isNotEmpty) ...[
-                      SkillsToImproveCard(
-                        skills: currentJob.missingSkills,
-                      ),
+                    if (currentJob.missingSkills.isNotEmpty) ...[
+                      SkillsToImproveCard(skills: currentJob.missingSkills),
                       Gap(14.h),
                     ],
-                    const JobRequirementsCard(),
-                    if (currentJob
-                        .missingSkills
-                        .isNotEmpty) ...[
+                    JobRequirementsCard(job: currentJob),
+                    if (currentJob.missingSkills.isNotEmpty) ...[
                       Gap(14.h),
                       ImproveMatchCard(
                         onBuildRoadmap: () {
-                          // Next step: Chatbot handoff.
+                          context.read<MainNavigationCubit>().openRoadmap();
+                          context.pop();
                         },
                       ),
                     ],

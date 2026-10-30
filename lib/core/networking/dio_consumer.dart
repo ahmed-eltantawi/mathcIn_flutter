@@ -1,4 +1,4 @@
-import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 
 import 'package:MatchIn/core/errors/error_model.dart';
 import 'package:MatchIn/core/errors/exceptions.dart';
@@ -35,15 +35,17 @@ class DioConsumer extends ApiConsumer {
     );
 
     // adding log interceptor
-    dio.interceptors.add(
-      LogInterceptor(
-        request: true,
-        requestBody: true,
-        responseBody: true,
-        requestHeader: false,
-        responseHeader: false,
-      ),
-    );
+    if (kDebugMode) {
+      dio.interceptors.add(
+        LogInterceptor(
+          request: true,
+          requestBody: true,
+          responseBody: true,
+          requestHeader: false,
+          responseHeader: false,
+        ),
+      );
+    }
   }
 
   final Dio dio; // injecting dio
@@ -55,7 +57,7 @@ class DioConsumer extends ApiConsumer {
   // --- fails fast with a recoverable error instead of hitting an
   // --- obsolete backend. Repositories map this to a Failure as usual. ---
   void _requireResolvedBaseUrl() {
-    if (!AppConfigService.isValidBaseUrl(EndPoint.baseUrl)) {
+    if (!AppConfigService.isValidBaseUrl(dio.options.baseUrl)) {
       throw ServerException(
         errorModel: const ErrorModel(
           statusCode: 0,

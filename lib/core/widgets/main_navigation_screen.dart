@@ -11,15 +11,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
-class MainNavigationWidget extends StatelessWidget {
+class MainNavigationWidget extends StatefulWidget {
   const MainNavigationWidget({super.key});
 
+  @override
+  State<MainNavigationWidget> createState() => _MainNavigationWidgetState();
+}
+
+class _MainNavigationWidgetState extends State<MainNavigationWidget> {
+  // Home is the initial tab. Other feature trees (and their network requests)
+  // are mounted only after the user first opens them, then kept alive.
+  final Set<int> _visitedTabs = {2};
+
   static const List<Widget> _pages = [
-    AiChatView(),
-    SavedJobsView(),
-    HomeView(),
-    RoadmapView(),
-    ProfileView(),
+    AiChatView(), SavedJobsView(), HomeView(), RoadmapView(), ProfileView(),
   ];
 
   @override
@@ -30,11 +35,18 @@ class MainNavigationWidget extends StatelessWidget {
 
     return BlocBuilder<MainNavigationCubit, int>(
       builder: (context, currentIndex) {
+        _visitedTabs.add(currentIndex);
         return Scaffold(
           body: Column(
             children: [
               Expanded(
-                child: IndexedStack(index: currentIndex, children: _pages),
+                child: IndexedStack(
+                  index: currentIndex,
+                  children: [
+                    for (var i = 0; i < _pages.length; i++)
+                      if (_visitedTabs.contains(i)) _pages[i] else const SizedBox.shrink(),
+                  ],
+                ),
               ),
               const OfflineIndicatorWidget(),
             ],

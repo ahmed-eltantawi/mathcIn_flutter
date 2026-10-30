@@ -5,6 +5,7 @@ import 'package:MatchIn/features/profile/presentation/cubits/career_cubit/career
 import 'package:MatchIn/features/profile/presentation/widgets/edit_career_preferences_widgets/career_preferences_form.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_career_preferences_widgets/career_preferences_header.dart';
 import 'package:MatchIn/features/profile/presentation/widgets/edit_career_preferences_widgets/career_preferences_intro_card.dart';
+import 'package:MatchIn/features/profile/presentation/widgets/profile_screen_widgets/profile_skeleton.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -61,7 +62,7 @@ class CareerPreferencesViewBody extends StatelessWidget {
           switch (state) {
             case CareerPreferencesInitial():
             case CareerPreferencesLoading():
-              return const Center(child: CircularProgressIndicator());
+              return const ProfileLoadingSkeleton();
             case CareerPreferencesFailure():
               return ListView(
                 padding: EdgeInsetsDirectional.fromSTEB(16.w, 8.h, 16.w, 32.h),

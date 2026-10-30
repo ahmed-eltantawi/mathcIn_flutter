@@ -30,6 +30,7 @@ class EducationForm extends StatefulWidget {
 }
 
 class _EducationFormState extends State<EducationForm> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late final TextEditingController _degreeController;
   late final TextEditingController _fieldController;
   late final TextEditingController _institutionController;
@@ -111,6 +112,7 @@ class _EducationFormState extends State<EducationForm> {
 
   void _handleSave() {
     if (widget.isSaving) return;
+    if (!(_formKey.currentState?.validate() ?? false)) return;
     final locale = S.of(context);
 
     final institution = _institutionController.text.trim();
@@ -214,127 +216,156 @@ class _EducationFormState extends State<EducationForm> {
     final locale = S.of(context);
     final theme = Theme.of(context);
 
-    return Container(
-      padding: EdgeInsets.all(18.r),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(14.r),
-        border: Border.all(color: theme.dividerColor),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            _isEditing ? locale.editEducation : locale.addNewEducation,
-            style: theme.textTheme.titleLarge?.copyWith(
-              color: theme.colorScheme.primary,
-              fontWeight: FontWeight.w700,
+    return Form(
+      key: _formKey,
+      child: Container(
+        padding: EdgeInsets.all(18.r),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surface,
+          borderRadius: BorderRadius.circular(14.r),
+          border: Border.all(color: theme.dividerColor),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              _isEditing ? locale.editEducation : locale.addNewEducation,
+              style: theme.textTheme.titleLarge?.copyWith(
+                color: theme.colorScheme.primary,
+                fontWeight: FontWeight.w700,
+              ),
             ),
-          ),
-          SizedBox(height: 16.h),
-          Divider(color: theme.dividerColor),
-          SizedBox(height: 16.h),
-          EducationFormField(
-            label: locale.degree,
-            controller: _degreeController,
-            hintText: locale.degreeHint,
-          ),
-          SizedBox(height: 18.h),
-          EducationFormField(
-            label: locale.fieldOfStudy,
-            controller: _fieldController,
-            hintText: locale.fieldOfStudyHint,
-          ),
-          SizedBox(height: 18.h),
-          EducationFormField(
-            label: locale.schoolUniversity,
-            controller: _institutionController,
-            hintText: locale.institutionHint,
-          ),
-          SizedBox(height: 18.h),
-          Row(
-            // Bottom-aligned so both date inputs sit at the same
-            // vertical position even when the labels wrap to a
-            // different number of lines.
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Expanded(
-                child: EducationFormField(
-                  label: locale.startYear,
-                  controller: _startController,
-                  hintText: locale.select,
-                  readOnly: true,
-                  onTap: () => _pickDate(
-                    notifier: _startDate,
+            SizedBox(height: 16.h),
+            Divider(color: theme.dividerColor),
+            SizedBox(height: 16.h),
+            EducationFormField(
+              label: locale.degree,
+              controller: _degreeController,
+              hintText: locale.degreeHint,
+              validator: (value) => ProfileFormValidator.requiredValue(
+                value,
+                requiredMessage: locale.required,
+              ),
+            ),
+            SizedBox(height: 18.h),
+            EducationFormField(
+              label: locale.fieldOfStudy,
+              controller: _fieldController,
+              hintText: locale.fieldOfStudyHint,
+              validator: (value) => ProfileFormValidator.requiredValue(
+                value,
+                requiredMessage: locale.required,
+              ),
+            ),
+            SizedBox(height: 18.h),
+            EducationFormField(
+              label: locale.schoolUniversity,
+              controller: _institutionController,
+              hintText: locale.institutionHint,
+              validator: (value) => ProfileFormValidator.requiredValue(
+                value,
+                requiredMessage: locale.required,
+              ),
+            ),
+            SizedBox(height: 18.h),
+            Row(
+              // Bottom-aligned so both date inputs sit at the same
+              // vertical position even when the labels wrap to a
+              // different number of lines.
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: EducationFormField(
+                    label: locale.startYear,
                     controller: _startController,
+                    hintText: locale.select,
+                    readOnly: true,
+                    validator: (value) => ProfileFormValidator.requiredValue(
+                      value,
+                      requiredMessage: locale.required,
+                    ),
+                    onTap: () => _pickDate(
+                      notifier: _startDate,
+                      controller: _startController,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(width: 12.w),
-              Expanded(
-                child: ValueListenableBuilder<bool>(
-                  valueListenable: _isCurrent,
-                  builder: (context, isCurrent, child) {
-                    return Opacity(
-                      opacity: isCurrent ? 0.5 : 1.0,
-                      child: EducationFormField(
-                        label: locale.endYearExpected,
-                        controller: _endController,
-                        hintText: locale.select,
-                        readOnly: true,
-                        onTap: isCurrent
-                            ? null
-                            : () => _pickDate(
-                                notifier: _endDate,
-                                controller: _endController,
-                              ),
-                      ),
-                    );
-                  },
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: ValueListenableBuilder<bool>(
+                    valueListenable: _isCurrent,
+                    builder: (context, isCurrent, child) {
+                      return Opacity(
+                        opacity: isCurrent ? 0.5 : 1.0,
+                        child: EducationFormField(
+                          label: locale.endYearExpected,
+                          controller: _endController,
+                          hintText: locale.select,
+                          readOnly: true,
+                          validator: (value) {
+                            if (isCurrent || value == null || value.isEmpty) {
+                              return null;
+                            }
+                            return ProfileFormValidator.validateDateRange(
+                              start: _startDate.value,
+                              end: _endDate.value,
+                              invalidMessage: locale.invalidDateRange,
+                            );
+                          },
+                          onTap: isCurrent
+                              ? null
+                              : () => _pickDate(
+                                  notifier: _endDate,
+                                  controller: _endController,
+                                ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(height: 8.h),
-          ValueListenableBuilder<bool>(
-            valueListenable: _isCurrent,
-            builder: (context, isCurrent, child) {
-              return Material(
-                type: MaterialType.transparency,
-                child: CheckboxListTile(
-                  value: isCurrent,
-                  contentPadding: EdgeInsets.zero,
-                  controlAffinity: ListTileControlAffinity.leading,
-                  title: Text(locale.currentlyStudyingHere),
-                  onChanged: widget.isSaving
-                      ? null
-                      : (value) {
-                          _isCurrent.value = value ?? false;
+              ],
+            ),
+            SizedBox(height: 8.h),
+            ValueListenableBuilder<bool>(
+              valueListenable: _isCurrent,
+              builder: (context, isCurrent, child) {
+                return Material(
+                  type: MaterialType.transparency,
+                  child: CheckboxListTile(
+                    value: isCurrent,
+                    contentPadding: EdgeInsets.zero,
+                    controlAffinity: ListTileControlAffinity.leading,
+                    title: Text(locale.currentlyStudyingHere),
+                    onChanged: widget.isSaving
+                        ? null
+                        : (value) {
+                            _isCurrent.value = value ?? false;
 
-                          if (_isCurrent.value) {
-                            _endDate.value = null;
-                            _endController.clear();
-                          }
-                        },
-                ),
-              );
-            },
-          ),
-          SizedBox(height: 8.h),
-          EducationFormField(
-            label: locale.gpaOptional,
-            controller: _gradeController,
-            hintText: locale.gpaHint,
-          ),
-          SizedBox(height: 24.h),
-          Divider(color: theme.dividerColor),
-          SizedBox(height: 16.h),
-          EducationFormActions(
-            isSaving: widget.isSaving,
-            onCancel: widget.onCancel,
-            onSave: _handleSave,
-          ),
-        ],
+                            if (_isCurrent.value) {
+                              _endDate.value = null;
+                              _endController.clear();
+                            }
+                          },
+                  ),
+                );
+              },
+            ),
+            SizedBox(height: 8.h),
+            EducationFormField(
+              label: locale.gpaOptional,
+              controller: _gradeController,
+              hintText: locale.gpaHint,
+            ),
+            SizedBox(height: 24.h),
+            Divider(color: theme.dividerColor),
+            SizedBox(height: 16.h),
+            EducationFormActions(
+              isSaving: widget.isSaving,
+              onCancel: widget.onCancel,
+              onSave: _handleSave,
+            ),
+          ],
+        ),
       ),
     );
   }

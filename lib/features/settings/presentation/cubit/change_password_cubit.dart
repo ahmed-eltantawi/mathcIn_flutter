@@ -4,9 +4,38 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChangePasswordCubit extends Cubit<ChangePasswordState> {
   ChangePasswordCubit({required this.changePasswordUseCase})
-      : super(const ChangePasswordInitial());
+    : super(const ChangePasswordInitial());
 
   final ChangePasswordUseCase changePasswordUseCase;
+
+  Future<void> requestOtp() async {
+    emit(const ChangePasswordLoading());
+    final result = await changePasswordUseCase.requestOtp();
+    if (isClosed) return;
+    result.fold(
+      (failure) => emit(ChangePasswordFailure(message: failure.message)),
+      (_) => emit(const ChangePasswordOtpSent()),
+    );
+  }
+
+  Future<void> confirmWithOtp({
+    required String otp,
+    required String newPassword,
+    required String confirmPassword,
+  }) async {
+    emit(const ChangePasswordLoading(otpSent: true));
+    final result = await changePasswordUseCase.confirmWithOtp(
+      otp: otp,
+      newPassword: newPassword,
+      confirmPassword: confirmPassword,
+    );
+    if (isClosed) return;
+    result.fold(
+      (failure) =>
+          emit(ChangePasswordFailure(message: failure.message, otpSent: true)),
+      (_) => emit(const ChangePasswordSuccess()),
+    );
+  }
 
   Future<void> changePassword({
     required String currentPassword,

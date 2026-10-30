@@ -55,9 +55,9 @@ class NotificationRemoteDataSourceImpl implements NotificationRemoteDataSource {
     if (response is Map<String, dynamic>) {
       final data = response[ApiKey.data];
       if (data is Map<String, dynamic>) {
-        return (data[ApiKey.count] as num?)?.toInt() ?? 0;
+        return (data['unread_count'] as num?)?.toInt() ?? 0;
       }
-      return (response[ApiKey.count] as num?)?.toInt() ?? 0;
+      return (response['unread_count'] as num?)?.toInt() ?? 0;
     }
 
     return 0;

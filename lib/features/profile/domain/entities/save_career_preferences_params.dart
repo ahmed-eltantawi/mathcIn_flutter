@@ -51,6 +51,14 @@ class SaveCareerPreferencesParams extends Equatable {
       isSet(targetRoles) ||
       isSet(preferredIndustries);
 
+  /// Only fields represented by the documented API contract are savable.
+  bool get hasApiSupportedChanges =>
+      isSet(targetRole) ||
+      isSet(jobType) ||
+      isSet(workMode) ||
+      isSet(preferredCountry) ||
+      isSet(preferredCity);
+
   SaveCareerPreferencesParams copyWith({
     Object? targetRole = _unset,
     Object? jobType = _unset,

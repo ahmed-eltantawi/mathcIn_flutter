@@ -146,9 +146,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "askChatBot": MessageLookupByLibrary.simpleMessage("Ask Chat Bot"),
     "at": MessageLookupByLibrary.simpleMessage("at"),
-    "avatarUploadUnavailable": MessageLookupByLibrary.simpleMessage(
-      "Avatar upload is not available yet.",
-    ),
     "back": MessageLookupByLibrary.simpleMessage("Back"),
     "backOnline": MessageLookupByLibrary.simpleMessage("Back online"),
     "backToJobs": MessageLookupByLibrary.simpleMessage("Back to Jobs"),
@@ -550,6 +547,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Unsupported image type. Use JPG, PNG, or WEBP.",
     ),
     "invalidJobId": MessageLookupByLibrary.simpleMessage("Invalid job ID."),
+    "invalidProfileUrl": MessageLookupByLibrary.simpleMessage(
+      "Enter a valid link starting with https:// or http://.",
+    ),
     "invalidVerificationCode": MessageLookupByLibrary.simpleMessage(
       "Invalid verification code",
     ),
@@ -685,6 +685,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "noHistoryYet": MessageLookupByLibrary.simpleMessage("No history yet"),
     "noInternetConnection": MessageLookupByLibrary.simpleMessage(
       "No internet connection",
+    ),
+    "noJobRequirementsListed": MessageLookupByLibrary.simpleMessage(
+      "No job requirements were provided.",
     ),
     "noJobsFound": MessageLookupByLibrary.simpleMessage("No jobs found"),
     "noLearningTasks": MessageLookupByLibrary.simpleMessage(
@@ -987,6 +990,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "select": MessageLookupByLibrary.simpleMessage("Select"),
     "selectLanguage": MessageLookupByLibrary.simpleMessage("Select Language"),
     "selectRoadmap": MessageLookupByLibrary.simpleMessage("Select Roadmap"),
+    "selectSkillSuggestion": MessageLookupByLibrary.simpleMessage(
+      "Choose a skill from the suggestions before adding it.",
+    ),
     "selectTheme": MessageLookupByLibrary.simpleMessage("Select Theme"),
     "sendMessage": MessageLookupByLibrary.simpleMessage("Send message"),
     "sendVerificationCode": MessageLookupByLibrary.simpleMessage(
@@ -1141,6 +1147,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "twoDaysAgo": MessageLookupByLibrary.simpleMessage("2 days ago"),
     "twoHoursAgo": MessageLookupByLibrary.simpleMessage("2 hrs ago"),
+    "unsupportedProfileFieldsNotSaved": MessageLookupByLibrary.simpleMessage(
+      "Some profile, project, experience, and career preference fields aren\'t supported by the current API, so those changes weren\'t saved.",
+    ),
     "updateStatus": MessageLookupByLibrary.simpleMessage("Update Status"),
     "updatedFiveDaysAgo": MessageLookupByLibrary.simpleMessage(
       "Updated 5 days ago",

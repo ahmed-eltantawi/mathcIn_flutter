@@ -433,6 +433,7 @@
 
   "addNewSkill": "Add New Skill",
   "addSkillHint": "Add a skill (e.g. Docker, GraphQL)",
+  "selectSkillSuggestion": "Choose a skill from the suggestions before adding it.",
   "add": "Add",
   "suggestions": "Suggestions",
   "cvSkillsDescription": "Extracted automatically from your uploaded resume.",
@@ -510,7 +511,6 @@
 "chooseFromGallery": "Choose from Gallery",
 "previewPhoto": "Preview Photo",
 "chooseAnother": "Choose Another",
-"avatarUploadUnavailable": "Avatar upload is not available yet.",
 "invalidImageType": "Unsupported image type. Use JPG, PNG, or WEBP.",
 "imageTooLarge": "Image is too large. Maximum size is 5 MB.",
 "saveChanges": "Save Changes",
@@ -566,6 +566,7 @@
 "completeProfilePrompt": "Complete your profile to start adding your education, experience, skills, and more.",
 "createProfile": "Create Profile",
 "userFieldsNotSavedYet": "Name and phone number can't be saved yet and were not sent to the server.",
+  "unsupportedProfileFieldsNotSaved": "Some profile, project, experience, and career preference fields aren't supported by the current API, so those changes weren't saved.",
 "recruiterVisibility": "Recruiter Visibility",
 "recruiterVisibilityDescription": "Candidates with fully detailed academic credentials receive more recruiter visibility on SkillMatch.",
 "currentRecords": "Current Records",
@@ -630,5 +631,7 @@
   "careerMentor": "AI Career Mentor",
   "contextPreview": "Candidate Context",
   "archived": "Archived",
-  "careerGroundingContext": "Grounded on your verified skills, experience, and target roles."
+  "careerGroundingContext": "Grounded on your verified skills, experience, and target roles.",
+  "noJobRequirementsListed": "No job requirements were provided.",
+  "invalidProfileUrl": "Enter a valid link starting with https:// or http://."
 }

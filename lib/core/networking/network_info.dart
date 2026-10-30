@@ -7,29 +7,72 @@ abstract class NetworkInfo {
 }
 
 ///* implementation of NetworkInfo
-///* Checks connectivity by trying to resolve multiple well-known hosts.
-///* Using a fallback list avoids relying on a single host (e.g. google.com
-///* may be blocked in some regions). Each attempt has a 5-second timeout.
+///* Checks several public DNS hosts concurrently and shares the result briefly
+///* so repositories do not serialize multiple long DNS lookups.
 class NetworkInfoImpl implements NetworkInfo {
+  NetworkInfoImpl({
+    this.lookupTimeout = const Duration(milliseconds: 1800),
+    this.cacheDuration = const Duration(seconds: 3),
+  });
+
+  final Duration lookupTimeout;
+  final Duration cacheDuration;
+
+  bool? _cachedResult;
+  DateTime? _cachedAt;
+  Future<bool>? _inFlight;
+
   @override
-  Future<bool> get isConnected async {
+  Future<bool> get isConnected {
+    final cachedAt = _cachedAt;
+    final cachedResult = _cachedResult;
+    if (cachedAt != null &&
+        cachedResult != null &&
+        DateTime.now().difference(cachedAt) < cacheDuration) {
+      return Future.value(cachedResult);
+    }
+    final activeCheck = _inFlight;
+    if (activeCheck != null) return activeCheck;
+
+    final check = _probe();
+    _inFlight = check;
+    return check.whenComplete(() {
+      if (identical(_inFlight, check)) _inFlight = null;
+    });
+  }
+
+  Future<bool> _probe() async {
     const hosts = ['google.com', 'cloudflare.com', 'apple.com'];
+    final completer = Completer<bool>();
+    var remaining = hosts.length;
 
     for (final host in hosts) {
-      try {
-        final result = await InternetAddress.lookup(host)
-            .timeout(const Duration(seconds: 5));
-
-        if (result.isNotEmpty && result.first.rawAddress.isNotEmpty) {
-          return true;
+      InternetAddress.lookup(host).timeout(lookupTimeout).then((result) {
+        if (result.isNotEmpty && result.first.rawAddress.isNotEmpty &&
+            !completer.isCompleted) {
+          completer.complete(true);
         }
-      } on SocketException {
-        continue;
-      } on TimeoutException {
-        continue;
-      }
+      }).catchError((Object _) {}).whenComplete(() {
+        remaining--;
+        if (remaining == 0 && !completer.isCompleted) {
+          completer.complete(false);
+        }
+      });
     }
 
-    return false;
+    bool connected;
+    try {
+      connected = await completer.future.timeout(
+        lookupTimeout,
+        onTimeout: () => false,
+      );
+    } on SocketException {
+      connected = false;
+    } on TimeoutException {
+      connected = false;
+    }
+    _cachedResult = connected;
+    _cachedAt = DateTime.now();
+    return connected;
   }
 }

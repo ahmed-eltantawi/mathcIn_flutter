@@ -14,6 +14,7 @@ class ProfileOverviewCard extends StatelessWidget {
     required this.jobTitle,
     required this.location,
     required this.summary,
+    required this.missingFields,
     this.avatarUrl,
     this.githubUrl,
     this.linkedinUrl,
@@ -24,6 +25,7 @@ class ProfileOverviewCard extends StatelessWidget {
   final String jobTitle;
   final String location;
   final String summary;
+  final List<String> missingFields;
 
   final String? avatarUrl;
   final String? githubUrl;
@@ -83,8 +85,7 @@ class ProfileOverviewCard extends StatelessWidget {
 
           SizedBox(height: 14.h),
 
-          // UI only until backend provides completion data.
-          const ProfileOverviewCompletionStatus(),
+          ProfileOverviewCompletionStatus(missingFields: missingFields),
         ],
       ),
     );

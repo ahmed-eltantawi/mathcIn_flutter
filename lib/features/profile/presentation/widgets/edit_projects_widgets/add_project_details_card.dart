@@ -24,6 +24,12 @@ class AddProjectDetailsCard extends StatelessWidget {
     this.isSaving = false,
     this.onStartDateTap,
     this.onEndDateTap,
+    required this.nameFieldKey,
+    required this.projectUrlFieldKey,
+    required this.githubUrlFieldKey,
+    required this.nameValidator,
+    required this.projectUrlValidator,
+    required this.githubUrlValidator,
     super.key,
   });
 
@@ -46,6 +52,12 @@ class AddProjectDetailsCard extends StatelessWidget {
   final bool isSaving;
   final VoidCallback? onStartDateTap;
   final VoidCallback? onEndDateTap;
+  final GlobalKey<FormFieldState<String>> nameFieldKey;
+  final GlobalKey<FormFieldState<String>> projectUrlFieldKey;
+  final GlobalKey<FormFieldState<String>> githubUrlFieldKey;
+  final FormFieldValidator<String> nameValidator;
+  final FormFieldValidator<String> projectUrlValidator;
+  final FormFieldValidator<String> githubUrlValidator;
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +114,8 @@ class AddProjectDetailsCard extends StatelessWidget {
             label: locale.projectName,
             hint: locale.projectNameHint,
             controller: nameController,
+            fieldKey: nameFieldKey,
+            validator: nameValidator,
           ),
 
           SizedBox(height: 16.h),
@@ -140,6 +154,8 @@ class AddProjectDetailsCard extends StatelessWidget {
             controller: projectUrlController,
             prefixIcon: Icons.link_rounded,
             keyboardType: TextInputType.url,
+            fieldKey: projectUrlFieldKey,
+            validator: projectUrlValidator,
           ),
 
           SizedBox(height: 16.h),
@@ -151,6 +167,8 @@ class AddProjectDetailsCard extends StatelessWidget {
             controller: githubUrlController,
             prefixIcon: Icons.code_rounded,
             keyboardType: TextInputType.url,
+            fieldKey: githubUrlFieldKey,
+            validator: githubUrlValidator,
           ),
 
           SizedBox(height: 16.h),

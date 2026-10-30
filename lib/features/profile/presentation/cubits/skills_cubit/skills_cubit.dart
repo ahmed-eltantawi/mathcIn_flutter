@@ -53,12 +53,20 @@ class SkillsCubit extends Cubit<SkillsState> {
 
   /// Returns true when the skill was added. The UI clears its input
   /// only on true, preserving entered text after failures.
-  Future<bool> addSkill({required String name}) async {
+  Future<bool> addSkill({
+    int skillId = 0,
+    required String name,
+    String proficiencyLevel = 'intermediate',
+  }) async {
     if (_addInFlight) return false;
     _addInFlight = true;
 
     final result = await addCandidateSkillUseCase(
-      AddCandidateSkillParams(name: name),
+      AddCandidateSkillParams(
+        skillId: skillId,
+        name: name,
+        proficiencyLevel: proficiencyLevel,
+      ),
     );
     if (isClosed) return false;
     _addInFlight = false;
@@ -140,6 +148,9 @@ class SkillsCubit extends Cubit<SkillsState> {
   }
 
   void clearSearch() {
+    // Invalidate any request already in flight so old suggestions cannot
+    // reappear after the user clears the search field.
+    _searchSequence++;
     emit(SkillsSearchCleared(skills: List.unmodifiable(_skills)));
   }
 }
