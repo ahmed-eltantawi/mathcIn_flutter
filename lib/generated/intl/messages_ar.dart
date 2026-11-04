@@ -542,6 +542,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "invalidProfileUrl": MessageLookupByLibrary.simpleMessage(
       "أدخل رابطًا صحيحًا يبدأ بـ https:// أو http://.",
     ),
+    "supportTitle": MessageLookupByLibrary.simpleMessage("هل واجهت مشكلة؟"),
+    "supportMessage": MessageLookupByLibrary.simpleMessage(
+      "في حالة وجود أخطاء، برجاء التواصل معنا:",
+    ),
+    "supportLinkedIn": MessageLookupByLibrary.simpleMessage(
+      "تواصل معنا عبر LinkedIn",
+    ),
+    "supportClose": MessageLookupByLibrary.simpleMessage("إغلاق نافذة الدعم"),
     "invalidVerificationCode": MessageLookupByLibrary.simpleMessage(
       "رمز التحقق غير صحيح",
     ),

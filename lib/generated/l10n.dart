@@ -5241,6 +5241,38 @@ class S {
       args: [],
     );
   }
+
+  /// `Need help?`
+  String get supportTitle => Intl.message(
+    'Need help?',
+    name: 'supportTitle',
+    desc: '',
+    args: [],
+  );
+
+  /// `If you encounter an issue, please contact us:`
+  String get supportMessage => Intl.message(
+    'If you encounter an issue, please contact us:',
+    name: 'supportMessage',
+    desc: '',
+    args: [],
+  );
+
+  /// `Contact us on LinkedIn`
+  String get supportLinkedIn => Intl.message(
+    'Contact us on LinkedIn',
+    name: 'supportLinkedIn',
+    desc: '',
+    args: [],
+  );
+
+  /// `Close support panel`
+  String get supportClose => Intl.message(
+    'Close support panel',
+    name: 'supportClose',
+    desc: '',
+    args: [],
+  );
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

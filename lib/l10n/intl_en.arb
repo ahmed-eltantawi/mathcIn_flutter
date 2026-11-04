@@ -633,5 +633,9 @@
   "archived": "Archived",
   "careerGroundingContext": "Grounded on your verified skills, experience, and target roles.",
   "noJobRequirementsListed": "No job requirements were provided.",
-  "invalidProfileUrl": "Enter a valid link starting with https:// or http://."
+  "invalidProfileUrl": "Enter a valid link starting with https:// or http://.",
+  "supportTitle": "Need help?",
+  "supportMessage": "If you encounter an issue, please contact us:",
+  "supportLinkedIn": "Contact us on LinkedIn",
+  "supportClose": "Close support panel"
 }

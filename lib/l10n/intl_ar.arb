@@ -634,7 +634,11 @@
   "archived": "مؤرشفة",
   "careerGroundingContext": "مبني على مهاراتك الموثقة، خبراتك، وأدوارك المستهدفة.",
   "noJobRequirementsListed": "لم يتم توفير متطلبات لهذه الوظيفة.",
-  "invalidProfileUrl": "أدخل رابطًا صحيحًا يبدأ بـ https:// أو http://."
+  "invalidProfileUrl": "أدخل رابطًا صحيحًا يبدأ بـ https:// أو http://.",
+  "supportTitle": "هل واجهت مشكلة؟",
+  "supportMessage": "في حالة وجود أخطاء، برجاء التواصل معنا:",
+  "supportLinkedIn": "تواصل معنا عبر LinkedIn",
+  "supportClose": "إغلاق نافذة الدعم"
 }
 
 

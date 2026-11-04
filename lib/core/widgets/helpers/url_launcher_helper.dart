@@ -30,6 +30,21 @@ class UrlLauncherHelper {
     }
   }
 
+  /// Opens a new email addressed to [address] in the device's email app.
+  static Future<bool> openEmail(String? address) async {
+    final trimmed = address?.trim() ?? '';
+    if (trimmed.isEmpty) return false;
+
+    try {
+      return await launchUrl(
+        Uri(scheme: 'mailto', path: trimmed),
+        mode: LaunchMode.externalApplication,
+      );
+    } catch (_) {
+      return false;
+    }
+  }
+
   /// Opens a local file through a platform-compatible mechanism.
   ///
   /// Only non-empty paths are attempted. Returns false (never throws)

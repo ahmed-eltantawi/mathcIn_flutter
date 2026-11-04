@@ -550,6 +550,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "invalidProfileUrl": MessageLookupByLibrary.simpleMessage(
       "Enter a valid link starting with https:// or http://.",
     ),
+    "supportTitle": MessageLookupByLibrary.simpleMessage("Need help?"),
+    "supportMessage": MessageLookupByLibrary.simpleMessage(
+      "If you encounter an issue, please contact us:",
+    ),
+    "supportLinkedIn": MessageLookupByLibrary.simpleMessage(
+      "Contact us on LinkedIn",
+    ),
+    "supportClose": MessageLookupByLibrary.simpleMessage("Close support panel"),
     "invalidVerificationCode": MessageLookupByLibrary.simpleMessage(
       "Invalid verification code",
     ),
