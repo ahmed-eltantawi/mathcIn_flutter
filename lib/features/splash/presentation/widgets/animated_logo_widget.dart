@@ -1,9 +1,10 @@
-import 'package:MatchIn/features/splash/presentation/widgets/logo_painter.dart';
-import 'package:MatchIn/core/utils/app_colors.dart';
-import 'package:MatchIn/core/utils/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'package:MatchIn/core/utils/app_assets.dart';
+import 'package:MatchIn/core/utils/app_colors.dart';
+import 'package:MatchIn/core/utils/app_constants.dart';
 import 'package:MatchIn/core/utils/app_text_styles.dart';
 
 class AnimatedLogoWidget extends StatefulWidget {
@@ -18,9 +19,10 @@ class AnimatedLogoWidget extends StatefulWidget {
 class _AnimatedLogoWidgetState extends State<AnimatedLogoWidget>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
-  late final Animation<double> _logoAnimation;
-  late final Animation<double> _fadeAnimation;
-  late final Animation<double> _lineAnimation;
+  late final Animation<double> _logoOpacity;
+  late final Animation<double> _logoScale;
+  late final Animation<double> _textOpacity;
+  late final Animation<double> _lineProgress;
 
   @override
   void initState() {
@@ -29,27 +31,30 @@ class _AnimatedLogoWidgetState extends State<AnimatedLogoWidget>
 
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 2500),
+      duration: const Duration(milliseconds: 1800),
     );
 
-    _logoAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+    _logoOpacity = CurvedAnimation(
+      parent: _controller,
+      curve: const Interval(0.0, 0.7, curve: Curves.easeOut),
+    );
+
+    _logoScale = Tween<double>(begin: 0.86, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.0, 0.6, curve: Curves.easeInOut),
+        curve: const Interval(0.0, 0.75, curve: Curves.easeOutCubic),
       ),
     );
 
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: const Interval(0.6, 0.8, curve: Curves.easeIn),
-      ),
+    _textOpacity = CurvedAnimation(
+      parent: _controller,
+      curve: const Interval(0.3, 0.75, curve: Curves.easeIn),
     );
 
-    _lineAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+    _lineProgress = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.8, 1.0, curve: Curves.easeInOut),
+        curve: const Interval(0.45, 1.0, curve: Curves.easeInOut),
       ),
     );
 
@@ -80,19 +85,22 @@ class _AnimatedLogoWidgetState extends State<AnimatedLogoWidget>
           SizedBox(
             width: 150.w,
             height: 150.w,
-            child: AnimatedBuilder(
-              animation: _logoAnimation,
-              builder: (context, child) {
-                return CustomPaint(
-                  size: Size(150.w, 150.w),
-                  painter: LogoPainter(progress: _logoAnimation.value),
-                );
-              },
+            child: FadeTransition(
+              opacity: _logoOpacity,
+              child: ScaleTransition(
+                scale: _logoScale,
+                child: Image.asset(
+                  Assets.appIcon,
+                  width: 150.w,
+                  height: 150.w,
+                  fit: BoxFit.contain,
+                ),
+              ),
             ),
           ),
           SizedBox(height: 16.h),
           FadeTransition(
-            opacity: _fadeAnimation,
+            opacity: _textOpacity,
             child: Text(
               AppConstants.appName,
               style: AppTextStyles.semiBold20.copyWith(
@@ -102,19 +110,20 @@ class _AnimatedLogoWidgetState extends State<AnimatedLogoWidget>
           ),
           SizedBox(height: 12.h),
           AnimatedBuilder(
-            animation: _lineAnimation,
+            animation: _lineProgress,
             builder: (context, child) {
               return SizedBox(
                 width: 120.w,
                 height: 4.h,
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    width: 120.w * _lineAnimation.value,
+                child: Center(
+                  child: SizedBox(
+                    width: 120.w * _lineProgress.value,
                     height: 4.h,
-                    decoration: BoxDecoration(
-                      color: AppColors.secondary,
-                      borderRadius: BorderRadius.circular(2.r),
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: AppColors.secondary,
+                        borderRadius: BorderRadius.circular(2.r),
+                      ),
                     ),
                   ),
                 ),

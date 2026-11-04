@@ -2,6 +2,8 @@ abstract final class AppConstants {
   AppConstants._();
 
   static const String appName = 'MatchIn';
+  static const String appVersion = '1.0.1';
+  static const String appBuildNumber = '2';
 
   // =========================================================
   // Font Families
@@ -45,12 +47,8 @@ abstract final class AppConstants {
   // Animation
   // =========================================================
 
-  static const Duration shortAnimation = Duration(
-    milliseconds: 200,
-  );
-  static const Duration mediumAnimation = Duration(
-    milliseconds: 300,
-  );
+  static const Duration shortAnimation = Duration(milliseconds: 200);
+  static const Duration mediumAnimation = Duration(milliseconds: 300);
 
   // =========================================================
   // Pagination
@@ -64,11 +62,8 @@ abstract final class AppConstants {
 
   static const String defaultAvatarUrl =
       'https://i.pinimg.com/736x/bd/42/8e/bd428e6bb156d90045700dbf3e967c3e.jpg';
-  static const String noInternetConnection =
-      'No Internet Connection';
+  static const String noInternetConnection = 'No Internet Connection';
 
   // TODO: change the app language from here
   static const String languageCode = 'en';
-
-
 }

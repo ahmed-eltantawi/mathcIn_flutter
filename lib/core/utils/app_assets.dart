@@ -5,6 +5,9 @@ class Assets {
   /// Assets for App Icon
   /// assets/images/app_icon.png
   static const String appIcon = "assets/images/app_icon.png";
+  static const String matchinSplashLogo =
+      "assets/images/matchin_splash_logo.svg";
+  static const String linkedinLogo = "assets/icons/linkedin.svg";
 
   /// Assets for lottieBooks1Lottie
   /// assets/lottie/books_1.lottie.json

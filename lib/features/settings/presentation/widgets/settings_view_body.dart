@@ -40,7 +40,8 @@ class SettingsViewBody extends StatelessWidget {
       listener: (context, state) {
         if (state.isLoggedOut) {
           context.go(AppRoutes.kLoginView);
-        } else if (state.errorMessage != null && state.errorMessage!.isNotEmpty) {
+        } else if (state.errorMessage != null &&
+            state.errorMessage!.isNotEmpty) {
           context.showErrorSnackBar(state.errorMessage!);
         }
       },
@@ -51,18 +52,12 @@ class SettingsViewBody extends StatelessWidget {
           children: [
             const SettingsHeader(),
 
-            Divider(
-              height: 1,
-              color: colors.outline.withValues(alpha: 0.12),
-            ),
+            Divider(height: 1, color: colors.outline.withValues(alpha: 0.12)),
 
             Expanded(
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(
-                  horizontal: 16.w,
-                  vertical: 20.h,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
                 child: Column(
                   children: [
                     SettingsSection(
@@ -115,7 +110,10 @@ class SettingsViewBody extends StatelessWidget {
                         SettingsTile(
                           icon: Icons.palette_outlined,
                           title: l10n.theme,
-                          trailingText: _getThemeLabel(context, state.themeMode),
+                          trailingText: _getThemeLabel(
+                            context,
+                            state.themeMode,
+                          ),
                           onTap: () {
                             context.showAppBottomSheet(
                               title: l10n.selectTheme,
@@ -157,6 +155,13 @@ class SettingsViewBody extends StatelessWidget {
                             context.push(AppRoutes.kFollowUsView);
                           },
                         ),
+                        SettingsTile(
+                          icon: Icons.groups_outlined,
+                          title: l10n.teamCredits,
+                          onTap: () {
+                            context.push(AppRoutes.kTeamCreditsView);
+                          },
+                        ),
                       ],
                     ),
 
@@ -165,7 +170,9 @@ class SettingsViewBody extends StatelessWidget {
                     Card(
                       margin: EdgeInsets.zero,
                       elevation: 0,
-                      color: colors.surfaceContainerHighest.withValues(alpha: 0.35),
+                      color: colors.surfaceContainerHighest.withValues(
+                        alpha: 0.35,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16.r),
                         side: BorderSide(
@@ -193,8 +200,8 @@ class SettingsViewBody extends StatelessWidget {
                                   context: context,
                                   builder: (dialogContext) =>
                                       LogoutConfirmationDialog(
-                                    onConfirm: () => cubit.logout(),
-                                  ),
+                                        onConfirm: () => cubit.logout(),
+                                      ),
                                 );
                               },
                       ),

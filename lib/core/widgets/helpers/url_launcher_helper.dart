@@ -31,18 +31,39 @@ class UrlLauncherHelper {
   }
 
   /// Opens a new email addressed to [address] in the device's email app.
-  static Future<bool> openEmail(String? address) async {
+  static Future<bool> openEmail(
+    String? address, {
+    String? subject,
+    String? body,
+  }) async {
     final trimmed = address?.trim() ?? '';
     if (trimmed.isEmpty) return false;
 
     try {
+      final queryParameters = <String, String>{
+        if (subject != null && subject.isNotEmpty) 'subject': subject,
+        if (body != null && body.isNotEmpty) 'body': body,
+      };
+      final query = queryParameters.entries
+          .map((entry) => '${entry.key}=${Uri.encodeComponent(entry.value)}')
+          .join('&');
+      final emailUri = Uri.parse(
+        'mailto:$trimmed${query.isEmpty ? '' : '?$query'}',
+      );
       return await launchUrl(
-        Uri(scheme: 'mailto', path: trimmed),
+        emailUri,
         mode: LaunchMode.externalApplication,
       );
     } catch (_) {
       return false;
     }
+  }
+
+  /// Opens a WhatsApp conversation with [phoneNumber].
+  static Future<bool> openWhatsApp(String? phoneNumber) async {
+    final digits = phoneNumber?.replaceAll(RegExp(r'\D'), '') ?? '';
+    if (digits.isEmpty) return false;
+    return open(Uri.https('wa.me', '/$digits').toString());
   }
 
   /// Opens a local file through a platform-compatible mechanism.

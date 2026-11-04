@@ -34,6 +34,7 @@ import 'package:MatchIn/features/settings/presentation/views/settings_view.dart'
 import 'package:MatchIn/features/settings/presentation/views/change_password_view.dart';
 import 'package:MatchIn/features/settings/presentation/views/contact_us_view.dart';
 import 'package:MatchIn/features/settings/presentation/views/follow_us_view.dart';
+import 'package:MatchIn/features/settings/presentation/views/team_credits_view.dart';
 import 'package:MatchIn/features/settings/presentation/views/privacy_policy_view.dart';
 import 'package:MatchIn/features/onboarding/presentation/pages/onboarding_view.dart';
 import 'package:flutter/material.dart';
@@ -281,6 +282,17 @@ abstract final class AppRouter {
         },
       ),
 
+      // Team Credits
+      GoRoute(
+        path: AppRoutes.kTeamCreditsView,
+        pageBuilder: (context, state) {
+          return _buildTransitionPage(
+            state: state,
+            child: const TeamCreditsView(),
+          );
+        },
+      ),
+
       // Register
       GoRoute(
         path: AppRoutes.kRegisterView,
@@ -317,8 +329,8 @@ abstract final class AppRouter {
           final email = extra is Map<String, dynamic>
               ? extra['email'] as String?
               : extra is String
-                  ? extra
-                  : null;
+              ? extra
+              : null;
           return _buildTransitionPage(
             state: state,
             child: BlocProvider(

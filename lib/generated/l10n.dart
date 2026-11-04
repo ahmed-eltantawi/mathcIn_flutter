@@ -1260,61 +1260,11 @@ class S {
     );
   }
 
-  /// `Office Location`
-  String get contactAddressTitle {
+  /// `WhatsApp`
+  String get contactWhatsAppTitle {
     return Intl.message(
-      'Office Location',
-      name: 'contactAddressTitle',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Support Hours`
-  String get contactHoursTitle {
-    return Intl.message(
-      'Support Hours',
-      name: 'contactHoursTitle',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `support@skillmatch.com`
-  String get contactEmailPlaceholder {
-    return Intl.message(
-      'support@skillmatch.com',
-      name: 'contactEmailPlaceholder',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `+1 (555) 019-2834`
-  String get contactPhonePlaceholder {
-    return Intl.message(
-      '+1 (555) 019-2834',
-      name: 'contactPhonePlaceholder',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `100 Innovation Boulevard, Tech Park, Suite 400`
-  String get contactAddressPlaceholder {
-    return Intl.message(
-      '100 Innovation Boulevard, Tech Park, Suite 400',
-      name: 'contactAddressPlaceholder',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Monday - Friday, 9:00 AM - 6:00 PM`
-  String get contactHoursPlaceholder {
-    return Intl.message(
-      'Monday - Friday, 9:00 AM - 6:00 PM',
-      name: 'contactHoursPlaceholder',
+      'WhatsApp',
+      name: 'contactWhatsAppTitle',
       desc: '',
       args: [],
     );
@@ -5242,37 +5192,195 @@ class S {
     );
   }
 
-  /// `Need help?`
-  String get supportTitle => Intl.message(
-    'Need help?',
-    name: 'supportTitle',
-    desc: '',
-    args: [],
-  );
-
   /// `If you encounter an issue, please contact us:`
-  String get supportMessage => Intl.message(
-    'If you encounter an issue, please contact us:',
-    name: 'supportMessage',
-    desc: '',
-    args: [],
-  );
+  String get supportMessage {
+    return Intl.message(
+      'If you encounter an issue, please contact us:',
+      name: 'supportMessage',
+      desc: '',
+      args: [],
+    );
+  }
 
-  /// `Contact us on LinkedIn`
-  String get supportLinkedIn => Intl.message(
-    'Contact us on LinkedIn',
-    name: 'supportLinkedIn',
-    desc: '',
-    args: [],
-  );
+  /// `Report an issue`
+  String get reportIssueTitle {
+    return Intl.message(
+      'Report an issue',
+      name: 'reportIssueTitle',
+      desc: '',
+      args: [],
+    );
+  }
 
-  /// `Close support panel`
-  String get supportClose => Intl.message(
-    'Close support panel',
-    name: 'supportClose',
-    desc: '',
-    args: [],
-  );
+  /// `Describe the problem you encountered`
+  String get reportIssueDescriptionHint {
+    return Intl.message(
+      'Describe the problem you encountered',
+      name: 'reportIssueDescriptionHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please describe the problem first.`
+  String get reportIssueDescriptionRequired {
+    return Intl.message(
+      'Please describe the problem first.',
+      name: 'reportIssueDescriptionRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send report by email`
+  String get reportIssueEmailButton {
+    return Intl.message(
+      'Send report by email',
+      name: 'reportIssueEmailButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `MatchIn error report`
+  String get reportIssueEmailSubject {
+    return Intl.message(
+      'MatchIn error report',
+      name: 'reportIssueEmailSubject',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Problem description`
+  String get reportIssueDescriptionLabel {
+    return Intl.message(
+      'Problem description',
+      name: 'reportIssueDescriptionLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `App version`
+  String get reportIssueAppVersionLabel {
+    return Intl.message(
+      'App version',
+      name: 'reportIssueAppVersionLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Device / OS version`
+  String get reportIssuePlatformVersionLabel {
+    return Intl.message(
+      'Device / OS version',
+      name: 'reportIssuePlatformVersionLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Could not open an email app on this device.`
+  String get reportIssueEmailLaunchFailed {
+    return Intl.message(
+      'Could not open an email app on this device.',
+      name: 'reportIssueEmailLaunchFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `LinkedIn`
+  String get contactLinkedInTitle {
+    return Intl.message(
+      'LinkedIn',
+      name: 'contactLinkedInTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Could not open this contact method.`
+  String get contactLaunchFailed {
+    return Intl.message(
+      'Could not open this contact method.',
+      name: 'contactLaunchFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Team`
+  String get teamCredits {
+    return Intl.message('Team', name: 'teamCredits', desc: '', args: []);
+  }
+
+  /// `Team members`
+  String get teamMembers {
+    return Intl.message(
+      'Team members',
+      name: 'teamMembers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Supervisors`
+  String get supervisors {
+    return Intl.message('Supervisors', name: 'supervisors', desc: '', args: []);
+  }
+
+  /// `The people behind MatchIn`
+  String get teamIntroTitle {
+    return Intl.message(
+      'The people behind MatchIn',
+      name: 'teamIntroTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Meet the team members and supervisors behind the project.`
+  String get teamIntroSubtitle {
+    return Intl.message(
+      'Meet the team members and supervisors behind the project.',
+      name: 'teamIntroSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `With appreciation for their guidance and support.`
+  String get supervisorsSubtitle {
+    return Intl.message(
+      'With appreciation for their guidance and support.',
+      name: 'supervisorsSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open LinkedIn profile`
+  String get openLinkedInProfile {
+    return Intl.message(
+      'Open LinkedIn profile',
+      name: 'openLinkedInProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open Facebook profile`
+  String get openFacebookProfile {
+    return Intl.message(
+      'Open Facebook profile',
+      name: 'openFacebookProfile',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

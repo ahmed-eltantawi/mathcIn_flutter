@@ -250,25 +250,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "connectionSlowRetrying": MessageLookupByLibrary.simpleMessage(
       "الاتصال بطيء. جارٍ إعادة المحاولة...",
     ),
-    "contactAddressPlaceholder": MessageLookupByLibrary.simpleMessage(
-      "١٠٠ جادة الابتكار، مجمع التكنولوجيا، جناح ٤٠٠",
-    ),
-    "contactAddressTitle": MessageLookupByLibrary.simpleMessage("مقر المكتب"),
-    "contactEmailPlaceholder": MessageLookupByLibrary.simpleMessage(
-      "support@skillmatch.com",
-    ),
     "contactEmailTitle": MessageLookupByLibrary.simpleMessage(
       "الدعم عبر البريد الإلكتروني",
     ),
-    "contactHoursPlaceholder": MessageLookupByLibrary.simpleMessage(
-      "الاثنين - الجمعة، ٩:٠٠ ص - ٦:٠٠ م",
+    "contactLaunchFailed": MessageLookupByLibrary.simpleMessage(
+      "تعذر فتح وسيلة التواصل هذه.",
     ),
-    "contactHoursTitle": MessageLookupByLibrary.simpleMessage("ساعات العمل"),
-    "contactPhonePlaceholder": MessageLookupByLibrary.simpleMessage(
-      "+1 (555) 019-2834",
-    ),
+    "contactLinkedInTitle": MessageLookupByLibrary.simpleMessage("LinkedIn"),
     "contactPhoneTitle": MessageLookupByLibrary.simpleMessage("رقم الهاتف"),
     "contactUs": MessageLookupByLibrary.simpleMessage("تواصل معنا"),
+    "contactWhatsAppTitle": MessageLookupByLibrary.simpleMessage("واتساب"),
     "contextPreview": MessageLookupByLibrary.simpleMessage("سياق المرشح"),
     "continueAsGuest": MessageLookupByLibrary.simpleMessage("الدخول كضيف"),
     "continueText": MessageLookupByLibrary.simpleMessage("متابعة"),
@@ -542,14 +533,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "invalidProfileUrl": MessageLookupByLibrary.simpleMessage(
       "أدخل رابطًا صحيحًا يبدأ بـ https:// أو http://.",
     ),
-    "supportTitle": MessageLookupByLibrary.simpleMessage("هل واجهت مشكلة؟"),
-    "supportMessage": MessageLookupByLibrary.simpleMessage(
-      "في حالة وجود أخطاء، برجاء التواصل معنا:",
-    ),
-    "supportLinkedIn": MessageLookupByLibrary.simpleMessage(
-      "تواصل معنا عبر LinkedIn",
-    ),
-    "supportClose": MessageLookupByLibrary.simpleMessage("إغلاق نافذة الدعم"),
     "invalidVerificationCode": MessageLookupByLibrary.simpleMessage(
       "رمز التحقق غير صحيح",
     ),
@@ -741,6 +724,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "onlyOnTrustedDevices": MessageLookupByLibrary.simpleMessage(
       "على الأجهزة الموثوقة فقط",
     ),
+    "openFacebookProfile": MessageLookupByLibrary.simpleMessage(
+      "فتح حساب Facebook",
+    ),
+    "openLinkedInProfile": MessageLookupByLibrary.simpleMessage(
+      "فتح حساب LinkedIn",
+    ),
     "openMenu": MessageLookupByLibrary.simpleMessage("فتح القائمة"),
     "openToOpportunitiesAnywhere": MessageLookupByLibrary.simpleMessage(
       "مستعد لفرص في أي مكان",
@@ -883,6 +872,33 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "remote": MessageLookupByLibrary.simpleMessage("عن بُعد"),
     "replaceCv": MessageLookupByLibrary.simpleMessage("استبدال السيرة الذاتية"),
+    "reportIssueAppVersionLabel": MessageLookupByLibrary.simpleMessage(
+      "إصدار التطبيق",
+    ),
+    "reportIssueDescriptionHint": MessageLookupByLibrary.simpleMessage(
+      "اكتب وصف المشكلة التي واجهتك",
+    ),
+    "reportIssueDescriptionLabel": MessageLookupByLibrary.simpleMessage(
+      "وصف المشكلة",
+    ),
+    "reportIssueDescriptionRequired": MessageLookupByLibrary.simpleMessage(
+      "يرجى وصف المشكلة أولاً.",
+    ),
+    "reportIssueEmailButton": MessageLookupByLibrary.simpleMessage(
+      "إرسال البلاغ عبر البريد",
+    ),
+    "reportIssueEmailLaunchFailed": MessageLookupByLibrary.simpleMessage(
+      "تعذر فتح تطبيق بريد على هذا الجهاز.",
+    ),
+    "reportIssueEmailSubject": MessageLookupByLibrary.simpleMessage(
+      "بلاغ عن خطأ في تطبيق MatchIn",
+    ),
+    "reportIssuePlatformVersionLabel": MessageLookupByLibrary.simpleMessage(
+      "نظام الجهاز وإصداره",
+    ),
+    "reportIssueTitle": MessageLookupByLibrary.simpleMessage(
+      "الإبلاغ عن مشكلة",
+    ),
     "reqAtLeastOneNumber": MessageLookupByLibrary.simpleMessage(
       "رقم واحد على الأقل",
     ),
@@ -1072,6 +1088,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "suggestedQuestions": MessageLookupByLibrary.simpleMessage("أسئلة مقترحة"),
     "suggestedRoles": MessageLookupByLibrary.simpleMessage("وظائف مقترحة"),
     "suggestions": MessageLookupByLibrary.simpleMessage("مقترحات"),
+    "supervisors": MessageLookupByLibrary.simpleMessage("المشرفون"),
+    "supervisorsSubtitle": MessageLookupByLibrary.simpleMessage(
+      "بكل تقدير لإشرافهم ودعمهم.",
+    ),
+    "supportMessage": MessageLookupByLibrary.simpleMessage(
+      "في حالة وجود أخطاء، برجاء التواصل معنا:",
+    ),
     "supportingDocumentOptional": MessageLookupByLibrary.simpleMessage(
       "مستند داعم (اختياري)",
     ),
@@ -1088,6 +1111,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "فشل إكمال المهمة",
     ),
     "tasksCompleted": MessageLookupByLibrary.simpleMessage("مهام مكتملة"),
+    "teamCredits": MessageLookupByLibrary.simpleMessage("فريق العمل"),
+    "teamIntroSubtitle": MessageLookupByLibrary.simpleMessage(
+      "تعرف على أعضاء الفريق والمشرفين على المشروع.",
+    ),
+    "teamIntroTitle": MessageLookupByLibrary.simpleMessage(
+      "الأشخاص وراء MatchIn",
+    ),
+    "teamMembers": MessageLookupByLibrary.simpleMessage("أعضاء الفريق"),
     "technicalCultureFitStage": MessageLookupByLibrary.simpleMessage(
       "مرحلة التقييم التقني والثقافي",
     ),

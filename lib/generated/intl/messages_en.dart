@@ -254,25 +254,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "connectionSlowRetrying": MessageLookupByLibrary.simpleMessage(
       "Connection is slow. Retrying...",
     ),
-    "contactAddressPlaceholder": MessageLookupByLibrary.simpleMessage(
-      "100 Innovation Boulevard, Tech Park, Suite 400",
-    ),
-    "contactAddressTitle": MessageLookupByLibrary.simpleMessage(
-      "Office Location",
-    ),
-    "contactEmailPlaceholder": MessageLookupByLibrary.simpleMessage(
-      "support@skillmatch.com",
-    ),
     "contactEmailTitle": MessageLookupByLibrary.simpleMessage("Email Support"),
-    "contactHoursPlaceholder": MessageLookupByLibrary.simpleMessage(
-      "Monday - Friday, 9:00 AM - 6:00 PM",
+    "contactLaunchFailed": MessageLookupByLibrary.simpleMessage(
+      "Could not open this contact method.",
     ),
-    "contactHoursTitle": MessageLookupByLibrary.simpleMessage("Support Hours"),
-    "contactPhonePlaceholder": MessageLookupByLibrary.simpleMessage(
-      "+1 (555) 019-2834",
-    ),
+    "contactLinkedInTitle": MessageLookupByLibrary.simpleMessage("LinkedIn"),
     "contactPhoneTitle": MessageLookupByLibrary.simpleMessage("Phone Number"),
     "contactUs": MessageLookupByLibrary.simpleMessage("Contact Us"),
+    "contactWhatsAppTitle": MessageLookupByLibrary.simpleMessage("WhatsApp"),
     "contextPreview": MessageLookupByLibrary.simpleMessage("Candidate Context"),
     "continueAsGuest": MessageLookupByLibrary.simpleMessage(
       "Continue as Guest",
@@ -550,14 +539,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "invalidProfileUrl": MessageLookupByLibrary.simpleMessage(
       "Enter a valid link starting with https:// or http://.",
     ),
-    "supportTitle": MessageLookupByLibrary.simpleMessage("Need help?"),
-    "supportMessage": MessageLookupByLibrary.simpleMessage(
-      "If you encounter an issue, please contact us:",
-    ),
-    "supportLinkedIn": MessageLookupByLibrary.simpleMessage(
-      "Contact us on LinkedIn",
-    ),
-    "supportClose": MessageLookupByLibrary.simpleMessage("Close support panel"),
     "invalidVerificationCode": MessageLookupByLibrary.simpleMessage(
       "Invalid verification code",
     ),
@@ -747,6 +728,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "onlyOnTrustedDevices": MessageLookupByLibrary.simpleMessage(
       "Only on trusted devices",
     ),
+    "openFacebookProfile": MessageLookupByLibrary.simpleMessage(
+      "Open Facebook profile",
+    ),
+    "openLinkedInProfile": MessageLookupByLibrary.simpleMessage(
+      "Open LinkedIn profile",
+    ),
     "openMenu": MessageLookupByLibrary.simpleMessage("Open menu"),
     "openToOpportunitiesAnywhere": MessageLookupByLibrary.simpleMessage(
       "I’m open to opportunities anywhere",
@@ -893,6 +880,31 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "remote": MessageLookupByLibrary.simpleMessage("Remote"),
     "replaceCv": MessageLookupByLibrary.simpleMessage("Replace CV"),
+    "reportIssueAppVersionLabel": MessageLookupByLibrary.simpleMessage(
+      "App version",
+    ),
+    "reportIssueDescriptionHint": MessageLookupByLibrary.simpleMessage(
+      "Describe the problem you encountered",
+    ),
+    "reportIssueDescriptionLabel": MessageLookupByLibrary.simpleMessage(
+      "Problem description",
+    ),
+    "reportIssueDescriptionRequired": MessageLookupByLibrary.simpleMessage(
+      "Please describe the problem first.",
+    ),
+    "reportIssueEmailButton": MessageLookupByLibrary.simpleMessage(
+      "Send report by email",
+    ),
+    "reportIssueEmailLaunchFailed": MessageLookupByLibrary.simpleMessage(
+      "Could not open an email app on this device.",
+    ),
+    "reportIssueEmailSubject": MessageLookupByLibrary.simpleMessage(
+      "MatchIn error report",
+    ),
+    "reportIssuePlatformVersionLabel": MessageLookupByLibrary.simpleMessage(
+      "Device / OS version",
+    ),
+    "reportIssueTitle": MessageLookupByLibrary.simpleMessage("Report an issue"),
     "reqAtLeastOneNumber": MessageLookupByLibrary.simpleMessage(
       "At least one number",
     ),
@@ -1100,6 +1112,13 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "suggestedRoles": MessageLookupByLibrary.simpleMessage("Suggested Roles"),
     "suggestions": MessageLookupByLibrary.simpleMessage("Suggestions"),
+    "supervisors": MessageLookupByLibrary.simpleMessage("Supervisors"),
+    "supervisorsSubtitle": MessageLookupByLibrary.simpleMessage(
+      "With appreciation for their guidance and support.",
+    ),
+    "supportMessage": MessageLookupByLibrary.simpleMessage(
+      "If you encounter an issue, please contact us:",
+    ),
     "supportingDocumentOptional": MessageLookupByLibrary.simpleMessage(
       "Supporting Document (Optional)",
     ),
@@ -1116,6 +1135,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "Task completion failed",
     ),
     "tasksCompleted": MessageLookupByLibrary.simpleMessage("Tasks completed"),
+    "teamCredits": MessageLookupByLibrary.simpleMessage("Team"),
+    "teamIntroSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Meet the team members and supervisors behind the project.",
+    ),
+    "teamIntroTitle": MessageLookupByLibrary.simpleMessage(
+      "The people behind MatchIn",
+    ),
+    "teamMembers": MessageLookupByLibrary.simpleMessage("Team members"),
     "technicalCultureFitStage": MessageLookupByLibrary.simpleMessage(
       "Technical & culture fit stage",
     ),

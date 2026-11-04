@@ -3,7 +3,7 @@ description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: ^3.13.2
@@ -13,7 +13,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   dartz: ^0.10.1
   dio: ^5.11.1
-  equatable: ^2.1.0
+  equatable: ^3.0.0
   file_picker: ^13.1.0
   firebase_core: ^4.15.0
   firebase_messaging: ^16.7.0
@@ -61,10 +61,22 @@ flutter:
 
   #! =============== Assets ===============
   assets:
-    - assets/
-    - assets/images/
-    - assets/icons/
-    - assets/lottie/
+    - assets/images/app_icon.png
+    - assets/images/doc.png
+    - assets/images/docs.svg
+    - assets/images/matchin_splash_logo.svg
+    - assets/images/onboarding_1.jpg
+    - assets/images/onboarding_2.jpg
+    - assets/images/video.png
+    - assets/images/video.svg
+    - assets/icons/Al_icon.svg
+    - assets/icons/linkedin.svg
+    - assets/icons/text_logo.svg
+    - assets/lottie/books_1.lottie.json
+    - assets/lottie/books_2.lottie.json
+    - assets/lottie/correct.json
+    - assets/lottie/graduation_hat.json
+    - assets/lottie/treasure_box.json
     - assets/privacy_policy/
 
   #! =============== Fonts ===============

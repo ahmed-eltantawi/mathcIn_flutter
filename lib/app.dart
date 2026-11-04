@@ -8,7 +8,6 @@ import 'package:MatchIn/features/jobsAndApplications/presentation/cubit/jobs_fee
 import 'package:MatchIn/features/profile/presentation/cubits/profile_cubit/profile_cubit.dart';
 import 'package:MatchIn/features/settings/presentation/cubit/settings_cubit.dart';
 import 'package:MatchIn/features/settings/presentation/cubit/settings_state.dart';
-import 'package:MatchIn/features/support/presentation/widgets/support_floating_entry.dart';
 import 'package:MatchIn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,9 +55,6 @@ class MatchIn extends StatelessWidget {
                 darkTheme: AppTheme.dark(locale: locale),
                 themeMode: settingsState.themeMode,
                 routerConfig: AppRouter.router,
-                builder: (context, child) => SupportFloatingEntry(
-                  child: child ?? const SizedBox.shrink(),
-                ),
               );
             },
           );
