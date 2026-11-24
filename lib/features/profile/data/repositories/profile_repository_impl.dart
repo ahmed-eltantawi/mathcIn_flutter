@@ -156,6 +156,8 @@ class ProfileRepositoryImpl implements ProfileRepository {
       projects: sections[1] as List<CandidateProjectModel>,
       education: sections[2] as List<EducationModel>,
       experience: sections[3] as List<ExperienceModel>,
+      certificates: base.certificates,
+      languages: base.languages,
       careerPreferences: sections[4] as CareerPreferenceModel?,
       cvDocument: currentCv,
     );
@@ -206,6 +208,8 @@ class ProfileRepositoryImpl implements ProfileRepository {
       projects: projects ?? base.projects,
       education: education ?? base.education,
       experience: experience ?? base.experience,
+      certificates: base.certificates,
+      languages: base.languages,
       careerPreferences: replaceCareerPreferences
           ? careerPreferences
           : base.careerPreferences as CareerPreferenceModel?,
@@ -330,6 +334,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
               oldDetails?.linkedinUrl,
               params.linkedinUrl,
             ),
+            portfolioUrl: oldDetails?.portfolioUrl,
             militaryStatus: oldDetails?.militaryStatus,
             professionalSummary: patchOrCurrent(
               oldDetails?.professionalSummary,
@@ -348,6 +353,8 @@ class ProfileRepositoryImpl implements ProfileRepository {
               as CareerPreferenceModel?,
       education: cached.education,
       experience: cached.experience,
+      certificates: cached.certificates,
+      languages: cached.languages,
       cvDocument: cached.cvDocument == null
           ? null
           : CvDocumentModel(

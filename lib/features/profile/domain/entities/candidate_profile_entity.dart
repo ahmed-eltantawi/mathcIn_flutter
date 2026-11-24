@@ -18,6 +18,8 @@ class CandidateProfileEntity extends Equatable {
     this.careerPreferences,
     this.education = const [],
     this.experience = const [],
+    this.certificates = const [],
+    this.languages = const [],
     this.cvDocument,
   });
 
@@ -29,6 +31,8 @@ class CandidateProfileEntity extends Equatable {
   final CareerPreferenceEntity? careerPreferences;
   final List<EducationEntity> education;
   final List<ExperienceEntity> experience;
+  final List<Map<String, dynamic>> certificates;
+  final List<Map<String, dynamic>> languages;
   final CvDocumentEntity? cvDocument;
 
   @override
@@ -41,6 +45,8 @@ class CandidateProfileEntity extends Equatable {
     careerPreferences,
     education,
     experience,
+    certificates,
+    languages,
     cvDocument,
   ];
 }

@@ -19,6 +19,8 @@ class CandidateProfileModel extends CandidateProfileEntity {
     CareerPreferenceModel? super.careerPreferences,
     super.education,
     super.experience,
+    super.certificates,
+    super.languages,
     CvDocumentModel? super.cvDocument,
   });
 
@@ -132,6 +134,10 @@ class CandidateProfileModel extends CandidateProfileEntity {
         json['github_url'],
         nestedProfileJson['github_url'],
       ]),
+      'portfolio_url': firstNotNull([
+        json['portfolio_url'],
+        nestedProfileJson['portfolio_url'],
+      ]),
       'linkedin_url': firstNotNull([
         json['linkedin_url'],
         nestedProfileJson['linkedin_url'],
@@ -184,6 +190,12 @@ class CandidateProfileModel extends CandidateProfileEntity {
           'experience',
         ]),
       ),
+      certificates: _rawMapList(
+        _relationValue(json, profileMap, 'certificates', const ['certificates']),
+      ),
+      languages: _rawMapList(
+        _relationValue(json, profileMap, 'languages', const ['languages']),
+      ),
       cvDocument: _currentCvDocument(json, profileMap),
     );
   }
@@ -206,6 +218,8 @@ class CandidateProfileModel extends CandidateProfileEntity {
       careerPreferences: careerPreferences as CareerPreferenceModel?,
       education: education,
       experience: experience,
+      certificates: certificates,
+      languages: languages,
       cvDocument: document,
     );
   }
@@ -219,6 +233,8 @@ class CandidateProfileModel extends CandidateProfileEntity {
     'careerPreference',
     'cvDocuments',
     'cv_documents',
+    'certificates',
+    'languages',
   };
 
   static bool _hasNestedRelations(Map<String, dynamic> profileJson) {
@@ -346,6 +362,14 @@ class CandidateProfileModel extends CandidateProfileEntity {
       }
     }
     return result;
+  }
+
+  static List<Map<String, dynamic>> _rawMapList(dynamic value) {
+    if (value is! List) return const [];
+    return value
+        .whereType<Map<String, dynamic>>()
+        .map((item) => Map<String, dynamic>.unmodifiable(item))
+        .toList(growable: false);
   }
 
   /// Selects the current CV using `is_current == true`.
@@ -533,6 +557,8 @@ class CandidateProfileModel extends CandidateProfileEntity {
                             'preferred_industries':
                                 careerPreferences!.preferredIndustries,
                           }),
+              'certificates': certificates,
+              'languages': languages,
               // The entity holds exactly the selected current document,
               // so it round-trips as current. The flag is normalized
               // here to preserve the selection invariant through cache.

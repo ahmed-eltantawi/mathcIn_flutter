@@ -13,6 +13,7 @@ class CandidateProfileDetailsModel extends CandidateProfileDetailsEntity {
     super.city,
     super.githubUrl,
     super.linkedinUrl,
+    super.portfolioUrl,
     super.militaryStatus,
     super.professionalSummary,
   });
@@ -53,6 +54,7 @@ class CandidateProfileDetailsModel extends CandidateProfileDetailsEntity {
       ]),
       githubUrl: JsonParsing.parseString(json['github_url']),
       linkedinUrl: JsonParsing.parseString(json['linkedin_url']),
+      portfolioUrl: JsonParsing.parseString(json['portfolio_url']),
       militaryStatus: JsonParsing.parseString(json['military_status']),
       professionalSummary: JsonParsing.parseString(
         json['professional_summary'] ?? json['summary'],
@@ -80,6 +82,7 @@ class CandidateProfileDetailsModel extends CandidateProfileDetailsEntity {
       'city': city,
       'github_url': githubUrl,
       'linkedin_url': linkedinUrl,
+      'portfolio_url': portfolioUrl,
       'military_status': militaryStatus,
       'professional_summary': professionalSummary,
     };

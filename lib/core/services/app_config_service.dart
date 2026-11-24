@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:MatchIn/core/errors/failures.dart';
 import 'package:MatchIn/core/services/shared_preferences_service.dart';
 
@@ -15,6 +16,8 @@ import 'package:MatchIn/core/services/shared_preferences_service.dart';
 ///* Priority: Firebase Firestore > valid cache. Null means no valid
 ///* configuration is available and no request may be sent.
 class AppConfigService {
+  static const String _debugBaseUrl = String.fromEnvironment('API_BASE_URL');
+
   AppConfigService({
     required this.sharedPreferencesService,
     required this.baseUrlProvider,
@@ -28,6 +31,10 @@ class AppConfigService {
   // --- Synchronous snapshot of the valid cache, or null when no valid
   // --- configuration exists. There is no fallback URL by design. ---
   String? get currentBaseUrl {
+    if (kDebugMode && isValidBaseUrl(_debugBaseUrl)) {
+      return normalizeBaseUrl(_debugBaseUrl);
+    }
+
     final cached = sharedPreferencesService.getApiBaseUrl();
     if (isValidBaseUrl(cached)) {
       return normalizeBaseUrl(cached!);
@@ -42,6 +49,10 @@ class AppConfigService {
 
   // --- Fetches remote config; persists only valid values ---
   Future<Either<Failure, String>> refresh() async {
+    if (kDebugMode && isValidBaseUrl(_debugBaseUrl)) {
+      return Right(normalizeBaseUrl(_debugBaseUrl));
+    }
+
     try {
       final String? rawUrl = await baseUrlProvider.fetchBaseUrl();
 

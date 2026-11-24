@@ -16,13 +16,15 @@ import 'package:dio/dio.dart';
 class DioConsumer extends ApiConsumer {
   DioConsumer({
     required this.dio,
+    required AppConfigService appConfigService,
     required SecureStorageService secureStorageService,
     required SharedPreferencesService sharedPreferencesService,
     ConnectivityCubit? connectivityCubit,
   }) {
     //! =================== Configurations ===================
     // takeing base url from the centralized end point configuration
-    dio.options.baseUrl = EndPoint.baseUrl;
+    dio.options.baseUrl =
+        appConfigService.currentBaseUrl ?? EndPoint.baseUrl;
 
     // adding api interceptor
     dio.interceptors.add(

@@ -12,6 +12,7 @@ class CandidateProfileDetailsEntity extends Equatable {
     this.city,
     this.githubUrl,
     this.linkedinUrl,
+    this.portfolioUrl,
     this.militaryStatus,
     this.professionalSummary,
   });
@@ -26,6 +27,7 @@ class CandidateProfileDetailsEntity extends Equatable {
   final String? city;
   final String? githubUrl;
   final String? linkedinUrl;
+  final String? portfolioUrl;
   final String? militaryStatus;
   final String? professionalSummary;
 
@@ -41,6 +43,7 @@ class CandidateProfileDetailsEntity extends Equatable {
     city,
     githubUrl,
     linkedinUrl,
+    portfolioUrl,
     militaryStatus,
     professionalSummary,
   ];

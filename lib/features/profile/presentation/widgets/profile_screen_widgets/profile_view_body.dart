@@ -156,6 +156,24 @@ class ProfileViewBody extends StatelessWidget {
                       },
                     ),
                     SizedBox(height: 16.h),
+                    if (profile.certificates.isNotEmpty) ...[
+                      _ProfileDataListCard(
+                        title: 'Certificates',
+                        items: profile.certificates,
+                        primaryKey: 'name',
+                        secondaryKeys: const ['issuer', 'issue_date'],
+                      ),
+                      SizedBox(height: 16.h),
+                    ],
+                    if (profile.languages.isNotEmpty) ...[
+                      _ProfileDataListCard(
+                        title: 'Languages',
+                        items: profile.languages,
+                        primaryKey: 'language',
+                        secondaryKeys: const ['proficiency_level'],
+                      ),
+                      SizedBox(height: 16.h),
+                    ],
                     CvProfileSection(cvDocument: cvDocument),
                     SizedBox(height: 16.h),
                     CareerPreferencesProfileCard(
@@ -183,6 +201,49 @@ class ProfileViewBody extends StatelessWidget {
             },
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _ProfileDataListCard extends StatelessWidget {
+  const _ProfileDataListCard({
+    required this.title,
+    required this.items,
+    required this.primaryKey,
+    required this.secondaryKeys,
+  });
+
+  final String title;
+  final List<Map<String, dynamic>> items;
+  final String primaryKey;
+  final List<String> secondaryKeys;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 8.h),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+              child: Text(title, style: Theme.of(context).textTheme.titleMedium),
+            ),
+            for (final item in items)
+              ListTile(
+                dense: true,
+                title: Text((item[primaryKey] ?? '').toString()),
+                subtitle: Text(
+                  secondaryKeys
+                      .map((key) => item[key])
+                      .where((value) => value != null && value.toString().trim().isNotEmpty)
+                      .join(' • '),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

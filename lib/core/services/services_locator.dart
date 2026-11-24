@@ -676,6 +676,7 @@ Future<void> setupServiceLocator() async {
   getIt.registerLazySingleton<ApiConsumer>(
     () => DioConsumer(
       dio: getIt(),
+      appConfigService: getIt(),
       secureStorageService: getIt(),
       sharedPreferencesService: getIt(),
       connectivityCubit: getIt(),

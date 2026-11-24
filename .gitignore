@@ -63,3 +63,4 @@ AGENTS.md
 # Key properties file
 /android/key.properties
 !AGENTS.md
+*.apk
